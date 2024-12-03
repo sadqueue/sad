@@ -1,87 +1,26 @@
 import './App.css';
 import React from "react";
 import moment from "moment";
-
-const SHIFT_TYPES = [
-    {
-        type: "S1",
-        start: "10:00",
-        end: "20:00"
-    },
-    {
-        type: "S2",
-        start: "11:00",
-        end: "21:00"
-    },
-    {
-        type: "S3",
-        start: "13:00",
-        end: "23:00"
-    },
-    {
-        type: "S4",
-        start: "14:00",
-        end: "00:00"
-    },
-    {
-        type: "N5",
-        start: "17:00",
-        end: "05:00"
-    },
-    {
-        type: "DA",
-        start: "07:00",
-        end: "19:00"
-    }
-];
-const data = [
-    {
-        admissionsId: '01',
-        name: 'S1',
-        numberOfAdmissions: "1",
-        timestamp: '18:17',
-        isTwoAdmits: false,
-        chronicLoadRatio: ""
-    },
-    {
-        admissionsId: '02',
-        name: 'S2',
-        numberOfAdmissions: "2",
-        timestamp: '18:28',
-        isTwoAdmits: false,
-        chronicLoadRatio: ""
-    },
-    {
-        admissionsId: '03',
-        name: 'S3',
-        numberOfAdmissions: "3",
-        timestamp: '18:13',
-        isTwoAdmits: false,
-        chronicLoadRatio: ""
-    },
-    {
-        admissionsId: '04',
-        name: 'S4',
-        numberOfAdmissions: "2",
-        timestamp: '17:08',
-        isTwoAdmits: false,
-        chronicLoadRatio: ""
-    },
-    {
-        admissionsId: '05',
-        name: 'N5',
-        numberOfAdmissions: "2",
-        timestamp: '18:53',
-        isTwoAdmits: true,
-        chronicLoadRatio: ""
-    },
-]
+import { FIVEPM, SEVENPM, FOURPM, SHIFT_TYPES, START_TIMES } from './constants';
+const timeNow = "19:00";
 
 
 export function App() {
-    const [admissionsData, setAdmissionsData] = React.useState(data)
+    const [admissionsData, setAdmissionsData] = React.useState(FOURPM)
     const [sorted, setSorted] = React.useState("");
     const [displayOrderOfAdmissions, setDisplayOrderOfAdmissions] = React.useState(false);
+    const [selectedStartTime, setSelectedStartTime] = React.useState(START_TIMES[0].label);
+
+    React.useEffect(() => {
+        admissionsData.sort(function (a, b) {
+            return a.timestamp.localeCompare(b.timestamp);
+        });
+        const sortRoles = [];
+        admissionsData.forEach((each, eachIndex) => {
+            sortRoles.push(each.name);
+        })
+        setSorted(sortRoles.join(", "));
+    }, []);
 
     const onChange = (e, admissionsId) => {
         const { name, value } = e.target
@@ -90,57 +29,104 @@ export function App() {
             item.admissionsId === admissionsId && name ? { ...item, [name]: value } : item
         )
 
-        setAdmissionsData(editData)
+        editData.sort(function (a, b) {
+            return a.timestamp.localeCompare(b.timestamp);
+        });
+        const sortRoles = [];
+        editData.forEach((each, eachIndex) => {
+            sortRoles.push(each.name);
+        })
+        setSorted(sortRoles.join(", "));
+        setAdmissionsData(editData);
     }
 
-    /* 
-    Chronic Load = number of admissions / numbers of hours worked 
-
-    S1 = 10AM-8PM
-    S2 = 11AM-9PM
-    S3 = 1PM-11AM
-    S4 = 2PM-12AM
-    N5 = 5PM-5AM
-    DA = 7AM-7PM
-
-    */
     const getChronicLoadRatio = (name, numberOfAdmissions, timestamp) => {
         const startTime = SHIFT_TYPES.map((shift, shiftIndex) => {
             if (shift.type == name){
                 return shift.start;
             }
         });
-        const timeStampMoment = moment(timestamp, 'HH:mm');
-        const timeDifference = moment(startTime, 'HH:mm').diff(timeStampMoment, "hours", true);
-
+        
+        const timeDifference = moment(selectedStartTime, 'HH:mm').diff(moment(startTime, 'HH:mm'), "hours", true).toFixed();
         const chronicLoadRatio = (Number(numberOfAdmissions) / (timeDifference)).toFixed(2);
+
         return chronicLoadRatio;
     }
 
-    const chronicLoadVal = 1;
+    const getNumberOfHoursWorked = (name, timestamp) => {
+        const startTime = SHIFT_TYPES.map((shift, shiftIndex) => {
+            if (shift.type == name){
+                return shift.start;
+            }
+        });
+        
+        const timeDifference = moment(selectedStartTime, 'HH:mm').diff(moment(startTime, 'HH:mm'), "hours", true).toFixed();
+        return `${timeDifference} hours`;
+    }
+
+    const timesDropdown = () => {
+        return (
+            <select 
+                className="timesdropdown"
+                onChange={e => {
+                        const startTime = e.target.value;
+
+                        switch(startTime){
+                            case "FOURPM":
+                                setAdmissionsData(FOURPM);
+                                setSelectedStartTime("16:00")
+                                break;
+                            case "FIVEPM":
+                                setAdmissionsData(FIVEPM);
+                                setSelectedStartTime("17:00")
+                                break;
+                            case "SEVENPM":
+                                setAdmissionsData(SEVENPM);
+                                setSelectedStartTime("19:00")
+                                break;
+                            default: 
+                                setAdmissionsData(FOURPM);
+                                setSelectedStartTime("16:00")
+                                break;
+                        }
+                        const sortRoles = [];
+                        admissionsData.forEach((each, eachIndex) => {
+                            sortRoles.push(each.name);
+                        })
+                        setSorted(sortRoles.join(", "));
+                    }
+                }>
+                {START_TIMES.map((startTime, startTimeIndex) => {
+                    return (<option value={`${startTime.value}`}>{`${startTime.label}`}</option>);
+                })}
+            </select>
+        );
+    }
     return (
         <div className="container">
-            <h1 className="title">SAD Queue Generator</h1>
-            <h2>Standardized Admissions Distributor</h2>
+            <h1 className="title">S.A.D. Queue</h1>
+            <h2>Standardized Admissions Distribution</h2>
+            {timesDropdown()}
             <table>
                 <thead>
                     <tr>
                         <th>Role</th>
                         <th># of Admissions</th>
                         <th>Last Admin Timestamp</th>
-                        {/* <th>Two Admits 5-7PM</th> */}
+                        <th># Hours Worked</th>
                         <th>Chronic Load Ratio</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {admissionsData.map(({ admissionsId, name, numberOfAdmissions, timestamp, isTwoAdmits, chronicLoadRatio }) => (
+                    {admissionsData.map(({ admissionsId, displayName, name, numberOfAdmissions, timestamp, isTwoAdmits, chronicLoadRatio }) => (
                         <tr key={admissionsId}>
                             <td>
                                 <input
                                     name="name"
-                                    value={name}
+                                    value={displayName}
                                     type="text"
                                     onChange={(e) => onChange(e, admissionsId)}
+                                    disabled
                                 />
                             </td>
                             <td>
@@ -159,20 +145,22 @@ export function App() {
                                     onChange={(e) => onChange(e, admissionsId)}
                                 />
                             </td>
-                            {/* <td>
+                            <td>
                                 <input
-                                    name="isTwoAdmits"
-                                    type="checkbox"
-                                    value={isTwoAdmits}
+                                    name="numberOfHoursWorked"
+                                    type="text"
+                                    value={getNumberOfHoursWorked(name, timestamp)}
                                     onChange={(e) => onChange(e, admissionsId)}
+                                    disabled
                                 />
-                            </td> */}
+                            </td>
                             <td>
                                 <input
                                     name="chronicLoad"
                                     type="text"
                                     value={getChronicLoadRatio(name, numberOfAdmissions, timestamp)}
                                     onChange={(e) => onChange(e, admissionsId)}
+                                    disabled
                                 />
                             </td>
                         </tr>
@@ -180,37 +168,18 @@ export function App() {
                 </tbody>
             </table>
             <section style={{ textAlign: "center", margin: "30px" }}>
-                <button
-                    onClick={(ev) => {
-                        admissionsData.sort(function (a, b) {
-                            return a.timestamp.localeCompare(b.timestamp);
-                        });
-                        const sortRoles = [];
-                        admissionsData.forEach((each, eachIndex) => {
-                            sortRoles.push(each.name);
-                        })
-                        setSorted(sortRoles.join(", "));
-                        setAdmissionsData(admissionsData);
-                        setDisplayOrderOfAdmissions(true);
-                    }}>
-                    Generate Queue
-                </button>
             </section>
-            {sorted && displayOrderOfAdmissions &&
-                <fieldset>
+            <fieldset>
                     <button
                      onClick={(ev) => {
-                        navigator.clipboard.writeText(`Order of Admissions (7PM): ${sorted}`);
+                        navigator.clipboard.writeText(`Order of Admissions for ${moment(selectedStartTime, 'HH:mm').format('h')}PM: ${sorted}`);
                     }}>Copy</button>
-                    {/* <button className="close" onClick={(ev) => {
-                        setDisplayOrderOfAdmissions(false);
-                    }}>Close</button> */}
+                  
                     <h1>
-                        {`Order of Admissions (7PM):`}
+                        {`Order of Admissions for ${moment(selectedStartTime, 'HH:mm').format('h')}PM:`}
                     </h1>
                     <h1>{`${sorted}`}</h1>
                 </fieldset>
-            }
         </div>
     )
 

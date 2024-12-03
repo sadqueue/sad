@@ -26,7 +26,7 @@ table {
   width: 100%;
 }
 
-tr th {
+tr th, select {
   font-size: 18px;
   padding: 12px;
   border: 1px solid #eeeeee;
@@ -43,7 +43,7 @@ input {
   font-size: 16px;
   background-color: transparent;
   border: none;
-  width: 91%;
+  width: 84%;
   padding: 12px 12px;
   font-family: 'Poppins', sans-serif;
   outline:none;
@@ -101,4 +101,9 @@ fieldset{
 
 .close {
   float: right;
+}
+
+.timesdropdown {
+  float: right;
+  margin-top: -60px;
 }
