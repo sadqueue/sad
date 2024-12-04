@@ -95,16 +95,13 @@ export const FOURPM = [
     }
 ];
 
-/*
-
-*/
 export const FIVEPM = [
     {
         admissionsId: '01',
         name: 'S1',
         displayName: 'S1 (10AM-8PM)',
         numberOfAdmissions: "4",
-        timestamp: '18:17',
+        timestamp: '15:17',
         numberOfHoursWorked: "",
         chronicLoadRatio: ""
     },
@@ -113,7 +110,7 @@ export const FIVEPM = [
         name: 'S2',
         displayName: 'S2 (11AM-9PM)',
         numberOfAdmissions: "3",
-        timestamp: '18:28',
+        timestamp: '15:28',
         numberOfHoursWorked: "",
         chronicLoadRatio: ""
     },
@@ -122,7 +119,7 @@ export const FIVEPM = [
         name: 'S3',
         displayName: 'S3 (1PM-11PM)',
         numberOfAdmissions: "2",
-        timestamp: '18:31',
+        timestamp: '15:31',
         numberOfHoursWorked: "",
         chronicLoadRatio: ""
     },
@@ -131,7 +128,7 @@ export const FIVEPM = [
         name: 'S4',
         displayName: 'S4 (2PM-12AM)',
         numberOfAdmissions: "1",
-        timestamp: '18:45',
+        timestamp: '15:45',
         numberOfHoursWorked: "",
         chronicLoadRatio: ""
     },

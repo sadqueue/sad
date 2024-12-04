@@ -4,6 +4,7 @@ body {
   box-sizing: border-box;
   color: #220f5f;
   font-family: 'Poppins', sans-serif;
+  margin-bottom: 100px;
 }
 
 .container {
@@ -97,6 +98,7 @@ h1, h2 {
 
 fieldset{
   background-color: rgba(217, 221, 146, 0.2);
+  padding-bottom: 20px;
 }
 
 .close {
