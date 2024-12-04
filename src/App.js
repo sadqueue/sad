@@ -4,6 +4,9 @@ import moment from "moment";
 import { SHIFT_TYPES, START_TIMES, THRESHOLD,
     FOURPM_DATA, FIVEPM_DATA, SEVENPM_DATA
  } from './constants';
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
+
 
 export function App() {
     const [admissionsData, setAdmissionsData] = React.useState(FOURPM_DATA)
@@ -181,19 +184,19 @@ export function App() {
             <h1 className="title">S.A.D. Queue</h1>
             <h2>Standardized Admissions Distribution</h2>
             {timesDropdown()}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Role</th>
-                        <th>Number of Admissions</th>
-                        <th>Chronic Load Ratio</th>
-                        <th>Last Admission Timestamp</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <Table>
+                <Thead>
+                    <Tr>
+                        <Th>Role</Th>
+                        <Th>Number of Admissions</Th>
+                        <Th>Chronic Load Ratio</Th>
+                        <Th>Last Admission Timestamp</Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
                     {admissionsData.shifts.map((admission) => (
-                        <tr className={admission.isStatic ? "statictr" : ""} key={admission.admissionsId}>
-                            <td className="grayinput">
+                        <Tr className={admission.isStatic ? "statictr" : ""} key={admission.admissionsId}>
+                            <Td className="grayinput">
                                 <input
                                     name="name"
                                     value={admission.displayName} 
@@ -201,8 +204,8 @@ export function App() {
                                     onChange={(e) => onChange(e, admission.admissionsId)}
                                     disabled={true}
                                 />
-                            </td>
-                            <td>
+                            </Td>
+                            <Td>
                                 <input
                                     name="numberOfAdmissions"
                                     value={admission.numberOfAdmissions}
@@ -211,8 +214,8 @@ export function App() {
                                     placeholder="Enter number"
                                     disabled={admission.isStatic}
                                 />
-                            </td>
-                            <td className="grayinput">
+                            </Td>
+                            <Td className="grayinput">
                                 <input
                                     
                                     name="chronicLoadRatio"
@@ -221,8 +224,8 @@ export function App() {
                                     onChange={(e) => onChange(e, admission.admissionsId)}
                                     disabled={true}
                                 />
-                            </td>
-                            <td>
+                            </Td>
+                            <Td>
                                 <input
                                     name="timestamp"
                                     value={admission.timestamp}
@@ -230,12 +233,12 @@ export function App() {
                                     onChange={(e) => onChange(e, admission.admissionsId)}
                                     disabled={admission.isStatic}
                                 />
-                            </td>
+                            </Td>
 
-                        </tr>
+                        </Tr>
                     ))}
-                </tbody>
-            </table>
+                </Tbody>
+            </Table>
             <section style={{ textAlign: "center", margin: "30px" }}>
                 <button onClick={() => {
                     sortMain(admissionsData);
