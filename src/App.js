@@ -1,50 +1,51 @@
 import './App.css';
 import React from "react";
 import moment from "moment";
-import { FIVEPM, SEVENPM, FOURPM, SHIFT_TYPES, START_TIMES, THRESHOLD } from './constants';
-const timeNow = "19:00";
-
+import { SHIFT_TYPES, START_TIMES, THRESHOLD,
+    FOURPM_DATA, FIVEPM_DATA, SEVENPM_DATA
+ } from './constants';
 
 export function App() {
-    const [admissionsData, setAdmissionsData] = React.useState(FOURPM)
-    const [sorted, setSorted] = React.useState();
-    const [displayOrderOfAdmissions, setDisplayOrderOfAdmissions] = React.useState(false);
-    const [selectedStartTime, setSelectedStartTime] = React.useState("16:00");
+    const [admissionsData, setAdmissionsData] = React.useState(FOURPM_DATA)
+    const [sorted, setSorted] = React.useState("");
     const [seeDetails, setSeeDetails] = React.useState(false);
-    const [scenarioFivePM, setScenarioFivePM] = React.useState("")
+    const [explanation, setExplanation] = React.useState("")
 
-    React.useEffect(() => {
-        const sortRoles = sortMain();
-        setSorted(sortRoles);
+    React.useEffect(()=>{
+        sortMain(admissionsData);
     }, []);
+    const sortMain = (timeObj = null) => {
 
-    const sortMain = () => {
-        if (selectedStartTime == "17:00") {
-            return sortByChronicLoadAndAcuteLoad();
+        if (timeObj.startTime == "16:00") {
+            return sortByTimeStamp(timeObj);
         } else {
-            return sortByTimeStamp();
+            return sortByChronicLoadAndAcuteLoad(timeObj);
         }
     }
-    const sortByTimeStamp = () => {
-        admissionsData.sort(function (a, b) {
+    const sortByTimeStamp = (timeObj) => {
+
+        timeObj.shifts.sort(function (a, b) {
             return a.timestamp.localeCompare(b.timestamp);
         });
         const sortRoles = [];
-        admissionsData.map((each, eachIndex) => {
+        timeObj.shifts.map((each, eachIndex) => {
             sortRoles.push(each.name);
-        })
-        return sortRoles.join(", ");
+        });
+
+        setExplanation(["For 4PM, sort by last admission timestamp."])
+        setAdmissionsData(timeObj);
+        setSorted(sortRoles.join(", "));
+        // return sortRoles.join(", ");
     }
 
-    const sortByChronicLoadAndAcuteLoad = () => {
-
+    const sortByChronicLoadAndAcuteLoad = (timeObj) => {
         /*
         Step 1: Sort by acute load (if the person worked within 90 minutes)
         Step 2: Sort the rest by chronic load ratio 
         */
         const sortA = [];
         const sortB = [];
-        admissionsData.map((a, aIndex) => {
+        timeObj.shifts.map((a, aIndex) => {
             if (getWorkedLast90Min(a.timestamp)) {
                 sortA.push(a);
             } else {
@@ -58,34 +59,53 @@ export function App() {
             return loadA - loadB;
         });
 
+        const explanationArr = ["Step 1: Retrieve the roles have worked in the last 90 minutes: "];
 
-        const sortARoles = sortA.map((s) => s.name)
-        const sortBRoles = sortB.map((s) => s.name);
-        const finalSort = sortA.concat(sortB);
+        sortA.map((s, sIndex) => {
+            explanationArr.push((sIndex + 1) + ": " + s.name + ` (${getMinutesWorkedFromStartTime(s.timestamp)} min ago)`);
+        });
 
-        const finalSortRoles = finalSort.map((s) => s.name);
+        explanationArr.push("Step 2: Retrieve the roles have NOT worked in the last 90 minutes. Then sort by chronic load ratio. ");
 
-        setScenarioFivePM("These roles have worked in the last 90 minutes: (" + sortARoles + ").  \
-            Now we will sort by chronic load ratio for those who did not work the last 90 minutes (" + sortBRoles +"). \
-            Therefore, the order is (" +finalSortRoles + ").");
+        sortB.map((s, sIndex) => {
+            explanationArr.push((sIndex + 1) + ": " + s.name + ` (${getChronicLoadRatio(s)})`);
+        });
 
+        explanationArr.push("Step 3: Combine 'Step 2' queue with 'Step 1' queue. ");
+
+        const finalSort = {};
+        finalSort["startTime"] = timeObj.startTime;
+        finalSort["startTimeFormatted"] = timeObj.startTimeFormatted;
+        finalSort["shifts"] = sortB.concat(sortA);
         
+        finalSort.shifts.map((s, sIndex) => {
+            explanationArr.push((sIndex + 1) + ": " + s.name + ` (${getMinutesWorkedFromStartTime(s.timestamp)} min ago, ${getChronicLoadRatio(s)})`);
+        });
+
+        setExplanation(explanationArr);
+        setAdmissionsData(finalSort);
         const sortRoles = [];
-        finalSort.map((each, eachIndex) => {
+        finalSort.shifts.map((each, eachIndex) => {
             sortRoles.push(each.name);
         })
-        console.log("Combine the 2 arrays: ", finalSort);
-        return sortRoles.join(", ");
+        setSorted(sortRoles.join(", "));
+        // return sortRoles.join(", ");
     }
 
     const onChange = (e, admissionsId) => {
         const { name, value } = e.target
 
-        const editData = admissionsData.map((item) =>
+        const newObj = {};
+
+        const updatedShifts = admissionsData.shifts.map((item) =>
             item.admissionsId === admissionsId && name ? { ...item, [name]: value } : item
         )
 
-        setAdmissionsData(editData);
+        newObj["startTime"] = admissionsData.startTime;
+        newObj["startTimeFormatted"] = admissionsData.startTimeFormatted;
+        newObj["shifts"] = updatedShifts;
+
+        setAdmissionsData(newObj);
     }
 
     const getChronicLoadRatio = (admission) => {
@@ -107,19 +127,25 @@ export function App() {
             }
         });
 
-        const timeDifference = moment(selectedStartTime, 'HH:mm').diff(moment(startTime, 'HH:mm'), "hours", true).toFixed();
+        const timeDifference = moment(admissionsData.startTime, 'HH:mm').diff(moment(startTime, 'HH:mm'), "hours", true).toFixed();
         return timeDifference;
     }
 
     const getWorkedLast90Min = (timestamp) => {
-        const now = moment(selectedStartTime, 'HH:mm');
+        const now = moment(admissionsData.startTime, 'HH:mm');
         const timeDifference = moment(now, 'HH:mm').diff(moment(timestamp, 'HH:mm'), "minutes", true).toFixed();
 
         if (Number(timeDifference) < THRESHOLD) {
             return true;
         } else {
-            return false
+            return false;
         }
+    }
+
+    const getMinutesWorkedFromStartTime = (timestamp) => {
+        const now = moment(admissionsData.startTime, 'HH:mm');
+        const timeDifference = moment(now, 'HH:mm').diff(moment(timestamp, 'HH:mm'), "minutes", true).toFixed();
+        return timeDifference;
     }
 
     const timesDropdown = () => {
@@ -128,28 +154,20 @@ export function App() {
                 className="timesdropdown"
                 onChange={e => {
                     const startTime = e.target.value;
-                    let selectedAdmissionsData = "";
                     switch (startTime) {
                         case "FOURPM":
-                            selectedAdmissionsData = FOURPM;
-                            setSelectedStartTime("16:00")
+                            sortMain(FOURPM_DATA);
                             break;
                         case "FIVEPM":
-                            selectedAdmissionsData = FIVEPM;
-                            setSelectedStartTime("17:00")
+                            sortMain(FIVEPM_DATA);
                             break;
                         case "SEVENPM":
-                            selectedAdmissionsData = SEVENPM;
-                            setSelectedStartTime("19:00")
+                            sortMain(SEVENPM_DATA);
                             break;
                         default:
-                            selectedAdmissionsData = FOURPM;
-                            setSelectedStartTime("16:00")
+                            sortMain(FOURPM_DATA);
                             break;
                     }
-                    setAdmissionsData(selectedAdmissionsData);
-                    const sortRoles = sortMain();
-                    setSorted(sortRoles);
                 }
                 }>
                 {START_TIMES.map((startTime, startTimeIndex) => {
@@ -173,15 +191,15 @@ export function App() {
                     </tr>
                 </thead>
                 <tbody>
-                    {admissionsData.map((admission) => (
-                        <tr key={admission.admissionsId}>
-                            <td>
+                    {admissionsData.shifts.map((admission) => (
+                        <tr className={admission.isStatic ? "statictr" : ""} key={admission.admissionsId}>
+                            <td className="grayinput">
                                 <input
                                     name="name"
-                                    value={admission.displayName} //+"\n"+getNumberOfHoursWorked(name, timestamp)
+                                    value={admission.displayName} 
                                     type="text"
                                     onChange={(e) => onChange(e, admission.admissionsId)}
-
+                                    disabled={true}
                                 />
                             </td>
                             <td>
@@ -191,15 +209,17 @@ export function App() {
                                     type="text"
                                     onChange={(e) => onChange(e, admission.admissionsId)}
                                     placeholder="Enter number"
+                                    disabled={admission.isStatic}
                                 />
                             </td>
-                            <td>
+                            <td className="grayinput">
                                 <input
+                                    
                                     name="chronicLoadRatio"
                                     type="text"
                                     value={getChronicLoadRatio(admission)}
                                     onChange={(e) => onChange(e, admission.admissionsId)}
-
+                                    disabled={true}
                                 />
                             </td>
                             <td>
@@ -208,6 +228,7 @@ export function App() {
                                     value={admission.timestamp}
                                     type="time"
                                     onChange={(e) => onChange(e, admission.admissionsId)}
+                                    disabled={admission.isStatic}
                                 />
                             </td>
 
@@ -217,9 +238,7 @@ export function App() {
             </table>
             <section style={{ textAlign: "center", margin: "30px" }}>
                 <button onClick={() => {
-                    const sortRoles = sortMain();
-                    setSorted(sortRoles);
-                    setAdmissionsData(admissionsData);
+                    sortMain(admissionsData);
                 }}>
                     Generate Queue
                 </button>
@@ -227,32 +246,25 @@ export function App() {
             <fieldset>
                 <button
                     onClick={(ev) => {
-                        navigator.clipboard.writeText(`Order of Admissions for ${moment(selectedStartTime, 'HH:mm').format('h')}PM: ${sorted}`);
+                        navigator.clipboard.writeText(`Order of Admissions for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM: ${sorted}`);
 
                     }}>Copy</button>
 
                 <h1>
-                    {`Order of Admissions for ${moment(selectedStartTime, 'HH:mm').format('h')}PM:`}
+                    {`Order of Admissions for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM:`}
                 </h1>
                 <h1>{`${sorted}`}</h1>
+                <button className="seedetails" onClick={() => {
+                    setSeeDetails(!seeDetails);
+                }
+                }>{seeDetails ? "(-)" : "(+)"}</button>
             </fieldset>
-            <button className="seedetails" onClick={()=>{
-                setSeeDetails(!seeDetails);
-            }
-
-            }>See Details</button>
             {seeDetails && <fieldset className="notes">
-                <h2>4PM Scenario</h2>
-                <p>
-                    Sort by timestamp.
-                </p>
-                <h2>5PM Scenario</h2>
-                <p>
-                    {scenarioFivePM}
-                    {/* Admissions that have happened in the past 90 minutes will be placed in the end of the queue.
-                    Sort the rest of the queue by chronic load ratio. */}
+                <h2>Explanation</h2>
 
-                </p>
+                {explanation && explanation.map((line, lineIndex) => {
+                    return <p>{line}</p>
+                })}
             </fieldset>}
         </div>
     )
