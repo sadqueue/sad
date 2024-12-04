@@ -67,7 +67,7 @@ export function App() {
 
         setScenarioFivePM("These roles have worked in the last 90 minutes: (" + sortARoles + ").  \
             Now we will sort by chronic load ratio for those who did not work the last 90 minutes (" + sortBRoles +"). \
-            Therefore, the order is (" + finalSortRoles + ").");
+            Therefore, the order is (" +finalSortRoles + ").");
 
         
         const sortRoles = [];
