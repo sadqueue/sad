@@ -49,6 +49,14 @@ tr td {
   text-align: left;
 }
 
+tr td.usercanedit {
+  /* background-color: rgba(80, 63, 205, 0.1); */
+
+  padding: 10px;
+  outline: 1px solid black;
+  outline-offset: -10px;
+}
+
 input {
   font-size: 16px;
   background-color: transparent;

@@ -1,9 +1,10 @@
 import './App.css';
 import React from "react";
 import moment from "moment";
-import { SHIFT_TYPES, START_TIMES, THRESHOLD,
-    FOURPM_DATA, FIVEPM_DATA, SEVENPM_DATA
- } from './constants';
+import {
+    SHIFT_TYPES, START_TIMES, THRESHOLD,
+    FOURPM_DATA, FIVEPM_DATA, SEVENPM_DATA, SCORE_NEW_ROLE
+} from './constants';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
@@ -12,33 +13,91 @@ export function App() {
     const [admissionsData, setAdmissionsData] = React.useState(FOURPM_DATA)
     const [sorted, setSorted] = React.useState("");
     const [seeDetails, setSeeDetails] = React.useState(false);
-    const [explanation, setExplanation] = React.useState("")
+    const [explanation, setExplanation] = React.useState("");
+    const [openTable, setOpenTable] = React.useState(false)
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         sortMain(admissionsData);
     }, []);
-    const sortMain = (timeObj = null) => {
 
-        if (timeObj.startTime == "16:00") {
-            return sortByTimeStamp(timeObj);
+    const sortMain = (timeObj) => {
+
+        if (timeObj.startTime === "16:00" || timeObj.startTime === "19:00") {
+            return sortByCompositeScore(timeObj);
         } else {
-            return sortByChronicLoadAndAcuteLoad(timeObj);
+            // return sortByChronicLoadAndAcuteLoad(timeObj);
+            return sortByCompositeScore(timeObj);
         }
     }
+
     const sortByTimeStamp = (timeObj) => {
 
         timeObj.shifts.sort(function (a, b) {
             return a.timestamp.localeCompare(b.timestamp);
         });
         const sortRoles = [];
-        timeObj.shifts.map((each, eachIndex) => {
+        timeObj.shifts.forEach((each, eachIndex) => {
             sortRoles.push(each.name);
         });
 
         setExplanation(["For 4PM, sort by last admission timestamp."])
         setAdmissionsData(timeObj);
         setSorted(sortRoles.join(", "));
-        // return sortRoles.join(", ");
+    }
+
+    const getCompositeScore = (admission) => {
+        let score = "";
+        if (SCORE_NEW_ROLE[admission.startTime].includes(admission.name)) {
+            const partB = 180 - admission.minutesWorkedFromStartTime;
+            const partC = partB / 180;
+
+            score = partC.toFixed(3);
+        } else {
+            const partA = 0.3 * admission.chronicLoadRatio;
+            const partB = 180 - admission.minutesWorkedFromStartTime;
+            const partC = partB / 180;
+
+            const partD = partC * 0.7;
+            const compositeScore = partA + partD;
+            score = Number(compositeScore.toFixed(3));
+        }
+        return score;
+    }
+
+    const sortByCompositeScore = (timeObj) => {
+        const newObj = {};
+
+        timeObj.shifts.forEach((each, eachIndex) => {
+            each["startTime"] = timeObj.startTime;
+            each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
+            each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
+            each["chronicLoadRatio"] = getChronicLoadRatio(each);
+            each["score"] = getCompositeScore(each);
+        });
+
+        timeObj.shifts.sort(function (a, b) {
+            return a.score - b.score;
+        });
+
+        const explanationArr = [];
+        explanationArr.push("Formula to get a composite score for each role:")
+        timeObj.shifts.forEach((each, eachIndex) => {
+            if (SCORE_NEW_ROLE[each.startTime].includes(each.name)) {
+                explanationArr.push("Role " + each.name + ": " + "( 180 - " + each.minutesWorkedFromStartTime + " ) / 180 = " + each.score);
+            } else {
+                explanationArr.push("Role " + each.name + ": " + "(0.3 * " + each.chronicLoadRatio + ") + (0.7 * ( 180 - " + each.minutesWorkedFromStartTime + " ) / 180) = " + each.score);
+            }
+        })
+        setExplanation(explanationArr);
+
+        const sortRoles = [];
+        timeObj.shifts.forEach((each, eachIndex) => {
+            sortRoles.push(each.name);
+        });
+
+        setSorted(sortRoles.join(", "));
+        setAdmissionsData(timeObj);
+
     }
 
     const sortByChronicLoadAndAcuteLoad = (timeObj) => {
@@ -48,7 +107,7 @@ export function App() {
         */
         const sortA = [];
         const sortB = [];
-        timeObj.shifts.map((a, aIndex) => {
+        timeObj.shifts.forEach((a, aIndex) => {
             if (getWorkedLast90Min(a.timestamp)) {
                 sortA.push(a);
             } else {
@@ -64,13 +123,13 @@ export function App() {
 
         const explanationArr = ["Step 1: Retrieve the roles have worked in the last 90 minutes: "];
 
-        sortA.map((s, sIndex) => {
+        sortA.forEach((s, sIndex) => {
             explanationArr.push((sIndex + 1) + ": " + s.name + ` (${getMinutesWorkedFromStartTime(s.timestamp)} min ago)`);
         });
 
         explanationArr.push("Step 2: Retrieve the roles have NOT worked in the last 90 minutes. Then sort by chronic load ratio. ");
 
-        sortB.map((s, sIndex) => {
+        sortB.forEach((s, sIndex) => {
             explanationArr.push((sIndex + 1) + ": " + s.name + ` (${getChronicLoadRatio(s)})`);
         });
 
@@ -78,17 +137,16 @@ export function App() {
 
         const finalSort = {};
         finalSort["startTime"] = timeObj.startTime;
-        finalSort["startTimeFormatted"] = timeObj.startTimeFormatted;
         finalSort["shifts"] = sortB.concat(sortA);
-        
-        finalSort.shifts.map((s, sIndex) => {
+
+        finalSort.shifts.forEach((s, sIndex) => {
             explanationArr.push((sIndex + 1) + ": " + s.name + ` (${getMinutesWorkedFromStartTime(s.timestamp)} min ago, ${getChronicLoadRatio(s)})`);
         });
 
         setExplanation(explanationArr);
         setAdmissionsData(finalSort);
         const sortRoles = [];
-        finalSort.shifts.map((each, eachIndex) => {
+        finalSort.shifts.forEach((each, eachIndex) => {
             sortRoles.push(each.name);
         })
         setSorted(sortRoles.join(", "));
@@ -105,7 +163,6 @@ export function App() {
         )
 
         newObj["startTime"] = admissionsData.startTime;
-        newObj["startTimeFormatted"] = admissionsData.startTimeFormatted;
         newObj["shifts"] = updatedShifts;
 
         setAdmissionsData(newObj);
@@ -115,23 +172,25 @@ export function App() {
         if (admission.isStatic) {
             return admission.chronicLoadRatio;
         } else {
-            const timeDifference = getNumberOfHoursWorked(admission.name, admission.timestamp);
+            const timeDifference = admission.numberOfHoursWorked;
             const chronicLoadRatio = (Number(admission.numberOfAdmissions) / (timeDifference)).toFixed(2);
 
             return chronicLoadRatio;
         }
     }
 
-    const getNumberOfHoursWorked = (name, timestamp) => {
+    const getNumberOfHoursWorked = (admission) => {
         let startTime = "";
         SHIFT_TYPES.forEach((shift, shiftIndex) => {
-            if (shift.type == name) {
+            if (shift.type === admission.name) {
                 startTime = shift.start;
             }
         });
 
-        const timeDifference = moment(admissionsData.startTime, 'HH:mm').diff(moment(startTime, 'HH:mm'), "hours", true).toFixed();
+        const now = admission.startTime;
+        const timeDifference = moment(now, 'HH:mm').diff(moment(startTime, 'HH:mm'), "hours", true).toFixed();
         return timeDifference;
+
     }
 
     const getWorkedLast90Min = (timestamp) => {
@@ -145,9 +204,9 @@ export function App() {
         }
     }
 
-    const getMinutesWorkedFromStartTime = (timestamp) => {
-        const now = moment(admissionsData.startTime, 'HH:mm');
-        const timeDifference = moment(now, 'HH:mm').diff(moment(timestamp, 'HH:mm'), "minutes", true).toFixed();
+    const getMinutesWorkedFromStartTime = (admission) => {
+        const now = moment(admission.startTime, 'HH:mm');
+        const timeDifference = moment(now, 'HH:mm').diff(moment(admission.timestamp, 'HH:mm'), "minutes", true).toFixed();
         return timeDifference;
     }
 
@@ -179,6 +238,18 @@ export function App() {
             </select>
         );
     }
+
+    const getDisplayName = (admission) => {
+        let displayStartTimeToEndTime = "";
+        SHIFT_TYPES.forEach((shift, shiftIndex) => {
+            if (shift.type === admission.name) {
+                displayStartTimeToEndTime = shift.displayStartTimeToEndTime;
+            }
+        });
+
+        return `${admission.name}: ${admission.displayStartTimeToEndTime}`;
+    }
+
     return (
         <div className="container">
             <h1 className="title">S.A.D. Queue</h1>
@@ -186,26 +257,35 @@ export function App() {
             {timesDropdown()}
             <Table>
                 <Thead>
-                    <Tr>
+                    {openTable ? <Tr>
                         <Th>Role</Th>
                         <Th>Number of Admissions</Th>
-                        <Th>Chronic Load Ratio</Th>
                         <Th>Last Admission Timestamp</Th>
-                    </Tr>
+                        <Th>Composite Score</Th>
+                        <Th> # Hours Worked</Th>
+                        <Th> # Minutes Worked</Th>
+                        <Th>Chronic Load Ratio</Th>
+                        
+                    </Tr> : 
+                    <Tr>
+                    <Th>Role</Th>
+                    <Th>Number of Admissions</Th>
+                    <Th>Last Admission Timestamp</Th>
+                    <Th>Composite Score</Th>
+                </Tr>}
                 </Thead>
                 <Tbody>
                     {admissionsData.shifts.map((admission) => (
-                        <Tr className={admission.isStatic ? "statictr" : ""} key={admission.admissionsId}>
-                            <Td className="grayinput">
+                        <Tr>
+                            <Td>
                                 <input
                                     name="name"
-                                    value={admission.displayName} 
+                                    value={admission.displayName}
                                     type="text"
-                                    onChange={(e) => onChange(e, admission.admissionsId)}
                                     disabled={true}
                                 />
                             </Td>
-                            <Td>
+                            <Td className="usercanedit">
                                 <input
                                     name="numberOfAdmissions"
                                     value={admission.numberOfAdmissions}
@@ -215,17 +295,7 @@ export function App() {
                                     disabled={admission.isStatic}
                                 />
                             </Td>
-                            <Td className="grayinput">
-                                <input
-                                    
-                                    name="chronicLoadRatio"
-                                    type="text"
-                                    value={getChronicLoadRatio(admission)}
-                                    onChange={(e) => onChange(e, admission.admissionsId)}
-                                    disabled={true}
-                                />
-                            </Td>
-                            <Td>
+                            <Td className="usercanedit">
                                 <input
                                     name="timestamp"
                                     value={admission.timestamp}
@@ -234,11 +304,50 @@ export function App() {
                                     disabled={admission.isStatic}
                                 />
                             </Td>
+                            <Td>
+                                <input
 
+                                    name="compositeScore"
+                                    type="text"
+                                    value={admission.score}
+                                    disabled={true}
+                                />
+                            </Td>
+                            {openTable && <Td>
+                                <input
+                                    name="numberHoursWorked"
+                                    value={admission.numberOfHoursWorked}
+                                    type="text"
+                                    placeholder="Enter number"
+                                    disabled={admission.isStatic}
+                                />
+                            </Td>}
+                            {openTable && <Td>
+                                <input
+                                    name="numberMinutesWorked"
+                                    value={admission.minutesWorkedFromStartTime}
+                                    type="text"
+                                    placeholder="Enter number"
+                                    disabled={admission.isStatic}
+                                />
+                            </Td>}
+                            {openTable && <Td>
+                                <input
+
+                                    name="chronicLoadRatio"
+                                    type="text"
+                                    value={admission.chronicLoadRatio}
+                                    disabled={true}
+                                />
+                            </Td>}
+                            
                         </Tr>
                     ))}
                 </Tbody>
             </Table>
+            <button className="seedetails" onClick={() => {
+                setOpenTable(!openTable);
+            }}>{openTable ? "Minimize" : "Maximize"}</button>
             <section style={{ textAlign: "center", margin: "30px" }}>
                 <button onClick={() => {
                     sortMain(admissionsData);

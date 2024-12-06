@@ -1,0 +1,46 @@
+[debug] [2024-12-05T00:02:56.781Z] ----------------------------------------------------------------------
+[debug] [2024-12-05T00:02:56.783Z] Command:       /Users/m0l01bz/.nvm/versions/node/v20.17.0/bin/node /Users/m0l01bz/.nvm/versions/node/v20.17.0/bin/firebase init
+[debug] [2024-12-05T00:02:56.784Z] CLI Version:   13.28.0
+[debug] [2024-12-05T00:02:56.784Z] Platform:      darwin
+[debug] [2024-12-05T00:02:56.784Z] Node Version:  v20.17.0
+[debug] [2024-12-05T00:02:56.784Z] Time:          Wed Dec 04 2024 16:02:56 GMT-0800 (Pacific Standard Time)
+[debug] [2024-12-05T00:02:56.784Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-12-05T00:02:56.789Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-05T00:02:56.789Z] > authorizing via signed-in user (marikaleelam@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/m0l01bz/Desktop/workspace/sadqueue.github.io
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-12-05T00:04:03.275Z] Checked if tokens are valid: true, expires at: 1733359386480
+[debug] [2024-12-05T00:04:03.276Z] Checked if tokens are valid: true, expires at: 1733359386480
+[debug] [2024-12-05T00:04:03.277Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-12-05T00:04:04.057Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-12-05T00:04:04.057Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project sad-queue (SAD Queue) 
+[info] 
+=== Hosting Setup
+[debug] [2024-12-05T00:04:06.968Z] Checked if tokens are valid: true, expires at: 1733359386480
+[debug] [2024-12-05T00:04:06.968Z] Checked if tokens are valid: true, expires at: 1733359386480
+[debug] [2024-12-05T00:04:06.968Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/sad-queue [none]
+[debug] [2024-12-05T00:04:07.220Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/sad-queue 200
+[debug] [2024-12-05T00:04:07.221Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/sad-queue {"projectId":"sad-queue","projectNumber":"89448854015","displayName":"SAD Queue","name":"projects/sad-queue","resources":{"hostingSite":"sad-queue"},"state":"ACTIVE","etag":"1_72e0e84e-54ff-4811-8bf1-2e7e96773708"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
