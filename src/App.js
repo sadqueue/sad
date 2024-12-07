@@ -65,8 +65,6 @@ export function App() {
     }
 
     const sortByCompositeScore = (timeObj) => {
-        const newObj = {};
-
         timeObj.shifts.forEach((each, eachIndex) => {
             each["startTime"] = timeObj.startTime;
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
@@ -259,23 +257,24 @@ export function App() {
                 <Thead>
                     {openTable ? <Tr>
                         <Th>Role</Th>
-                        <Th>Number of Admissions</Th>
-                        <Th>Last Admission Timestamp</Th>
-                        <Th>Composite Score</Th>
+                        <Th># of Admissions</Th>
+                        <Th>Last Admission Time</Th>
+                        <Th>Score</Th>
                         <Th> # Hours Worked</Th>
                         <Th> # Minutes Worked</Th>
                         <Th>Chronic Load Ratio</Th>
-                        
-                    </Tr> : 
-                    <Tr>
-                    <Th>Role</Th>
-                    <Th>Number of Admissions</Th>
-                    <Th>Last Admission Timestamp</Th>
-                    <Th>Composite Score</Th>
-                </Tr>}
+
+                    </Tr> :
+                        <Tr>
+                            <Th>Role</Th>
+                            <Th># of Admissions</Th>
+                            <Th>Last Admission Time</Th>
+                            <Th>Score</Th>
+                        </Tr>}
                 </Thead>
                 <Tbody>
                     {admissionsData.shifts.map((admission) => (
+                        !admission.isStatic &&
                         <Tr>
                             <Td>
                                 <input
@@ -340,14 +339,14 @@ export function App() {
                                     disabled={true}
                                 />
                             </Td>}
-                            
+
                         </Tr>
                     ))}
                 </Tbody>
             </Table>
             <button className="seedetails" onClick={() => {
                 setOpenTable(!openTable);
-            }}>{openTable ? "Minimize" : "Maximize"}</button>
+            }}>{openTable ? "(-)" : "(+)"}</button>
             <section style={{ textAlign: "center", margin: "30px" }}>
                 <button onClick={() => {
                     sortMain(admissionsData);
@@ -356,20 +355,23 @@ export function App() {
                 </button>
             </section>
             <fieldset>
-                <button
-                    onClick={(ev) => {
-                        navigator.clipboard.writeText(`Order of Admissions for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM: ${sorted}`);
-
-                    }}>Copy</button>
 
                 <h1>
-                    {`Order of Admissions for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM:`}
+                    {`Admissions Order for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM:`}
                 </h1>
                 <h1>{`${sorted}`}</h1>
                 <button className="seedetails" onClick={() => {
                     setSeeDetails(!seeDetails);
                 }
                 }>{seeDetails ? "(-)" : "(+)"}</button>
+                
+                <button 
+                    className="copybutton"
+                    onClick={(ev) => {
+                        navigator.clipboard.writeText(`Order of Admissions for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM: ${sorted}`);
+                        alert("Order of admissions is successfully copied to your clipboard.")
+                    }}>Copy</button>
+
             </fieldset>
             {seeDetails && <fieldset className="notes">
                 <h2>Explanation</h2>

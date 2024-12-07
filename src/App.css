@@ -4,7 +4,7 @@ body {
   box-sizing: border-box;
   color: #220f5f;
   font-family: 'Poppins', sans-serif;
-  margin-bottom: 100px;
+  margin-bottom: 20px;
 }
 
 .container {
@@ -13,19 +13,19 @@ body {
   max-width: 800px;
   padding: 0 10px;
   margin: 0 auto;
-  margin-top: 70px;
+  margin-top: 40px;
 }
 
 .title {
   text-align: center;
   font-size: 36px;
-  margin-bottom: 30px;
 }
 
 table tr.statictr {
 
   background-color: rgba(200, 200, 200);
 }
+
 td.grayinput {
 
   background-color: rgba(200, 200, 200, 0.2);
@@ -40,18 +40,17 @@ tr th, select {
   font-size: 18px;
   padding: 12px;
   border: 1px solid #eeeeee;
-  text-align: left;
+  text-align: center;
   background-color: rgba(217, 221, 146, 0.2);
 }
 
 tr td {
   border: 1px solid #eeeeee;
-  text-align: left;
+  text-align: center;
 }
 
 tr td.usercanedit {
   /* background-color: rgba(80, 63, 205, 0.1); */
-
   padding: 10px;
   outline: 1px solid black;
   outline-offset: -10px;
@@ -89,14 +88,20 @@ button {
   touch-action: manipulation;
 }
 
-button:hover {
-  box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
-  transition-duration: .1s;
-}
 
 button.seedetails {
   all: unset;
   float: right;
+}
+
+button.copybutton {
+  all: unset;
+  float: left;
+}
+
+button:hover {
+  box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+  transition-duration: .1s;
 }
 
 @media (min-width: 768px) {
@@ -107,12 +112,11 @@ button.seedetails {
 
 h1, h2 {
   text-align: center;
-  margin: 20px;
+  margin: 15px;
 }
 
 fieldset{
   background-color: rgba(217, 221, 146, 0.2);
-  padding-bottom: 20px;
 }
 
 .close {

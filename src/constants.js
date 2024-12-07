@@ -12,6 +12,24 @@ Scenario 7PM
 */
 export const THRESHOLD = 90;
 
+export const MAX_FIELDS = [
+    "Role", 
+    "# of Admissions", 
+    "Last Admission Time", 
+    "Score", 
+    "# Hours Worked", 
+    "# Minutes Worked", 
+    "Chronic Load Ratio",
+    "Score"
+];
+
+export const MIN_FIELDS = [
+    "Role", 
+    "# of Admissions", 
+    "Last Admission Time", 
+    "Score", 
+];
+
 export const SCORE_NEW_ROLE = {
     "16:00": [],
     "17:00": ["N5"],
