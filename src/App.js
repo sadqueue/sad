@@ -24,7 +24,7 @@ export function App() {
     const database = getDatabase(cong);
     
     // Reference to the specific collection in the database
-    const collectionRef = ref(database, "your_collection");
+    const collectionRef = ref(database, "Mydata");
 
     // Function to fetch data from the database
     const fetchData = () => {
