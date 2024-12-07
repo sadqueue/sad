@@ -7,7 +7,8 @@ import {
 } from './constants';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
-
+import cong from "./configuration"; // Assuming the correct path to your configuration file
+import { getDatabase, ref, onValue } from "firebase/database";
 
 export function App() {
     const [admissionsData, setAdmissionsData] = React.useState(FOURPM_DATA)
@@ -18,6 +19,30 @@ export function App() {
 
     React.useEffect(() => {
         sortMain(admissionsData);
+        
+        // Initialize the Firebase database with the provided configuration
+    const database = getDatabase(cong);
+    
+    // Reference to the specific collection in the database
+    const collectionRef = ref(database, "your_collection");
+
+    // Function to fetch data from the database
+    const fetchData = () => {
+      // Listen for changes in the collection
+      onValue(collectionRef, (snapshot) => {
+        const dataItem = snapshot.val();
+
+        // Check if dataItem exists
+        if (dataItem) {
+          // Convert the object values into an array
+          const displayItem = Object.values(dataItem);
+          setData(displayItem);
+        }
+      });
+    };
+
+    // Fetch data when the component mounts
+    fetchData();
     }, []);
 
     const sortMain = (timeObj) => {
@@ -253,6 +278,12 @@ export function App() {
             <h1 className="title">S.A.D. Queue</h1>
             <h2>Standardized Admissions Distribution</h2>
             {timesDropdown()}
+            <h1>Data from database:</h1>
+      <ul>
+        {data.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
             <Table>
                 <Thead>
                     {openTable ? <Tr>
