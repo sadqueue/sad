@@ -316,7 +316,7 @@ export function App() {
                 <tbody>
                     {admissionsData.shifts.map((admission) => (
                         !admission.isStatic &&
-                        <tr>
+                        <tr className={admissionsData.shifts[0].name == admission.name ? "firstup" : ""}>
                             <td>
                                 <input
                                     name="name"

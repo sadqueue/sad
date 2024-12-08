@@ -56,6 +56,10 @@ tr td.usercanedit {
   outline-offset: -10px;
 }
 
+tr.firstup {
+  background-color: rgba(255, 255, 157, 0.5);
+}
+
 input {
   font-size: 16px;
   background-color: transparent;
