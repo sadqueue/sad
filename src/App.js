@@ -15,34 +15,36 @@ export function App() {
     const [sorted, setSorted] = React.useState("");
     const [seeDetails, setSeeDetails] = React.useState(false);
     const [explanation, setExplanation] = React.useState("");
-    const [openTable, setOpenTable] = React.useState(false)
+    const [openTable, setOpenTable] = React.useState(false);
+    const [data, setData] = React.useState("")
+
 
     React.useEffect(() => {
         sortMain(admissionsData);
         
         // Initialize the Firebase database with the provided configuration
-    const database = getDatabase(cong);
+    // const database = getDatabase(cong);
     
-    // Reference to the specific collection in the database
-    const collectionRef = ref(database, "Mydata");
+    // // Reference to the specific collection in the database
+    // const collectionRef = ref(database, "database");
 
-    // Function to fetch data from the database
-    const fetchData = () => {
-      // Listen for changes in the collection
-      onValue(collectionRef, (snapshot) => {
-        const dataItem = snapshot.val();
+    // // Function to fetch data from the database
+    // const fetchData = () => {
+    //   // Listen for changes in the collection
+    //   onValue(collectionRef, (snapshot) => {
+    //     const dataItem = snapshot.val();
 
-        // Check if dataItem exists
-        if (dataItem) {
-          // Convert the object values into an array
-          const displayItem = Object.values(dataItem);
-          setData(displayItem);
-        }
-      });
-    };
+    //     // Check if dataItem exists
+    //     if (dataItem) {
+    //       // Convert the object values into an array
+    //       const displayItem = Object.values(dataItem);
+    //       setData(displayItem);
+    //     }
+    //   });
+    // };
 
-    // Fetch data when the component mounts
-    fetchData();
+    // // Fetch data when the component mounts
+    // fetchData();
     }, []);
 
     const sortMain = (timeObj) => {
@@ -279,11 +281,11 @@ export function App() {
             <h2>Standardized Admissions Distribution</h2>
             {timesDropdown()}
             <h1>Data from database:</h1>
-      <ul>
-        {data.map((item, index) => (
+      
+        {data && data.map((item, index) => (
           <li key={index}>{item}</li>
         ))}
-      </ul>
+  
             <Table>
                 <Thead>
                     {openTable ? <Tr>
