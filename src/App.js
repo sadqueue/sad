@@ -1,18 +1,14 @@
 import './App.css';
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import {
     SHIFT_TYPES, START_TIMES, THRESHOLD,
     FOURPM_DATA, FIVEPM_DATA, SEVENPM_DATA, SCORE_NEW_ROLE
 } from './constants';
-import { table, thead, tbody, tr, th, td } from 'react-super-responsive-table';
-// import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import copybutton from './images/copy.png' // relative path to image 
-
-
-import cong from "./configuration"; // Assuming the correct path to your configuration file
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getDatabase, ref, set, onValue } from "firebase/database";
+
 
 export function App() {
     const [admissionsData, setAdmissionsData] = React.useState(FOURPM_DATA)
@@ -33,20 +29,20 @@ export function App() {
             messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
             appId: process.env.REACT_APP_FIREBASE_APP_ID,
             measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
-        
+
         };
         const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-        
+
         function writeUserData(userId, name, email, imageUrl) {
             const db = getDatabase(app);
             set(ref(db, 'users/' + userId), {
-              username: name,
-              email: email,
-              profile_picture : imageUrl
+                username: name,
+                email: email,
+                profile_picture: imageUrl
             });
-          }
+        }
 
-          writeUserData("mm", "marika", "m@gmail.com", "url")
+        writeUserData("mm", "marika", "m@gmail.com", "url")
 
     }, []);
 
@@ -87,7 +83,7 @@ export function App() {
             const partB = 180 - admission.minutesWorkedFromStartTime;
             const partC = partB / 180;
 
-            const partD = partC * (1-Number(weight));
+            const partD = partC * (1 - Number(weight));
             const compositeScore = partA + partD;
             score = Number(compositeScore.toFixed(3));
         }
@@ -113,7 +109,7 @@ export function App() {
             if (SCORE_NEW_ROLE[each.startTime].includes(each.name)) {
                 explanationArr.push("Role " + each.name + ": " + "( 180 - " + each.minutesWorkedFromStartTime + " ) / 180 = " + each.score);
             } else {
-                explanationArr.push("Role " + each.name + ": " + "(" + weight + " * " + each.chronicLoadRatio + ") + (" + (1-weight).toFixed(2) + " * ( 180 - " + each.minutesWorkedFromStartTime + " ) / 180) = " + each.score);
+                explanationArr.push("Role " + each.name + ": " + "(" + weight + " * " + each.chronicLoadRatio + ") + (" + (1 - weight).toFixed(2) + " * ( 180 - " + each.minutesWorkedFromStartTime + " ) / 180) = " + each.score);
             }
         })
         setExplanation(explanationArr);
@@ -267,56 +263,98 @@ export function App() {
         );
     }
 
-    const getDisplayName = (admission) => {
-        let displayStartTimeToEndTime = "";
-        SHIFT_TYPES.forEach((shift, shiftIndex) => {
-            if (shift.type === admission.name) {
-                displayStartTimeToEndTime = shift.displayStartTimeToEndTime;
-            }
-        });
+    const [sortConfig, setSortConfig] = useState({
+        key: 'name',
+        direction: 'ascending',
+    });
 
-        return `${admission.name}: ${admission.displayStartTimeToEndTime}`;
-    }
+    const [sortedTableToDisplay, setSortedTableToDisplay] = useState(admissionsData.shifts);
+
+    const sortedData = [...admissionsData.shifts].sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+    });
+
+    const handleSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+        setSortedTableToDisplay(sortedData);
+    };
 
     return (
         <div className="container">
             <h1 className="title">S.A.D. Queue</h1>
             <h2>Standardized Admissions Distribution</h2>
             {timesDropdown()}
-            <input  
-                    className="weight"
-                    name="weight"
-                    type="number"
-                    step=".1"
-                    value={weight}
-                    onChange={(ev) => {
-                        setWeight(ev.target.value);
-                    }}
-                    placeholder={"Set weight"}
-                />
+            <input
+                className="weight"
+                name="weight"
+                type="number"
+                step=".1"
+                value={weight}
+                onChange={(ev) => {
+                    setWeight(ev.target.value);
+                }}
+                placeholder={"Set weight"}
+            />
             <table>
                 <thead>
                     {openTable ? <tr>
-                        <th>Role</th>
-                        <th># of Admissions</th>
-                        <th>Last Admission Time</th>
-                        <th>Score</th>
-                        <th> # Hours Worked</th>
-                        <th> # Minutes Worked</th>
-                        <th>Chronic Load Ratio</th>
 
+                        <th onClick={() => handleSort('name')}>
+                                Role {sortConfig.key === 'name' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
+                            <th onClick={() => handleSort('numberOfAdmissions')}>
+                                # of Admission {sortConfig.key === 'numberOfAdmissions' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
+                            <th onClick={() => handleSort('timestamp')}>
+                                Last Admission Time {sortConfig.key === 'timestamp' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
+                            <th onClick={() => handleSort('compositeScore')}>
+                                Score {sortConfig.key === 'compositeScore' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
+
+
+                            <th onClick={() => handleSort('numberHoursWorked')}>
+                            # Hours Worked {sortConfig.key === 'numberHoursWorked' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
+                            <th onClick={() => handleSort('numberMinutesWorked')}>
+                            # Minutes Worked {sortConfig.key === 'numberMinutesWorked' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
+                            <th onClick={() => handleSort('chronicLoadRatio')}>
+                            Chronic Load Ratio{sortConfig.key === 'chronicLoadRatio' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
+                       
                     </tr> :
                         <tr>
-                            <th>Role</th>
-                            <th># of Admissions</th>
-                            <th>Last Admission Time</th>
-                            <th>Score</th>
+                            <th onClick={() => handleSort('name')}>
+                                Role {sortConfig.key === 'name' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
+                            <th onClick={() => handleSort('numberOfAdmissions')}>
+                                # of Admission {sortConfig.key === 'numberOfAdmissions' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
+                            <th onClick={() => handleSort('timestamp')}>
+                                Last Admission Time {sortConfig.key === 'timestamp' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
+                            <th onClick={() => handleSort('compositeScore')}>
+                                Score {sortConfig.key === 'compositeScore' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                            </th>
                         </tr>}
                 </thead>
                 <tbody>
-                    {admissionsData.shifts.map((admission) => (
+                    {sortedTableToDisplay.map((admission) => (
                         !admission.isStatic &&
-                        <tr className={admissionsData.shifts[0].name == admission.name ? "firstup" : ""}>
+                        <tr
+                            className={admissionsData.shifts[0].name == admission.name ? "firstup" : ""}
+                            key={admission.admissionsId}>
                             <td>
                                 <input
                                     name="name"
@@ -391,10 +429,11 @@ export function App() {
             <section style={{ textAlign: "center", margin: "30px" }}>
                 <button onClick={() => {
                     sortMain(admissionsData);
+                    setSortedTableToDisplay(admissionsData.shifts);
                 }}>
                     Generate Queue
-                </button> 
-            </section> 
+                </button>
+            </section>
             <fieldset>
                 <img
                     className="copybutton"
@@ -402,7 +441,7 @@ export function App() {
                     onClick={(ev) => {
                         navigator.clipboard.writeText(`Order of Admissions for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM: ${sorted}`);
                         alert("Order of admissions is successfully copied to your clipboard.")
-                    }}/>
+                    }} />
 
                 <button className="seedetails" onClick={() => {
                     setSeeDetails(!seeDetails);
