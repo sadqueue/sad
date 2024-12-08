@@ -5,25 +5,26 @@ import {
     SHIFT_TYPES, START_TIMES, THRESHOLD,
     FOURPM_DATA, FIVEPM_DATA, SEVENPM_DATA, SCORE_NEW_ROLE
 } from './constants';
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
-import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
-import cong from "./configuration"; // Assuming the correct path to your configuration file
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { table, thead, tbody, tr, th, td } from 'react-super-responsive-table';
+// import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import copybutton from './images/copy.png' // relative path to image 
+
+
+import cong from "./configuration"; // Assuming the correct path to your configuration file
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { getDatabase, ref, set, onValue } from "firebase/database";
+
 export function App() {
     const [admissionsData, setAdmissionsData] = React.useState(FOURPM_DATA)
     const [sorted, setSorted] = React.useState("");
     const [seeDetails, setSeeDetails] = React.useState(false);
     const [explanation, setExplanation] = React.useState("");
     const [openTable, setOpenTable] = React.useState(false);
-    const [data, setData] = React.useState("")
-
+    const [weight, setWeight] = React.useState(0.3)
 
     React.useEffect(() => {
         sortMain(admissionsData);
-        
+
         const firebaseConfig = {
             apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
             authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -32,27 +33,20 @@ export function App() {
             messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
             appId: process.env.REACT_APP_FIREBASE_APP_ID,
             measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
-
+        
         };
-        // const app = initializeApp(firebaseConfig);
-        // function writeUserData(userId, name, email, imageUrl) {
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+        
+        function writeUserData(userId, name, email, imageUrl) {
+            const db = getDatabase(app);
+            set(ref(db, 'users/' + userId), {
+              username: name,
+              email: email,
+              profile_picture : imageUrl
+            });
+          }
 
-        //     set(ref(db, 'users/' + userId), {
-        //         username: name,
-        //         email: email,
-        //         profile_picture: imageUrl
-        //     });
-        // }
-
-        // const starCountRef = ref(db, 'users/alovelace');
-        // onValue(starCountRef, (snapshot) => {
-        //     const data = snapshot.val();
-        //     console.log(data);
-            //   updateStarCount(postElement, data);
-        // });
-
-        // writeUserData("alovelace", "bb", "cc", "dd");
-
+          writeUserData("mm", "marika", "m@gmail.com", "url")
 
     }, []);
 
@@ -89,11 +83,11 @@ export function App() {
 
             score = partC.toFixed(3);
         } else {
-            const partA = 0.3 * admission.chronicLoadRatio;
+            const partA = Number(weight) * admission.chronicLoadRatio;
             const partB = 180 - admission.minutesWorkedFromStartTime;
             const partC = partB / 180;
 
-            const partD = partC * 0.7;
+            const partD = partC * (1-Number(weight));
             const compositeScore = partA + partD;
             score = Number(compositeScore.toFixed(3));
         }
@@ -119,7 +113,7 @@ export function App() {
             if (SCORE_NEW_ROLE[each.startTime].includes(each.name)) {
                 explanationArr.push("Role " + each.name + ": " + "( 180 - " + each.minutesWorkedFromStartTime + " ) / 180 = " + each.score);
             } else {
-                explanationArr.push("Role " + each.name + ": " + "(0.3 * " + each.chronicLoadRatio + ") + (0.7 * ( 180 - " + each.minutesWorkedFromStartTime + " ) / 180) = " + each.score);
+                explanationArr.push("Role " + each.name + ": " + "(" + weight + " * " + each.chronicLoadRatio + ") + (" + (1-weight).toFixed(2) + " * ( 180 - " + each.minutesWorkedFromStartTime + " ) / 180) = " + each.score);
             }
         })
         setExplanation(explanationArr);
@@ -289,48 +283,59 @@ export function App() {
             <h1 className="title">S.A.D. Queue</h1>
             <h2>Standardized Admissions Distribution</h2>
             {timesDropdown()}
-            <Table>
-                <Thead>
-                    {openTable ? <Tr>
-                        <Th>Role</Th>
-                        <Th># of Admissions</Th>
-                        <Th>Last Admission Time</Th>
-                        <Th>Score</Th>
-                        <Th> # Hours Worked</Th>
-                        <Th> # Minutes Worked</Th>
-                        <Th>Chronic Load Ratio</Th>
+            <input  
+                    className="weight"
+                    name="weight"
+                    type="number"
+                    step=".1"
+                    value={weight}
+                    onChange={(ev) => {
+                        setWeight(ev.target.value);
+                    }}
+                    placeholder={"Set weight"}
+                />
+            <table>
+                <thead>
+                    {openTable ? <tr>
+                        <th>Role</th>
+                        <th># of Admissions</th>
+                        <th>Last Admission Time</th>
+                        <th>Score</th>
+                        <th> # Hours Worked</th>
+                        <th> # Minutes Worked</th>
+                        <th>Chronic Load Ratio</th>
 
-                    </Tr> :
-                        <Tr>
-                            <Th>Role</Th>
-                            <Th># of Admissions</Th>
-                            <Th>Last Admission Time</Th>
-                            <Th>Score</Th>
-                        </Tr>}
-                </Thead>
-                <Tbody>
+                    </tr> :
+                        <tr>
+                            <th>Role</th>
+                            <th># of Admissions</th>
+                            <th>Last Admission Time</th>
+                            <th>Score</th>
+                        </tr>}
+                </thead>
+                <tbody>
                     {admissionsData.shifts.map((admission) => (
                         !admission.isStatic &&
-                        <Tr>
-                            <Td>
+                        <tr>
+                            <td>
                                 <input
                                     name="name"
                                     value={admission.displayName}
                                     type="text"
                                     disabled={true}
                                 />
-                            </Td>
-                            <Td className="usercanedit">
+                            </td>
+                            <td className="usercanedit">
                                 <input
                                     name="numberOfAdmissions"
                                     value={admission.numberOfAdmissions}
-                                    type="text"
+                                    type="number"
                                     onChange={(e) => onChange(e, admission.admissionsId)}
                                     placeholder="Enter number"
                                     disabled={admission.isStatic}
                                 />
-                            </Td>
-                            <Td className="usercanedit">
+                            </td>
+                            <td className="usercanedit">
                                 <input
                                     name="timestamp"
                                     value={admission.timestamp}
@@ -338,8 +343,8 @@ export function App() {
                                     onChange={(e) => onChange(e, admission.admissionsId)}
                                     disabled={admission.isStatic}
                                 />
-                            </Td>
-                            <Td>
+                            </td>
+                            <td>
                                 <input
 
                                     name="compositeScore"
@@ -347,26 +352,26 @@ export function App() {
                                     value={admission.score}
                                     disabled={true}
                                 />
-                            </Td>
-                            {openTable && <Td>
+                            </td>
+                            {openTable && <td>
                                 <input
                                     name="numberHoursWorked"
                                     value={admission.numberOfHoursWorked}
-                                    type="text"
+                                    type="number"
                                     placeholder="Enter number"
                                     disabled={admission.isStatic}
                                 />
-                            </Td>}
-                            {openTable && <Td>
+                            </td>}
+                            {openTable && <td>
                                 <input
                                     name="numberMinutesWorked"
                                     value={admission.minutesWorkedFromStartTime}
-                                    type="text"
+                                    type="number"
                                     placeholder="Enter number"
                                     disabled={admission.isStatic}
                                 />
-                            </Td>}
-                            {openTable && <Td>
+                            </td>}
+                            {openTable && <td>
                                 <input
 
                                     name="chronicLoadRatio"
@@ -374,12 +379,12 @@ export function App() {
                                     value={admission.chronicLoadRatio}
                                     disabled={true}
                                 />
-                            </Td>}
+                            </td>}
 
-                        </Tr>
+                        </tr>
                     ))}
-                </Tbody>
-            </Table>
+                </tbody>
+            </table>
             <button className="seedetails" onClick={() => {
                 setOpenTable(!openTable);
             }}>{openTable ? "(-)" : "(+)"}</button>
@@ -388,7 +393,7 @@ export function App() {
                     sortMain(admissionsData);
                 }}>
                     Generate Queue
-                </button>
+                </button> 
             </section> 
             <fieldset>
                 <img
