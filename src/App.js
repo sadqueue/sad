@@ -11,7 +11,7 @@ import cong from "./configuration"; // Assuming the correct path to your configu
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 import { getDatabase, ref, set, onValue } from "firebase/database";
-
+import copybutton from './images/copy.png' // relative path to image 
 export function App() {
     const [admissionsData, setAdmissionsData] = React.useState(FOURPM_DATA)
     const [sorted, setSorted] = React.useState("");
@@ -289,12 +289,6 @@ export function App() {
             <h1 className="title">S.A.D. Queue</h1>
             <h2>Standardized Admissions Distribution</h2>
             {timesDropdown()}
-            <h1>Data from database:</h1>
-
-            {data && data.map((item, index) => (
-                <li key={index}>{item}</li>
-            ))}
-
             <Table>
                 <Thead>
                     {openTable ? <Tr>
@@ -395,19 +389,15 @@ export function App() {
                 }}>
                     Generate Queue
                 </button>
-            </section>
+            </section> 
             <fieldset>
-
-            <div class="img__wrap">
-  <img class="img__img" src="https://github.com/sadqueue/sad/tree/main/src/images/copy.png" />
-  <p class="img__description">This image looks super neat.</p>
-</div>
-                {/* <button
+                <img
                     className="copybutton"
+                    src={copybutton}
                     onClick={(ev) => {
                         navigator.clipboard.writeText(`Order of Admissions for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM: ${sorted}`);
                         alert("Order of admissions is successfully copied to your clipboard.")
-                    }}>Copy</button> */}
+                    }}/>
 
                 <button className="seedetails" onClick={() => {
                     setSeeDetails(!seeDetails);
