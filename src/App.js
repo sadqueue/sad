@@ -8,7 +8,9 @@ import {
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import cong from "./configuration"; // Assuming the correct path to your configuration file
-import { getDatabase, ref, onValue } from "firebase/database";
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { getDatabase, ref, set, onValue } from "firebase/database";
 
 export function App() {
     const [admissionsData, setAdmissionsData] = React.useState(FOURPM_DATA)
@@ -22,29 +24,36 @@ export function App() {
     React.useEffect(() => {
         sortMain(admissionsData);
         
-        // Initialize the Firebase database with the provided configuration
-    // const database = getDatabase(cong);
-    
-    // // Reference to the specific collection in the database
-    // const collectionRef = ref(database, "database");
+        const firebaseConfig = {
+            apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+            authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+            projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+            storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+            appId: process.env.REACT_APP_FIREBASE_APP_ID,
+            measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 
-    // // Function to fetch data from the database
-    // const fetchData = () => {
-    //   // Listen for changes in the collection
-    //   onValue(collectionRef, (snapshot) => {
-    //     const dataItem = snapshot.val();
+        };
+        // const app = initializeApp(firebaseConfig);
+        // function writeUserData(userId, name, email, imageUrl) {
 
-    //     // Check if dataItem exists
-    //     if (dataItem) {
-    //       // Convert the object values into an array
-    //       const displayItem = Object.values(dataItem);
-    //       setData(displayItem);
-    //     }
-    //   });
-    // };
+        //     set(ref(db, 'users/' + userId), {
+        //         username: name,
+        //         email: email,
+        //         profile_picture: imageUrl
+        //     });
+        // }
 
-    // // Fetch data when the component mounts
-    // fetchData();
+        // const starCountRef = ref(db, 'users/alovelace');
+        // onValue(starCountRef, (snapshot) => {
+        //     const data = snapshot.val();
+        //     console.log(data);
+            //   updateStarCount(postElement, data);
+        // });
+
+        // writeUserData("alovelace", "bb", "cc", "dd");
+
+
     }, []);
 
     const sortMain = (timeObj) => {
@@ -281,11 +290,11 @@ export function App() {
             <h2>Standardized Admissions Distribution</h2>
             {timesDropdown()}
             <h1>Data from database:</h1>
-      
-        {data && data.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-  
+
+            {data && data.map((item, index) => (
+                <li key={index}>{item}</li>
+            ))}
+
             <Table>
                 <Thead>
                     {openTable ? <Tr>
@@ -389,21 +398,26 @@ export function App() {
             </section>
             <fieldset>
 
-                <h1>
-                    {`Admissions Order for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM:`}
-                </h1>
-                <h1>{`${sorted}`}</h1>
-                <button className="seedetails" onClick={() => {
-                    setSeeDetails(!seeDetails);
-                }
-                }>{seeDetails ? "(-)" : "(+)"}</button>
-                
-                <button 
+            <div class="img__wrap">
+  <img class="img__img" src="https://github.com/sadqueue/sad/tree/main/src/images/copy.png" />
+  <p class="img__description">This image looks super neat.</p>
+</div>
+                {/* <button
                     className="copybutton"
                     onClick={(ev) => {
                         navigator.clipboard.writeText(`Order of Admissions for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM: ${sorted}`);
                         alert("Order of admissions is successfully copied to your clipboard.")
-                    }}>Copy</button>
+                    }}>Copy</button> */}
+
+                <button className="seedetails" onClick={() => {
+                    setSeeDetails(!seeDetails);
+                }
+                }>{seeDetails ? "(-)" : "(+)"}</button>
+
+                <h1>
+                    {`Admissions Order for ${moment(admissionsData.startTime, 'HH:mm').format('h')}PM:`}
+                </h1>
+                <h1>{`${sorted}`}</h1>
 
             </fieldset>
             {seeDetails && <fieldset className="notes">
