@@ -32,18 +32,6 @@ export function App() {
 
         };
         const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-
-        function writeUserData(userId, name, email, imageUrl) {
-            const db = getDatabase(app);
-            set(ref(db, 'users/' + userId), {
-                username: name,
-                email: email,
-                profile_picture: imageUrl
-            });
-        }
-
-        writeUserData("mm", "marika", "m@gmail.com", "url")
-
     }, []);
 
     const sortMain = (timeObj) => {
@@ -51,24 +39,8 @@ export function App() {
         if (timeObj.startTime === "16:00" || timeObj.startTime === "19:00") {
             return sortByCompositeScore(timeObj);
         } else {
-            // return sortByChronicLoadAndAcuteLoad(timeObj);
             return sortByCompositeScore(timeObj);
         }
-    }
-
-    const sortByTimeStamp = (timeObj) => {
-
-        timeObj.shifts.sort(function (a, b) {
-            return a.timestamp.localeCompare(b.timestamp);
-        });
-        const sortRoles = [];
-        timeObj.shifts.forEach((each, eachIndex) => {
-            sortRoles.push(each.name);
-        });
-
-        setExplanation(["For 4PM, sort by last admission timestamp."])
-        setAdmissionsData(timeObj);
-        setSorted(sortRoles.join(", "));
     }
 
     const getCompositeScore = (admission) => {
@@ -109,7 +81,7 @@ export function App() {
             if (SCORE_NEW_ROLE[each.startTime].includes(each.name)) {
                 explanationArr.push("Role " + each.name + ": " + "( 180 - " + each.minutesWorkedFromStartTime + " ) / 180 = " + each.score);
             } else {
-                explanationArr.push("Role " + each.name + ": " + "(" + weight + " * " + each.chronicLoadRatio + ") + (" + (1 - weight).toFixed(2) + " * ( 180 - " + each.minutesWorkedFromStartTime + " ) / 180) = " + each.score);
+                explanationArr.push("Role " + each.name + ": " + "(" + weight + " * " + each.chronicLoadRatio + ") + (" + (1 - weight).toFixed(3) + " * ( 180 - " + each.minutesWorkedFromStartTime + " ) / 180) = " + each.score);
             }
         })
         setExplanation(explanationArr);
@@ -122,59 +94,6 @@ export function App() {
         setSorted(sortRoles.join(", "));
         setAdmissionsData(timeObj);
 
-    }
-
-    const sortByChronicLoadAndAcuteLoad = (timeObj) => {
-        /*
-        Step 1: Sort by acute load (if the person worked within 90 minutes)
-        Step 2: Sort the rest by chronic load ratio 
-        */
-        const sortA = [];
-        const sortB = [];
-        timeObj.shifts.forEach((a, aIndex) => {
-            if (getWorkedLast90Min(a.timestamp)) {
-                sortA.push(a);
-            } else {
-                sortB.push(a);
-            }
-        });
-
-        sortB.sort(function (a, b) {
-            const loadA = getChronicLoadRatio(a);
-            const loadB = getChronicLoadRatio(b);
-            return loadA - loadB;
-        });
-
-        const explanationArr = ["Step 1: Retrieve the roles have worked in the last 90 minutes: "];
-
-        sortA.forEach((s, sIndex) => {
-            explanationArr.push((sIndex + 1) + ": " + s.name + ` (${getMinutesWorkedFromStartTime(s.timestamp)} min ago)`);
-        });
-
-        explanationArr.push("Step 2: Retrieve the roles have NOT worked in the last 90 minutes. Then sort by chronic load ratio. ");
-
-        sortB.forEach((s, sIndex) => {
-            explanationArr.push((sIndex + 1) + ": " + s.name + ` (${getChronicLoadRatio(s)})`);
-        });
-
-        explanationArr.push("Step 3: Combine 'Step 2' queue with 'Step 1' queue. ");
-
-        const finalSort = {};
-        finalSort["startTime"] = timeObj.startTime;
-        finalSort["shifts"] = sortB.concat(sortA);
-
-        finalSort.shifts.forEach((s, sIndex) => {
-            explanationArr.push((sIndex + 1) + ": " + s.name + ` (${getMinutesWorkedFromStartTime(s.timestamp)} min ago, ${getChronicLoadRatio(s)})`);
-        });
-
-        setExplanation(explanationArr);
-        setAdmissionsData(finalSort);
-        const sortRoles = [];
-        finalSort.shifts.forEach((each, eachIndex) => {
-            sortRoles.push(each.name);
-        })
-        setSorted(sortRoles.join(", "));
-        // return sortRoles.join(", ");
     }
 
     const onChange = (e, admissionsId) => {
@@ -190,6 +109,7 @@ export function App() {
         newObj["shifts"] = updatedShifts;
 
         setAdmissionsData(newObj);
+        setSortedTableToDisplay(newObj.shifts);
     }
 
     const getChronicLoadRatio = (admission) => {
@@ -215,17 +135,6 @@ export function App() {
         const timeDifference = moment(now, 'HH:mm').diff(moment(startTime, 'HH:mm'), "hours", true).toFixed();
         return timeDifference;
 
-    }
-
-    const getWorkedLast90Min = (timestamp) => {
-        const now = moment(admissionsData.startTime, 'HH:mm');
-        const timeDifference = moment(now, 'HH:mm').diff(moment(timestamp, 'HH:mm'), "minutes", true).toFixed();
-
-        if (Number(timeDifference) < THRESHOLD) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     const getMinutesWorkedFromStartTime = (admission) => {
@@ -294,45 +203,32 @@ export function App() {
             <h1 className="title">S.A.D. Queue</h1>
             <h2>Standardized Admissions Distribution</h2>
             {timesDropdown()}
-            <input
-                className="weight"
-                name="weight"
-                type="number"
-                step=".1"
-                value={weight}
-                onChange={(ev) => {
-                    setWeight(ev.target.value);
-                }}
-                placeholder={"Set weight"}
-            />
             <table>
                 <thead>
                     {openTable ? <tr>
 
                         <th onClick={() => handleSort('name')}>
-                                Role {sortConfig.key === 'name' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
-                            </th>
-                            <th onClick={() => handleSort('numberOfAdmissions')}>
-                                # of Admission {sortConfig.key === 'numberOfAdmissions' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
-                            </th>
-                            <th onClick={() => handleSort('timestamp')}>
-                                Last Admission Time {sortConfig.key === 'timestamp' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
-                            </th>
-                            <th onClick={() => handleSort('compositeScore')}>
-                                Score {sortConfig.key === 'compositeScore' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
-                            </th>
-
-
-                            <th onClick={() => handleSort('numberHoursWorked')}>
+                            Role {sortConfig.key === 'name' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                        </th>
+                        <th onClick={() => handleSort('numberOfAdmissions')}>
+                            # of Admission {sortConfig.key === 'numberOfAdmissions' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                        </th>
+                        <th onClick={() => handleSort('timestamp')}>
+                            Last Admission Time {sortConfig.key === 'timestamp' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                        </th>
+                        <th onClick={() => handleSort('compositeScore')}>
+                            Score {sortConfig.key === 'compositeScore' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
+                        </th>
+                        <th onClick={() => handleSort('numberHoursWorked')}>
                             # Hours Worked {sortConfig.key === 'numberHoursWorked' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
-                            </th>
-                            <th onClick={() => handleSort('numberMinutesWorked')}>
+                        </th>
+                        <th onClick={() => handleSort('numberMinutesWorked')}>
                             # Minutes Worked {sortConfig.key === 'numberMinutesWorked' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
-                            </th>
-                            <th onClick={() => handleSort('chronicLoadRatio')}>
+                        </th>
+                        <th onClick={() => handleSort('chronicLoadRatio')}>
                             Chronic Load Ratio{sortConfig.key === 'chronicLoadRatio' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
-                            </th>
-                       
+                        </th>
+
                     </tr> :
                         <tr>
                             <th onClick={() => handleSort('name')}>
@@ -343,9 +239,6 @@ export function App() {
                             </th>
                             <th onClick={() => handleSort('timestamp')}>
                                 Last Admission Time {sortConfig.key === 'timestamp' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
-                            </th>
-                            <th onClick={() => handleSort('compositeScore')}>
-                                Score {sortConfig.key === 'compositeScore' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '↑'}
                             </th>
                         </tr>}
                 </thead>
@@ -367,6 +260,7 @@ export function App() {
                                 <input
                                     name="numberOfAdmissions"
                                     value={admission.numberOfAdmissions}
+                                    step="1"
                                     type="number"
                                     onChange={(e) => onChange(e, admission.admissionsId)}
                                     placeholder="Enter number"
@@ -382,7 +276,7 @@ export function App() {
                                     disabled={admission.isStatic}
                                 />
                             </td>
-                            <td>
+                            {openTable && <td>
                                 <input
 
                                     name="compositeScore"
@@ -390,7 +284,7 @@ export function App() {
                                     value={admission.score}
                                     disabled={true}
                                 />
-                            </td>
+                            </td>}
                             {openTable && <td>
                                 <input
                                     name="numberHoursWorked"
@@ -461,6 +355,17 @@ export function App() {
                     return <p>{line}</p>
                 })}
             </fieldset>}
+            <input
+                className="weight"
+                name="weight"
+                type="number"
+                step=".1"
+                value={weight}
+                onChange={(ev) => {
+                    setWeight(ev.target.value);
+                }}
+                placeholder={"Set weight"}
+            />
         </div>
     )
 
