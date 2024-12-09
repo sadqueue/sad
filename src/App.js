@@ -419,10 +419,10 @@ export function App() {
                 }
                 }>{seeDetails ? "(-)" : "(+)"}</button>
 
-                <h1>
-                    {admissionsData.startTime ? `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}:` : `Please select a time`}
+                <h1 className="title">
+                    {admissionsData.startTime ? `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}:` : `Select a time. No roles in the queue.`}
                 </h1>
-                <h1>{sorted ? `${sorted}` : `No roles in the queue.`}</h1>
+                <h1 className="title">{sorted}</h1>
 
             </fieldset>
             {seeDetails && <fieldset className="notes">
@@ -432,7 +432,7 @@ export function App() {
                     return <p>{line}</p>
                 })}
             </fieldset>}
-            {STATIC_TIMES.includes(admissionsData.startTime) && <input
+            {/* {STATIC_TIMES.includes(admissionsData.startTime) && <input
                 className="weight"
                 name="weight"
                 type="number"
@@ -442,7 +442,7 @@ export function App() {
                     setWeight(ev.target.value);
                 }}
                 placeholder={"Set weight"}
-            />}
+            />} */}
         </div>
     )
 
