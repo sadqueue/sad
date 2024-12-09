@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://sadqueue.github.io/sad",
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@mui/material": "^6.1.10",
@@ -12,6 +13,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "emailjs-com": "^3.2.0",
     "firebase": "^11.0.2",
     "material-react-table": "^3.0.1",
     "moment": "^2.30.1",

@@ -71,6 +71,11 @@ input {
   text-align: center;
 }
 
+input.customtime {
+  float: right;
+  width: 120px;
+}
+
 .weight {
   width: 50px;
   padding: 10px;
