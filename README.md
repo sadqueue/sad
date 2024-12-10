@@ -2,11 +2,17 @@
 <p align="center"><img width="244" alt="Screenshot 2024-12-10 at 1 09 14 PM" src="https://github.com/user-attachments/assets/1ea87648-9a46-48fe-a720-338a2c429fd0"></p>
 
 <h1 align="center">S.A.D. Queue (Standardized Admissions Distribution)</h1>
-  
-<h2>Purpose</h2>
+
+# Table of Contents
+1. [Purpose](#purpose)
+2. [Example Screenshots](#examplescreenshots)
+3. [Formula Used](#formulaused)
+4. [How to Run](#howtorun)
+
+<h1>Purpose</h1><a name="purpose"></a>
 Purpose of this UI tool is for hospitalists to generate the order of admissions at a certain timestamp. User can click the dropdown and select a timestamp. The options are 4PM, 5PM, 7PM or a custom time the user can select.
 
-<h2>Example Screenshots</h2>
+<h2>Example Screenshots</h2><a name="examplescreenshots"></a>
 
 <h3>Scenario 1: 4:00PM Scenario</h3>
 <p><img width="100%" alt="Screenshot 2024-12-10 at 12 50 14 PM" src="https://github.com/user-attachments/assets/e38e97eb-e736-4c4c-b1d7-092fd7e95383"></p>
@@ -24,7 +30,7 @@ Purpose of this UI tool is for hospitalists to generate the order of admissions 
 The app has an expand table functionality where the user can see more column details. Click the "Expand" button on the bottom right of the table.
 <p><img width="100%" alt="Screenshot 2024-12-10 at 2 03 22 PM" src="https://github.com/user-attachments/assets/6734cf67-d444-4f98-b14f-bc48bf085bbb"></p>
 
-<h2>Formula Used</h2>
+<h2>Formula Used</h2><a name="formulaused"></a>
 The logic behind the formula used the [following object](https://github.com/sadqueue/sad/blob/main/src/constants.js?plain=1#L22-L26).
 
 ```
@@ -62,7 +68,7 @@ if (SCORE_NEW_ROLE[each.startTime] && SCORE_NEW_ROLE[each.startTime].includes(ea
 For more details on the UI, click "Expand" button to see the formula used for each role.            
 <p><img width="100%" alt="Screenshot 2024-12-10 at 12 53 29 PM" src="https://github.com/user-attachments/assets/74f9c7f4-75fb-453d-bfe5-0e2ce874253b"></p>
 
-<h2>Steps to Run</h2>
+<h2>How to Run</h2><a name="howtorun"></a>
 <h3>Node version</h3>
 v14.21.3
 
