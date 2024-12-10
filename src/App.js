@@ -447,7 +447,7 @@ export function App() {
                     return <p>{line}</p>
                 })}
             </fieldset>}
-            <input
+            {seeDetails && <input
                 className="weight"
                 name="weight"
                 type="number"
@@ -457,7 +457,7 @@ export function App() {
                     setWeight(ev.target.value);
                 }}
                 placeholder={"Set weight"}
-            />
+            />}
             <div className="footer">
                 <img
                 alt="copy button"
