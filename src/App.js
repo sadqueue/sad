@@ -89,9 +89,14 @@ export function App() {
         setExplanation(explanationArr);
 
         const sortRoles = [];
+        const sortRolesNameOnly = [];
         timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            sortRoles.push(each.name + " " + moment(each.timestamp, "h:mm").format("h:mm"));
+            sortRolesNameOnly.push(each.name);
+            sortRoles.push(each.name + ", " + each.numberOfAdmissions + ", " + moment(each.timestamp, "h:mm").format("h:mmA"));
+            
         });
+
+        sortRoles.push(sortRolesNameOnly.join(" > "));
 
         setSorted(sortRoles);
         setSortedTableToDisplay(timeObj.shifts);
@@ -401,10 +406,10 @@ export function App() {
                     className="copybutton"
                     src={copybutton}
                     onClick={(ev) => {
-                        const copiedMessage = `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}: ${sorted.join(", ")}`;
+                        const copiedMessage = `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}: ${sorted.join("\n")}`;
 
                         navigator.clipboard.writeText(copiedMessage);
-                        /* sendEmail(ev, copiedMessage); */
+                        sendEmail(ev, copiedMessage);
                         
                         alert("Order of admissions is successfully copied to your clipboard.")
                     }} />
