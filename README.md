@@ -1,4 +1,7 @@
-<h1>S.A.D. Queue (Standardized Admissions Distribution)</h1>
+
+<p align="center"><img width="244" alt="Screenshot 2024-12-10 at 1 09 14 PM" src="https://github.com/user-attachments/assets/1ea87648-9a46-48fe-a720-338a2c429fd0"></p>
+
+<h1 align="center">S.A.D. Queue (Standardized Admissions Distribution)</h1>
 
 <h2>Purpose</h2>
 Purpose of this UI tool is for hospitalists to generate the order of admissions at a certain timestamp. User can click the dropdown and select a timestamp. The options are 4PM, 5PM, 7PM or a custom time the user can select.
