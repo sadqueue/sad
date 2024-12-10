@@ -20,6 +20,10 @@ Purpose of this UI tool is for hospitalists to generate the order of admissions 
 <h3>Scenario 4: Custom Time Scenario</h3>
 <p><img width="717" alt="Screenshot 2024-12-10 at 12 51 27 PM" src="https://github.com/user-attachments/assets/7af45ead-03aa-4686-b8b0-73ad831b6a41"></p>
 
+<h3>Expand Table</h3>
+The app has an expand table functionality where the user can see more column details. Click the "Expand" button on the bottom right of the table.
+<img width="731" alt="Screenshot 2024-12-10 at 2 01 01 PM" src="https://github.com/user-attachments/assets/4f008a34-1d22-4d2d-885b-7f7221ebadbf">
+
 <h2>Formula Used</h2>
 The logic behind the formula is based on the following. 
 
@@ -30,6 +34,7 @@ export const SCORE_NEW_ROLE = {
     "19:00": ["N1", "N2", "N3", "N4"]
 };
 ```
+
 
 1. For the time and roles listed in SCORE_NEW_ROLE, this is the formula used.
 
