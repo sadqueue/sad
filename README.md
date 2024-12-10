@@ -9,20 +9,20 @@ Purpose of this UI tool is for hospitalists to generate the order of admissions 
 <h2>Example Screenshots</h2>
 
 <h3>Scenario 1: 4:00PM Scenario</h3>
-<p><img width="700" alt="Screenshot 2024-12-10 at 12 50 14 PM" src="https://github.com/user-attachments/assets/e38e97eb-e736-4c4c-b1d7-092fd7e95383"></p>
+<p><img width="100%" alt="Screenshot 2024-12-10 at 12 50 14 PM" src="https://github.com/user-attachments/assets/e38e97eb-e736-4c4c-b1d7-092fd7e95383"></p>
 
 <h3>Scenario 2: 5:00PM Scenario</h3>
-<p><img width="704" alt="Screenshot 2024-12-10 at 12 50 33 PM" src="https://github.com/user-attachments/assets/eb61b760-c5a0-4ca4-b26d-dcd58b35d7fe"></p>
+<p><img width="100%" alt="Screenshot 2024-12-10 at 12 50 33 PM" src="https://github.com/user-attachments/assets/eb61b760-c5a0-4ca4-b26d-dcd58b35d7fe"></p>
 
 <h3>Scenario 3: 7:00PM Scenario</h3>
-<p><img width="704" alt="Screenshot 2024-12-10 at 12 50 43 PM" src="https://github.com/user-attachments/assets/35578c6c-e30a-4fad-a2d8-ee8377404977"></p>
+<p><img width="100%" alt="Screenshot 2024-12-10 at 12 50 43 PM" src="https://github.com/user-attachments/assets/35578c6c-e30a-4fad-a2d8-ee8377404977"></p>
 
 <h3>Scenario 4: Custom Time Scenario</h3>
-<p><img width="717" alt="Screenshot 2024-12-10 at 12 51 27 PM" src="https://github.com/user-attachments/assets/7af45ead-03aa-4686-b8b0-73ad831b6a41"></p>
+<p><img width="100%" alt="Screenshot 2024-12-10 at 12 51 27 PM" src="https://github.com/user-attachments/assets/7af45ead-03aa-4686-b8b0-73ad831b6a41"></p>
 
 <h3>Expand Table</h3>
 The app has an expand table functionality where the user can see more column details. Click the "Expand" button on the bottom right of the table.
-<p><img width="744" alt="Screenshot 2024-12-10 at 2 03 22 PM" src="https://github.com/user-attachments/assets/6734cf67-d444-4f98-b14f-bc48bf085bbb"></p>
+<p><img width="100%" alt="Screenshot 2024-12-10 at 2 03 22 PM" src="https://github.com/user-attachments/assets/6734cf67-d444-4f98-b14f-bc48bf085bbb"></p>
 
 <h2>Formula Used</h2>
 The logic behind the formula is based on the following. 
@@ -96,5 +96,5 @@ npm run start
 The app should run on http://localhost:3000/sad. 
 If you are currently running another app on port 3000, the console will ask you if you want to run this app on another port. Your app should look like the screenshot below.
 
-<p><img width="1100" alt="Screenshot 2024-12-10 at 2 00 29 PM" src="https://github.com/user-attachments/assets/74b900aa-15d3-49b6-ab00-d685c1b7e07f"></p>
+<p><img width="100%" alt="Screenshot 2024-12-10 at 2 00 29 PM" src="https://github.com/user-attachments/assets/74b900aa-15d3-49b6-ab00-d685c1b7e07f"></p>
 
