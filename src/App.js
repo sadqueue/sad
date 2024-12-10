@@ -90,7 +90,7 @@ export function App() {
 
         const sortRoles = [];
         timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            sortRoles.push(each.name);
+            sortRoles.push(each.name + each.startTime);
         });
 
         setSorted(sortRoles.join(", "));
@@ -404,7 +404,7 @@ export function App() {
                         const copiedMessage = `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}: ${sorted}`;
 
                         navigator.clipboard.writeText(copiedMessage);
-                        sendEmail(ev, copiedMessage);
+                        // sendEmail(ev, copiedMessage);
                         
                         alert("Order of admissions is successfully copied to your clipboard.")
                     }} />
