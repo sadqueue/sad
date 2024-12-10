@@ -3,7 +3,7 @@
 <h2>Purpose</h2>
 Purpose of this UI tool is for hospitalists to generate the order of admissions at a certain timestamp. User can click the dropdown and select a timestamp. The options are 4PM, 5PM, 7PM or a custom time the user can select.
 
-<h2>Example Screenshots<h2>
+<h2>Example Screenshots</h2>h2>
 
 <h3>4:00PM Scenario</h3>
 <p><img width="700" alt="Screenshot 2024-12-10 at 12 50 14 PM" src="https://github.com/user-attachments/assets/e38e97eb-e736-4c4c-b1d7-092fd7e95383"></p>
