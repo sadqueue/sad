@@ -23,8 +23,6 @@ export function App() {
     const [sortedTableToDisplay, setSortedTableToDisplay] = useState(admissionsData && admissionsData.shifts ? admissionsData.shifts : []);
     const [customTime, setCustomTime] = useState("");
     const [selectCustom, setSelectCustom] = useState(false);
-
-
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
 
@@ -247,12 +245,7 @@ export function App() {
     const sendEmail = (e, copiedContent) => {
         e.preventDefault();
 
-        var templateParams = {
-            name: 'Marika',
-            notes: 'Check this out!',
-            message: "aaaaaa"
-          };
-          emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, templateParams, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
+          emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, {message: copiedContent}, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
             (response) => {
               console.log('SUCCESS!', response.status, response.text);
             },
