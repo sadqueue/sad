@@ -22,7 +22,7 @@ Purpose of this UI tool is for hospitalists to generate the order of admissions 
 
 <h3>Expand Table</h3>
 The app has an expand table functionality where the user can see more column details. Click the "Expand" button on the bottom right of the table.
-<p><img width="731" alt="Screenshot 2024-12-10 at 2 01 01 PM" src="https://github.com/user-attachments/assets/4f008a34-1d22-4d2d-885b-7f7221ebadbf"></p>
+<p><img width="744" alt="Screenshot 2024-12-10 at 2 03 22 PM" src="https://github.com/user-attachments/assets/6734cf67-d444-4f98-b14f-bc48bf085bbb"></p>
 
 <h2>Formula Used</h2>
 The logic behind the formula is based on the following. 
