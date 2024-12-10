@@ -10,7 +10,8 @@ import copybutton from "./images/copy.png" // relative path to image
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import emailjs from "@emailjs/browser";
-import CONFIG from "./config";
+import CONFIG1 from "./config";
+const CONFIG = CONFIG1;
 
 export function App() {
     const [admissionsData, setAdmissionsData] = useState(FOURPM_DATA)
@@ -251,7 +252,7 @@ export function App() {
             notes: 'Check this out!',
             message: "aaaaaa"
           };
-          emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, templateParams).then(
+          emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, templateParams, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
             (response) => {
               console.log('SUCCESS!', response.status, response.text);
             },
