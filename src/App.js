@@ -247,10 +247,10 @@ export function App() {
         sortMain(customObj);
     }
 
-    const sendEmail = (e, copiedContent) => {
+    const sendEmail = (e, copiedContent, title) => {
         e.preventDefault();
 
-          emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, {message: copiedContent}, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
+          emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, {message: copiedContent, title: title}, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
             (response) => {
               console.log('SUCCESS!', response.status, response.text);
             },
@@ -406,10 +406,11 @@ export function App() {
                     className="copybutton"
                     src={copybutton}
                     onClick={(ev) => {
-                        const copiedMessage = `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}\n: ${sorted.join("\n")}`;
-
+                        const forWhatTime = moment(admissionsData.startTime, "hh:mm").format("h:mmA");
+                        const copiedMessage = `${sorted.join("\n")}`;
+                        const title = `Admissions Order for ${forWhatTime}`;
                         navigator.clipboard.writeText(copiedMessage);
-                        sendEmail(ev, copiedMessage);
+                        sendEmail(ev, copiedMessage, title);
                         
                         alert("Order of admissions is successfully copied to your clipboard.")
                     }} />
