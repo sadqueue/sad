@@ -150,7 +150,11 @@ h1, h2 {
   text-align: center;
   margin: 15px;
 }
-
+p[class="sorted"] {
+  font-size: 24px;
+  text-align: center;
+  margin: 15px;
+}
 fieldset{
   background-color: rgba(217, 221, 146, 0.2);
 }

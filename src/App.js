@@ -90,10 +90,10 @@ export function App() {
 
         const sortRoles = [];
         timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            sortRoles.push(each.name + each.startTime);
+            sortRoles.push(each.name + " " + moment(each.timestamp, "h:mm").format("h:mm"));
         });
 
-        setSorted(sortRoles.join(", "));
+        setSorted(sortRoles);
         setSortedTableToDisplay(timeObj.shifts);
         setAdmissionsData(timeObj);
 
@@ -401,10 +401,10 @@ export function App() {
                     className="copybutton"
                     src={copybutton}
                     onClick={(ev) => {
-                        const copiedMessage = `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}: ${sorted}`;
+                        const copiedMessage = `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}: ${sorted.join(", ")}`;
 
                         navigator.clipboard.writeText(copiedMessage);
-                        // sendEmail(ev, copiedMessage);
+                        /* sendEmail(ev, copiedMessage); */
                         
                         alert("Order of admissions is successfully copied to your clipboard.")
                     }} />
@@ -415,9 +415,14 @@ export function App() {
                 }>{seeDetails ? "(-)" : "(+)"}</button>
 
                 <h1 className="title">
-                    {admissionsData.startTime ? `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}:` : `Select a time. No roles in the queue.`}
+                    {admissionsData.startTime ? `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}` : `Select a time. No roles in the queue.`}
                 </h1>
-                <h1 className="title">{sorted}</h1>
+                {
+                    sorted && sorted.map((each, eachIndex) => {
+                        return <p className="sorted">{each}</p>
+                    })
+                }
+                {/* <h1 className="title">{sorted}</h1> */}
 
             </fieldset>
             {seeDetails && <fieldset className="notes">
