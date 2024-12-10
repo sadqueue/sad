@@ -10,6 +10,7 @@ import copybutton from "./images/copy.png" // relative path to image
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import emailjs from "@emailjs/browser";
+import CONFIG from "./config";
 
 export function App() {
     const [admissionsData, setAdmissionsData] = useState(FOURPM_DATA)
@@ -24,22 +25,21 @@ export function App() {
 
 
     useEffect(() => {
-        emailjs.init(process.env.EMAILJS_PUBLIC_KEY);
+        emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
 
-        
         sortMain(admissionsData);
 
-        const firebaseConfig = {
-            apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-            authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-            projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-            storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-            messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-            appId: process.env.REACT_APP_FIREBASE_APP_ID,
-            measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+        /*const firebaseConfig = {
+            apiKey: CONFIG.REACT_APP_FIREBASE_API_KEY,
+            authDomain: CONFIG.REACT_APP_FIREBASE_AUTH_DOMAIN,
+            projectId: CONFIG.REACT_APP_FIREBASE_PROJECT_ID,
+            storageBucket: CONFIG.REACT_APP_FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: CONFIG.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+            appId: CONFIG.REACT_APP_FIREBASE_APP_ID,
+            measurementId: CONFIG.REACT_APP_FIREBASE_MEASUREMENT_ID
 
         };
-        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();*/
     }, []);
 
     const sortMain = (timeObj) => {
@@ -249,10 +249,9 @@ export function App() {
         var templateParams = {
             name: 'Marika',
             notes: 'Check this out!',
-            message: copiedContent
+            message: "aaaaaa"
           };
-          
-          emailjs.send(process.env.EMAILJS_SERVICE_ID, process.env.EMAILJS_TEMPLATE_ID, templateParams).then(
+          emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, templateParams).then(
             (response) => {
               console.log('SUCCESS!', response.status, response.text);
             },
@@ -409,8 +408,10 @@ export function App() {
                     src={copybutton}
                     onClick={(ev) => {
                         const copiedMessage = `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}: ${sorted}`;
-                        sendEmail(ev, copiedMessage);
+
                         navigator.clipboard.writeText(copiedMessage);
+                        sendEmail(ev, copiedMessage);
+                        
                         alert("Order of admissions is successfully copied to your clipboard.")
                     }} />
 
