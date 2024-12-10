@@ -10,7 +10,9 @@ import {
     SCORE_NEW_ROLE,
     CUSTOM_DATA,
 } from "./constants";
-import copybutton from "./images/copy.png" // relative path to image 
+import copybutton from "./images/copy.png";
+import githublogo from "./images/github-mark.png"
+import sadqueuelogo from "./images/sadqueuelogo.png";
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
 const CONFIG = CONFIG1;
@@ -456,6 +458,15 @@ export function App() {
                 }}
                 placeholder={"Set weight"}
             />
+            <div className="footer">
+                <img
+                alt="copy button"
+                className="copybutton"
+                src={githublogo}
+                onClick={(ev) => {
+                    window.location.href="https://github.com/sadqueue/sad/tree/main";
+                }} />
+            </div>
         </div>
     )
 
