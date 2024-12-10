@@ -86,3 +86,4 @@ cd sadqueue.github.io
 npm install
 npm run start
 ```
+The app should run on http://localhost:3000/sad. If you are currently running another app on port 3000, the console will ask you if you want to run this app on another port.
