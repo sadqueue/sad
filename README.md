@@ -62,8 +62,8 @@ For more details on the UI, click "Expand" button to see the formula used for ea
 v14.21.3
 
 <h3>Create .env file</h3>
-Create a .env in your main folder
-Set with your own settings in each of the "" below or ask me for my configuration details.
+Create a .env in your main folder. Then set with your own settings in each of the "" below or ask me for my configuration details. Currently this app is not linked with Firebase.
+
 ```
 REACT_APP_FIREBASE_API_KEY=""
 REACT_APP_FIREBASE_AUTH_DOMAIN=""
@@ -80,10 +80,15 @@ REACT_APP_EMAILJS_SERVICE_ID =""
 ```
 
 <h3>Run on terminal</h3>
+
 ```
 git clone https://github.com/sadqueue/sad.git
 cd sadqueue.github.io
 npm install
 npm run start
 ```
-The app should run on http://localhost:3000/sad. If you are currently running another app on port 3000, the console will ask you if you want to run this app on another port.
+
+The app should run on http://localhost:3000/sad. 
+If you are currently running another app on port 3000, the console will ask you if you want to run this app on another port. Your app should look like the screenshot below.
+<img width="1102" alt="Screenshot 2024-12-10 at 1 59 26 PM" src="https://github.com/user-attachments/assets/8a556a09-5999-4436-93fd-11632049c993">
+
