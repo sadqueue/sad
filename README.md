@@ -90,5 +90,6 @@ npm run start
 
 The app should run on http://localhost:3000/sad. 
 If you are currently running another app on port 3000, the console will ask you if you want to run this app on another port. Your app should look like the screenshot below.
-<img width="1102" alt="Screenshot 2024-12-10 at 1 59 26 PM" src="https://github.com/user-attachments/assets/8a556a09-5999-4436-93fd-11632049c993">
+
+<img width="1100" alt="Screenshot 2024-12-10 at 2 00 29 PM" src="https://github.com/user-attachments/assets/74b900aa-15d3-49b6-ab00-d685c1b7e07f">
 
