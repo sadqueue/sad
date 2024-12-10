@@ -2,13 +2,15 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import {
-    SHIFT_TYPES, START_TIMES, THRESHOLD,
-    FOURPM_DATA, FIVEPM_DATA, SEVENPM_DATA, SCORE_NEW_ROLE, CUSTOM_DATA,
-    STATIC_TIMES
+    SHIFT_TYPES,
+    START_TIMES,
+    FOURPM_DATA,
+    FIVEPM_DATA,
+    SEVENPM_DATA,
+    SCORE_NEW_ROLE,
+    CUSTOM_DATA,
 } from "./constants";
 import copybutton from "./images/copy.png" // relative path to image 
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getDatabase, ref, set, onValue } from "firebase/database";
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
 const CONFIG = CONFIG1;
@@ -21,7 +23,6 @@ export function App() {
     const [openTable, setOpenTable] = useState(false);
     const [weight, setWeight] = useState(0.3);
     const [sortedTableToDisplay, setSortedTableToDisplay] = useState(admissionsData && admissionsData.shifts ? admissionsData.shifts : []);
-    const [customTime, setCustomTime] = useState("");
     const [selectCustom, setSelectCustom] = useState(false);
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
@@ -81,9 +82,9 @@ export function App() {
         explanationArr.push("Formula to get a composite score for each role:")
         timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             if (SCORE_NEW_ROLE[each.startTime] && SCORE_NEW_ROLE[each.startTime].includes(each.name)) {
-                explanationArr.push("Role " + each.name + ": " + "( 180 - " + each.minutesWorkedFromStartTime + " ) / 180 = " + each.score);
+                explanationArr.push(`Role ${each.name}: (180 - ${each.minutesWorkedFromStartTime}) / 180 = ${each.score}`);
             } else {
-                explanationArr.push("Role " + each.name + ": " + "(" + weight + " * " + each.chronicLoadRatio + ") + (" + (1 - weight).toFixed(3) + " * ( 180 - " + each.minutesWorkedFromStartTime + " ) / 180) = " + each.score);
+                explanationArr.push(`Role ${each.name}: (${weight} * ${each.chronicLoadRatio}) + (${(1 - weight).toFixed(3)} * (180 - ${each.minutesWorkedFromStartTime}) / 180) = ${each.score}`);
             }
         })
         setExplanation(explanationArr);
@@ -92,11 +93,11 @@ export function App() {
         const sortRolesNameOnly = [];
         timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             sortRolesNameOnly.push(each.name);
-            sortRoles.push(each.name + ", " + each.numberOfAdmissions + ", " + moment(each.timestamp, "h:mm").format("h:mmA"));
-            
+            sortRoles.push(`${each.name}: ${each.numberOfAdmissions}/${each.numberOfHoursWorked}; ${moment(each.timestamp, "h:mm").format("h:mmA")}`);
+
         });
 
-        sortRoles.push(sortRolesNameOnly.join(" > "));
+        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder: ${sortRolesNameOnly.join(">")}` : "");
 
         setSorted(sortRoles);
         setSortedTableToDisplay(timeObj.shifts);
@@ -212,7 +213,6 @@ export function App() {
 
     const handleCustomTime = (target) => {
         const customTime = target;
-        setCustomTime(customTime);
         const customShifts = [];
         const customObj = {};
         let admissionId = 0;
@@ -250,16 +250,16 @@ export function App() {
     const sendEmail = (e, copiedContent, title) => {
         e.preventDefault();
 
-          emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, {message: copiedContent, title: title}, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
+        emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, { message: copiedContent, title: title }, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
             (response) => {
-              console.log('SUCCESS!', response.status, response.text);
+                console.log('SUCCESS!', response.status, response.text);
             },
             (error) => {
-              console.log('FAILED...', error);
+                console.log('FAILED...', error);
             },
-          );
+        );
 
-      };
+    };
     return (
         <div className="container">
             <h1 className="title">S.A.D. Queue</h1>
@@ -317,7 +317,7 @@ export function App() {
                     {sortedTableToDisplay.map((admission) => (
                         !admission.isStatic &&
                         <tr
-                            className={admissionsData.shifts && admissionsData.shifts && admissionsData.shifts.length && admissionsData.shifts[0].name == admission.name ? "firstup" : ""}
+                            className={admissionsData.shifts && admissionsData.shifts && admissionsData.shifts.length && admissionsData.shifts[0].name === admission.name ? "firstup" : ""}
                             key={admission.admissionsId}>
                             <td>
                                 <input
@@ -390,7 +390,7 @@ export function App() {
             </table>
             <button className="seedetails" onClick={() => {
                 setOpenTable(!openTable);
-            }}>{openTable ? "(-)" : "(+)"}</button>
+            }}>{openTable ? "Minimize" : "Expand"}</button>
             <section style={{ textAlign: "center", margin: "30px" }}>
                 <button onClick={() => {
                     sortMain(admissionsData);
@@ -402,34 +402,41 @@ export function App() {
                 </button>
             </section>
             <fieldset>
-                <img
-                    className="copybutton"
-                    src={copybutton}
-                    onClick={(ev) => {
-                        const forWhatTime = moment(admissionsData.startTime, "hh:mm").format("h:mmA");
-                        const copiedMessage = `${sorted.join("\n")}`;
-                        const title = `Admissions Order for ${forWhatTime}`;
-                        navigator.clipboard.writeText(copiedMessage);
-                        sendEmail(ev, copiedMessage, title);
-                        
-                        alert("Order of admissions is successfully copied to your clipboard.")
-                    }} />
-
-                <button className="seedetails" onClick={() => {
-                    setSeeDetails(!seeDetails);
-                }
-                }>{seeDetails ? "(-)" : "(+)"}</button>
 
                 <h1 className="title">
-                    {admissionsData.startTime ? `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}` : `Select a time. No roles in the queue.`}
+                    {admissionsData.startTime ? `Admissions Order` : ``}
                 </h1>
-                {
-                    sorted && sorted.map((each, eachIndex) => {
-                        return <p className="sorted">{each}</p>
-                    })
-                }
-                {/* <h1 className="title">{sorted}</h1> */}
+                <fieldset className="fieldsettocopy">
+                    <img
+                        alt="copy button"
+                        className="copybutton"
+                        src={copybutton}
+                        onClick={(ev) => {
+                            const forWhatTime = moment(admissionsData.startTime, "hh:mm").format("h:mmA");
+                            const copiedMessage = `${sorted.join("\n")}`;
+                            const title = `Admissions by ${forWhatTime}`;
 
+                            navigator.clipboard.writeText(`${title}\n${copiedMessage}`);
+                            // sendEmail(ev, copiedMessage, title);
+
+                            alert("Order of admissions is successfully copied to your clipboard.")
+                        }} />
+
+                    <p className="admissionsordertitle">
+                        {admissionsData.startTime ? `Admissions by ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}` : `Select a time. No roles in the queue.`}
+                    </p>
+                    {
+                        sorted && sorted.map((each, eachIndex) => {
+                            return <p className="sorted">{each}</p>
+                        })
+                    }</fieldset>
+                {/* <h1 className="title">{sorted}</h1> */}
+                <p className="admissionsorderlastline">{"Role: [#admits]/[hours worked so far]; [last timestamp]"}</p>
+
+                <button className="seedetails" onClick={() => {
+                        setSeeDetails(!seeDetails);
+                    }
+                    }>{seeDetails ? "Minimize" : "Expand"}</button>
             </fieldset>
             {seeDetails && <fieldset className="notes">
                 <h2>Explanation</h2>

@@ -21,6 +21,13 @@ body {
   font-size: 36px;
 }
 
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 30px;
+}
+
 table tr.statictr {
 
   background-color: rgba(200, 200, 200);
@@ -31,10 +38,6 @@ td.grayinput {
   background-color: rgba(200, 200, 200, 0.2);
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
 
 tr th, select {
   font-size: 16px;
@@ -115,6 +118,7 @@ button.seedetails {
   float: right;
   opacity: 0.5;
   margin: 3px;
+  font-size: 12px;
 }
 
 button.seedetails:hover {
@@ -122,6 +126,7 @@ button.seedetails:hover {
   float: right;
   opacity: 1;
   margin: 3px;
+  font-size: 12px;
 }
 
 img.copybutton {
@@ -150,15 +155,31 @@ h1, h2 {
   text-align: center;
   margin: 15px;
 }
-p[class="sorted"] {
-  font-size: 24px;
-  text-align: center;
-  margin: 15px;
+h2 {
+  font-size: 20px;
 }
-fieldset{
-  background-color: rgba(217, 221, 146, 0.2);
+p{
+  font-size: 20px;
+  text-align: center;
+  margin: 5px;
+  font-size: 18px;
 }
 
+p[class="admissionsordertitle"] {
+  margin-top: 32px;
+}
+
+fieldset{
+  background-color: rgba(217, 221, 146, 0.2);
+  text-align: center;
+}
+
+fieldset[class="fieldsettocopy"]{
+  width: 300px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+ 
 .close {
   float: right;
 }
