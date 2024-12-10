@@ -2,7 +2,7 @@
 <p align="center"><img width="244" alt="Screenshot 2024-12-10 at 1 09 14 PM" src="https://github.com/user-attachments/assets/1ea87648-9a46-48fe-a720-338a2c429fd0"></p>
 
 <h1 align="center">S.A.D. Queue (Standardized Admissions Distribution)</h1>
-
+  
 <h2>Purpose</h2>
 Purpose of this UI tool is for hospitalists to generate the order of admissions at a certain timestamp. User can click the dropdown and select a timestamp. The options are 4PM, 5PM, 7PM or a custom time the user can select.
 
@@ -25,8 +25,7 @@ The app has an expand table functionality where the user can see more column det
 <p><img width="100%" alt="Screenshot 2024-12-10 at 2 03 22 PM" src="https://github.com/user-attachments/assets/6734cf67-d444-4f98-b14f-bc48bf085bbb"></p>
 
 <h2>Formula Used</h2>
-The logic behind the formula is based on the following. 
-https://github.com/sadqueue/sad/blob/main/src/constants.js?plain=1#L22-L26
+The logic behind the formula used the [following object](https://github.com/sadqueue/sad/blob/main/src/constants.js?plain=1#L22-L26).
 
 ```
 export const SCORE_NEW_ROLE = {
@@ -50,8 +49,7 @@ weight = 0.3
 weight * chronic load ratio + (1-weight) * (180-(minutes worked so far) / 180)
 ```
 
-For the above 2 scenarios, code implementation is shown below.
-https://github.com/sadqueue/sad/blob/main/src/App.js
+For the above 2 scenarios, [code implementation](https://github.com/sadqueue/sad/blob/main/src/App.js) is shown below.
 
 ```
 if (SCORE_NEW_ROLE[each.startTime] && SCORE_NEW_ROLE[each.startTime].includes(each.name)) {
