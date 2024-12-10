@@ -265,7 +265,7 @@ export function App() {
     return (
         <div className="container">
             <h1 className="title">S.A.D. Queue</h1>
-            <h2>Standardized Admissions Distribution</h2>
+            <h2 className="subtitle">Standardized Admissions Distribution</h2>
             {timesDropdown()}
             {selectCustom && <input
                 className="customtime"
@@ -405,9 +405,9 @@ export function App() {
             </section>
             <fieldset>
 
-                <h1 className="title">
+                <h3>
                     {admissionsData.startTime ? `Admissions Order` : ``}
-                </h1>
+                </h3>
                 <fieldset className="fieldsettocopy">
                     <img
                         alt="copy button"
