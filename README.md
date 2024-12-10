@@ -57,3 +57,32 @@ if (SCORE_NEW_ROLE[each.startTime] && SCORE_NEW_ROLE[each.startTime].includes(ea
 For more details on the UI, click "Expand" button to see the formula used for each role.            
 <p><img width="598" alt="Screenshot 2024-12-10 at 12 53 29 PM" src="https://github.com/user-attachments/assets/74f9c7f4-75fb-453d-bfe5-0e2ce874253b"></p>
 
+<h2>Steps to Run</h2>
+<h3>Node version</h3>
+v14.21.3
+
+<h3>Create .env file</h3>
+Create a .env in your main folder
+Set with your own settings in each of the "" below or ask me for my configuration details.
+```
+REACT_APP_FIREBASE_API_KEY=""
+REACT_APP_FIREBASE_AUTH_DOMAIN=""
+REACT_APP_FIREBASE_DATABASE_URL=""
+REACT_APP_FIREBASE_PROJECT_ID=""
+REACT_APP_FIREBASE_STORAGE_BUCKET=""
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=""
+REACT_APP_FIREBASE_APP_ID=""
+REACT_APP_FIREBASE_MEASUREMENT_ID=""
+
+REACT_APP_EMAILJS_PUBLIC_KEY = ""
+REACT_APP_EMAILJS_TEMPLATE_ID = ""
+REACT_APP_EMAILJS_SERVICE_ID =""
+```
+
+<h3>Run on terminal</h3>
+```
+git clone https://github.com/sadqueue/sad.git
+cd sadqueue.github.io
+npm install
+npm run start
+```
