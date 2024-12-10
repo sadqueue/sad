@@ -26,6 +26,7 @@ The app has an expand table functionality where the user can see more column det
 
 <h2>Formula Used</h2>
 The logic behind the formula is based on the following. 
+https://github.com/sadqueue/sad/blob/main/src/constants.js?plain=1#L22-L26
 
 ```
 export const SCORE_NEW_ROLE = {
@@ -50,6 +51,7 @@ weight * chronic load ratio + (1-weight) * (180-(minutes worked so far) / 180)
 ```
 
 For the above 2 scenarios, code implementation is shown below.
+https://github.com/sadqueue/sad/blob/main/src/App.js
 
 ```
 if (SCORE_NEW_ROLE[each.startTime] && SCORE_NEW_ROLE[each.startTime].includes(each.name)) {
@@ -60,7 +62,7 @@ if (SCORE_NEW_ROLE[each.startTime] && SCORE_NEW_ROLE[each.startTime].includes(ea
 ```
 
 For more details on the UI, click "Expand" button to see the formula used for each role.            
-<p><img width="598" alt="Screenshot 2024-12-10 at 12 53 29 PM" src="https://github.com/user-attachments/assets/74f9c7f4-75fb-453d-bfe5-0e2ce874253b"></p>
+<p><img width="100%" alt="Screenshot 2024-12-10 at 12 53 29 PM" src="https://github.com/user-attachments/assets/74f9c7f4-75fb-453d-bfe5-0e2ce874253b"></p>
 
 <h2>Steps to Run</h2>
 <h3>Node version</h3>
