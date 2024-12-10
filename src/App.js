@@ -438,7 +438,7 @@ export function App() {
                     return <p>{line}</p>
                 })}
             </fieldset>}
-            {/* {STATIC_TIMES.includes(admissionsData.startTime) && <input
+            <input
                 className="weight"
                 name="weight"
                 type="number"
@@ -448,7 +448,7 @@ export function App() {
                     setWeight(ev.target.value);
                 }}
                 placeholder={"Set weight"}
-            />} */}
+            />
         </div>
     )
 
