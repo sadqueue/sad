@@ -406,7 +406,7 @@ export function App() {
                     className="copybutton"
                     src={copybutton}
                     onClick={(ev) => {
-                        const copiedMessage = `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}: ${sorted.join("\n")}`;
+                        const copiedMessage = `Admissions Order for ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}\n: ${sorted.join("\n")}`;
 
                         navigator.clipboard.writeText(copiedMessage);
                         sendEmail(ev, copiedMessage);
