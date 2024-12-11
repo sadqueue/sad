@@ -50,7 +50,7 @@ div[class="header"] {
 
 .container {
   font-family: 'Poppins', sans-serif;
-  width: 92%;
+  /* width: 92%; */
   max-width: 800px;
   padding: 0 10px;
   margin: 0 auto;
@@ -62,6 +62,7 @@ table {
   border-collapse: collapse;
   width: 100%;
   margin-top: 30px;
+  table-layout: fixed;
 }
 
 table tr.statictr {
@@ -82,11 +83,13 @@ select {
   border: 1px solid #eeeeee;
   text-align: center;
   background-color: rgba(217, 221, 146, 0.2);
+  /* white-space: nowrap; */
 }
 
 tr td {
   border: 1px solid #eeeeee;
   text-align: center;
+  /* white-space:nowrap; */
 }
 
 tr td.usercanedit {
@@ -274,11 +277,14 @@ input[class="timeperiodbyrole"] {
   select, input, p, tr, th, button {
     font-size: 14px;
   }
-
+  p[class=admissionsorderlastline] {
+    font-size: 10px;
+  }
   tr th,
   select {
   font-size: 12px;
   padding: 3px;
+  /* white-space: nowrap; */
 }
   input{
     font-size: 12px;

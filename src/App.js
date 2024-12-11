@@ -18,7 +18,9 @@ import CONFIG1 from "./config";
 const CONFIG = CONFIG1;
 
 export function App() {
-    const [admissionsData, setAdmissionsData] = useState(FOURPM_DATA)
+    const localData = localStorage.getItem('admissionsData');
+
+    const [admissionsData, setAdmissionsData] = useState(localData ? JSON.parse(localData) : FOURPM_DATA)
     const [sorted, setSorted] = useState("");
     const [seeDetails, setSeeDetails] = useState(false);
     const [explanation, setExplanation] = useState("");
@@ -28,6 +30,10 @@ export function App() {
     const [selectCustom, setSelectCustom] = useState(false);
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
+        if (localStorage.getItem("admissionsData")){
+            const admissionsDataLocalStorage = JSON.parse(localStorage.getItem("admissionsData"));
+            setAdmissionsData(admissionsDataLocalStorage);     
+        }
 
         sortMain(admissionsData);
 
@@ -95,17 +101,16 @@ export function App() {
         const sortRolesNameOnly = [];
         timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             sortRolesNameOnly.push(each.name);
-            sortRoles.push(`${each.name} ${each.numberOfAdmissions} ${each.numberOfHoursWorked} ${moment(each.timestamp, "h:mm").format("h:mm")}`);
+            sortRoles.push(`${each.name} ${each.numberOfAdmissions} ${each.numberOfHoursWorked} ${moment(each.timestamp, "H:mm").format("H:mm")}`);
 
         });
 
-        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(admissionsData.startTime, "h:mm").format("h:mma")}` : "");
+        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(timeObj.startTime, "H:mm").format("H:mma")}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
 
         setSorted(sortRoles);
         setSortedTableToDisplay(timeObj.shifts);
         setAdmissionsData(timeObj);
-
     }
 
     const onChange = (e, admissionsId) => {
@@ -122,6 +127,7 @@ export function App() {
 
         setAdmissionsData(newObj);
         setSortedTableToDisplay(newObj.shifts);
+        localStorage.setItem("admissionsData", JSON.stringify(newObj));
     }
 
     const getChronicLoadRatio = (admission) => {
@@ -181,6 +187,7 @@ export function App() {
                             sortMain(FOURPM_DATA);
                             break;
                     }
+     
                 }
                 }>
                 {START_TIMES.map((startTime, startTimeIndex) => {
@@ -196,12 +203,15 @@ export function App() {
     });
 
     const sortedData = admissionsData && [...admissionsData.shifts].sort((a, b) => {
+        
         if (a[sortConfig.key] < b[sortConfig.key]) {
             return sortConfig.direction === "ascending" ? -1 : 1;
         }
         if (a[sortConfig.key] > b[sortConfig.key]) {
             return sortConfig.direction === "ascending" ? 1 : -1;
         }
+
+
         return 0;
     });
 
@@ -288,7 +298,7 @@ export function App() {
                             <th onClick={() => handleSort("name")}>
                                 Role {sortConfig.key === "name" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
                             </th>
-                            <th onClick={() => handleSort("numberOfAdmissions")}>
+                            <th className="numberofadmissions" onClick={() => handleSort("numberOfAdmissions")}>
                                 # of Admissions {sortConfig.key === "numberOfAdmissions" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
                             </th>
                             <th onClick={() => handleSort("timestamp")}>
@@ -426,6 +436,7 @@ export function App() {
                             }} />
 
                         <p className="bold">
+                            <br/>
                             {admissionsData.startTime ? `Admissions by ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}` : `Select a time. No roles in the queue.`}
                         </p>
                         {
