@@ -14,6 +14,15 @@ body {
   margin-bottom: 20px;
 }
 
+div[class="header"] {
+  width: 100%;
+  padding: 1px;
+  text-align: center;
+  background: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
+  color: white;
+  font-size: 30px;
+}
+
 .footer {
   display: table;
   text-align: center;
@@ -24,11 +33,11 @@ body {
 
 .container {
   font-family: 'Poppins', sans-serif;
-  width: 95%;
+  width: 92%;
   max-width: 800px;
   padding: 0 10px;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 20px;
   text-align: center;
 }
 
@@ -128,7 +137,7 @@ button:hover {
 
 button.seedetails {
   all: unset;
-  float: right;
+  /* float: right; */
   opacity: 0.5;
   margin: 3px;
   font-size: 12px;
@@ -136,7 +145,7 @@ button.seedetails {
 
 button.seedetails:hover {
   all: unset;
-  float: right;
+  /* float: right; */
   opacity: 1;
   margin: 3px;
   font-size: 12px;
@@ -183,15 +192,15 @@ p[class="admissionsorderlastline"]{
   font-size: 12px;
 }
 
-fieldset {
-  background-color: rgba(217, 221, 146, 0.2);
-  text-align: center;
+p.bold{
+  font-weight: bold;
 }
 
-fieldset[class="fieldsettocopy"] {
-  width: 300px;
+fieldset {
+  background-color: rgba(217, 221, 146, 0.2);
+  width: 500px;
   margin: auto;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .close {
@@ -199,8 +208,8 @@ fieldset[class="fieldsettocopy"] {
 }
 
 .timesdropdown {
-  float: right;
-  margin-top: -93px;
+  /* float: right;
+  margin-top: -93px; */
   background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
   border-radius: 8px;
   border-style: none;
@@ -232,5 +241,9 @@ fieldset[class="fieldsettocopy"] {
   }
   .timesdropdown {
     float: none
+  }
+
+  fieldset {
+    width: 92%;
   }
 }

@@ -263,47 +263,26 @@ export function App() {
 
     };
     return (
-        <div className="container">
-            <h1 className="title">S.A.D. Queue</h1>
-            <h2 className="subtitle">Standardized Admissions Distribution</h2>
-            {timesDropdown()}
-            {selectCustom && <input
-                className="customtime"
-                name="customTime"
-                type="time"
-                onChange={(e) => {
-                    handleCustomTime(e.target.value);
-                }}
-                placeholder="Enter time"
-            />}
-            <table>
-                <thead>
-                    {openTable ? <tr>
+        <div>
+            <div className="header">
+                <h1 className="title">S.A.D. Queue</h1>
+                <h2 className="subtitle">Standardized Admissions Distribution</h2>
+            </div>
+            <div className="container">
+                {timesDropdown()}
+                {selectCustom && <input
+                    className="customtime"
+                    name="customTime"
+                    type="time"
+                    onChange={(e) => {
+                        handleCustomTime(e.target.value);
+                    }}
+                    placeholder="Enter time"
+                />}
+                <table>
+                    <thead>
+                        {openTable ? <tr>
 
-                        <th onClick={() => handleSort("name")}>
-                            Role {sortConfig.key === "name" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                        </th>
-                        <th onClick={() => handleSort("numberOfAdmissions")}>
-                            # of Admission {sortConfig.key === "numberOfAdmissions" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                        </th>
-                        <th onClick={() => handleSort("timestamp")}>
-                            Last Admission Time {sortConfig.key === "timestamp" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                        </th>
-                        <th onClick={() => handleSort("compositeScore")}>
-                            Score {sortConfig.key === "compositeScore" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                        </th>
-                        <th onClick={() => handleSort("numberHoursWorked")}>
-                            # Hours Worked {sortConfig.key === "numberHoursWorked" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                        </th>
-                        <th onClick={() => handleSort("numberMinutesWorked")}>
-                            # Minutes Worked {sortConfig.key === "numberMinutesWorked" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                        </th>
-                        <th onClick={() => handleSort("chronicLoadRatio")}>
-                            Chronic Load Ratio{sortConfig.key === "chronicLoadRatio" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                        </th>
-
-                    </tr> :
-                        <tr>
                             <th onClick={() => handleSort("name")}>
                                 Role {sortConfig.key === "name" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
                             </th>
@@ -313,159 +292,180 @@ export function App() {
                             <th onClick={() => handleSort("timestamp")}>
                                 Last Admission Time {sortConfig.key === "timestamp" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
                             </th>
-                        </tr>}
-                </thead>
-                <tbody>
-                    {sortedTableToDisplay.map((admission) => (
-                        !admission.isStatic &&
-                        <tr
-                            className={admissionsData.shifts && admissionsData.shifts && admissionsData.shifts.length && admissionsData.shifts[0].name === admission.name ? "firstup" : ""}
-                            key={admission.admissionsId}>
-                            <td>
-                                <input
-                                    name="name"
-                                    value={admission.displayName}
-                                    type="text"
-                                    disabled={true}
-                                />
-                            </td>
-                            <td className="usercanedit">
-                                <input
-                                    name="numberOfAdmissions"
-                                    value={admission.numberOfAdmissions}
-                                    step="1"
-                                    type="number"
-                                    onChange={(e) => onChange(e, admission.admissionsId)}
-                                    placeholder="Enter number"
-                                    disabled={admission.isStatic}
-                                />
-                            </td>
-                            <td className="usercanedit">
-                                <input
-                                    name="timestamp"
-                                    value={admission.timestamp}
-                                    type="time"
-                                    onChange={(e) => onChange(e, admission.admissionsId)}
-                                    disabled={admission.isStatic}
-                                />
-                            </td>
-                            {openTable && <td>
-                                <input
+                            <th onClick={() => handleSort("compositeScore")}>
+                                Score {sortConfig.key === "compositeScore" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                            </th>
+                            <th onClick={() => handleSort("numberHoursWorked")}>
+                                # Hours Worked {sortConfig.key === "numberHoursWorked" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                            </th>
+                            <th onClick={() => handleSort("numberMinutesWorked")}>
+                                # Minutes Worked {sortConfig.key === "numberMinutesWorked" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                            </th>
+                            <th onClick={() => handleSort("chronicLoadRatio")}>
+                                Chronic Load Ratio{sortConfig.key === "chronicLoadRatio" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                            </th>
 
-                                    name="compositeScore"
-                                    type="text"
-                                    value={admission.score}
-                                    disabled={true}
-                                />
-                            </td>}
-                            {openTable && <td>
-                                <input
-                                    name="numberHoursWorked"
-                                    value={admission.numberOfHoursWorked}
-                                    type="number"
-                                    placeholder="Enter number"
-                                    disabled={admission.isStatic}
-                                />
-                            </td>}
-                            {openTable && <td>
-                                <input
-                                    name="numberMinutesWorked"
-                                    value={admission.minutesWorkedFromStartTime}
-                                    type="number"
-                                    placeholder="Enter number"
-                                    disabled={admission.isStatic}
-                                />
-                            </td>}
-                            {openTable && <td>
-                                <input
+                        </tr> :
+                            <tr>
+                                <th onClick={() => handleSort("name")}>
+                                    Role {sortConfig.key === "name" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                                </th>
+                                <th onClick={() => handleSort("numberOfAdmissions")}>
+                                    # of Admission {sortConfig.key === "numberOfAdmissions" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                                </th>
+                                <th onClick={() => handleSort("timestamp")}>
+                                    Last Admission Time {sortConfig.key === "timestamp" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                                </th>
+                            </tr>}
+                    </thead>
+                    <tbody>
+                        {sortedTableToDisplay.map((admission) => (
+                            !admission.isStatic &&
+                            <tr
+                                className={admissionsData.shifts && admissionsData.shifts && admissionsData.shifts.length && admissionsData.shifts[0].name === admission.name ? "firstup" : ""}
+                                key={admission.admissionsId}>
+                                <td>
+                                    <input
+                                        name="name"
+                                        value={admission.displayName}
+                                        type="text"
+                                        disabled={true}
+                                    />
+                                </td>
+                                <td className="usercanedit">
+                                    <input
+                                        name="numberOfAdmissions"
+                                        value={admission.numberOfAdmissions}
+                                        step="1"
+                                        type="number"
+                                        onChange={(e) => onChange(e, admission.admissionsId)}
+                                        placeholder="Enter number"
+                                        disabled={admission.isStatic}
+                                    />
+                                </td>
+                                <td className="usercanedit">
+                                    <input
+                                        name="timestamp"
+                                        value={admission.timestamp}
+                                        type="time"
+                                        onChange={(e) => onChange(e, admission.admissionsId)}
+                                        disabled={admission.isStatic}
+                                    />
+                                </td>
+                                {openTable && <td>
+                                    <input
 
-                                    name="chronicLoadRatio"
-                                    type="text"
-                                    value={admission.chronicLoadRatio}
-                                    disabled={true}
-                                />
-                            </td>}
+                                        name="compositeScore"
+                                        type="text"
+                                        value={admission.score}
+                                        disabled={true}
+                                    />
+                                </td>}
+                                {openTable && <td>
+                                    <input
+                                        name="numberHoursWorked"
+                                        value={admission.numberOfHoursWorked}
+                                        type="number"
+                                        placeholder="Enter number"
+                                        disabled={admission.isStatic}
+                                    />
+                                </td>}
+                                {openTable && <td>
+                                    <input
+                                        name="numberMinutesWorked"
+                                        value={admission.minutesWorkedFromStartTime}
+                                        type="number"
+                                        placeholder="Enter number"
+                                        disabled={admission.isStatic}
+                                    />
+                                </td>}
+                                {openTable && <td>
+                                    <input
 
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <button className="seedetails" onClick={() => {
-                setOpenTable(!openTable);
-            }}>{openTable ? "Minimize" : "Expand"}</button>
-            <section style={{ textAlign: "center", margin: "30px" }}>
-                <button onClick={() => {
-                    sortMain(admissionsData);
-                    if (admissionsData && admissionsData.shifts) {
-                        setSortedTableToDisplay(admissionsData.shifts);
-                    }
-                }}>
-                    Generate Queue
-                </button>
-            </section>
-            <fieldset>
+                                        name="chronicLoadRatio"
+                                        type="text"
+                                        value={admission.chronicLoadRatio}
+                                        disabled={true}
+                                    />
+                                </td>}
 
-                <h3>
-                    {admissionsData.startTime ? `Admissions Order` : ``}
-                </h3>
-                <fieldset className="fieldsettocopy">
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <button className="seedetails" onClick={() => {
+                    setOpenTable(!openTable);
+                }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
+                <section style={{ textAlign: "center", margin: "30px" }}>
+                    <button onClick={() => {
+                        sortMain(admissionsData);
+                        if (admissionsData && admissionsData.shifts) {
+                            setSortedTableToDisplay(admissionsData.shifts);
+                        }
+                    }}>
+                        Generate Queue
+                    </button>
+                </section>
+                
+                    <fieldset className="fieldsettocopy">
+                        <img
+                            alt="copy button"
+                            className="copybutton"
+                            src={copybutton}
+                            onClick={(ev) => {
+                                const forWhatTime = moment(admissionsData.startTime, "hh:mm").format("h:mmA");
+                                const copiedMessage = `${sorted.join("\n")}`;
+                                const title = `Admissions by ${forWhatTime}`;
+
+                                navigator.clipboard.writeText(`${title}\n${copiedMessage}`);
+                                // sendEmail(ev, copiedMessage, title);
+
+                                alert("Order of admissions is successfully copied to your clipboard.")
+                            }} />
+
+                        <p className="bold">
+                            {admissionsData.startTime ? `Admissions by ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}` : `Select a time. No roles in the queue.`}
+                        </p>
+                        {
+                            sorted && sorted.map((each, eachIndex) => {
+                                return <p className="sorted">{each}</p>
+                            })
+                        }</fieldset>
+                        <p className="admissionsorderlastline">{"Role: #admits / hours worked so far; last timestamp"}</p>
+
+<button className="seedetails" onClick={() => {
+    setSeeDetails(!seeDetails);
+}
+}>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
+                    
+                {seeDetails && <fieldset className="notes">
+                    <p className="bold">Explanation</p>
+
+                    {explanation && explanation.map((line, lineIndex) => {
+                        return <p>{line}</p>
+                    })}
+                    Set Weight <input
+                    className="weight"
+                    name="weight"
+                    type="number"
+                    step=".1"
+                    value={weight}
+                    onChange={(ev) => {
+                        setWeight(ev.target.value);
+                    }}
+                    placeholder={"Set weight"}
+                />
+                </fieldset>}
+                
+                <div className="footer">
                     <img
                         alt="copy button"
                         className="copybutton"
-                        src={copybutton}
+                        src={githublogo}
                         onClick={(ev) => {
-                            const forWhatTime = moment(admissionsData.startTime, "hh:mm").format("h:mmA");
-                            const copiedMessage = `${sorted.join("\n")}`;
-                            const title = `Admissions by ${forWhatTime}`;
-
-                            navigator.clipboard.writeText(`${title}\n${copiedMessage}`);
-                            // sendEmail(ev, copiedMessage, title);
-
-                            alert("Order of admissions is successfully copied to your clipboard.")
+                            window.location.href = "https://github.com/sadqueue/sad/tree/main";
                         }} />
-
-                    <p className="admissionsordertitle">
-                        {admissionsData.startTime ? `Admissions by ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}` : `Select a time. No roles in the queue.`}
-                    </p>
-                    {
-                        sorted && sorted.map((each, eachIndex) => {
-                            return <p className="sorted">{each}</p>
-                        })
-                    }</fieldset>
-                {/* <h1 className="title">{sorted}</h1> */}
-                <p className="admissionsorderlastline">{"Role: [#admits]/[hours worked so far]; [last timestamp]"}</p>
-
-                <button className="seedetails" onClick={() => {
-                        setSeeDetails(!seeDetails);
-                    }
-                    }>{seeDetails ? "Minimize" : "Expand"}</button>
-            </fieldset>
-            {seeDetails && <fieldset className="notes">
-                <h2>Explanation</h2>
-
-                {explanation && explanation.map((line, lineIndex) => {
-                    return <p>{line}</p>
-                })}
-            </fieldset>}
-            {seeDetails && <input
-                className="weight"
-                name="weight"
-                type="number"
-                step=".1"
-                value={weight}
-                onChange={(ev) => {
-                    setWeight(ev.target.value);
-                }}
-                placeholder={"Set weight"}
-            />}
-            <div className="footer">
-                <img
-                alt="copy button"
-                className="copybutton"
-                src={githublogo}
-                onClick={(ev) => {
-                    window.location.href="https://github.com/sadqueue/sad/tree/main";
-                }} />
+                </div>
             </div>
         </div>
     )
