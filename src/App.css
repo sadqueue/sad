@@ -1,11 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
-@media (min-width:320px)  { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */ }
-@media (min-width:480px)  { /* smartphones, Android phones, landscape iPhone */ }
-@media (min-width:600px)  { /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */ }
-@media (min-width:801px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
-@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ }
-@media (min-width:1281px) { /* hi-res laptops and desktops */ }
+@media (min-width:320px) {
+  /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+}
+
+@media (min-width:480px) {
+  /* smartphones, Android phones, landscape iPhone */
+}
+
+@media (min-width:600px) {
+  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+}
+
+@media (min-width:801px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+}
+
+@media (min-width:1025px) {
+  /* big landscape tablets, laptops, and desktops */
+}
+
+@media (min-width:1281px) {
+  /* hi-res laptops and desktops */
+}
 
 body {
   box-sizing: border-box;
@@ -87,8 +104,9 @@ input {
   font-size: 16px;
   background-color: transparent;
   border: none;
-  width: 84%;
-  padding: 12px 12px;
+  width: 100%;
+  margin-left: -8px;
+  padding: 8px 8px;
   font-family: 'Poppins', sans-serif;
   outline: none;
   text-align: center;
@@ -167,7 +185,7 @@ img.copybutton:hover {
   margin: 3px;
 }
 
-h1{
+h1 {
   font-size: 60px;
 }
 
@@ -188,11 +206,11 @@ p[class="admissionsordertitle"] {
   margin-top: 32px;
 }
 
-p[class="admissionsorderlastline"]{
+p[class="admissionsorderlastline"] {
   font-size: 12px;
 }
 
-p.bold{
+p.bold {
   font-weight: bold;
 }
 
@@ -230,20 +248,44 @@ fieldset {
   touch-action: manipulation;
 }
 
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+input[class="timeperiodbyrole"] {
+  font-size: "14px"
+}
+
 @media (max-width: 600px) {
   h1 {
     font-size: 42px;
   }
+
   h2 {
     font-size: 15px;
     margin-top: -38px;
     margin-bottom: 40px;
   }
-  .timesdropdown {
-    float: none
-  }
 
   fieldset {
     width: 92%;
   }
+
+  select, input, p, tr, th, button {
+    font-size: 14px;
+  }
+
+  tr th,
+  select {
+  font-size: 12px;
+  padding: 3px;
+}
+  input{
+    font-size: 12px;
+  }
+
+  section{
+    margin: 20px;
+  }
+
 }

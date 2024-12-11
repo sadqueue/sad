@@ -95,11 +95,12 @@ export function App() {
         const sortRolesNameOnly = [];
         timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             sortRolesNameOnly.push(each.name);
-            sortRoles.push(`${each.name}: ${each.numberOfAdmissions}/${each.numberOfHoursWorked}; ${moment(each.timestamp, "h:mm").format("h:mmA")}`);
+            sortRoles.push(`${each.name} ${each.numberOfAdmissions} ${each.numberOfHoursWorked} ${moment(each.timestamp, "h:mm").format("h:mm")}`);
 
         });
 
-        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder: ${sortRolesNameOnly.join(">")}` : "");
+        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(admissionsData.startTime, "h:mm").format("h:mma")}` : "");
+        sortRoles.push(`${sortRolesNameOnly.join(">")}`);
 
         setSorted(sortRoles);
         setSortedTableToDisplay(timeObj.shifts);
@@ -288,7 +289,7 @@ export function App() {
                                 Role {sortConfig.key === "name" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
                             </th>
                             <th onClick={() => handleSort("numberOfAdmissions")}>
-                                # of Admission {sortConfig.key === "numberOfAdmissions" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                                # of Admissions {sortConfig.key === "numberOfAdmissions" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
                             </th>
                             <th onClick={() => handleSort("timestamp")}>
                                 Last Admission Time {sortConfig.key === "timestamp" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
@@ -418,7 +419,7 @@ export function App() {
                                 const copiedMessage = `${sorted.join("\n")}`;
                                 const title = `Admissions by ${forWhatTime}`;
 
-                                navigator.clipboard.writeText(`${title}\n${copiedMessage}`);
+                                navigator.clipboard.writeText(`${copiedMessage}`);
                                 // sendEmail(ev, copiedMessage, title);
 
                                 alert("Order of admissions is successfully copied to your clipboard.")
@@ -432,7 +433,7 @@ export function App() {
                                 return <p className="sorted">{each}</p>
                             })
                         }</fieldset>
-                        <p className="admissionsorderlastline">{"Role: #admits / hours worked so far; last timestamp"}</p>
+                        <p className="admissionsorderlastline">{"(Role) (Number of admits) / (Hours worked so far) (Last timestamp)"}</p>
 
 <button className="seedetails" onClick={() => {
     setSeeDetails(!seeDetails);
