@@ -278,6 +278,7 @@ export function App() {
                         handleCustomTime(e.target.value);
                     }}
                     placeholder="Enter time"
+                    defaultValue={"12:00"}
                 />}
                 <table>
                     <thead>
