@@ -1,5 +1,19 @@
 
 export const THRESHOLD = 90;
+export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.66;
+export const DATA_TYPE_INT = [
+    "admissionsId",
+    "chronicLoadRatio",
+    "minutesWorkedFromStartTime",
+    "numberOfAdmissions",
+    "numberOfHoursWorked",
+    "score",
+];
+
+export const DATA_TYPE_TIME = [
+    "startTime",
+    "timestamp"
+];
 
 export const MAX_FIELDS = [
     "Role", 
@@ -36,6 +50,14 @@ export const START_TIMES = [
 
 export const SHIFT_TYPES = [
     {
+        type: "DA",
+        start: "07:00",
+        end: "19:00",
+        displayStartTimeToEndTime: "(7AM-7PM)",
+        startWithThreshold: "05:30",
+        endWithThreshold: "17:30"
+    },
+    {
         type: "S1",
         start: "10:00",
         end: "20:00",
@@ -68,6 +90,14 @@ export const SHIFT_TYPES = [
         endWithThreshold: "22:30"
     },
     {
+        type: "N5",
+        start: "17:00",
+        end: "05:00",
+        displayStartTimeToEndTime: "(5PM-5AM)",
+        startWithThreshold: "15:30",
+        endWithThreshold: "03:30"
+    },
+    {
         type: "N1",
         start: "19:00",
         end: "07:00",
@@ -98,22 +128,6 @@ export const SHIFT_TYPES = [
         displayStartTimeToEndTime: "(7PM-7AM)",
         startWithThreshold: "17:30",
         endWithThreshold: "05:30"
-    },
-    {
-        type: "N5",
-        start: "17:00",
-        end: "05:00",
-        displayStartTimeToEndTime: "(5PM-5AM)",
-        startWithThreshold: "15:30",
-        endWithThreshold: "03:30"
-    },
-    {
-        type: "DA",
-        start: "07:00",
-        end: "19:00",
-        displayStartTimeToEndTime: "(7AM-7PM)",
-        startWithThreshold: "05:30",
-        endWithThreshold: "17:30"
     }
 ];
 
@@ -259,7 +273,7 @@ export const SEVENPM = [
 
 export const FOURPM_DATA = {
     shifts: FOURPM,
-    startTime: "16:00" 
+    startTime: "16:00"
 }
 export const FIVEPM_DATA = {
     shifts: FIVEPM,

@@ -9,6 +9,9 @@ import {
     SEVENPM_DATA,
     SCORE_NEW_ROLE,
     CUSTOM_DATA,
+    DATA_TYPE_INT,
+    DATA_TYPE_TIME,
+    CHRONIC_LOAD_RATIO_THRESHOLD
 } from "./constants";
 import copybutton from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
@@ -51,7 +54,76 @@ export function App() {
     }, []);
 
     const sortMain = (timeObj) => {
-        return sortByCompositeScore(timeObj);
+        // return sortByCompositeScore(timeObj);
+        return sortByTimestampAndCompositeScore(timeObj);
+
+    }
+
+    const sortByTimestampAndCompositeScore = (timeObj) => {
+        timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
+            each["startTime"] = timeObj.startTime;
+            each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
+            each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
+            each["chronicLoadRatio"] = getChronicLoadRatio(each);
+            each["score"] = getCompositeScore(each);
+        });
+
+        const explanationArr = [];
+        explanationArr.push("Step 1: Sort based on timestamp");
+
+        /*
+        Step 1: Step 1: Sort based on timestamp 
+        */
+        timeObj && timeObj.shifts && timeObj.shifts.sort(function (a, b) {
+            return moment(a.timestamp, "hh:mm").diff(moment(b.timestamp, "hh:mm"));
+        });
+        timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
+            explanationArr.push(`${each.name}: ${each.timestamp} | ${each.chronicLoadRatio}`)
+        });
+
+        /*
+        Step 2: For each admitter, if chronic load ratio is >0.66, then deprioritize in the order 
+        (either putting in back or pushing back by X spots depending on how great the ratio is)
+        */
+        // const threshold = 0.66;
+        const shiftsLessThanThreshold = [];
+        const shiftsGreaterThanThreshold = [];
+        explanationArr.push(`Step 2: Determine the admitter's with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}`);
+
+        timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
+            if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD){
+                explanationArr.push(`${each.name}: ${each.timestamp} | ${each.chronicLoadRatio}`);
+                shiftsGreaterThanThreshold.push(each);
+            } else {
+                shiftsLessThanThreshold.push(each);
+            }
+        });
+
+        explanationArr.push(`Step 3: Put the admitter's with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD} to the back of the queue`)
+        const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
+
+        shiftsCombined.forEach((each, eachIndex) => {
+            explanationArr.push(`${each.name}: ${each.timestamp} | ${each.chronicLoadRatio}`)
+        });        
+
+        timeObj.shifts = shiftsCombined;
+
+        setExplanation(explanationArr);
+
+        const sortRoles = [];
+        const sortRolesNameOnly = [];
+        timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
+            sortRolesNameOnly.push(each.name);
+            sortRoles.push(`${each.name} ${each.numberOfAdmissions} ${each.numberOfHoursWorked} ${moment(each.timestamp, "H:mm").format("H:mm")}`);
+
+        });
+
+        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(timeObj.startTime, "H:mm").format("H:mma")}` : "");
+        sortRoles.push(`${sortRolesNameOnly.join(">")}`);
+
+        setSorted(sortRoles);
+        setSortedTableToDisplay(timeObj.shifts);
+        setAdmissionsData(timeObj);
     }
 
     const getCompositeScore = (admission) => {
@@ -203,14 +275,28 @@ export function App() {
     });
 
     const sortedData = admissionsData && [...admissionsData.shifts].sort((a, b) => {
-        
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === "ascending" ? -1 : 1;
+        if (DATA_TYPE_TIME.includes(sortConfig.key)){
+            if (moment(a[sortConfig.key], "hh:mm").isBefore(moment(b[sortConfig.key], "hh:mm"))) {
+                return sortConfig.direction === "ascending" ? -1 : 1;
+            }
+            if (moment(a[sortConfig.key], "hh:mm").isAfter(moment(b[sortConfig.key], "hh:mm"))) {
+                return sortConfig.direction === "ascending" ? 1 : -1;
+            }
+        } else if (DATA_TYPE_INT.includes(sortConfig.key)){
+            if (Number(a[sortConfig.key]) < Number(b[sortConfig.key])) {
+                return sortConfig.direction === "ascending" ? -1 : 1;
+            }
+            if (Number(a[sortConfig.key]) > Number(b[sortConfig.key])) {
+                return sortConfig.direction === "ascending" ? 1 : -1;
+            }
+        } else {
+            if (a[sortConfig.key] < b[sortConfig.key]) {
+                return sortConfig.direction === "ascending" ? -1 : 1;
+            }
+            if (a[sortConfig.key] > b[sortConfig.key]) {
+                return sortConfig.direction === "ascending" ? 1 : -1;
+            }
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === "ascending" ? 1 : -1;
-        }
-
 
         return 0;
     });
@@ -457,7 +543,7 @@ export function App() {
                     {explanation && explanation.map((line, lineIndex) => {
                         return <p>{line}</p>
                     })}
-                    Set Weight <input
+                    {/* Set Weight <input
                     className="weight"
                     name="weight"
                     type="number"
@@ -467,7 +553,7 @@ export function App() {
                         setWeight(ev.target.value);
                     }}
                     placeholder={"Set weight"}
-                />
+                /> */}
                 </fieldset>}
                 
                 <div className="footer">
