@@ -1,6 +1,9 @@
 
 export const THRESHOLD = 90;
 export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.66;
+
+export const CARRYOVER_FOUR_TO_FIVEPM = ["S1", "S2", "S3", "S4"];
+
 export const DATA_TYPE_INT = [
     "admissionsId",
     "chronicLoadRatio",
@@ -133,143 +136,162 @@ export const SHIFT_TYPES = [
 
 export const FOURPM = [
     {
-        admissionsId: '1',
-        name: 'DA',
-        displayName: 'DA (7AM-7PM)',
+        admissionsId: "1",
+        name: "DA",
+        displayName: "DA (7AM-7PM)",
+        roleStartTime: "07:00",
         numberOfAdmissions: "6",
-        timestamp: '14:35'
+        timestamp: "14:35"
     },
     {
-        admissionsId: '2',
-        name: 'S1',
-        displayName: 'S1 (10AM-8PM)',
+        admissionsId: "2",
+        name: "S1",
+        displayName: "S1 (10AM-8PM)",
+        roleStartTime: "10:00",
         numberOfAdmissions: "5",
-        timestamp: '15:45'
+        timestamp: "15:45"
     },
     {
-        admissionsId: '3',
-        name: 'S2',
-        displayName: 'S2 (11AM-9PM)',
+        admissionsId: "3",
+        name: "S2",
+        displayName: "S2 (11AM-9PM)",
+        roleStartTime: "11:00",
         numberOfAdmissions: "3",
-        timestamp: '13:30'
+        timestamp: "13:30"
     },
     {
-        admissionsId: '4',
-        name: 'S3',
-        displayName: 'S3 (1PM-11PM)',
+        admissionsId: "4",
+        name: "S3",
+        displayName: "S3 (1PM-11PM)",
+        roleStartTime: "13:00",
         numberOfAdmissions: "2",
-        timestamp: '14:30'
+        timestamp: "14:30"
     },
     {
-        admissionsId: '5',
-        name: 'S4',
-        displayName: 'S4 (2PM-12AM)',
+        admissionsId: "5",
+        name: "S4",
+        displayName: "S4 (2PM-12AM)",
+        roleStartTime: "14:00",
         numberOfAdmissions: "1",
-        timestamp: '14:00'
+        timestamp: "14:00"
     }
 ];
 
 export const FIVEPM = [
     {
-        admissionsId: '1',
-        name: 'S1',
-        displayName: 'S1 (10AM-8PM)',
+        admissionsId: "1",
+        name: "S1",
+        displayName: "S1 (10AM-8PM)",
+        roleStartTime: "10:00",
         numberOfAdmissions: "4",
-        timestamp: '15:17'
+        timestamp: "15:17"
     },
     {
-        admissionsId: '2',
-        name: 'S2',
-        displayName: 'S2 (11AM-9PM)',
+        admissionsId: "2",
+        name: "S2",
+        displayName: "S2 (11AM-9PM)",
+        roleStartTime: "11:00",
         numberOfAdmissions: "3",
-        timestamp: '15:28'
+        timestamp: "15:28"
     },
     {
-        admissionsId: '3',
-        name: 'S3',
-        displayName: 'S3 (1PM-11PM)',
+        admissionsId: "3",
+        name: "S3",
+        displayName: "S3 (1PM-11PM)",
+        roleStartTime: "13:00",
         numberOfAdmissions: "2",
-        timestamp: '15:31'
+        timestamp: "15:31"
     },
     {
-        admissionsId: '4',
-        name: 'S4',
-        displayName: 'S4 (2PM-12AM)',
+        admissionsId: "4",
+        name: "S4",
+        displayName: "S4 (2PM-12AM)",
+        roleStartTime: "14:00",
         numberOfAdmissions: "1",
-        timestamp: '15:45'
+        timestamp: "15:45"
     },
     {
-        admissionsId: '5',
-        name: 'N5',
-        displayName: 'N5 (5PM-5AM)',
+        admissionsId: "5",
+        name: "N5",
+        displayName: "N5 (5PM-5AM)",
+        roleStartTime: "17:00",
         numberOfAdmissions: "0",
-        timestamp: '15:30',
+        timestamp: "15:30",
         isStatic: true
     }
 ];
 
 export const SEVENPM = [
     {
-        admissionsId: '1',
-        name: 'S2',
-        displayName: 'S2 (11AM-9PM)',
+        admissionsId: "1",
+        name: "S2",
+        displayName: "S2 (11AM-9PM)",
+        roleStartTime: "11:00",
         numberOfAdmissions: "3",
-        timestamp: '18:28'
+        timestamp: "18:28"
     },
     {
-        admissionsId: '2',
-        name: 'S3',
-        displayName: 'S3 (1PM-11PM)',
+        admissionsId: "2",
+        name: "S3",
+        displayName: "S3 (1PM-11PM)",
+        roleStartTime: "13:00",
         numberOfAdmissions: "2",
-        timestamp: '18:31'
+        timestamp: "18:31"
     },
     {
-        admissionsId: '3',
-        name: 'S4',
-        displayName: 'S4 (2PM-12AM)',
+        admissionsId: "3",
+        name: "S4",
+        displayName: "S4 (2PM-12AM)",
+        roleStartTime: "14:00",
         numberOfAdmissions: "1",
-        timestamp: '18:45'
+        timestamp: "18:45"
     },
     {
-        admissionsId: '4',
-        name: 'N1',
-        displayName: 'N1 (5PM-5AM)',
+        admissionsId: "8",
+        name: "N5",
+        displayName: "N5 (5PM-5AM)",
+        roleStartTime: "17:00",
         numberOfAdmissions: "0",
-        timestamp: '17:30',
+        timestamp: "20:30"
+    },
+    {
+        admissionsId: "4",
+        name: "N1",
+        displayName: "N1 (7PM-7AM)",
+        roleStartTime: "19:00",
+        numberOfAdmissions: "0",
+        timestamp: "17:30",
         isStatic: true
     },
     {
-        admissionsId: '5',
-        name: 'N2',
-        displayName: 'N2 (5PM-5AM)',
+        admissionsId: "5",
+        name: "N2",
+        displayName: "N2 (7PM-7AM)",
+        roleStartTime: "19:00",
         numberOfAdmissions: "0",
-        timestamp: '18:00',
+        timestamp: "18:00",
         isStatic: true
     },
     {
-        admissionsId: '6',
-        name: 'N3',
-        displayName: 'N3 (5PM-5AM)',
+        admissionsId: "6",
+        name: "N3",
+        displayName: "N3 (7PM-7AM)",
+        roleStartTime: "19:00",
         numberOfAdmissions: "0",
-        timestamp: '18:30',
+        timestamp: "18:30",
         isStatic: true
     },
     {
-        admissionsId: '7',
-        name: 'N4',
-        displayName: 'N4 (5PM-5AM)',
+        admissionsId: "7",
+        name: "N4",
+        displayName: "N4 (7PM-7AM)",
+        roleStartTime: "19:00",
         numberOfAdmissions: "0",
-        timestamp: '19:00',
+        timestamp: "19:00",
         isStatic: true
-    },
-    {
-        admissionsId: '8',
-        name: 'N5',
-        displayName: 'N5 (5PM-5AM)',
-        numberOfAdmissions: "0",
-        timestamp: '20:30'
     }
 ];
+
 
 export const FOURPM_DATA = {
     shifts: FOURPM,
@@ -287,5 +309,5 @@ export const SEVENPM_DATA = {
 export const CUSTOM_DATA = {
     isCustom: true,
     shifts: [],
-    startTime: ""
+    startTime: "12:00"
 }

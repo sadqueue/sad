@@ -199,6 +199,7 @@ export function App() {
 
         setAdmissionsData(newObj);
         setSortedTableToDisplay(newObj.shifts);
+        // sortMain(newObj);
         localStorage.setItem("admissionsData", JSON.stringify(newObj));
     }
 
@@ -239,6 +240,16 @@ export function App() {
                 className="timesdropdown"
                 onChange={e => {
                     const startTime = e.target.value;
+                    // const prevSelectedTime = admissionsData.startTime; //"16:00"
+
+                    // //4 goes to 5 and 5 goes to 7, but not in reverse
+                    // if (prevSelectedTime == "16:00" && startTime == "17:00"){
+                    //     //S1, S2, S3, S4 carry over from 4PM to 5PM
+                        
+                    // }
+                    // if ((prevSelectedTime == "17:00" && startTime == "19:00")){
+                    //     //S2, S3, S4, N5 carry over from 5PM to 7PM
+                    // }
                     setSelectCustom(false);
 
                     switch (startTime) {
@@ -246,6 +257,22 @@ export function App() {
                             sortMain(FOURPM_DATA);
                             break;
                         case "FIVEPM":
+                            // const prevS1_timestamp = "";
+                            // const prevS1_numberOfAdmissions = "";
+                            
+                            // const prevS2_timestamp = "";
+                            // const prevS2_numberOfAdmissions = "";
+                            
+                            // const prevS3 = "";
+                            // const prevS4 = "";
+                            // let FIVEPM_DATAX = FIVEPM_DATA;
+
+                            // admissionsData.shifts.forEach((shift, shiftIndex) => {
+                            //     if (CARRYOVER_FOUR_TO_FIVEPM.includes(shift.name)){
+                            //         [`prev${shift.name}_timestamp`] = shift.timestamp;
+                            //     }
+                            // })
+                            
                             sortMain(FIVEPM_DATA);
                             break;
                         case "SEVENPM":
@@ -275,7 +302,14 @@ export function App() {
     });
 
     const sortedData = admissionsData && [...admissionsData.shifts].sort((a, b) => {
-        if (DATA_TYPE_TIME.includes(sortConfig.key)){
+        if (sortConfig.key == "name"){
+            if (moment(a.roleStartTime, "hh:mm").isBefore(moment(b.roleStartTime, "hh:mm"))) {
+                return sortConfig.direction === "ascending" ? -1 : 1;
+            }
+            if (moment(a.roleStartTime, "hh:mm").isAfter(moment(b.roleStartTime, "hh:mm"))) {
+                return sortConfig.direction === "ascending" ? 1 : -1;
+            }
+        } else if (DATA_TYPE_TIME.includes(sortConfig.key)){
             if (moment(a[sortConfig.key], "hh:mm").isBefore(moment(b[sortConfig.key], "hh:mm"))) {
                 return sortConfig.direction === "ascending" ? -1 : 1;
             }
@@ -334,6 +368,7 @@ export function App() {
                     admissionsId: admissionId + "",
                     name: each.type,
                     displayName: each.type + " " + each.displayStartTimeToEndTime,
+                    roleStartTime: each.start,
                     numberOfAdmissions: "",
                     timestamp: ""
                 });
@@ -414,6 +449,9 @@ export function App() {
                                 <th onClick={() => handleSort("timestamp")}>
                                     Last Admission Time {sortConfig.key === "timestamp" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
                                 </th>
+                                <th onClick={() => handleSort("compositeScore")}>
+                                    Score {sortConfig.key === "compositeScore" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                                </th>
                             </tr>}
                     </thead>
                     <tbody>
@@ -450,7 +488,7 @@ export function App() {
                                         disabled={admission.isStatic}
                                     />
                                 </td>
-                                {openTable && <td>
+                                {<td>
                                     <input
 
                                         name="compositeScore"
