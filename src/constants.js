@@ -1,8 +1,9 @@
-
 export const THRESHOLD = 90;
 export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.66;
 
 export const CARRYOVER_FOUR_TO_FIVEPM = ["S1", "S2", "S3", "S4"];
+
+export const TIME_FORMAT = "h:mmA"; //hh:mm for non military
 
 export const DATA_TYPE_INT = [
     "admissionsId",
@@ -18,22 +19,21 @@ export const DATA_TYPE_TIME = [
     "timestamp"
 ];
 
-export const MAX_FIELDS = [
-    "Role", 
-    "# of Admissions", 
-    "Last Admission Time", 
-    "Score", 
-    "# Hours Worked", 
-    "# Minutes Worked", 
-    "Chronic Load Ratio",
-    "Score"
+export const EXPAND_TABLE = [
+    ["name", "Role"],
+    ["shiftTimePeriod", "Shift Time Period"],
+    ["numberOfAdmissions", "Number of Admissions"],
+    ["timestamp", "Last Admission Time"],
+    ["chronicLoadRatio", "Chronic Load Ratio"],
+    ["numberOfHours", "# Hours Worked"],
+    ["score", "Composite Score"]
 ];
 
-export const MIN_FIELDS = [
-    "Role", 
-    "# of Admissions", 
-    "Last Admission Time", 
-    "Score", 
+export const MINIMIZE_TABLE = [
+    ["name", "Role"],
+    ["numberOfAdmissions", "Number of Admissions"],
+    ["timestamp", "Last Admission Time"],
+    ["chronicLoadRatio", "Chronic Load Ratio"]
 ];
 
 export const SCORE_NEW_ROLE = {
@@ -45,10 +45,10 @@ export const SCORE_NEW_ROLE = {
 export const STATIC_TIMES = ["16:00", "17:00", "19:00"];
 
 export const START_TIMES = [
-    { value: "FOURPM", label: "4PM" },
-    { value: "FIVEPM", label: "5PM" },
-    { value: "SEVENPM", label: "7PM" },
-    { value: "CUSTOM", label: "Custom "}
+    { value: "FOURPM", label: "4:00PM" },
+    { value: "FIVEPM", label: "5:00PM" },
+    { value: "SEVENPM", label: "7:00PM" },
+    { value: "CUSTOM", label: "Custom " }
 ];
 
 export const SHIFT_TYPES = [
@@ -138,6 +138,7 @@ export const FOURPM = [
     {
         admissionsId: "1",
         name: "DA",
+        shiftTimePeriod: "7AM-7PM", 
         displayName: "DA (7AM-7PM)",
         roleStartTime: "07:00",
         numberOfAdmissions: "6",
@@ -146,6 +147,7 @@ export const FOURPM = [
     {
         admissionsId: "2",
         name: "S1",
+        shiftTimePeriod: "10AM-8PM",
         displayName: "S1 (10AM-8PM)",
         roleStartTime: "10:00",
         numberOfAdmissions: "5",
@@ -154,6 +156,7 @@ export const FOURPM = [
     {
         admissionsId: "3",
         name: "S2",
+        shiftTimePeriod: "11AM-9PM",
         displayName: "S2 (11AM-9PM)",
         roleStartTime: "11:00",
         numberOfAdmissions: "3",
@@ -162,6 +165,7 @@ export const FOURPM = [
     {
         admissionsId: "4",
         name: "S3",
+        shiftTimePeriod: "1PM-11PM",
         displayName: "S3 (1PM-11PM)",
         roleStartTime: "13:00",
         numberOfAdmissions: "2",
@@ -170,6 +174,7 @@ export const FOURPM = [
     {
         admissionsId: "5",
         name: "S4",
+        shiftTimePeriod: "2PM-12AM",
         displayName: "S4 (2PM-12AM)",
         roleStartTime: "14:00",
         numberOfAdmissions: "1",
@@ -181,6 +186,7 @@ export const FIVEPM = [
     {
         admissionsId: "1",
         name: "S1",
+        shiftTimePeriod: "10AM-8PM",
         displayName: "S1 (10AM-8PM)",
         roleStartTime: "10:00",
         numberOfAdmissions: "4",
@@ -189,6 +195,7 @@ export const FIVEPM = [
     {
         admissionsId: "2",
         name: "S2",
+        shiftTimePeriod: "11AM-9PM",
         displayName: "S2 (11AM-9PM)",
         roleStartTime: "11:00",
         numberOfAdmissions: "3",
@@ -197,6 +204,7 @@ export const FIVEPM = [
     {
         admissionsId: "3",
         name: "S3",
+        shiftTimePeriod: "1PM-11PM",
         displayName: "S3 (1PM-11PM)",
         roleStartTime: "13:00",
         numberOfAdmissions: "2",
@@ -205,6 +213,7 @@ export const FIVEPM = [
     {
         admissionsId: "4",
         name: "S4",
+        shiftTimePeriod: "2PM-12AM",
         displayName: "S4 (2PM-12AM)",
         roleStartTime: "14:00",
         numberOfAdmissions: "1",
@@ -213,6 +222,7 @@ export const FIVEPM = [
     {
         admissionsId: "5",
         name: "N5",
+        shiftTimePeriod: "5PM-5AM",
         displayName: "N5 (5PM-5AM)",
         roleStartTime: "17:00",
         numberOfAdmissions: "0",
@@ -225,6 +235,7 @@ export const SEVENPM = [
     {
         admissionsId: "1",
         name: "S2",
+        shiftTimePeriod: "11AM-9PM",
         displayName: "S2 (11AM-9PM)",
         roleStartTime: "11:00",
         numberOfAdmissions: "3",
@@ -233,6 +244,7 @@ export const SEVENPM = [
     {
         admissionsId: "2",
         name: "S3",
+        shiftTimePeriod: "1PM-11PM",
         displayName: "S3 (1PM-11PM)",
         roleStartTime: "13:00",
         numberOfAdmissions: "2",
@@ -241,6 +253,7 @@ export const SEVENPM = [
     {
         admissionsId: "3",
         name: "S4",
+        shiftTimePeriod: "2PM-12AM",
         displayName: "S4 (2PM-12AM)",
         roleStartTime: "14:00",
         numberOfAdmissions: "1",
@@ -249,6 +262,7 @@ export const SEVENPM = [
     {
         admissionsId: "8",
         name: "N5",
+        shiftTimePeriod: "5PM-5AM",
         displayName: "N5 (5PM-5AM)",
         roleStartTime: "17:00",
         numberOfAdmissions: "0",
@@ -257,6 +271,7 @@ export const SEVENPM = [
     {
         admissionsId: "4",
         name: "N1",
+        shiftTimePeriod: "7PM-7AM",
         displayName: "N1 (7PM-7AM)",
         roleStartTime: "19:00",
         numberOfAdmissions: "0",
@@ -266,6 +281,7 @@ export const SEVENPM = [
     {
         admissionsId: "5",
         name: "N2",
+        shiftTimePeriod: "7PM-7AM",
         displayName: "N2 (7PM-7AM)",
         roleStartTime: "19:00",
         numberOfAdmissions: "0",
@@ -275,6 +291,7 @@ export const SEVENPM = [
     {
         admissionsId: "6",
         name: "N3",
+        shiftTimePeriod: "7PM-7AM",
         displayName: "N3 (7PM-7AM)",
         roleStartTime: "19:00",
         numberOfAdmissions: "0",
@@ -284,6 +301,7 @@ export const SEVENPM = [
     {
         admissionsId: "7",
         name: "N4",
+        shiftTimePeriod: "7PM-7AM",
         displayName: "N4 (7PM-7AM)",
         roleStartTime: "19:00",
         numberOfAdmissions: "0",
@@ -291,7 +309,6 @@ export const SEVENPM = [
         isStatic: true
     }
 ];
-
 
 export const FOURPM_DATA = {
     shifts: FOURPM,
@@ -311,3 +328,5 @@ export const CUSTOM_DATA = {
     shifts: [],
     startTime: "12:00"
 }
+
+export const ADMISSIONS_FORMAT = "[Role] [Number of admits] / [Hours worked so far] [Last timestamp]"

@@ -11,7 +11,11 @@ import {
     CUSTOM_DATA,
     DATA_TYPE_INT,
     DATA_TYPE_TIME,
-    CHRONIC_LOAD_RATIO_THRESHOLD
+    CHRONIC_LOAD_RATIO_THRESHOLD,
+    ADMISSIONS_FORMAT,
+    TIME_FORMAT,
+    MINIMIZE_TABLE,
+    EXPAND_TABLE
 } from "./constants";
 import copybutton from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
@@ -21,7 +25,7 @@ import CONFIG1 from "./config";
 const CONFIG = CONFIG1;
 
 export function App() {
-    const localData = localStorage.getItem('admissionsData');
+    const localData = localStorage.getItem("admissionsData");
 
     const [admissionsData, setAdmissionsData] = useState(localData ? JSON.parse(localData) : FOURPM_DATA)
     const [sorted, setSorted] = useState("");
@@ -33,9 +37,9 @@ export function App() {
     const [selectCustom, setSelectCustom] = useState(false);
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
-        if (localStorage.getItem("admissionsData")){
+        if (localStorage.getItem("admissionsData")) {
             const admissionsDataLocalStorage = JSON.parse(localStorage.getItem("admissionsData"));
-            setAdmissionsData(admissionsDataLocalStorage);     
+            setAdmissionsData(admissionsDataLocalStorage);
         }
 
         sortMain(admissionsData);
@@ -60,7 +64,7 @@ export function App() {
     }
 
     const sortByTimestampAndCompositeScore = (timeObj) => {
-        timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
+        timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
             each["startTime"] = timeObj.startTime;
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
             each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
@@ -69,42 +73,43 @@ export function App() {
         });
 
         const explanationArr = [];
+        explanationArr.push("\n");
         explanationArr.push("Step 1: Sort based on timestamp");
 
         /*
         Step 1: Step 1: Sort based on timestamp 
         */
         timeObj && timeObj.shifts && timeObj.shifts.sort(function (a, b) {
-            return moment(a.timestamp, "hh:mm").diff(moment(b.timestamp, "hh:mm"));
+            return moment(a.timestamp, TIME_FORMAT).diff(moment(b.timestamp, TIME_FORMAT));
         });
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            explanationArr.push(`${each.name}: ${each.timestamp} | ${each.chronicLoadRatio}`)
+            explanationArr.push(`${each.name}: ${moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT)} | ${each.chronicLoadRatio}`)
         });
 
         /*
         Step 2: For each admitter, if chronic load ratio is >0.66, then deprioritize in the order 
         (either putting in back or pushing back by X spots depending on how great the ratio is)
         */
-        // const threshold = 0.66;
         const shiftsLessThanThreshold = [];
         const shiftsGreaterThanThreshold = [];
-        explanationArr.push(`Step 2: Determine the admitter's with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}`);
+        explanationArr.push("\n");
+        explanationArr.push(`Step 2: Determine the admitter"s with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}`);
 
         timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
-            if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD){
+            if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) {
                 explanationArr.push(`${each.name}: ${each.timestamp} | ${each.chronicLoadRatio}`);
                 shiftsGreaterThanThreshold.push(each);
             } else {
                 shiftsLessThanThreshold.push(each);
             }
         });
-
-        explanationArr.push(`Step 3: Put the admitter's with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD} to the back of the queue`)
+        explanationArr.push("\n");
+        explanationArr.push(`Step 3: Put the admitter"s with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD} to the back of the queue`)
         const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
 
         shiftsCombined.forEach((each, eachIndex) => {
             explanationArr.push(`${each.name}: ${each.timestamp} | ${each.chronicLoadRatio}`)
-        });        
+        });
 
         timeObj.shifts = shiftsCombined;
 
@@ -112,13 +117,16 @@ export function App() {
 
         const sortRoles = [];
         const sortRolesNameOnly = [];
+        sortRoles.push("\n");
         timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            sortRolesNameOnly.push(each.name);
-            sortRoles.push(`${each.name} ${each.numberOfAdmissions} ${each.numberOfHoursWorked} ${moment(each.timestamp, "H:mm").format("H:mm")}`);
+            if (each.numberOfHoursWorked + "" !== "0") {
+                sortRolesNameOnly.push(each.name);
+                sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT)}`);
+            }
 
         });
-
-        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(timeObj.startTime, "H:mm").format("H:mma")}` : "");
+        sortRoles.push("\n");
+        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(timeObj.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
 
         setSorted(sortRoles);
@@ -194,6 +202,14 @@ export function App() {
             item.admissionsId === admissionsId && name ? { ...item, [name]: value } : item
         )
 
+        updatedShifts.forEach((each, eachIndex) => {
+            each["startTime"] = admissionsData.startTime;
+            each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
+            each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
+            each["chronicLoadRatio"] = getChronicLoadRatio(each);
+            each["score"] = getCompositeScore(each);
+        });
+
         newObj["startTime"] = admissionsData.startTime;
         newObj["shifts"] = updatedShifts ? updatedShifts : [];
 
@@ -204,14 +220,15 @@ export function App() {
     }
 
     const getChronicLoadRatio = (admission) => {
-        if (admission.isStatic) {
-            return admission.chronicLoadRatio;
+        const timeDifference = admission.numberOfHoursWorked;
+        if (timeDifference+"" == "0"){
+            return "---";
         } else {
-            const timeDifference = admission.numberOfHoursWorked;
-            const chronicLoadRatio = (Number(admission.numberOfAdmissions) / (timeDifference)).toFixed(2);
+            const chronicLoadRatio = (Number(admission.numberOfAdmissions) / (Number(timeDifference))).toFixed(2);
 
             return chronicLoadRatio;
         }
+
     }
 
     const getNumberOfHoursWorked = (admission) => {
@@ -223,14 +240,14 @@ export function App() {
         });
 
         const now = admission.startTime;
-        const timeDifference = moment(now, "HH:mm").diff(moment(startTime, "HH:mm"), "hours", true).toFixed();
+        const timeDifference = moment(now, TIME_FORMAT).diff(moment(startTime, TIME_FORMAT), "hours", true).toFixed();
         return timeDifference;
 
     }
 
     const getMinutesWorkedFromStartTime = (admission) => {
-        const now = moment(admission.startTime, "HH:mm");
-        const timeDifference = moment(now, "HH:mm").diff(moment(admission.timestamp, "HH:mm"), "minutes", true).toFixed();
+        const now = moment(admission.startTime, TIME_FORMAT);
+        const timeDifference = moment(now, TIME_FORMAT).diff(moment(admission.timestamp, TIME_FORMAT), "minutes", true).toFixed();
         return timeDifference;
     }
 
@@ -245,7 +262,7 @@ export function App() {
                     // //4 goes to 5 and 5 goes to 7, but not in reverse
                     // if (prevSelectedTime == "16:00" && startTime == "17:00"){
                     //     //S1, S2, S3, S4 carry over from 4PM to 5PM
-                        
+
                     // }
                     // if ((prevSelectedTime == "17:00" && startTime == "19:00")){
                     //     //S2, S3, S4, N5 carry over from 5PM to 7PM
@@ -259,10 +276,10 @@ export function App() {
                         case "FIVEPM":
                             // const prevS1_timestamp = "";
                             // const prevS1_numberOfAdmissions = "";
-                            
+
                             // const prevS2_timestamp = "";
                             // const prevS2_numberOfAdmissions = "";
-                            
+
                             // const prevS3 = "";
                             // const prevS4 = "";
                             // let FIVEPM_DATAX = FIVEPM_DATA;
@@ -272,7 +289,7 @@ export function App() {
                             //         [`prev${shift.name}_timestamp`] = shift.timestamp;
                             //     }
                             // })
-                            
+
                             sortMain(FIVEPM_DATA);
                             break;
                         case "SEVENPM":
@@ -286,7 +303,7 @@ export function App() {
                             sortMain(FOURPM_DATA);
                             break;
                     }
-     
+
                 }
                 }>
                 {START_TIMES.map((startTime, startTimeIndex) => {
@@ -302,21 +319,21 @@ export function App() {
     });
 
     const sortedData = admissionsData && [...admissionsData.shifts].sort((a, b) => {
-        if (sortConfig.key == "name"){
-            if (moment(a.roleStartTime, "hh:mm").isBefore(moment(b.roleStartTime, "hh:mm"))) {
+        if (sortConfig.key == "name") {
+            if (moment(a.roleStartTime, TIME_FORMAT).isBefore(moment(b.roleStartTime, TIME_FORMAT))) {
                 return sortConfig.direction === "ascending" ? -1 : 1;
             }
-            if (moment(a.roleStartTime, "hh:mm").isAfter(moment(b.roleStartTime, "hh:mm"))) {
+            if (moment(a.roleStartTime, TIME_FORMAT).isAfter(moment(b.roleStartTime, TIME_FORMAT))) {
                 return sortConfig.direction === "ascending" ? 1 : -1;
             }
-        } else if (DATA_TYPE_TIME.includes(sortConfig.key)){
-            if (moment(a[sortConfig.key], "hh:mm").isBefore(moment(b[sortConfig.key], "hh:mm"))) {
+        } else if (DATA_TYPE_TIME.includes(sortConfig.key)) {
+            if (moment(a[sortConfig.key], TIME_FORMAT).isBefore(moment(b[sortConfig.key], TIME_FORMAT))) {
                 return sortConfig.direction === "ascending" ? -1 : 1;
             }
-            if (moment(a[sortConfig.key], "hh:mm").isAfter(moment(b[sortConfig.key], "hh:mm"))) {
+            if (moment(a[sortConfig.key], TIME_FORMAT).isAfter(moment(b[sortConfig.key], TIME_FORMAT))) {
                 return sortConfig.direction === "ascending" ? 1 : -1;
             }
-        } else if (DATA_TYPE_INT.includes(sortConfig.key)){
+        } else if (DATA_TYPE_INT.includes(sortConfig.key)) {
             if (Number(a[sortConfig.key]) < Number(b[sortConfig.key])) {
                 return sortConfig.direction === "ascending" ? -1 : 1;
             }
@@ -349,15 +366,15 @@ export function App() {
         const customShifts = [];
         const customObj = {};
         let admissionId = 0;
-        let userInputTime = moment(customTime, "hh:mma");
-        if (userInputTime.isBefore(moment("07:00", "hh:mma"))) {
-            userInputTime = moment(customTime, "hh:mma").add(1, "days");
+        let userInputTime = moment(customTime, TIME_FORMAT);
+        if (userInputTime.isBefore(moment("07:00", TIME_FORMAT))) {
+            userInputTime = moment(customTime, TIME_FORMAT).add(1, "days");
         }
 
         SHIFT_TYPES.forEach((each, eachIndex) => {
 
-            const momentStartWithThreshold = moment(each.startWithThreshold, "hh:mma");
-            let momentEndWithThreshold = moment(each.endWithThreshold, "hh:mma");
+            const momentStartWithThreshold = moment(each.startWithThreshold, TIME_FORMAT);
+            let momentEndWithThreshold = moment(each.endWithThreshold, TIME_FORMAT);
 
             if (each.type.includes("N")) {
                 momentEndWithThreshold = momentEndWithThreshold.add("1", "days");
@@ -368,6 +385,7 @@ export function App() {
                     admissionsId: admissionId + "",
                     name: each.type,
                     displayName: each.type + " " + each.displayStartTimeToEndTime,
+                    shiftTimePeriod: each.shiftTimePeriod,
                     roleStartTime: each.start,
                     numberOfAdmissions: "",
                     timestamp: ""
@@ -386,10 +404,10 @@ export function App() {
 
         emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, { message: copiedContent, title: title }, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
             (response) => {
-                console.log('SUCCESS!', response.status, response.text);
+                console.log("SUCCESS!", response.status, response.text);
             },
             (error) => {
-                console.log('FAILED...', error);
+                console.log("FAILED...", error);
             },
         );
 
@@ -415,43 +433,26 @@ export function App() {
                 <table>
                     <thead>
                         {openTable ? <tr>
-
-                            <th onClick={() => handleSort("name")}>
-                                Role {sortConfig.key === "name" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                            </th>
-                            <th className="numberofadmissions" onClick={() => handleSort("numberOfAdmissions")}>
-                                # of Admissions {sortConfig.key === "numberOfAdmissions" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                            </th>
-                            <th onClick={() => handleSort("timestamp")}>
-                                Last Admission Time {sortConfig.key === "timestamp" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                            </th>
-                            <th onClick={() => handleSort("compositeScore")}>
-                                Score {sortConfig.key === "compositeScore" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                            </th>
-                            <th onClick={() => handleSort("numberHoursWorked")}>
-                                # Hours Worked {sortConfig.key === "numberHoursWorked" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                            </th>
-                            <th onClick={() => handleSort("numberMinutesWorked")}>
-                                # Minutes Worked {sortConfig.key === "numberMinutesWorked" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                            </th>
-                            <th onClick={() => handleSort("chronicLoadRatio")}>
-                                Chronic Load Ratio{sortConfig.key === "chronicLoadRatio" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                            </th>
-
+                            {
+                                EXPAND_TABLE.map((each, eachIndex) => {
+                                    return (
+                                        <th onClick={() => handleSort(each[0])}>
+                                            {each[1]} {sortConfig.key === each[0] ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                                        </th>
+                                    );
+                                })
+                            }
                         </tr> :
                             <tr>
-                                <th onClick={() => handleSort("name")}>
-                                    Role {sortConfig.key === "name" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                                </th>
-                                <th onClick={() => handleSort("numberOfAdmissions")}>
-                                    # of Admission {sortConfig.key === "numberOfAdmissions" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                                </th>
-                                <th onClick={() => handleSort("timestamp")}>
-                                    Last Admission Time {sortConfig.key === "timestamp" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                                </th>
-                                <th onClick={() => handleSort("compositeScore")}>
-                                    Score {sortConfig.key === "compositeScore" ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
-                                </th>
+                                {
+                                    MINIMIZE_TABLE.map((each, eachIndex) => {
+                                        return (
+                                            <th onClick={() => handleSort(each[0])}>
+                                                {each[1]} {sortConfig.key === each[0] ? (sortConfig.direction === "ascending" ? "↑" : "↓") : "↑"}
+                                            </th>
+                                        );
+                                    })
+                                }
                             </tr>}
                     </thead>
                     <tbody>
@@ -463,11 +464,20 @@ export function App() {
                                 <td>
                                     <input
                                         name="name"
-                                        value={admission.displayName}
+                                        value={admission.name}
                                         type="text"
                                         disabled={true}
                                     />
                                 </td>
+                                {openTable && <td>
+                                    <input
+                                        name="shiftTimePeriod"
+                                        value={admission.shiftTimePeriod}
+                                        type="text"
+                                        placeholder="Enter number"
+                                        disabled={true}
+                                    />
+                                </td>}
                                 <td className="usercanedit">
                                     <input
                                         name="numberOfAdmissions"
@@ -488,39 +498,29 @@ export function App() {
                                         disabled={admission.isStatic}
                                     />
                                 </td>
-                                {<td>
+                                <td>
                                     <input
-
-                                        name="compositeScore"
+                                        name="chronicLoadRatio"
                                         type="text"
-                                        value={admission.score}
+                                        value={admission.chronicLoadRatio}
+                                        disabled={true}
                                         disabled={true}
                                     />
-                                </td>}
+                                </td>
                                 {openTable && <td>
                                     <input
                                         name="numberHoursWorked"
                                         value={admission.numberOfHoursWorked}
                                         type="number"
                                         placeholder="Enter number"
-                                        disabled={admission.isStatic}
+                                        disabled={true}
                                     />
                                 </td>}
                                 {openTable && <td>
                                     <input
-                                        name="numberMinutesWorked"
-                                        value={admission.minutesWorkedFromStartTime}
-                                        type="number"
-                                        placeholder="Enter number"
-                                        disabled={admission.isStatic}
-                                    />
-                                </td>}
-                                {openTable && <td>
-                                    <input
-
-                                        name="chronicLoadRatio"
+                                        name="score"
                                         type="text"
-                                        value={admission.chronicLoadRatio}
+                                        value={admission.score}
                                         disabled={true}
                                     />
                                 </td>}
@@ -542,44 +542,60 @@ export function App() {
                         Generate Queue
                     </button>
                 </section>
-                
-                    <fieldset className="fieldsettocopy">
-                        <img
-                            alt="copy button"
-                            className="copybutton"
-                            src={copybutton}
-                            onClick={(ev) => {
-                                const forWhatTime = moment(admissionsData.startTime, "hh:mm").format("h:mmA");
-                                const copiedMessage = `${sorted.join("\n")}`;
-                                const title = `Admissions by ${forWhatTime}`;
 
-                                navigator.clipboard.writeText(`${copiedMessage}`);
-                                // sendEmail(ev, copiedMessage, title);
+                <fieldset className="fieldsettocopy">
+                    <img
+                        alt="copy button"
+                        className="copybutton"
+                        src={copybutton}
+                        onClick={(ev) => {
+                            const forWhatTime = moment(admissionsData.startTime, TIME_FORMAT).format("h:mmA");
+                            
+                            let copiedMessage = "";
+                            sorted.map((each, eachIndex) => {
+                                if (each == "\n"){
+                                } else {
+                                    copiedMessage += each + "\n";
+                                }
+                            });
 
-                                alert("Order of admissions is successfully copied to your clipboard.")
-                            }} />
 
-                        <p className="bold">
-                            <br/>
-                            {admissionsData.startTime ? `Admissions by ${moment(admissionsData.startTime, "hh:mm").format("h:mmA")}` : `Select a time. No roles in the queue.`}
-                        </p>
-                        {
-                            sorted && sorted.map((each, eachIndex) => {
+                            const title = `Admissions by ${forWhatTime}`;
+
+                            navigator.clipboard.writeText(`${copiedMessage}`);
+                            // sendEmail(ev, copiedMessage, title);
+
+                        }} />
+
+                    <p className="boldCopy">
+                        <br />
+                        {admissionsData.startTime ? `Admissions by ${moment(admissionsData.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : `Select a time. No roles in the queue.`}
+                    </p>
+                    {
+                        sorted && sorted.map((each, eachIndex) => {
+                            if (each == "\n") {
+                                return <br></br>
+                            } else {
                                 return <p className="sorted">{each}</p>
-                            })
-                        }</fieldset>
-                        <p className="admissionsorderlastline">{"(Role) (Number of admits) / (Hours worked so far) (Last timestamp)"}</p>
+                            }
+                        })
+                    }</fieldset>
+                <p className="admissionsorderlastline">{ADMISSIONS_FORMAT}</p>
 
-<button className="seedetails" onClick={() => {
-    setSeeDetails(!seeDetails);
-}
-}>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
-                    
+                <button className="seedetails" onClick={() => {
+                    setSeeDetails(!seeDetails);
+                }
+                }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
+
                 {seeDetails && <fieldset className="notes">
                     <p className="bold">Explanation</p>
 
                     {explanation && explanation.map((line, lineIndex) => {
-                        return <p>{line}</p>
+                        if (line == "\n") {
+                            return <br></br>
+                        } else {
+                            return <p>{line}</p>
+                        }
                     })}
                     {/* Set Weight <input
                     className="weight"
@@ -593,7 +609,7 @@ export function App() {
                     placeholder={"Set weight"}
                 /> */}
                 </fieldset>}
-                
+
                 <div className="footer">
                     <img
                         alt="copy button"

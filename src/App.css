@@ -177,7 +177,7 @@ img.copybutton {
   float: right;
   width: 25px;
   opacity: 0.5;
-  margin: 3px;
+  margin-top: 8px;
 }
 
 img.copybutton:hover {
@@ -185,7 +185,7 @@ img.copybutton:hover {
   float: right;
   width: 25px;
   opacity: 1;
-  margin: 3px;
+  margin-top: 8px;
 }
 
 h1 {
@@ -200,7 +200,7 @@ h2 {
 
 p {
   font-size: 20px;
-  text-align: center;
+  text-align: left;
   margin: 5px;
   font-size: 18px;
 }
@@ -211,15 +211,34 @@ p[class="admissionsordertitle"] {
 
 p[class="admissionsorderlastline"] {
   font-size: 12px;
+  text-align: center;
+}
+
+p.sorted {
+  text-align: left;
 }
 
 p.bold {
   font-weight: bold;
+  text-align: center;
+}
+
+p.boldCopy {
+  font-weight: bold;
+  margin-top: -20px;
+  text-align: center;
 }
 
 fieldset {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 500px;
+  width: 50%;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+fieldset.fieldsettocopy {
+  background-color: rgba(217, 221, 146, 0.2);
+  width: 50%;
   margin: auto;
   margin-bottom: 10px;
 }
@@ -274,23 +293,31 @@ input[class="timeperiodbyrole"] {
     width: 92%;
   }
 
-  select, input, p, tr, th, button {
+  select,
+  input,
+  p,
+  tr,
+  th,
+  button {
     font-size: 14px;
   }
+
   p[class=admissionsorderlastline] {
     font-size: 10px;
   }
+
   tr th,
   select {
-  font-size: 12px;
-  padding: 3px;
-  /* white-space: nowrap; */
-}
-  input{
+    font-size: 12px;
+    padding: 3px;
+    /* white-space: nowrap; */
+  }
+
+  input {
     font-size: 12px;
   }
 
-  section{
+  section {
     margin: 20px;
   }
 
