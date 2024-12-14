@@ -95,8 +95,8 @@ tr td {
 tr td.usercanedit {
   /* background-color: rgba(80, 63, 205, 0.1); */
   padding: 10px;
-  outline: 1px solid black;
-  outline-offset: -10px;
+  /* outline: 1px solid black;
+  outline-offset: -10px; */
 }
 
 tr.firstup {
@@ -180,6 +180,14 @@ img.copybutton {
   margin-top: 8px;
 }
 
+img.copybuttonjust1line {
+  all: unset;
+  float: right;
+  width: 25px;
+  opacity: 0.5;
+  margin-top: -3px;
+}
+
 img.copybutton:hover {
   all: unset;
   float: right;
@@ -194,7 +202,7 @@ h1 {
 
 h2 {
   font-size: 20px;
-  margin-top: -58px;
+  margin-top: -48px;
   margin-bottom: 40px;
 }
 
@@ -218,15 +226,19 @@ p.sorted {
   text-align: left;
 }
 
+div.sortedWithButton {
+  width: 50%;
+}
+
 p.bold {
   font-weight: bold;
-  text-align: center;
+  text-align: left;
 }
 
 p.boldCopy {
   font-weight: bold;
-  margin-top: -20px;
-  text-align: center;
+  margin-top: -10px;
+  text-align: left;
 }
 
 fieldset {

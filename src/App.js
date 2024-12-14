@@ -19,7 +19,6 @@ import {
 } from "./constants";
 import copybutton from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
-import sadqueuelogo from "./images/sadqueuelogo.png";
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
 const CONFIG = CONFIG1;
@@ -35,6 +34,11 @@ export function App() {
     const [weight, setWeight] = useState(0.3);
     const [sortedTableToDisplay, setSortedTableToDisplay] = useState(admissionsData && admissionsData.shifts ? admissionsData.shifts : []);
     const [selectCustom, setSelectCustom] = useState(false);
+    const [sortConfig, setSortConfig] = useState({
+        key: "name",
+        direction: "ascending",
+    });
+    
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         if (localStorage.getItem("admissionsData")) {
@@ -43,6 +47,9 @@ export function App() {
         }
 
         sortMain(admissionsData);
+        setSortConfig({ key: "name", direction: "ascending" })
+        handleSort("name");
+
 
         /*const firebaseConfig = {
             apiKey: CONFIG.REACT_APP_FIREBASE_API_KEY,
@@ -70,6 +77,8 @@ export function App() {
             each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
             each["chronicLoadRatio"] = getChronicLoadRatio(each);
             each["score"] = getCompositeScore(each);
+            each["numberOfAdmissions"] = each.numberOfAdmissions ? each.numberOfAdmissions : "";
+            return true;
         });
 
         const explanationArr = [];
@@ -83,7 +92,7 @@ export function App() {
             return moment(a.timestamp, TIME_FORMAT).diff(moment(b.timestamp, TIME_FORMAT));
         });
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            explanationArr.push(`${each.name}: ${moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT)} | ${each.chronicLoadRatio}`)
+            explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`)
         });
 
         /*
@@ -97,18 +106,19 @@ export function App() {
 
         timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
             if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) {
-                explanationArr.push(`${each.name}: ${each.timestamp} | ${each.chronicLoadRatio}`);
+                explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp) } | ${each.chronicLoadRatio}`);
                 shiftsGreaterThanThreshold.push(each);
             } else {
                 shiftsLessThanThreshold.push(each);
             }
+            return true;
         });
         explanationArr.push("\n");
         explanationArr.push(`Step 3: Put the admitter"s with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD} to the back of the queue`)
         const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
 
         shiftsCombined.forEach((each, eachIndex) => {
-            explanationArr.push(`${each.name}: ${each.timestamp} | ${each.chronicLoadRatio}`)
+            explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`)
         });
 
         timeObj.shifts = shiftsCombined;
@@ -121,7 +131,7 @@ export function App() {
         timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             if (each.numberOfHoursWorked + "" !== "0") {
                 sortRolesNameOnly.push(each.name);
-                sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT)}`);
+                sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
             }
 
         });
@@ -132,6 +142,10 @@ export function App() {
         setSorted(sortRoles);
         setSortedTableToDisplay(timeObj.shifts);
         setAdmissionsData(timeObj);
+    }
+
+    const getMomentTimeWithoutUndefined = (time) => {
+        return time ? moment(time, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"
     }
 
     const getCompositeScore = (admission) => {
@@ -150,11 +164,11 @@ export function App() {
             const compositeScore = partA + partD;
             score = Number(compositeScore.toFixed(3));
         }
-        return score;
+        return score ? score : "";
     }
 
     const sortByCompositeScore = (timeObj) => {
-        timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
+        timeObj && timeObj.shifts && timeObj.forEach.forEach((each, eachIndex) => {
             each["startTime"] = timeObj.startTime;
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
             each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
@@ -181,11 +195,11 @@ export function App() {
         const sortRolesNameOnly = [];
         timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             sortRolesNameOnly.push(each.name);
-            sortRoles.push(`${each.name} ${each.numberOfAdmissions} ${each.numberOfHoursWorked} ${moment(each.timestamp, "H:mm").format("H:mm")}`);
+            sortRoles.push(`${each.name} ${each.numberOfAdmissions} ${each.numberOfHoursWorked} ${getMomentTimeWithoutUndefined(each.timestamp)}`);
 
         });
 
-        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(timeObj.startTime, "H:mm").format("H:mma")}` : "");
+        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${getMomentTimeWithoutUndefined(timeObj.startTime)}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
 
         setSorted(sortRoles);
@@ -221,12 +235,13 @@ export function App() {
 
     const getChronicLoadRatio = (admission) => {
         const timeDifference = admission.numberOfHoursWorked;
-        if (timeDifference+"" == "0"){
+        const chronicLoadRatio = (Number(admission.numberOfAdmissions) / (Number(timeDifference))).toFixed(2);
+
+        if (chronicLoadRatio == "NaN") {
             return "---";
         } else {
-            const chronicLoadRatio = (Number(admission.numberOfAdmissions) / (Number(timeDifference))).toFixed(2);
-
             return chronicLoadRatio;
+
         }
 
     }
@@ -246,7 +261,7 @@ export function App() {
     }
 
     const getMinutesWorkedFromStartTime = (admission) => {
-        const now = moment(admission.startTime, TIME_FORMAT);
+        const now = getMomentTimeWithoutUndefined(admission.startTime);
         const timeDifference = moment(now, TIME_FORMAT).diff(moment(admission.timestamp, TIME_FORMAT), "minutes", true).toFixed();
         return timeDifference;
     }
@@ -313,51 +328,42 @@ export function App() {
         );
     }
 
-    const [sortConfig, setSortConfig] = useState({
-        key: "name",
-        direction: "ascending",
-    });
-
-    const sortedData = admissionsData && [...admissionsData.shifts].sort((a, b) => {
-        if (sortConfig.key == "name") {
-            if (moment(a.roleStartTime, TIME_FORMAT).isBefore(moment(b.roleStartTime, TIME_FORMAT))) {
-                return sortConfig.direction === "ascending" ? -1 : 1;
-            }
-            if (moment(a.roleStartTime, TIME_FORMAT).isAfter(moment(b.roleStartTime, TIME_FORMAT))) {
-                return sortConfig.direction === "ascending" ? 1 : -1;
-            }
-        } else if (DATA_TYPE_TIME.includes(sortConfig.key)) {
-            if (moment(a[sortConfig.key], TIME_FORMAT).isBefore(moment(b[sortConfig.key], TIME_FORMAT))) {
-                return sortConfig.direction === "ascending" ? -1 : 1;
-            }
-            if (moment(a[sortConfig.key], TIME_FORMAT).isAfter(moment(b[sortConfig.key], TIME_FORMAT))) {
-                return sortConfig.direction === "ascending" ? 1 : -1;
-            }
-        } else if (DATA_TYPE_INT.includes(sortConfig.key)) {
-            if (Number(a[sortConfig.key]) < Number(b[sortConfig.key])) {
-                return sortConfig.direction === "ascending" ? -1 : 1;
-            }
-            if (Number(a[sortConfig.key]) > Number(b[sortConfig.key])) {
-                return sortConfig.direction === "ascending" ? 1 : -1;
-            }
-        } else {
-            if (a[sortConfig.key] < b[sortConfig.key]) {
-                return sortConfig.direction === "ascending" ? -1 : 1;
-            }
-            if (a[sortConfig.key] > b[sortConfig.key]) {
-                return sortConfig.direction === "ascending" ? 1 : -1;
-            }
-        }
-
-        return 0;
-    });
-
     const handleSort = (key) => {
         let direction = "ascending";
-        if (sortConfig.key === key && sortConfig.direction === "ascending") {
-            direction = "descending";
-        }
+        // if (sortConfig.key === key && sortConfig.direction === "ascending") {
+        //     direction = "descending";
+        // }
         setSortConfig({ key, direction });
+
+        const sortedData = admissionsData && admissionsData.shifts.sort((a, b) => {
+            if (sortConfig.key == "name") {
+                if (moment(a.roleStartTime, TIME_FORMAT).isBefore(moment(b.roleStartTime, TIME_FORMAT))) {
+                    return sortConfig.direction === "ascending" ? -1 : 1;
+                } else {
+                    return sortConfig.direction === "ascending" ? 1 : -1;
+                }
+            } else if (DATA_TYPE_TIME.includes(sortConfig.key)) {
+                if (moment(a[sortConfig.key], TIME_FORMAT).isBefore(moment(b[sortConfig.key], TIME_FORMAT))) {
+                    return sortConfig.direction === "ascending" ? -1 : 1;
+                } else {
+                    return sortConfig.direction === "ascending" ? 1 : -1;
+                }
+            } else if (DATA_TYPE_INT.includes(sortConfig.key)) {
+                if (Number(a[sortConfig.key]) < Number(b[sortConfig.key])) {
+                    return sortConfig.direction === "ascending" ? -1 : 1;
+                } else {
+                    return sortConfig.direction === "ascending" ? 1 : -1;
+                }
+            } else {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === "ascending" ? -1 : 1;
+                } else {
+                    return sortConfig.direction === "ascending" ? 1 : -1;
+                }
+            }
+        });
+
+
         setSortedTableToDisplay(sortedData);
     };
 
@@ -474,7 +480,6 @@ export function App() {
                                         name="shiftTimePeriod"
                                         value={admission.shiftTimePeriod}
                                         type="text"
-                                        placeholder="Enter number"
                                         disabled={true}
                                     />
                                 </td>}
@@ -484,8 +489,8 @@ export function App() {
                                         value={admission.numberOfAdmissions}
                                         step="1"
                                         type="number"
+                                        placeholder="---"
                                         onChange={(e) => onChange(e, admission.admissionsId)}
-                                        placeholder="Enter number"
                                         disabled={admission.isStatic}
                                     />
                                 </td>
@@ -544,16 +549,16 @@ export function App() {
                 </section>
 
                 <fieldset className="fieldsettocopy">
-                    <img
+                    {admissionsData.shifts && admissionsData.shifts.length > 0 && <img
                         alt="copy button"
                         className="copybutton"
                         src={copybutton}
                         onClick={(ev) => {
                             const forWhatTime = moment(admissionsData.startTime, TIME_FORMAT).format("h:mmA");
-                            
+
                             let copiedMessage = "";
                             sorted.map((each, eachIndex) => {
-                                if (each == "\n"){
+                                if (each == "\n") {
                                 } else {
                                     copiedMessage += each + "\n";
                                 }
@@ -565,7 +570,7 @@ export function App() {
                             navigator.clipboard.writeText(`${copiedMessage}`);
                             // sendEmail(ev, copiedMessage, title);
 
-                        }} />
+                        }} />}
 
                     <p className="boldCopy">
                         <br />
@@ -575,11 +580,30 @@ export function App() {
                         sorted && sorted.map((each, eachIndex) => {
                             if (each == "\n") {
                                 return <br></br>
+                            } else if (eachIndex == sorted.length - 1) {
+                                return <div className="sortedWithButton">
+                                    <p>{each}
+                                        {admissionsData.shifts && admissionsData.shifts.length > 0 && <img
+                                        alt="copy button"
+                                        className="copybuttonjust1line"
+                                        src={copybutton}
+                                        onClick={(ev) => {
+
+                                            navigator.clipboard.writeText(sorted[sorted.length - 1]);
+                                            // sendEmail(ev, copiedMessage, title);
+
+                                        }} />}
+                                        </p>
+
+                                </div>
+
                             } else {
                                 return <p className="sorted">{each}</p>
                             }
                         })
-                    }</fieldset>
+                    }
+
+                </fieldset>
                 <p className="admissionsorderlastline">{ADMISSIONS_FORMAT}</p>
 
                 <button className="seedetails" onClick={() => {
