@@ -12,7 +12,7 @@
 
 <h1>Purpose</h1><a name="purpose"></a>
 Purpose of this UI tool is for hospitalists to generate the order of admissions at a certain timestamp. User can click the dropdown and select a timestamp. The options are 4PM, 5PM, 7PM or a custom time the user can select.
-The deployed website link: https://sadqueue.github.io/sad/
+The deployed website link <a href=https://sadqueue.github.io/sad/" target="_blank">here</a>.
 
 <h2>Example Screenshots</h2><a name="examplescreenshots"></a>
 
@@ -81,9 +81,11 @@ If you are currently running another app on port 3000, the console will ask you 
 <p><img width="100%" alt="Screenshot 2024-12-10 at 2 00 29 PM" src="https://github.com/user-attachments/assets/74b900aa-15d3-49b6-ab00-d685c1b7e07f"></p>
 
 <h2>Technologies Used</h2><a name="tech"></a>
-1. React
-2. Javascript
-3. EmailJS
-4. Firebase DB
-
+<ul>
+    <li>React</li>
+    <li>ulJavascript</li>
+    <li>EmailJS</li>
+    <li>Firebase DB</li>
+</ul>
+</ul>
 
