@@ -340,7 +340,7 @@ const handleSort = (key) => {
 
     setSortConfig(sortConfig);
 
-    admissionsData && admissionsData.shifts.sort((a, b) => {
+    const updatedShifts = admissionsData && [...admissionsData.shifts].sort((a, b) => {
         if (DATA_TYPE_TIME.includes(key)) {
             if (moment(a[key], TIME_FORMAT).isBefore(moment(b[key], TIME_FORMAT))) {
                 return sortConfig[key] ? -1 : 1;
@@ -355,14 +355,14 @@ const handleSort = (key) => {
             }
         } else {
             if (a[key] < b[key]) {
-                return sortConfig[key] ? -1 : 1;
+                return sortConfig[key]? -1 : 1;
             } else {
                 return sortConfig[key] ? 1 : -1;
             }
         }
 
     });
-    setSortedTableToDisplay(admissionsData.shifts);
+    setSortedTableToDisplay(updatedShifts);
 };
 
 const handleCustomTime = (target) => {
