@@ -24,9 +24,9 @@ import CONFIG1 from "./config";
 const CONFIG = CONFIG1;
 
 export function App() {
-    const localStorage_admissionsData = localStorage.getItem("admissionsData");
-    const localStorage_selectDropdown = localStorage.getItem("selectDropdown");
-    const [admissionsData, setAdmissionsData] = useState(localStorage_admissionsData ? JSON.parse(localStorage_admissionsData) : FOURPM_DATA)
+    // const localStorage_admissionsData = localStorage.getItem("admissionsData");
+    // const localStorage_selectDropdown = localStorage.getItem("selectDropdown");
+    const [admissionsData, setAdmissionsData] = useState(FOURPM_DATA)
     const [sorted, setSorted] = useState("");
     const [seeDetails, setSeeDetails] = useState(false);
     const [explanation, setExplanation] = useState("");
@@ -48,10 +48,10 @@ export function App() {
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
-        if (localStorage.getItem("admissionsData")) {
-            const admissionsDataLocalStorage = JSON.parse(localStorage.getItem("admissionsData"));
-            setAdmissionsData(admissionsDataLocalStorage);
-        }
+        // if (localStorage.getItem("admissionsData")) {
+        //     const admissionsDataLocalStorage = JSON.parse(localStorage.getItem("admissionsData"));
+        //     setAdmissionsData(admissionsDataLocalStorage);
+        // }
 
         sortMain(admissionsData);
         
@@ -144,8 +144,9 @@ export function App() {
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
 
         setSorted(sortRoles);
-        // setSortedTableToDisplay(timeObj.shifts);
-        // setAdmissionsData(timeObj);
+        setSortedTableToDisplay(timeObj.shifts);
+        setAdmissionsData(timeObj);
+        handleSort("name");
     }
 
     const getMomentTimeWithoutUndefined = (time) => {
@@ -234,7 +235,7 @@ export function App() {
         setAdmissionsData(newObj);
         setSortedTableToDisplay(newObj.shifts);
         // sortMain(newObj);
-        localStorage.setItem("admissionsData", JSON.stringify(newObj));
+        // localStorage.setItem("admissionsData", JSON.stringify(newObj));
     }
 
     const getChronicLoadRatio = (admission) => {
@@ -355,9 +356,7 @@ export function App() {
                     return sortConfig[key] ? 1 : -1;
                 }
             } else {
-                if (isFromGenerateButton){
-                    return 1;
-                } else if (a[key] < b[key]) {
+                if (a[key] < b[key]) {
                     return sortConfig[key] ? -1 : 1;
                 } else {
                     return sortConfig[key] ? 1 : -1;
