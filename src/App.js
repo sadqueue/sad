@@ -32,7 +32,7 @@ export function App() {
     const [explanation, setExplanation] = useState("");
     const [openTable, setOpenTable] = useState(false);
     const [weight, setWeight] = useState(0.3);
-    const [sortedTableToDisplay, setSortedTableToDisplay] = useState(admissionsData && admissionsData.shifts ? admissionsData.shifts : []);
+    // const [sortedTableToDisplay, setSortedTableToDisplay] = useState(admissionsData && admissionsData.shifts ? admissionsData.shifts : []);
     const [selectCustom, setSelectCustom] = useState(false);
     const [isCopied, setIsCopied] = useState(false)
     const [sortConfig, setSortConfig] = useState(
@@ -75,14 +75,14 @@ export function App() {
     }
 
     const sortByTimestampAndCompositeScore = (timeObj) => {
-        timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
+        timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
             each["startTime"] = timeObj.startTime;
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
             each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
             each["chronicLoadRatio"] = getChronicLoadRatio(each);
             each["score"] = getCompositeScore(each);
             each["numberOfAdmissions"] = each.numberOfAdmissions ? each.numberOfAdmissions : "";
-            // return true;
+            return each;
         });
 
         const explanationArr = [];
@@ -108,14 +108,13 @@ export function App() {
         explanationArr.push("\n");
         explanationArr.push(`Step 2: Determine the admitter"s with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}`);
 
-        timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
+        timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) {
                 explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`);
                 shiftsGreaterThanThreshold.push(each);
             } else {
                 shiftsLessThanThreshold.push(each);
             }
-            return true;
         });
         explanationArr.push("\n");
         explanationArr.push(`Step 3: Put the admitter"s with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD} to the back of the queue`)
@@ -144,9 +143,41 @@ export function App() {
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
 
         setSorted(sortRoles);
-        setSortedTableToDisplay(timeObj.shifts);
+        // setSortedTableToDisplay(timeObj);
         setAdmissionsData(timeObj);
-        handleSort("name");
+        // handleSort("name");
+    }
+
+    const setInitialForDropdown = (timeObj) => {
+        timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
+            each["startTime"] = timeObj.startTime;
+            each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
+            each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
+            each["chronicLoadRatio"] = getChronicLoadRatio(each);
+            each["score"] = getCompositeScore(each);
+            each["numberOfAdmissions"] = each.numberOfAdmissions ? each.numberOfAdmissions : "";
+            return each;
+        });
+
+
+        const sortRoles = [];
+        const sortRolesNameOnly = [];
+        sortRoles.push("\n");
+        timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
+            if (each.numberOfHoursWorked + "" !== "0") {
+                sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
+            }
+            sortRolesNameOnly.push(each.name);
+
+        });
+
+        sortRoles.push("\n");
+        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(timeObj.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
+        sortRoles.push(`${sortRolesNameOnly.join(">")}`);
+
+        setSorted(sortRoles);
+        setAdmissionsData(timeObj);
+
     }
 
     const getMomentTimeWithoutUndefined = (time) => {
@@ -172,46 +203,6 @@ export function App() {
         return score ? score : "";
     }
 
-    const sortByCompositeScore = (timeObj) => {
-        timeObj && timeObj.shifts && timeObj.forEach.forEach((each, eachIndex) => {
-            each["startTime"] = timeObj.startTime;
-            each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
-            each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
-            each["chronicLoadRatio"] = getChronicLoadRatio(each);
-            each["score"] = getCompositeScore(each);
-        });
-
-        timeObj && timeObj.shifts && timeObj.shifts.sort(function (a, b) {
-            return a.score - b.score;
-        });
-
-        const explanationArr = [];
-        explanationArr.push("Formula to get a composite score for each role:")
-        timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            if (SCORE_NEW_ROLE[each.startTime] && SCORE_NEW_ROLE[each.startTime].includes(each.name)) {
-                explanationArr.push(`Role ${each.name}: (180 - ${each.minutesWorkedFromStartTime}) / 180 = ${each.score}`);
-            } else {
-                explanationArr.push(`Role ${each.name}: (${weight} * ${each.chronicLoadRatio}) + (${(1 - weight).toFixed(3)} * (180 - ${each.minutesWorkedFromStartTime}) / 180) = ${each.score}`);
-            }
-        })
-        setExplanation(explanationArr);
-
-        const sortRoles = [];
-        const sortRolesNameOnly = [];
-        timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            sortRolesNameOnly.push(each.name);
-            sortRoles.push(`${each.name} ${each.numberOfAdmissions} ${each.numberOfHoursWorked} ${getMomentTimeWithoutUndefined(each.timestamp)}`);
-
-        });
-
-        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${getMomentTimeWithoutUndefined(timeObj.startTime)}` : "");
-        sortRoles.push(`${sortRolesNameOnly.join(">")}`);
-
-        setSorted(sortRoles);
-        setSortedTableToDisplay(timeObj.shifts);
-        setAdmissionsData(timeObj);
-    }
-
     const onChange = (e, admissionsId) => {
         const { name, value } = e.target
 
@@ -233,7 +224,7 @@ export function App() {
         newObj["shifts"] = updatedShifts ? updatedShifts : [];
 
         setAdmissionsData(newObj);
-        setSortedTableToDisplay(newObj.shifts);
+        // setSortedTableToDisplay(newObj.shifts);
         // sortMain(newObj);
         // localStorage.setItem("admissionsData", JSON.stringify(newObj));
     }
@@ -277,50 +268,23 @@ export function App() {
                 className="timesdropdown"
                 onChange={e => {
                     const startTime = e.target.value;
-                    // const prevSelectedTime = admissionsData.startTime; //"16:00"
-
-                    // //4 goes to 5 and 5 goes to 7, but not in reverse
-                    // if (prevSelectedTime == "16:00" && startTime == "17:00"){
-                    //     //S1, S2, S3, S4 carry over from 4PM to 5PM
-
-                    // }
-                    // if ((prevSelectedTime == "17:00" && startTime == "19:00")){
-                    //     //S2, S3, S4, N5 carry over from 5PM to 7PM
-                    // }
                     setSelectCustom(false);
 
                     switch (startTime) {
                         case "FOURPM":
-                            sortMain(FOURPM_DATA);
+                            setInitialForDropdown(FOURPM_DATA);
                             break;
                         case "FIVEPM":
-                            // const prevS1_timestamp = "";
-                            // const prevS1_numberOfAdmissions = "";
-
-                            // const prevS2_timestamp = "";
-                            // const prevS2_numberOfAdmissions = "";
-
-                            // const prevS3 = "";
-                            // const prevS4 = "";
-                            // let FIVEPM_DATAX = FIVEPM_DATA;
-
-                            // admissionsData.shifts.forEach((shift, shiftIndex) => {
-                            //     if (CARRYOVER_FOUR_TO_FIVEPM.includes(shift.name)){
-                            //         [`prev${shift.name}_timestamp`] = shift.timestamp;
-                            //     }
-                            // })
-
-                            sortMain(FIVEPM_DATA);
+                            setInitialForDropdown(FIVEPM_DATA);
                             break;
                         case "SEVENPM":
-                            sortMain(SEVENPM_DATA);
+                            setInitialForDropdown(SEVENPM_DATA);
                             break;
                         case "CUSTOM":
-                            setSelectCustom(true);
-                            sortMain(CUSTOM_DATA);
+                            setInitialForDropdown(CUSTOM_DATA);
                             break;
                         default:
-                            sortMain(FOURPM_DATA);
+                            setInitialForDropdown(CUSTOM_DATA);
                             break;
                     }
 
@@ -342,7 +306,7 @@ export function App() {
 
         setSortConfig(sortConfig);
 
-        const updatedShifts = admissionsData && [...admissionsData.shifts].sort((a, b) => {
+        const updatedShifts = admissionsData && admissionsData.shifts.sort((a, b) => {
             if (DATA_TYPE_TIME.includes(key)) {
                 if (moment(a[key], TIME_FORMAT).isBefore(moment(b[key], TIME_FORMAT))) {
                     return sortConfig[key] ? -1 : 1;
@@ -364,7 +328,11 @@ export function App() {
             }
 
         });
-        setSortedTableToDisplay(updatedShifts);
+        let returnObj = {};
+        returnObj.startTime = admissionsData.startTime;
+        returnObj.shifts = updatedShifts;
+
+        setAdmissionsData(returnObj);
     };
 
     const handleCustomTime = (target) => {
@@ -453,7 +421,9 @@ export function App() {
                                 {
                                     MINIMIZE_TABLE.map((each, eachIndex) => {
                                         return (
-                                            <th onClick={() => handleSort(each[0])}>
+                                            <th onClick={() => {
+                                                handleSort(each[0]);
+                                                }}>
                                                 {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
                                             </th>
                                         );
@@ -462,7 +432,7 @@ export function App() {
                             </tr>}
                     </thead>
                     <tbody>
-                        {sortedTableToDisplay.map((admission) => (
+                        {admissionsData.shifts.map((admission) => (
                             !admission.isStatic &&
                             <tr
                                 className={admissionsData.shifts && admissionsData.shifts && admissionsData.shifts.length > 0 && admissionsData.shifts[0].name === admission.name ? "firstup" : ""}
