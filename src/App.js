@@ -300,7 +300,7 @@ export function App() {
         );
     }
 
-    const handleSort = (key, isFromGenerateButton) => {
+    const handleSort = (key) => {
 
         sortConfig[key] = !sortConfig[key];
 
