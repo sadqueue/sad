@@ -141,8 +141,8 @@ export const FOURPM = [
         shiftTimePeriod: "7AM-7PM", 
         displayName: "DA (7AM-7PM)",
         roleStartTime: "07:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "5",
+        timestamp: "14:30"
     },
     {
         admissionsId: "2",
@@ -150,8 +150,8 @@ export const FOURPM = [
         shiftTimePeriod: "10AM-8PM",
         displayName: "S1 (10AM-8PM)",
         roleStartTime: "10:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "3",
+        timestamp: "14:30"
     },
     {
         admissionsId: "3",
@@ -159,8 +159,8 @@ export const FOURPM = [
         shiftTimePeriod: "11AM-9PM",
         displayName: "S2 (11AM-9PM)",
         roleStartTime: "11:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "3",
+        timestamp: "14:30"
     },
     {
         admissionsId: "4",
@@ -168,8 +168,8 @@ export const FOURPM = [
         shiftTimePeriod: "1PM-11PM",
         displayName: "S3 (1PM-11PM)",
         roleStartTime: "13:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "1",
+        timestamp: "14:30"
     },
     {
         admissionsId: "5",
@@ -177,8 +177,8 @@ export const FOURPM = [
         shiftTimePeriod: "2PM-12AM",
         displayName: "S4 (2PM-12AM)",
         roleStartTime: "14:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "1",
+        timestamp: "14:30"
     }
 ];
 
@@ -189,8 +189,8 @@ export const FIVEPM = [
         shiftTimePeriod: "10AM-8PM",
         displayName: "S1 (10AM-8PM)",
         roleStartTime: "10:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "4",
+        timestamp: "15:30"
     },
     {
         admissionsId: "2",
@@ -198,8 +198,8 @@ export const FIVEPM = [
         shiftTimePeriod: "11AM-9PM",
         displayName: "S2 (11AM-9PM)",
         roleStartTime: "11:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "3",
+        timestamp: "15:30"
     },
     {
         admissionsId: "3",
@@ -207,8 +207,8 @@ export const FIVEPM = [
         shiftTimePeriod: "1PM-11PM",
         displayName: "S3 (1PM-11PM)",
         roleStartTime: "13:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "3",
+        timestamp: "15:30"
     },
     {
         admissionsId: "4",
@@ -216,8 +216,8 @@ export const FIVEPM = [
         shiftTimePeriod: "2PM-12AM",
         displayName: "S4 (2PM-12AM)",
         roleStartTime: "14:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "2",
+        timestamp: "15:30"
     },
     {
         admissionsId: "5",
@@ -238,8 +238,8 @@ export const SEVENPM = [
         shiftTimePeriod: "11AM-9PM",
         displayName: "S2 (11AM-9PM)",
         roleStartTime: "11:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "5",
+        timestamp: "17:30"
     },
     {
         admissionsId: "2",
@@ -247,8 +247,8 @@ export const SEVENPM = [
         shiftTimePeriod: "1PM-11PM",
         displayName: "S3 (1PM-11PM)",
         roleStartTime: "13:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "4",
+        timestamp: "17:30"
     },
     {
         admissionsId: "3",
@@ -256,8 +256,8 @@ export const SEVENPM = [
         shiftTimePeriod: "2PM-12AM",
         displayName: "S4 (2PM-12AM)",
         roleStartTime: "14:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "3",
+        timestamp: "17:30"
     },
     {
         admissionsId: "8",
@@ -265,8 +265,8 @@ export const SEVENPM = [
         shiftTimePeriod: "5PM-5AM",
         displayName: "N5 (5PM-5AM)",
         roleStartTime: "17:00",
-        numberOfAdmissions: "",
-        timestamp: ""
+        numberOfAdmissions: "1",
+        timestamp: "17:30"
     },
     {
         admissionsId: "4",
