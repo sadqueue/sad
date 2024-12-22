@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import moment from "moment";
 import {
     SHIFT_TYPES,
@@ -27,6 +27,7 @@ export function App() {
     // const localStorage_admissionsData = localStorage.getItem("admissionsData");
     // const localStorage_selectDropdown = localStorage.getItem("selectDropdown");
     const [admissionsData, setAdmissionsData] = useState(FOURPM_DATA)
+    const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState([])
     const [sorted, setSorted] = useState("");
     const [seeDetails, setSeeDetails] = useState(false);
     const [explanation, setExplanation] = useState("");
@@ -54,7 +55,7 @@ export function App() {
         // }
 
         sortMain(admissionsData);
-        
+
         /*const firebaseConfig = {
             apiKey: CONFIG.REACT_APP_FIREBASE_API_KEY,
             authDomain: CONFIG.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -69,7 +70,6 @@ export function App() {
     }, []);
 
     const sortMain = (timeObj) => {
-        // return sortByCompositeScore(timeObj);
         return sortByTimestampAndCompositeScore(timeObj);
 
     }
@@ -117,12 +117,15 @@ export function App() {
             }
         });
         explanationArr.push("\n");
-        explanationArr.push(`Step 3: Put the admitter"s with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD} to the back of the queue`)
+        explanationArr.push(`Step 3: Put the admitter"s with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD} to the back of the queue.`)
         const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
 
         shiftsCombined.forEach((each, eachIndex) => {
             explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`)
         });
+
+        explanationArr.push("\n");
+        explanationArr.push("Chronic Load Ratio: Number of Admissions / Numbers of hours worked");
 
         timeObj.shifts = shiftsCombined;
 
@@ -145,18 +148,46 @@ export function App() {
         setSorted(sortRoles);
         // setSortedTableToDisplay(timeObj);
         setAdmissionsData(timeObj);
+        
+        setAllAdmissionsDataShifts(
+            
+                [
+                    ...allAdmissionsDataShifts,
+                    ...timeObj.shifts
+                ]
+            
+        );
         // handleSort("name");
     }
 
     const setInitialForDropdown = (timeObj) => {
         timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
-            each["startTime"] = timeObj.startTime;
-            each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
-            each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
-            each["chronicLoadRatio"] = getChronicLoadRatio(each);
-            each["score"] = getCompositeScore(each);
-            each["numberOfAdmissions"] = each.numberOfAdmissions ? each.numberOfAdmissions : "";
-            return each;
+            const findRole = "";
+            allAdmissionsDataShifts.map((each, eachIndex) => {
+                if (each.name == timeObj.type){
+                    findRole = each;
+                    return;
+                }
+            })
+            if (findRole){
+                each = findRole;
+                each["startTime"] = timeObj.startTime;
+                each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(findRole);
+                each["numberOfHoursWorked"] = getNumberOfHoursWorked(findRole);
+                each["chronicLoadRatio"] = getChronicLoadRatio(findRole);
+                each["score"] = getCompositeScore(findRole);
+                each["numberOfAdmissions"] = findRole.numberOfAdmissions ? findRole.numberOfAdmissions : "";
+                return each;
+            } else{
+                each["startTime"] = timeObj.startTime;
+                each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
+                each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
+                each["chronicLoadRatio"] = getChronicLoadRatio(each);
+                each["score"] = getCompositeScore(each);
+                each["numberOfAdmissions"] = each.numberOfAdmissions ? each.numberOfAdmissions : "";
+                return each;
+            }
+            
         });
 
 
@@ -177,6 +208,14 @@ export function App() {
 
         setSorted(sortRoles);
         setAdmissionsData(timeObj);
+        setAllAdmissionsDataShifts(
+            
+                [
+                    ...allAdmissionsDataShifts,
+                    timeObj.shifts
+                ]
+            
+        );
 
     }
 
@@ -203,27 +242,43 @@ export function App() {
         return score ? score : "";
     }
 
+    const handleSetAllAdmissionsDataShifts = (obj) => {
+        let updateAdmissionsDataShifts = admissionsData.shifts;
+        obj.shifts.map((each, eachIndex) => {
+            updateAdmissionsDataShifts.map((innerEach, innerEachIndex) => {
+                if (innerEach.name == each.name) {
+                    innerEach = each;
+                }
+            });
+        });
+
+        setAllAdmissionsDataShifts(updateAdmissionsDataShifts);
+    }
+
     const onChange = (e, admissionsId) => {
         const { name, value } = e.target
 
         const newObj = {};
 
-         const updatedShifts = admissionsData && admissionsData.shifts && admissionsData.shifts.map((item) =>
+        const updatedShifts = admissionsData && admissionsData.shifts && admissionsData.shifts.map((item) =>
             item.admissionsId === admissionsId && name ? { ...item, [name]: value } : item
         )
 
-        updatedShifts.forEach((each, eachIndex) => {
+        updatedShifts.map((each, eachIndex) => {
             each["startTime"] = admissionsData.startTime;
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
             each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
             each["chronicLoadRatio"] = getChronicLoadRatio(each);
             each["score"] = getCompositeScore(each);
+            return each;
         });
 
         newObj["startTime"] = admissionsData.startTime;
         newObj["shifts"] = updatedShifts ? updatedShifts : [];
 
         setAdmissionsData(newObj);
+        handleSetAllAdmissionsDataShifts(newObj);
+            
         // setSortedTableToDisplay(newObj.shifts);
         // sortMain(newObj);
         // localStorage.setItem("admissionsData", JSON.stringify(newObj));
@@ -233,8 +288,8 @@ export function App() {
         const timeDifference = admission.numberOfHoursWorked;
         const chronicLoadRatio = (Number(admission.numberOfAdmissions) / (Number(timeDifference))).toFixed(2);
 
-        if (chronicLoadRatio == "NaN") {
-            return "---";
+        if (chronicLoadRatio == "NaN" || chronicLoadRatio == "Infinity") {
+            return "0.00";
         } else {
             return chronicLoadRatio;
 
@@ -281,6 +336,7 @@ export function App() {
                             setInitialForDropdown(SEVENPM_DATA);
                             break;
                         case "CUSTOM":
+                            setSelectCustom(true);
                             setInitialForDropdown(CUSTOM_DATA);
                             break;
                         default:
@@ -291,11 +347,11 @@ export function App() {
                 }
                 }>
                 {START_TIMES.map((startTime, startTimeIndex) => {
-                    return (<option 
+                    return (<option
                         value={`${startTime.value}`}>
-                            {`${startTime.label}`}
-                        </option>);
-                })} 
+                        {`${startTime.label}`}
+                    </option>);
+                })}
             </select>
         );
     }
@@ -333,6 +389,7 @@ export function App() {
         returnObj.shifts = updatedShifts;
 
         setAdmissionsData(returnObj);
+        handleSetAllAdmissionsDataShifts(returnObj);
     };
 
     const handleCustomTime = (target) => {
@@ -347,7 +404,7 @@ export function App() {
 
         SHIFT_TYPES.forEach((each, eachIndex) => {
 
-            const momentStartWithThreshold = moment(each.startWithThreshold, TIME_FORMAT);
+            const momentStartWithThreshold = moment(each.start, TIME_FORMAT);
             let momentEndWithThreshold = moment(each.endWithThreshold, TIME_FORMAT);
 
             if (each.type.includes("N")) {
@@ -355,15 +412,40 @@ export function App() {
             }
 
             if (userInputTime.isAfter(momentStartWithThreshold) && userInputTime.isBefore(momentEndWithThreshold)) {
-                customShifts.push({
-                    admissionsId: admissionId + "",
-                    name: each.type,
-                    displayName: each.type + " " + each.displayStartTimeToEndTime,
-                    shiftTimePeriod: each.shiftTimePeriod,
-                    roleStartTime: each.start,
-                    numberOfAdmissions: "",
-                    timestamp: ""
+                const role = each.type;
+
+                let carryOverRole = "";
+                allAdmissionsDataShifts.map((fromAdmissionsDataEach, fromAdmissionsDataEachIndex) => {
+                    if (role == fromAdmissionsDataEach.name){
+                        carryOverRole = fromAdmissionsDataEach;
+                        return;
+                    }
                 });
+
+                
+                if (carryOverRole){
+                    customShifts.push({
+                        ...carryOverRole,
+                        admissionsId: admissionId + ""
+                    });
+                }
+                 else {
+                    customShifts.push({
+                        admissionsId: admissionId + "",
+                        minutesWorkedFromStartTime: getMinutesWorkedFromStartTime(each),
+                        numberOfHoursWorked: getNumberOfHoursWorked(each),
+                        chronicLoadRatio: getChronicLoadRatio(each),
+                        score: getCompositeScore(each),
+                        numberOfAdmissions: each.numberOfAdmissions,
+                        name: each.type,
+                        displayName: each.type + " " + each.displayStartTimeToEndTime,
+                        shiftTimePeriod: each.shiftTimePeriod,
+                        roleStartTime: each.start,
+                        numberOfAdmissions: "",
+                        timestamp: ""
+                    });
+                }
+                
                 admissionId++;
             }
         });
@@ -385,6 +467,42 @@ export function App() {
             },
         );
 
+    };
+
+    const handleKeyDown = (e, rowIndex) => {
+        const data = admissionsData.shifts;
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (rowIndex < data.length - 1) {
+                const getInputById = document.getElementById(`${e.target.name}_${rowIndex + 1}`);
+
+                if (getInputById) {
+                    getInputById.focus();
+                }
+            }
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault(); // Prevent the default action (scrolling)
+            // Move to the previous row
+            if (rowIndex > 0) {
+                const getInputById = document.getElementById(`${e.target.name}_${rowIndex - 1}`);
+
+                if (getInputById) {
+                    getInputById.focus();
+                }
+            }
+        } else if (e.target.name == "numberOfAdmissions" && e.key === "ArrowRight"){
+
+            const getElementById = document.getElementById(`timestamp_${rowIndex}`);
+            if (getElementById){
+                getElementById.focus();
+            }
+        } else if (e.target.name == "timestamp" && e.key === "ArrowLeft"){
+
+            const getElementById = document.getElementById(`numberOfAdmissions_${rowIndex}`);
+            if (getElementById){
+                getElementById.focus();
+            }
+        }
     };
     return (
         <div>
@@ -423,7 +541,7 @@ export function App() {
                                         return (
                                             <th onClick={() => {
                                                 handleSort(each[0]);
-                                                }}>
+                                            }}>
                                                 {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
                                             </th>
                                         );
@@ -432,11 +550,13 @@ export function App() {
                             </tr>}
                     </thead>
                     <tbody>
-                        {admissionsData.shifts.map((admission) => (
+                        {admissionsData.shifts.map((admission, index) => (
                             !admission.isStatic &&
                             <tr
-                                className={admissionsData.shifts && admissionsData.shifts && admissionsData.shifts.length > 0 && admissionsData.shifts[0].name === admission.name ? "firstup" : ""}
-                                key={admission.admissionsId}>
+                                className={"admissionsDataRow_" + index}
+                                key={admission.admissionsId}
+
+                            >
                                 <td>
                                     <input
                                         name="name"
@@ -453,19 +573,28 @@ export function App() {
                                         disabled={true}
                                     />
                                 </td>}
-                                <td className="usercanedit">
+                                <td className="usercanedit"
+
+                                    tabIndex={-1}
+                                    onKeyDown={(e) => handleKeyDown(e, index)} 
+                                >
                                     <input
+                                        id={`numberOfAdmissions_${index}`}
                                         name="numberOfAdmissions"
                                         value={admission.numberOfAdmissions}
                                         step="1"
-                                        type="number"
+                                        type="text"
                                         placeholder="---"
                                         onChange={(e) => onChange(e, admission.admissionsId)}
                                         disabled={admission.isStatic}
                                     />
                                 </td>
-                                <td className="usercanedit">
+                                <td className="usercanedit"
+                                    tabIndex={-1}
+                                    onKeyDown={(e) => handleKeyDown(e, index)} 
+                                >
                                     <input
+                                        id={`timestamp_${index}`}
                                         name="timestamp"
                                         value={admission.timestamp}
                                         type="time"
@@ -509,6 +638,7 @@ export function App() {
                 <section style={{ textAlign: "center", margin: "30px" }}>
                     <button onClick={() => {
                         sortMain(admissionsData);
+                        handleSort("name", true);
                         // if (admissionsData && admissionsData.shifts) {
                         //     setSortedTableToDisplay(admissionsData.shifts);
                         // }
@@ -520,40 +650,41 @@ export function App() {
                 <fieldset className="fieldsettocopy">
                     {admissionsData.shifts && admissionsData.shifts.length > 0 &&
                         (
-                        <div>
-                            <img
-                                alt="copy button"
-                                className="copybutton"
-                                src={copybutton}
-                                onClick={(ev) => {
-                                    const forWhatTime = moment(admissionsData.startTime, TIME_FORMAT).format("h:mmA");
+                            <div>
+                                <img
+                                    alt="copy button"
+                                    className="copybutton"
+                                    src={copybutton}
+                                    onClick={(ev) => {
+                                        const forWhatTime = moment(admissionsData.startTime, TIME_FORMAT).format("h:mmA");
 
-                                    let copiedMessage = "";
-                                    sorted.map((each, eachIndex) => {
-                                        if (each == "\n") {
-                                        } else if (eachIndex == sorted.length - 1) {
-                                            copiedMessage += each;
-                                        } else {
-                                            copiedMessage += each + "\n";
-                                        }
-                                    });
+                                        let copiedMessage = "";
+                                        sorted.map((each, eachIndex) => {
+                                            if (each == "\n") {
+                                            } else if (eachIndex == sorted.length - 1) {
+                                                copiedMessage += each;
+                                            } else {
+                                                copiedMessage += each + "\n";
+                                            }
+                                        });
 
 
-                                    const title = `Admissions by ${forWhatTime}`;
+                                        const title = `Admissions Update`; // ${forWhatTime}
 
-                                    navigator.clipboard.writeText(`${copiedMessage}`);
-                                    // sendEmail(ev, copiedMessage, title);
-                                    setIsCopied(true);
-                                    setTimeout(() => setIsCopied(false), 1000);
+                                        navigator.clipboard.writeText(`${copiedMessage}`);
+                                        // sendEmail(ev, copiedMessage, title);
+                                        setIsCopied(true);
+                                        setTimeout(() => setIsCopied(false), 1000);
 
-                                }} />
-                            <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
+                                    }} />
+                                <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
 
-                        </div>)
+                            </div>)
                     }
                     <p className="boldCopy">
                         <br />
-                        {admissionsData.startTime ? `Admissions by ${moment(admissionsData.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : `Select a time. No roles in the queue.`}
+                        {admissionsData.startTime ? `Admissions Update` : `Select a time. No roles in the queue.`}
+                        {/* ${moment(admissionsData.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
                     </p>
                     {
                         sorted && sorted.map((each, eachIndex) => {
