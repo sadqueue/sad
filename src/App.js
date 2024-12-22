@@ -153,7 +153,7 @@ export function App() {
             
                 [
                     ...allAdmissionsDataShifts,
-                    ...timeObj.shifts
+                    timeObj.shifts
                 ]
             
         );
@@ -243,7 +243,7 @@ export function App() {
     }
 
     const handleSetAllAdmissionsDataShifts = (obj) => {
-        let updateAdmissionsDataShifts = admissionsData.shifts;
+        let updateAdmissionsDataShifts = obj.shifts;
         obj.shifts.map((each, eachIndex) => {
             updateAdmissionsDataShifts.map((innerEach, innerEachIndex) => {
                 if (innerEach.name == each.name) {
