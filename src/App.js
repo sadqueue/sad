@@ -46,6 +46,7 @@ export function App() {
             "score": true
         }
     );
+    const [customObj, setCustomObj] = useState({})
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
@@ -163,9 +164,9 @@ export function App() {
     const setInitialForDropdown = (timeObj) => {
         timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
             const findRole = "";
-            allAdmissionsDataShifts.map((each, eachIndex) => {
-                if (each.name == timeObj.type){
-                    findRole = each;
+            allAdmissionsDataShifts.map((innereach, innereachIndex) => {
+                if (each.name == innereach.type){
+                    findRole = innereach;
                     return;
                 }
             })
@@ -394,6 +395,7 @@ export function App() {
 
     const handleCustomTime = (target) => {
         const customTime = target;
+
         const customShifts = [];
         const customObj = {};
         let admissionId = 0;
@@ -451,6 +453,8 @@ export function App() {
         });
         customObj["startTime"] = customTime;
         customObj["shifts"] = customShifts;
+
+        setCustomObj(customObj);
 
         sortMain(customObj);
     }
@@ -520,7 +524,7 @@ export function App() {
                         handleCustomTime(e.target.value);
                     }}
                     placeholder="Enter time"
-                    defaultValue={"12:00"}
+                    defaultValue={customObj.startTime}
                 />}
                 <table>
                     <thead>
