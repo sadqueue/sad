@@ -58,7 +58,8 @@ export const SHIFT_TYPES = [
         end: "19:00",
         displayStartTimeToEndTime: "(7AM-7PM)",
         startWithThreshold: "05:30",
-        endWithThreshold: "17:30"
+        endWithThreshold: "17:00",
+        shiftTimePeriod: "7AM-7PM"
     },
     {
         type: "S1",
@@ -66,7 +67,8 @@ export const SHIFT_TYPES = [
         end: "20:00",
         displayStartTimeToEndTime: "(10AM-8PM)",
         startWithThreshold: "08:30",
-        endWithThreshold: "18:30"
+        endWithThreshold: "18:30",
+        shiftTimePeriod: "10AM-8PM"
     },
     {
         type: "S2",
@@ -74,7 +76,8 @@ export const SHIFT_TYPES = [
         end: "21:00",
         displayStartTimeToEndTime: "(11AM-9PM)",
         startWithThreshold: "09:30",
-        endWithThreshold: "19:30"
+        endWithThreshold: "19:30",
+        shiftTimePeriod: "11AM-9PM"
     },
     {
         type: "S3",
@@ -82,7 +85,8 @@ export const SHIFT_TYPES = [
         end: "23:00",
         displayStartTimeToEndTime: "(1PM-11PM)",
         startWithThreshold: "11:30",
-        endWithThreshold: "21:30"
+        endWithThreshold: "21:30",
+        shiftTimePeriod: "1PM-11PM"
     },
     {
         type: "S4",
@@ -90,7 +94,8 @@ export const SHIFT_TYPES = [
         end: "00:00",
         displayStartTimeToEndTime: "(2PM-12AM)",
         startWithThreshold: "12:30",
-        endWithThreshold: "22:30"
+        endWithThreshold: "22:30",
+        shiftTimePeriod: "2PM-12AM"
     },
     {
         type: "N5",
@@ -98,7 +103,8 @@ export const SHIFT_TYPES = [
         end: "05:00",
         displayStartTimeToEndTime: "(5PM-5AM)",
         startWithThreshold: "15:30",
-        endWithThreshold: "03:30"
+        endWithThreshold: "03:30",
+        shiftTimePeriod: "5PM-5AM"
     },
     {
         type: "N1",
@@ -106,7 +112,8 @@ export const SHIFT_TYPES = [
         end: "07:00",
         displayStartTimeToEndTime: "(7PM-7AM)",
         startWithThreshold: "17:30",
-        endWithThreshold: "05:30"
+        endWithThreshold: "05:30",
+        shiftTimePeriod: "7PM-7AM"
     },
     {
         type: "N2",
@@ -114,7 +121,8 @@ export const SHIFT_TYPES = [
         end: "07:00",
         displayStartTimeToEndTime: "(7PM-7AM)",
         startWithThreshold: "17:30",
-        endWithThreshold: "05:30"
+        endWithThreshold: "05:30",
+        shiftTimePeriod: "7PM-7AM"
     },
     {
         type: "N3",
@@ -122,7 +130,8 @@ export const SHIFT_TYPES = [
         end: "07:00",
         displayStartTimeToEndTime: "(7PM-7AM)",
         startWithThreshold: "17:30",
-        endWithThreshold: "05:30"
+        endWithThreshold: "05:30",
+        shiftTimePeriod: "7PM-7AM"
     },
     {
         type: "N4",
@@ -130,7 +139,8 @@ export const SHIFT_TYPES = [
         end: "07:00",
         displayStartTimeToEndTime: "(7PM-7AM)",
         startWithThreshold: "17:30",
-        endWithThreshold: "05:30"
+        endWithThreshold: "05:30",
+        shiftTimePeriod: "7PM-7AM",
     }
 ];
 
