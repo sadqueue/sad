@@ -46,7 +46,6 @@ export function App() {
             "score": true
         }
     );
-    const [customObj, setCustomObj] = useState({})
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
@@ -150,14 +149,7 @@ export function App() {
         // setSortedTableToDisplay(timeObj);
         setAdmissionsData(timeObj);
         
-        setAllAdmissionsDataShifts(
-            
-                [
-                    ...allAdmissionsDataShifts,
-                    timeObj.shifts
-                ]
-            
-        );
+        handleSetAllAdmissionsDataShifts(timeObj);
         // handleSort("name");
     }
 
@@ -209,14 +201,7 @@ export function App() {
 
         setSorted(sortRoles);
         setAdmissionsData(timeObj);
-        setAllAdmissionsDataShifts(
-            
-                [
-                    ...allAdmissionsDataShifts,
-                    timeObj.shifts
-                ]
-            
-        );
+        handleSetAllAdmissionsDataShifts(timeObj);
 
     }
 
@@ -319,8 +304,6 @@ export function App() {
     }
 
     const getValuesFromExistingAdmissionsDate = (customTime) => {
-        // const customTime = target;
-
         const customShifts = [];
         const customObj = {};
         let admissionId = 0;
@@ -379,9 +362,9 @@ export function App() {
         customObj["startTime"] = customTime;
         customObj["shifts"] = customShifts;
 
-        setCustomObj(customObj);
-
-        sortMain(customObj);
+        // sortMain(customObj);
+        // handleSort("name");
+        setAdmissionsData(customObj);
 
         return customObj;
     }
