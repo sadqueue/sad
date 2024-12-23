@@ -214,15 +214,6 @@ export function App() {
     }
 
     const handleSetAllAdmissionsDataShifts = (obj) => {
-        // let updateAdmissionsDataShifts = obj.shifts;
-        // obj.shifts.map((each, eachIndex) => {
-        //     updateAdmissionsDataShifts.map((innerEach, innerEachIndex) => {
-        //         if (innerEach.name == each.name) {
-        //             innerEach = each;
-        //         }
-        //     });
-        // });
-
         const newObj = Object.assign([], allAdmissionsDataShifts, obj.shifts)
         setAllAdmissionsDataShifts(newObj);
     }
@@ -349,8 +340,6 @@ export function App() {
         customObj["shifts"] = customShifts;
 
         sortMain(customObj);
-        // handleSort("name");
-
         setAdmissionsData(customObj);
 
         return customObj;
@@ -427,6 +416,10 @@ export function App() {
             sortRolesNameOnly.push(each.name);
 
         });
+
+        if (admissionsDatax.startTime == "19:00"){
+            sortRolesNameOnly.push("N1", "N2", "N3", "N4");
+        }
         sortRoles.push("\n");
         sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(admissionsDatax.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
