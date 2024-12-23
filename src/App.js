@@ -362,7 +362,7 @@ export function App() {
         customObj["startTime"] = customTime;
         customObj["shifts"] = customShifts;
 
-        // sortMain(customObj);
+        sortMain(customObj);
         // handleSort("name");
         setAdmissionsData(customObj);
 
