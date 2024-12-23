@@ -131,22 +131,7 @@ export function App() {
 
         setExplanation(explanationArr);
 
-        const sortRoles = [];
-        const sortRolesNameOnly = [];
-        sortRoles.push("\n");
-        timeObj && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            if (each.numberOfHoursWorked + "" !== "0") {
-                sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
-            }
-            sortRolesNameOnly.push(each.name);
-
-        });
-        sortRoles.push("\n");
-        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(timeObj.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
-        sortRoles.push(`${sortRolesNameOnly.join(">")}`);
-
-        setSorted(sortRoles);
-        // setSortedTableToDisplay(timeObj);
+        sortByAscendingChronicLoadRatio(admissionsData);
         setAdmissionsData(timeObj);
         
         handleSetAllAdmissionsDataShifts(timeObj);
@@ -322,7 +307,7 @@ export function App() {
                 momentEndWithThreshold = momentEndWithThreshold.add("1", "days");
             }
 
-            if (userInputTime.isSameOrAfter(momentStart) && userInputTime.isBefore(momentEndWithThreshold)) {
+            if (userInputTime.isAfter(momentStart) && userInputTime.isBefore(momentEndWithThreshold)) {
                 const role = each.type;
 
                 let carryOverRole = "";
@@ -425,6 +410,32 @@ export function App() {
         setAdmissionsData(returnObj);
         handleSetAllAdmissionsDataShifts(returnObj);
     }
+
+    const sortByAscendingChronicLoadRatio = (admissionsDatax) => {
+        const sortRoles = [];
+        const sortRolesNameOnly = [];
+        sortRoles.push("\n");
+
+        const timeObj = admissionsDatax.shifts.sort((a, b) => {
+            return a.chronicLoadRatio - b.chronicLoadRatio;
+          });
+
+          timeObj.forEach((each, eachIndex) => {
+            if (each.numberOfHoursWorked + "" !== "0") {
+                sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
+            }
+            sortRolesNameOnly.push(each.name);
+
+        });
+        sortRoles.push("\n");
+        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(admissionsDatax.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
+        sortRoles.push(`${sortRolesNameOnly.join(">")}`);
+
+        setSorted(sortRoles);
+
+        return timeObj;
+    }
+
     const handleSort = (key) => {
 
         sortConfig[key] = !sortConfig[key];
