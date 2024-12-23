@@ -133,7 +133,7 @@ export function App() {
 
         sortByAscendingChronicLoadRatio(admissionsData);
         setAdmissionsData(timeObj);
-        
+
         handleSetAllAdmissionsDataShifts(timeObj);
         sortByAscendingName(timeObj);
     }
@@ -142,12 +142,12 @@ export function App() {
         timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
             const findRole = "";
             allAdmissionsDataShifts.map((innereach, innereachIndex) => {
-                if (each.name == innereach.type){
+                if (each.name == innereach.type) {
                     findRole = innereach;
                     return;
                 }
             })
-            if (findRole){
+            if (findRole) {
                 each = findRole;
                 each["startTime"] = timeObj.startTime;
                 each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(findRole);
@@ -156,7 +156,7 @@ export function App() {
                 each["score"] = getCompositeScore(findRole);
                 each["numberOfAdmissions"] = findRole.numberOfAdmissions ? findRole.numberOfAdmissions : "";
                 return each;
-            } else{
+            } else {
                 each["startTime"] = timeObj.startTime;
                 each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
                 each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
@@ -165,7 +165,7 @@ export function App() {
                 each["numberOfAdmissions"] = each.numberOfAdmissions ? each.numberOfAdmissions : "";
                 return each;
             }
-            
+
         });
 
 
@@ -183,7 +183,7 @@ export function App() {
         sortRoles.push("\n");
         sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(timeObj.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
-        
+
         setSorted(sortRoles);
         setAdmissionsData(timeObj);
         handleSetAllAdmissionsDataShifts(timeObj);
@@ -250,7 +250,7 @@ export function App() {
 
         setAdmissionsData(newObj);
         handleSetAllAdmissionsDataShifts(newObj);
-            
+
         // setSortedTableToDisplay(newObj.shifts);
         // sortMain(newObj);
         // localStorage.setItem("admissionsData", JSON.stringify(newObj));
@@ -312,20 +312,20 @@ export function App() {
 
                 let carryOverRole = "";
                 allAdmissionsDataShifts.map((fromAdmissionsDataEach, fromAdmissionsDataEachIndex) => {
-                    if (role == fromAdmissionsDataEach.name){
+                    if (role == fromAdmissionsDataEach.name) {
                         carryOverRole = fromAdmissionsDataEach;
                         return;
                     }
                 });
 
-                
-                if (carryOverRole){
+
+                if (carryOverRole) {
                     customShifts.push({
                         ...carryOverRole,
                         admissionsId: admissionId + ""
                     });
                 }
-                 else {
+                else {
                     customShifts.push({
                         admissionsId: admissionId + "",
                         minutesWorkedFromStartTime: getMinutesWorkedFromStartTime(each),
@@ -341,7 +341,7 @@ export function App() {
                         timestamp: ""
                     });
                 }
-                
+
                 admissionId++;
             }
         });
@@ -350,7 +350,7 @@ export function App() {
 
         sortMain(customObj);
         // handleSort("name");
-        
+
         setAdmissionsData(customObj);
 
         return customObj;
@@ -401,7 +401,7 @@ export function App() {
     const sortByAscendingName = (admissionsDatax) => {
         const returnObjShifts = admissionsDatax.shifts.sort((a, b) => {
             return ROLE_ORDER.indexOf(a.name) - ROLE_ORDER.indexOf(b.name);
-          });
+        });
 
         let returnObj = {};
         returnObj.startTime = admissionsDatax.startTime;
@@ -418,9 +418,9 @@ export function App() {
 
         const timeObj = admissionsDatax.shifts.sort((a, b) => {
             return a.chronicLoadRatio - b.chronicLoadRatio;
-          });
+        });
 
-          timeObj.forEach((each, eachIndex) => {
+        timeObj.forEach((each, eachIndex) => {
             if (each.numberOfHoursWorked + "" !== "0") {
                 sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
             }
@@ -511,16 +511,16 @@ export function App() {
                     getInputById.focus();
                 }
             }
-        } else if (e.target.name == "numberOfAdmissions" && e.key === "ArrowRight"){
+        } else if (e.target.name == "numberOfAdmissions" && e.key === "ArrowRight") {
 
             const getElementById = document.getElementById(`timestamp_${rowIndex}`);
-            if (getElementById){
+            if (getElementById) {
                 getElementById.focus();
             }
-        } else if (e.target.name == "timestamp" && e.key === "ArrowLeft"){
+        } else if (e.target.name == "timestamp" && e.key === "ArrowLeft") {
 
             const getElementById = document.getElementById(`numberOfAdmissions_${rowIndex}`);
-            if (getElementById){
+            if (getElementById) {
                 getElementById.focus();
             }
         }
@@ -597,7 +597,7 @@ export function App() {
                                 <td className="usercanedit"
 
                                     tabIndex={-1}
-                                    onKeyDown={(e) => handleKeyDown(e, index)} 
+                                    onKeyDown={(e) => handleKeyDown(e, index)}
                                 >
                                     <input
                                         id={`numberOfAdmissions_${index}`}
@@ -612,7 +612,7 @@ export function App() {
                                 </td>
                                 <td className="usercanedit"
                                     tabIndex={-1}
-                                    onKeyDown={(e) => handleKeyDown(e, index)} 
+                                    onKeyDown={(e) => handleKeyDown(e, index)}
                                 >
                                     <input
                                         id={`timestamp_${index}`}
@@ -659,7 +659,7 @@ export function App() {
                 <section style={{ textAlign: "center", margin: "30px" }}>
                     <button onClick={() => {
                         sortMain(admissionsData);
-              
+
                     }}>
                         Generate Queue
                     </button>
