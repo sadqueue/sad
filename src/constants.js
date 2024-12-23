@@ -1,8 +1,6 @@
 export const THRESHOLD = 90;
 export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.66;
 
-export const CARRYOVER_FOUR_TO_FIVEPM = ["S1", "S2", "S3", "S4"];
-
 export const TIME_FORMAT = "h:mmA"; //hh:mm for non military
 
 export const DATA_TYPE_INT = [
