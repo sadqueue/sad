@@ -318,83 +318,8 @@ export function App() {
         return timeDifference;
     }
 
-    const timesDropdown = () => {
-        return (
-            <select
-                className="timesdropdown"
-                onChange={e => {
-                    const startTime = e.target.value;
-                    setSelectCustom(false);
-
-                    switch (startTime) {
-                        case "FOURPM":
-                            setInitialForDropdown(FOURPM_DATA);
-                            break;
-                        case "FIVEPM":
-                            setInitialForDropdown(FIVEPM_DATA);
-                            break;
-                        case "SEVENPM":
-                            setInitialForDropdown(SEVENPM_DATA);
-                            break;
-                        case "CUSTOM":
-                            setSelectCustom(true);
-                            setInitialForDropdown(CUSTOM_DATA);
-                            break;
-                        default:
-                            setInitialForDropdown(CUSTOM_DATA);
-                            break;
-                    }
-
-                }
-                }>
-                {START_TIMES.map((startTime, startTimeIndex) => {
-                    return (<option
-                        value={`${startTime.value}`}>
-                        {`${startTime.label}`}
-                    </option>);
-                })}
-            </select>
-        );
-    }
-
-    const handleSort = (key) => {
-
-        sortConfig[key] = !sortConfig[key];
-
-        setSortConfig(sortConfig);
-
-        const updatedShifts = admissionsData && admissionsData.shifts.sort((a, b) => {
-            if (DATA_TYPE_TIME.includes(key)) {
-                if (moment(a[key], TIME_FORMAT).isBefore(moment(b[key], TIME_FORMAT))) {
-                    return sortConfig[key] ? -1 : 1;
-                } else {
-                    return sortConfig[key] ? 1 : -1;
-                }
-            } else if (DATA_TYPE_INT.includes(key)) {
-                if (Number(a[key]) < Number(b[key])) {
-                    return sortConfig[key] ? -1 : 1;
-                } else {
-                    return sortConfig[key] ? 1 : -1;
-                }
-            } else {
-                if (a[key] < b[key]) {
-                    return sortConfig[key] ? -1 : 1;
-                } else {
-                    return sortConfig[key] ? 1 : -1;
-                }
-            }
-
-        });
-        let returnObj = {};
-        returnObj.startTime = admissionsData.startTime;
-        returnObj.shifts = updatedShifts;
-
-        setAdmissionsData(returnObj);
-        handleSetAllAdmissionsDataShifts(returnObj);
-    };
-
-    const handleCustomTime = (target) => {
-        const customTime = target;
+    const getValuesFromExistingAdmissionsDate = (customTime) => {
+        // const customTime = target;
 
         const customShifts = [];
         const customObj = {};
@@ -457,6 +382,91 @@ export function App() {
         setCustomObj(customObj);
 
         sortMain(customObj);
+
+        return customObj;
+    }
+
+    const timesDropdown = () => {
+        return (
+            <select
+                className="timesdropdown"
+                onChange={e => {
+                    const startTime = e.target.value;
+                    setSelectCustom(false);
+                    let getObj = {};
+                    switch (startTime) {
+                        case "FOURPM":
+                            getObj = getValuesFromExistingAdmissionsDate(moment("16:00", TIME_FORMAT).format("HH:mm"));
+                            setInitialForDropdown(getObj);
+                            break;
+                        case "FIVEPM":
+                            getObj = getValuesFromExistingAdmissionsDate(moment("17:00", TIME_FORMAT).format("HH:mm"));
+                            setInitialForDropdown(getObj);
+                            break;
+                        case "SEVENPM":
+                            getObj = getValuesFromExistingAdmissionsDate(moment("19:00", TIME_FORMAT).format("HH:mm"));
+                            setInitialForDropdown(getObj);
+                            break;
+                        case "CUSTOM":
+                            setSelectCustom(true);
+                            getObj = getValuesFromExistingAdmissionsDate(moment().format("HH:mm"));
+                            setInitialForDropdown(getObj);
+                            break;
+                        default:
+                            setInitialForDropdown(CUSTOM_DATA);
+                            break;
+                    }
+
+                }
+                }>
+                {START_TIMES.map((startTime, startTimeIndex) => {
+                    return (<option
+                        value={`${startTime.value}`}>
+                        {`${startTime.label}`}
+                    </option>);
+                })}
+            </select>
+        );
+    }
+
+    const handleSort = (key) => {
+
+        sortConfig[key] = !sortConfig[key];
+
+        setSortConfig(sortConfig);
+
+        const updatedShifts = admissionsData && admissionsData.shifts.sort((a, b) => {
+            if (DATA_TYPE_TIME.includes(key)) {
+                if (moment(a[key], TIME_FORMAT).isBefore(moment(b[key], TIME_FORMAT))) {
+                    return sortConfig[key] ? -1 : 1;
+                } else {
+                    return sortConfig[key] ? 1 : -1;
+                }
+            } else if (DATA_TYPE_INT.includes(key)) {
+                if (Number(a[key]) < Number(b[key])) {
+                    return sortConfig[key] ? -1 : 1;
+                } else {
+                    return sortConfig[key] ? 1 : -1;
+                }
+            } else {
+                if (a[key] < b[key]) {
+                    return sortConfig[key] ? -1 : 1;
+                } else {
+                    return sortConfig[key] ? 1 : -1;
+                }
+            }
+
+        });
+        let returnObj = {};
+        returnObj.startTime = admissionsData.startTime;
+        returnObj.shifts = updatedShifts;
+
+        setAdmissionsData(returnObj);
+        handleSetAllAdmissionsDataShifts(returnObj);
+    };
+
+    const handleCustomTime = (target) => {
+        getValuesFromExistingAdmissionsDate(target);
     }
 
     const sendEmail = (e, copiedContent, title) => {
@@ -524,7 +534,7 @@ export function App() {
                         handleCustomTime(e.target.value);
                     }}
                     placeholder="Enter time"
-                    defaultValue={customObj.startTime}
+                    defaultValue={moment().format("HH:mm")}
                 />}
                 <table>
                     <thead>
@@ -660,8 +670,6 @@ export function App() {
                                     className="copybutton"
                                     src={copybutton}
                                     onClick={(ev) => {
-                                        const forWhatTime = moment(admissionsData.startTime, TIME_FORMAT).format("h:mmA");
-
                                         let copiedMessage = "";
                                         sorted.map((each, eachIndex) => {
                                             if (each == "\n") {

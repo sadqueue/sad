@@ -58,7 +58,7 @@ export const SHIFT_TYPES = [
         end: "19:00",
         displayStartTimeToEndTime: "(7AM-7PM)",
         startWithThreshold: "05:30",
-        endWithThreshold: "17:00",
+        endWithThreshold: "17:0",
         shiftTimePeriod: "7AM-7PM"
     },
     {
