@@ -1,12 +1,10 @@
 import "./App.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import {
     SHIFT_TYPES,
     START_TIMES,
     FOURPM_DATA,
-    FIVEPM_DATA,
-    SEVENPM_DATA,
     SCORE_NEW_ROLE,
     CUSTOM_DATA,
     DATA_TYPE_INT,
@@ -15,7 +13,8 @@ import {
     ADMISSIONS_FORMAT,
     TIME_FORMAT,
     MINIMIZE_TABLE,
-    EXPAND_TABLE
+    EXPAND_TABLE,
+    ROLE_ORDER
 } from "./constants";
 import copybutton from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
@@ -150,7 +149,7 @@ export function App() {
         setAdmissionsData(timeObj);
         
         handleSetAllAdmissionsDataShifts(timeObj);
-        // handleSort("name");
+        sortByAscendingName();
     }
 
     const setInitialForDropdown = (timeObj) => {
@@ -198,7 +197,7 @@ export function App() {
         sortRoles.push("\n");
         sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(timeObj.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
-
+        
         setSorted(sortRoles);
         setAdmissionsData(timeObj);
         handleSetAllAdmissionsDataShifts(timeObj);
@@ -229,16 +228,17 @@ export function App() {
     }
 
     const handleSetAllAdmissionsDataShifts = (obj) => {
-        let updateAdmissionsDataShifts = obj.shifts;
-        obj.shifts.map((each, eachIndex) => {
-            updateAdmissionsDataShifts.map((innerEach, innerEachIndex) => {
-                if (innerEach.name == each.name) {
-                    innerEach = each;
-                }
-            });
-        });
+        // let updateAdmissionsDataShifts = obj.shifts;
+        // obj.shifts.map((each, eachIndex) => {
+        //     updateAdmissionsDataShifts.map((innerEach, innerEachIndex) => {
+        //         if (innerEach.name == each.name) {
+        //             innerEach = each;
+        //         }
+        //     });
+        // });
 
-        setAllAdmissionsDataShifts(updateAdmissionsDataShifts);
+        const newObj = Object.assign([], allAdmissionsDataShifts, obj.shifts)
+        setAllAdmissionsDataShifts(newObj);
     }
 
     const onChange = (e, admissionsId) => {
@@ -364,7 +364,9 @@ export function App() {
 
         sortMain(customObj);
         // handleSort("name");
+        
         setAdmissionsData(customObj);
+        // sortByAscendingName();
 
         return customObj;
     }
@@ -412,6 +414,18 @@ export function App() {
         );
     }
 
+    const sortByAscendingName = () => {
+        const returnObjShifts = admissionsData.shifts.sort((a, b) => {
+            return ROLE_ORDER.indexOf(a.name) - ROLE_ORDER.indexOf(b.name);
+          });
+
+        let returnObj = {};
+        returnObj.startTime = admissionsData.startTime;
+        returnObj.shifts = returnObjShifts;
+
+        setAdmissionsData(returnObj);
+        handleSetAllAdmissionsDataShifts(returnObj);
+    }
     const handleSort = (key) => {
 
         sortConfig[key] = !sortConfig[key];
@@ -635,10 +649,7 @@ export function App() {
                 <section style={{ textAlign: "center", margin: "30px" }}>
                     <button onClick={() => {
                         sortMain(admissionsData);
-                        handleSort("name", true);
-                        // if (admissionsData && admissionsData.shifts) {
-                        //     setSortedTableToDisplay(admissionsData.shifts);
-                        // }
+              
                     }}>
                         Generate Queue
                     </button>
