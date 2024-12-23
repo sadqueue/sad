@@ -17,10 +17,11 @@ import {
     ROLE_ORDER,
     STATIC_TIMES
 } from "./constants";
-import copybutton from "./images/copy.png";
+import copybuttonImg from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
+
 const CONFIG = CONFIG1;
 
 export function App() {
@@ -314,14 +315,14 @@ export function App() {
 
         SHIFT_TYPES.forEach((each, eachIndex) => {
 
-            const momentStartWithThreshold = moment(each.start, TIME_FORMAT);
+            const momentStart = moment(each.start, TIME_FORMAT);
             let momentEndWithThreshold = moment(each.endWithThreshold, TIME_FORMAT);
 
             if (each.type.includes("N")) {
                 momentEndWithThreshold = momentEndWithThreshold.add("1", "days");
             }
 
-            if (userInputTime.isAfter(momentStartWithThreshold) && userInputTime.isBefore(momentEndWithThreshold)) {
+            if (userInputTime.isSameOrAfter(momentStart) && userInputTime.isBefore(momentEndWithThreshold)) {
                 const role = each.type;
 
                 let carryOverRole = "";
@@ -660,7 +661,7 @@ export function App() {
                                 <img
                                     alt="copy button"
                                     className="copybutton"
-                                    src={copybutton}
+                                    src={copybuttonImg}
                                     onClick={(ev) => {
                                         let copiedMessage = "";
                                         sorted.map((each, eachIndex) => {
@@ -700,7 +701,7 @@ export function App() {
                                         {admissionsData.shifts && admissionsData.shifts.length > 0 && <img
                                             alt="copy button"
                                             className="copybuttonjust1line"
-                                            src={copybutton}
+                                            src={copybuttonImg}
                                             onClick={(ev) => {
 
                                                 navigator.clipboard.writeText(sorted[sorted.length - 1]);
