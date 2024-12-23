@@ -48,7 +48,7 @@ export const START_TIMES = [
     { value: "FOURPM", label: "4:00PM" },
     { value: "FIVEPM", label: "5:00PM" },
     { value: "SEVENPM", label: "7:00PM" },
-    { value: "CUSTOM", label: "Custom " }
+    // { value: "CUSTOM", label: "Custom " }
 ];
 
 export const SHIFT_TYPES = [
@@ -113,7 +113,8 @@ export const SHIFT_TYPES = [
         displayStartTimeToEndTime: "(7PM-7AM)",
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
-        shiftTimePeriod: "7PM-7AM"
+        shiftTimePeriod: "7PM-7AM",
+        defaultTimestamp: "17:30"
     },
     {
         type: "N2",
@@ -122,7 +123,8 @@ export const SHIFT_TYPES = [
         displayStartTimeToEndTime: "(7PM-7AM)",
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
-        shiftTimePeriod: "7PM-7AM"
+        shiftTimePeriod: "7PM-7AM",
+        defaultTimestamp: "18:00"
     },
     {
         type: "N3",
@@ -131,7 +133,8 @@ export const SHIFT_TYPES = [
         displayStartTimeToEndTime: "(7PM-7AM)",
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
-        shiftTimePeriod: "7PM-7AM"
+        shiftTimePeriod: "7PM-7AM",
+        defaultTimestamp: "18:30"
     },
     {
         type: "N4",
@@ -141,6 +144,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
+        defaultTimestamp: "19:00"
     }
 ];
 

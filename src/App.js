@@ -87,7 +87,7 @@ export function App() {
 
         const explanationArr = [];
         explanationArr.push("\n");
-        explanationArr.push("Step 1: Sort based on timestamp");
+        explanationArr.push("Step 1: Merge with nights based on last timestamp.");
 
         /*
         Step 1: Step 1: Sort based on timestamp 
@@ -106,7 +106,7 @@ export function App() {
         const shiftsLessThanThreshold = [];
         const shiftsGreaterThanThreshold = [];
         explanationArr.push("\n");
-        explanationArr.push(`Step 2: Determine the admitter"s with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}`);
+        explanationArr.push(`Step 2: Determine the admitters with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}`);
 
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) {
@@ -117,7 +117,7 @@ export function App() {
             }
         });
         explanationArr.push("\n");
-        explanationArr.push(`Step 3: Put the admitter"s with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD} to the back of the queue.`)
+        explanationArr.push(`Step 3: De-prioritize admitters with high chronic loads to the back of the queue.`)
         const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
 
         shiftsCombined.forEach((each, eachIndex) => {
