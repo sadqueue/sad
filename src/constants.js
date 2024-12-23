@@ -3,6 +3,8 @@ export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.66;
 
 export const TIME_FORMAT = "h:mmA"; //hh:mm for non military
 
+export const ROLE_ORDER = ["DA", "S1", "S2", "S3", "S4", "N5", "N1", "N2", "N3", "N4"];
+
 export const DATA_TYPE_INT = [
     "admissionsId",
     "chronicLoadRatio",
