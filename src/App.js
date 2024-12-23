@@ -14,7 +14,8 @@ import {
     TIME_FORMAT,
     MINIMIZE_TABLE,
     EXPAND_TABLE,
-    ROLE_ORDER
+    ROLE_ORDER,
+    STATIC_TIMES
 } from "./constants";
 import copybutton from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
@@ -33,7 +34,6 @@ export function App() {
     const [openTable, setOpenTable] = useState(false);
     const [weight, setWeight] = useState(0.3);
     // const [sortedTableToDisplay, setSortedTableToDisplay] = useState(admissionsData && admissionsData.shifts ? admissionsData.shifts : []);
-    const [selectCustom, setSelectCustom] = useState(false);
     const [isCopied, setIsCopied] = useState(false)
     const [sortConfig, setSortConfig] = useState(
         {
@@ -48,10 +48,10 @@ export function App() {
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
-        // if (localStorage.getItem("admissionsData")) {
-        //     const admissionsDataLocalStorage = JSON.parse(localStorage.getItem("admissionsData"));
-        //     setAdmissionsData(admissionsDataLocalStorage);
-        // }
+        if (localStorage.getItem("admissionsData")) {
+            const admissionsDataLocalStorage = JSON.parse(localStorage.getItem("admissionsData"));
+            setAdmissionsData(admissionsDataLocalStorage);
+        }
 
         sortMain(admissionsData);
 
@@ -377,7 +377,6 @@ export function App() {
                 className="timesdropdown"
                 onChange={e => {
                     const startTime = e.target.value;
-                    setSelectCustom(false);
                     let getObj = {};
                     switch (startTime) {
                         case "FOURPM":
@@ -393,12 +392,12 @@ export function App() {
                             setInitialForDropdown(getObj);
                             break;
                         case "CUSTOM":
-                            setSelectCustom(true);
                             getObj = getValuesFromExistingAdmissionsDate(moment().format("HH:mm"));
                             setInitialForDropdown(getObj);
                             break;
                         default:
-                            setInitialForDropdown(CUSTOM_DATA);
+                            getObj = getValuesFromExistingAdmissionsDate(moment().format("HH:mm"));
+                            setInitialForDropdown(getObj);
                             break;
                     }
 
@@ -523,7 +522,7 @@ export function App() {
             </div>
             <div className="container">
                 {timesDropdown()}
-                {selectCustom && <input
+                {!STATIC_TIMES.includes(admissionsData.startTime) && <input
                     className="customtime"
                     name="customTime"
                     type="time"
