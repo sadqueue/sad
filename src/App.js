@@ -149,7 +149,7 @@ export function App() {
         setAdmissionsData(timeObj);
         
         handleSetAllAdmissionsDataShifts(timeObj);
-        sortByAscendingName();
+        sortByAscendingName(timeObj);
     }
 
     const setInitialForDropdown = (timeObj) => {
@@ -366,7 +366,6 @@ export function App() {
         // handleSort("name");
         
         setAdmissionsData(customObj);
-        // sortByAscendingName();
 
         return customObj;
     }
@@ -413,13 +412,13 @@ export function App() {
         );
     }
 
-    const sortByAscendingName = () => {
-        const returnObjShifts = admissionsData.shifts.sort((a, b) => {
+    const sortByAscendingName = (admissionsDatax) => {
+        const returnObjShifts = admissionsDatax.shifts.sort((a, b) => {
             return ROLE_ORDER.indexOf(a.name) - ROLE_ORDER.indexOf(b.name);
           });
 
         let returnObj = {};
-        returnObj.startTime = admissionsData.startTime;
+        returnObj.startTime = admissionsDatax.startTime;
         returnObj.shifts = returnObjShifts;
 
         setAdmissionsData(returnObj);
