@@ -14,6 +14,11 @@ export const DATA_TYPE_INT = [
     "score",
 ];
 
+export const DONT_SHOW_ROWS = {
+    "17:00": ["N5"],
+    "19:00": ["N1", "N2", "N3", "N4"]
+}
+
 export const DATA_TYPE_TIME = [
     "startTime",
     "timestamp"
@@ -114,7 +119,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        defaultTimestamp: "17:30"
+        timestamp: "17:30"
     },
     {
         type: "N2",
@@ -124,7 +129,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        defaultTimestamp: "18:00"
+        timestamp: "18:00"
     },
     {
         type: "N3",
@@ -134,7 +139,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        defaultTimestamp: "18:30"
+        timestamp: "18:30"
     },
     {
         type: "N4",
@@ -144,7 +149,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        defaultTimestamp: "19:00"
+        timestamp: "19:00"
     }
 ];
 

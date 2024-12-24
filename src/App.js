@@ -15,7 +15,8 @@ import {
     MINIMIZE_TABLE,
     EXPAND_TABLE,
     ROLE_ORDER,
-    STATIC_TIMES
+    STATIC_TIMES,
+    DONT_SHOW_ROWS
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
@@ -23,6 +24,7 @@ import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
 
 const CONFIG = CONFIG1;
+const DONT_SHOW_ROWS1 = DONT_SHOW_ROWS;
 
 export function App() {
     // const localStorage_admissionsData = localStorage.getItem("admissionsData");
@@ -46,6 +48,7 @@ export function App() {
             "score": true
         }
     );
+    const [selectDropdown, setSelectDropdown] = useState("FOURPM");
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
@@ -71,7 +74,6 @@ export function App() {
 
     const sortMain = (timeObj) => {
         return sortByTimestampAndCompositeScore(timeObj);
-
     }
 
     const sortByTimestampAndCompositeScore = (timeObj) => {
@@ -131,7 +133,7 @@ export function App() {
 
         setExplanation(explanationArr);
 
-        sortByAscendingChronicLoadRatio(admissionsData);
+        setSortRoles(timeObj);
         setAdmissionsData(timeObj);
 
         handleSetAllAdmissionsDataShifts(timeObj);
@@ -241,10 +243,6 @@ export function App() {
 
         setAdmissionsData(newObj);
         handleSetAllAdmissionsDataShifts(newObj);
-
-        // setSortedTableToDisplay(newObj.shifts);
-        // sortMain(newObj);
-        // localStorage.setItem("admissionsData", JSON.stringify(newObj));
     }
 
     const getChronicLoadRatio = (admission) => {
@@ -291,7 +289,7 @@ export function App() {
 
         SHIFT_TYPES.forEach((each, eachIndex) => {
 
-            const momentStart = moment(each.start, TIME_FORMAT);
+            const momentStart = moment(each.startWithThreshold, TIME_FORMAT);
             let momentEndWithThreshold = moment(each.endWithThreshold, TIME_FORMAT);
 
             if (each.type.includes("N")) {
@@ -308,7 +306,6 @@ export function App() {
                         return;
                     }
                 });
-
 
                 if (carryOverRole) {
                     customShifts.push({
@@ -328,8 +325,7 @@ export function App() {
                         displayName: each.type + " " + each.displayStartTimeToEndTime,
                         shiftTimePeriod: each.shiftTimePeriod,
                         roleStartTime: each.start,
-                        numberOfAdmissions: "",
-                        timestamp: ""
+                        timestamp: each.timestamp ? each.timestamp : ""
                     });
                 }
 
@@ -339,8 +335,8 @@ export function App() {
         customObj["startTime"] = customTime;
         customObj["shifts"] = customShifts;
 
-        sortMain(customObj);
         setAdmissionsData(customObj);
+        sortMain(customObj);
 
         return customObj;
     }
@@ -400,16 +396,14 @@ export function App() {
         handleSetAllAdmissionsDataShifts(returnObj);
     }
 
-    const sortByAscendingChronicLoadRatio = (admissionsDatax) => {
+    const setSortRoles = (admissionsDatax) => {
         const sortRoles = [];
         const sortRolesNameOnly = [];
         sortRoles.push("\n");
 
-        const timeObj = admissionsDatax.shifts.sort((a, b) => {
-            return a.chronicLoadRatio - b.chronicLoadRatio;
-        });
-
-        timeObj.forEach((each, eachIndex) => {
+        let timeObjShifts = admissionsDatax.shifts;
+        
+        timeObjShifts.forEach((each, eachIndex) => {
             if (each.numberOfHoursWorked + "" !== "0") {
                 sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
             }
@@ -417,16 +411,13 @@ export function App() {
 
         });
 
-        if (admissionsDatax.startTime == "19:00"){
-            sortRolesNameOnly.push("N1", "N2", "N3", "N4");
-        }
         sortRoles.push("\n");
         sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(admissionsDatax.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
 
         setSorted(sortRoles);
 
-        return timeObj;
+        return timeObjShifts;
     }
 
     const handleSort = (key) => {
@@ -567,6 +558,7 @@ export function App() {
                         {admissionsData.shifts.map((admission, index) => (
                             !admission.isStatic &&
                             <tr
+                                style={DONT_SHOW_ROWS1[admission.startTime] && DONT_SHOW_ROWS1[admission.startTime].includes(admission.name) ? { display: "none"} : { }}
                                 className={"admissionsDataRow_" + index}
                                 key={admission.admissionsId}
 
