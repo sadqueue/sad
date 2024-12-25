@@ -701,6 +701,8 @@ export function App() {
 
                                                 navigator.clipboard.writeText(sorted[sorted.length - 1]);
                                                 // sendEmail(ev, copiedMessage, title);
+                                                setIsCopied(true);
+                                                setTimeout(() => setIsCopied(false), 1000);
 
                                             }} />}
                                     </p>
