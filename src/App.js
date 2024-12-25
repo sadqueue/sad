@@ -48,7 +48,6 @@ export function App() {
             "score": true
         }
     );
-    const [selectDropdown, setSelectDropdown] = useState("FOURPM");
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
@@ -142,9 +141,9 @@ export function App() {
 
     const setInitialForDropdown = (timeObj) => {
         timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
-            const findRole = "";
+            let findRole = {};
             allAdmissionsDataShifts.map((innereach, innereachIndex) => {
-                if (each.name == innereach.type) {
+                if (each.name == innereach.name) {
                     findRole = innereach;
                     return;
                 }
@@ -261,7 +260,7 @@ export function App() {
     const getNumberOfHoursWorked = (admission) => {
         let startTime = "";
         SHIFT_TYPES.forEach((shift, shiftIndex) => {
-            if (shift.type === admission.name) {
+            if (shift.name === admission.name) {
                 startTime = shift.start;
             }
         });
@@ -292,12 +291,12 @@ export function App() {
             const momentStart = moment(each.startWithThreshold, TIME_FORMAT);
             let momentEndWithThreshold = moment(each.endWithThreshold, TIME_FORMAT);
 
-            if (each.type.includes("N")) {
+            if (each.name.includes("N")) {
                 momentEndWithThreshold = momentEndWithThreshold.add("1", "days");
             }
 
             if (userInputTime.isAfter(momentStart) && userInputTime.isBefore(momentEndWithThreshold)) {
-                const role = each.type;
+                const role = each.name;
 
                 let carryOverRole = "";
                 allAdmissionsDataShifts.map((fromAdmissionsDataEach, fromAdmissionsDataEachIndex) => {
@@ -321,8 +320,8 @@ export function App() {
                         chronicLoadRatio: getChronicLoadRatio(each),
                         score: getCompositeScore(each),
                         numberOfAdmissions: each.numberOfAdmissions,
-                        name: each.type,
-                        displayName: each.type + " " + each.displayStartTimeToEndTime,
+                        name: each.name,
+                        displayName: each.name + " " + each.displayStartTimeToEndTime,
                         shiftTimePeriod: each.shiftTimePeriod,
                         roleStartTime: each.start,
                         timestamp: each.timestamp ? each.timestamp : ""

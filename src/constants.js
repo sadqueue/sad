@@ -58,16 +58,16 @@ export const START_TIMES = [
 
 export const SHIFT_TYPES = [
     {
-        type: "DA",
+        name: "DA",
         start: "07:00",
         end: "19:00",
         displayStartTimeToEndTime: "(7AM-7PM)",
         startWithThreshold: "05:30",
-        endWithThreshold: "17:0",
+        endWithThreshold: "17:00",
         shiftTimePeriod: "7AM-7PM"
     },
     {
-        type: "S1",
+        name: "S1",
         start: "10:00",
         end: "20:00",
         displayStartTimeToEndTime: "(10AM-8PM)",
@@ -76,7 +76,7 @@ export const SHIFT_TYPES = [
         shiftTimePeriod: "10AM-8PM"
     },
     {
-        type: "S2",
+        name: "S2",
         start: "11:00",
         end: "21:00",
         displayStartTimeToEndTime: "(11AM-9PM)",
@@ -85,7 +85,7 @@ export const SHIFT_TYPES = [
         shiftTimePeriod: "11AM-9PM"
     },
     {
-        type: "S3",
+        name: "S3",
         start: "13:00",
         end: "23:00",
         displayStartTimeToEndTime: "(1PM-11PM)",
@@ -94,7 +94,7 @@ export const SHIFT_TYPES = [
         shiftTimePeriod: "1PM-11PM"
     },
     {
-        type: "S4",
+        name: "S4",
         start: "14:00",
         end: "00:00",
         displayStartTimeToEndTime: "(2PM-12AM)",
@@ -103,7 +103,7 @@ export const SHIFT_TYPES = [
         shiftTimePeriod: "2PM-12AM"
     },
     {
-        type: "N5",
+        name: "N5",
         start: "17:00",
         end: "05:00",
         displayStartTimeToEndTime: "(5PM-5AM)",
@@ -112,7 +112,7 @@ export const SHIFT_TYPES = [
         shiftTimePeriod: "5PM-5AM"
     },
     {
-        type: "N1",
+        name: "N1",
         start: "19:00",
         end: "07:00",
         displayStartTimeToEndTime: "(7PM-7AM)",
@@ -122,7 +122,7 @@ export const SHIFT_TYPES = [
         timestamp: "17:30"
     },
     {
-        type: "N2",
+        name: "N2",
         start: "19:00",
         end: "07:00",
         displayStartTimeToEndTime: "(7PM-7AM)",
@@ -132,7 +132,7 @@ export const SHIFT_TYPES = [
         timestamp: "18:00"
     },
     {
-        type: "N3",
+        name: "N3",
         start: "19:00",
         end: "07:00",
         displayStartTimeToEndTime: "(7PM-7AM)",
@@ -142,7 +142,7 @@ export const SHIFT_TYPES = [
         timestamp: "18:30"
     },
     {
-        type: "N4",
+        name: "N4",
         start: "19:00",
         end: "07:00",
         displayStartTimeToEndTime: "(7PM-7AM)",
