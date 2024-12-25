@@ -19,6 +19,12 @@ export const DONT_SHOW_ROWS = {
     "19:00": ["N1", "N2", "N3", "N4"]
 }
 
+export const SHOW_ROWS = {
+    "16:00": ["DA", "S1", "S2", "S3", "S4"],
+    "17:00": ["S1", "S2", "S3", "S4"],
+    "19:00": ["S2", "S3", "S4", "N5"]
+}
+
 export const DATA_TYPE_TIME = [
     "startTime",
     "timestamp"
