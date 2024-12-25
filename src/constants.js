@@ -14,15 +14,16 @@ export const DATA_TYPE_INT = [
     "score",
 ];
 
-export const DONT_SHOW_ROWS = {
-    "17:00": ["N5"],
-    "19:00": ["N1", "N2", "N3", "N4"]
-}
-
-export const SHOW_ROWS = {
+export const SHOW_ROWS_TABLE = {
     "16:00": ["DA", "S1", "S2", "S3", "S4"],
     "17:00": ["S1", "S2", "S3", "S4"],
     "19:00": ["S2", "S3", "S4", "N5"]
+}
+
+export const SHOW_ROWS_COPY = {
+    "16:00": ["DA", "S1", "S2", "S3", "S4"],
+    "17:00": ["S1", "S2", "S3", "S4", "N5"],
+    "19:00": ["S2", "S3", "S4", "N5", "N1", "N2", "N3", "N4"]
 }
 
 export const DATA_TYPE_TIME = [
@@ -56,68 +57,81 @@ export const SCORE_NEW_ROLE = {
 export const STATIC_TIMES = ["16:00", "17:00", "19:00"];
 
 export const START_TIMES = [
-    { value: "FOURPM", label: "4:00PM" },
-    { value: "FIVEPM", label: "5:00PM" },
-    { value: "SEVENPM", label: "7:00PM" },
+    { value: "16:00", label: "4:00PM" },
+    { value: "17:00", label: "5:00PM" },
+    { value: "19:00", label: "7:00PM" },
     // { value: "CUSTOM", label: "Custom " }
 ];
 
 export const SHIFT_TYPES = [
     {
+        admissionsId: "1",
         name: "DA",
         start: "07:00",
         end: "19:00",
         displayStartTimeToEndTime: "(7AM-7PM)",
         startWithThreshold: "05:30",
         endWithThreshold: "17:00",
-        shiftTimePeriod: "7AM-7PM"
+        shiftTimePeriod: "7AM-7PM",
+        timestamp: "14:30"
     },
     {
+        admissionsId: "2",
         name: "S1",
         start: "10:00",
         end: "20:00",
         displayStartTimeToEndTime: "(10AM-8PM)",
         startWithThreshold: "08:30",
         endWithThreshold: "18:30",
-        shiftTimePeriod: "10AM-8PM"
+        shiftTimePeriod: "10AM-8PM",
+        timestamp: "14:30"
     },
     {
+        admissionsId: "3",
         name: "S2",
         start: "11:00",
         end: "21:00",
         displayStartTimeToEndTime: "(11AM-9PM)",
         startWithThreshold: "09:30",
         endWithThreshold: "19:30",
-        shiftTimePeriod: "11AM-9PM"
+        shiftTimePeriod: "11AM-9PM",
+        timestamp: "14:30"
     },
     {
+        admissionsId: "4",
         name: "S3",
         start: "13:00",
         end: "23:00",
         displayStartTimeToEndTime: "(1PM-11PM)",
         startWithThreshold: "11:30",
         endWithThreshold: "21:30",
-        shiftTimePeriod: "1PM-11PM"
+        shiftTimePeriod: "1PM-11PM",
+        timestamp: "14:30"
     },
     {
+        admissionsId: "5",
         name: "S4",
         start: "14:00",
         end: "00:00",
         displayStartTimeToEndTime: "(2PM-12AM)",
         startWithThreshold: "12:30",
         endWithThreshold: "22:30",
-        shiftTimePeriod: "2PM-12AM"
+        shiftTimePeriod: "2PM-12AM",
+        timestamp: "14:30"
     },
     {
+        admissionsId: "6",
         name: "N5",
         start: "17:00",
         end: "05:00",
         displayStartTimeToEndTime: "(5PM-5AM)",
         startWithThreshold: "15:30",
         endWithThreshold: "03:30",
-        shiftTimePeriod: "5PM-5AM"
+        shiftTimePeriod: "5PM-5AM",
+        timestamp: "14:30"
     },
     {
+        admissionsId: "7",
         name: "N1",
         start: "19:00",
         end: "07:00",
@@ -128,6 +142,7 @@ export const SHIFT_TYPES = [
         timestamp: "17:30"
     },
     {
+        admissionsId: "8",
         name: "N2",
         start: "19:00",
         end: "07:00",
@@ -138,6 +153,7 @@ export const SHIFT_TYPES = [
         timestamp: "18:00"
     },
     {
+        admissionsId: "9",
         name: "N3",
         start: "19:00",
         end: "07:00",
@@ -148,6 +164,7 @@ export const SHIFT_TYPES = [
         timestamp: "18:30"
     },
     {
+        admissionsId: "10",
         name: "N4",
         start: "19:00",
         end: "07:00",
