@@ -16,7 +16,7 @@ import {
     EXPAND_TABLE,
     ROLE_ORDER,
     STATIC_TIMES,
-    DONT_SHOW_ROWS
+    SHOW_ROWS
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
@@ -24,19 +24,18 @@ import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
 
 const CONFIG = CONFIG1;
-const DONT_SHOW_ROWS1 = DONT_SHOW_ROWS;
 
 export function App() {
-    // const localStorage_admissionsData = localStorage.getItem("admissionsData");
+    // const localStorage_admissionsData = localStorage.getItem("allAdmissionsDataShifts");
     // const localStorage_selectDropdown = localStorage.getItem("selectDropdown");
     const [admissionsData, setAdmissionsData] = useState(FOURPM_DATA)
-    const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState([])
+    const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState(FOURPM_DATA)
     const [sorted, setSorted] = useState("");
     const [seeDetails, setSeeDetails] = useState(false);
     const [explanation, setExplanation] = useState("");
     const [openTable, setOpenTable] = useState(false);
     const [weight, setWeight] = useState(0.3);
-    // const [sortedTableToDisplay, setSortedTableToDisplay] = useState(admissionsData && admissionsData.shifts ? admissionsData.shifts : []);
+    // const [sortedTableToDisplay, setSortedTableToDisplay] = useState(allAdmissionsDataShifts && allAdmissionsDataShifts.shifts ? allAdmissionsDataShifts.shifts : []);
     const [isCopied, setIsCopied] = useState(false)
     const [sortConfig, setSortConfig] = useState(
         {
@@ -51,12 +50,12 @@ export function App() {
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
-        if (localStorage.getItem("admissionsData")) {
-            const admissionsDataLocalStorage = JSON.parse(localStorage.getItem("admissionsData"));
+        if (localStorage.getItem("allAdmissionsDataShifts")) {
+            const admissionsDataLocalStorage = JSON.parse(localStorage.getItem("allAdmissionsDataShifts"));
             setAdmissionsData(admissionsDataLocalStorage);
         }
 
-        sortMain(admissionsData);
+        sortMain(allAdmissionsDataShifts);
 
         /*const firebaseConfig = {
             apiKey: CONFIG.REACT_APP_FIREBASE_API_KEY,
@@ -142,7 +141,7 @@ export function App() {
     const setInitialForDropdown = (timeObj) => {
         timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
             let findRole = {};
-            allAdmissionsDataShifts.map((innereach, innereachIndex) => {
+            allAdmissionsDataShifts.shifts.map((innereach, innereachIndex) => {
                 if (each.name == innereach.name) {
                     findRole = innereach;
                     return;
@@ -216,7 +215,7 @@ export function App() {
 
     const handleSetAllAdmissionsDataShifts = (obj) => {
         const newObj = Object.assign([], allAdmissionsDataShifts, obj.shifts)
-        setAllAdmissionsDataShifts(newObj);
+        setAllAdmissionsDataShifts({ startTime: obj.startTime, shifts: newObj});
     }
 
     const onChange = (e, admissionsId) => {
@@ -224,12 +223,12 @@ export function App() {
 
         const newObj = {};
 
-        const updatedShifts = admissionsData && admissionsData.shifts && admissionsData.shifts.map((item) =>
+        const updatedShifts = allAdmissionsDataShifts && allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.map((item) =>
             item.admissionsId === admissionsId && name ? { ...item, [name]: value } : item
         )
 
         updatedShifts.map((each, eachIndex) => {
-            each["startTime"] = admissionsData.startTime;
+            each["startTime"] = allAdmissionsDataShifts.startTime;
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
             each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
             each["chronicLoadRatio"] = getChronicLoadRatio(each);
@@ -237,7 +236,7 @@ export function App() {
             return each;
         });
 
-        newObj["startTime"] = admissionsData.startTime;
+        newObj["startTime"] = allAdmissionsDataShifts.startTime;
         newObj["shifts"] = updatedShifts ? updatedShifts : [];
 
         setAdmissionsData(newObj);
@@ -299,7 +298,7 @@ export function App() {
                 const role = each.name;
 
                 let carryOverRole = "";
-                allAdmissionsDataShifts.map((fromAdmissionsDataEach, fromAdmissionsDataEachIndex) => {
+                allAdmissionsDataShifts.shifts.map((fromAdmissionsDataEach, fromAdmissionsDataEachIndex) => {
                     if (role == fromAdmissionsDataEach.name) {
                         carryOverRole = fromAdmissionsDataEach;
                         return;
@@ -425,7 +424,7 @@ export function App() {
 
         setSortConfig(sortConfig);
 
-        const updatedShifts = admissionsData && admissionsData.shifts.sort((a, b) => {
+        const updatedShifts = allAdmissionsDataShifts && allAdmissionsDataShifts.shifts.sort((a, b) => {
             if (DATA_TYPE_TIME.includes(key)) {
                 if (moment(a[key], TIME_FORMAT).isBefore(moment(b[key], TIME_FORMAT))) {
                     return sortConfig[key] ? -1 : 1;
@@ -448,7 +447,7 @@ export function App() {
 
         });
         let returnObj = {};
-        returnObj.startTime = admissionsData.startTime;
+        returnObj.startTime = allAdmissionsDataShifts.startTime;
         returnObj.shifts = updatedShifts;
 
         setAdmissionsData(returnObj);
@@ -474,7 +473,7 @@ export function App() {
     };
 
     const handleKeyDown = (e, rowIndex) => {
-        const data = admissionsData.shifts;
+        const data = allAdmissionsDataShifts.shifts;
         if (e.key === 'ArrowDown') {
             e.preventDefault();
             if (rowIndex < data.length - 1) {
@@ -516,7 +515,7 @@ export function App() {
             </div>
             <div className="container">
                 {timesDropdown()}
-                {!STATIC_TIMES.includes(admissionsData.startTime) && <input
+                {/*!STATIC_TIMES.includes(allAdmissionsDataShifts.startTime) && <input
                     className="customtime"
                     name="customTime"
                     type="time"
@@ -525,7 +524,7 @@ export function App() {
                     }}
                     placeholder="Enter time"
                     defaultValue={moment().format("HH:mm")}
-                />}
+                />*/}
                 <table>
                     <thead>
                         {openTable ? <tr>
@@ -554,10 +553,10 @@ export function App() {
                             </tr>}
                     </thead>
                     <tbody>
-                        {admissionsData.shifts.map((admission, index) => (
+                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.map((admission, index) => (
                             !admission.isStatic &&
                             <tr
-                                style={DONT_SHOW_ROWS1[admission.startTime] && DONT_SHOW_ROWS1[admission.startTime].includes(admission.name) ? { display: "none"} : { }}
+                                style={SHOW_ROWS[admission.startTime] && SHOW_ROWS[admission.startTime].includes(admission.name) ? {} : { display: "none" }}
                                 className={"admissionsDataRow_" + index}
                                 key={admission.admissionsId}
 
@@ -642,7 +641,7 @@ export function App() {
                 }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
                 <section style={{ textAlign: "center", margin: "30px" }}>
                     <button onClick={() => {
-                        sortMain(admissionsData);
+                        sortMain(allAdmissionsDataShifts);
 
                     }}>
                         Generate Queue
@@ -650,7 +649,7 @@ export function App() {
                 </section>
 
                 <fieldset className="fieldsettocopy">
-                    {admissionsData.shifts && admissionsData.shifts.length > 0 &&
+                    {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
                         (
                             <div>
                                 <img
@@ -683,8 +682,8 @@ export function App() {
                     }
                     <p className="boldCopy">
                         <br />
-                        {admissionsData.startTime ? `Admissions Update` : `Select a time. No roles in the queue.`}
-                        {/* ${moment(admissionsData.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
+                        {allAdmissionsDataShifts.startTime ? `Admissions Update` : `Select a time. No roles in the queue.`}
+                        {/* ${moment(allAdmissionsDataShifts.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
                     </p>
                     {
                         sorted && sorted.map((each, eachIndex) => {
@@ -693,7 +692,7 @@ export function App() {
                             } else if (eachIndex == sorted.length - 1) {
                                 return <div className="sortedWithButton">
                                     <p>{each}
-                                        {admissionsData.shifts && admissionsData.shifts.length > 0 && <img
+                                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && <img
                                             alt="copy button"
                                             className="copybuttonjust1line"
                                             src={copybuttonImg}
