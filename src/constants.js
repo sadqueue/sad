@@ -372,3 +372,5 @@ export const CUSTOM_DATA = {
 }
 
 export const ADMISSIONS_FORMAT = "[Role] [Number of admits] / [Hours worked so far] [Last timestamp]"
+
+export const COPIED_MSG_1 = "Please like/claim your patient with your personalized emoji or “Got ER#” to close the loop. Reminder: please pre-screen and update re: UHS, Kaiser, HHH, ICU, AMA, DC, EDP, and potential ICU. Mahalo!";

@@ -156,6 +156,24 @@ button:hover {
   transition-duration: .1s;
 }
 
+
+button.clearall {
+  all: unset;
+  float: right;
+  opacity: 0.5;
+  margin: 3px;
+  font-size: 12px;
+}
+
+button.clearall:hover {
+  all: unset;
+  float: right;
+  opacity: 1;
+  margin: 3px;
+  font-size: 12px;
+}
+
+
 button.seedetails {
   all: unset;
   /* float: right; */
@@ -195,6 +213,24 @@ img.copybutton:hover {
   opacity: 1;
   margin-top: 8px;
 }
+
+
+img.copybuttonforcopymsg {
+  all: unset;
+  float: right;
+  width: 25px;
+  opacity: 0.5;
+  margin-top: -35px;
+}
+
+img.copybuttonforcopymsg:hover {
+  all: unset;
+  float: right;
+  width: 25px;
+  opacity: 1;
+  margin-top: -35px;
+}
+
 
 h1 {
   font-size: 60px;
@@ -290,12 +326,8 @@ input[class="timeperiodbyrole"] {
   font-size: "14px"
 }
 
-
-.copied-message {
+.copied-message, .cleared-message {
   position: absolute;
-  /* top: 0; */
-  /* left: 100%; */
-  /* margin-left: 8px; */
   font-size: 12px;
   color: green;
   opacity: 0;
@@ -303,8 +335,12 @@ input[class="timeperiodbyrole"] {
   white-space: nowrap;
 }
 
-.copied-message.visible {
+.copied-message.visible, .cleared-message.visible {
   opacity: 1;
+}
+
+.copyMessages {
+  margin-top: 100px;
 }
 
 @media (max-width: 600px) {

@@ -20,19 +20,19 @@ import copybuttonImg from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
+import CopyMessages from "./CopyMessages";
 
 const CONFIG = CONFIG1;
 
 export function App() {
-    // const localStorage_admissionsData = localStorage.getItem("allAdmissionsDataShifts");
-    // const localStorage_selectDropdown = localStorage.getItem("selectDropdown");
     const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState(localStorage.getItem("allAdmissionsDataShifts") ? JSON.parse(localStorage.getItem("allAdmissionsDataShifts")) : { startTime: "16:00", shifts: SHIFT_TYPES})
     const [sorted, setSorted] = useState("");
     const [seeDetails, setSeeDetails] = useState(false);
     const [explanation, setExplanation] = useState("");
     const [openTable, setOpenTable] = useState(false);
     const [weight, setWeight] = useState(0.3);
-    const [isCopied, setIsCopied] = useState(false)
+    const [isCopied, setIsCopied] = useState(false);
+    const [isCleared, setIsCleared] = useState(false);
     const [sortConfig, setSortConfig] = useState(
         {
             "name": true,
@@ -107,7 +107,7 @@ export function App() {
         const shiftsLessThanThreshold = [];
         const shiftsGreaterThanThreshold = [];
         explanationArr.push("\n");
-        explanationArr.push(`Step 2: Determine the admitters with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}`);
+        explanationArr.push(`Step 2: Determine the admitters with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}.`);
 
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) {
@@ -480,6 +480,22 @@ export function App() {
                     placeholder="Enter time"
                     defaultValue={moment().format("HH:mm")}
                 />*/}
+                <div>
+                    <button className="clearall" onClick={() => {
+                        allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
+                            each.timestamp = "";
+                            each.numberOfAdmissions = "";
+                            each.chronicLoadRatio = "";
+                        })
+                        setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+
+                        setIsCleared(true);
+                        setTimeout(() => setIsCleared(false), 1000);
+                    }}>{"Clear All"}</button>
+                    
+                    <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
+
+                </div>
                 <table>
                     <thead>
                         {openTable ? <tr>
@@ -700,6 +716,7 @@ export function App() {
                 /> */}
                 </fieldset>}
 
+                <CopyMessages/>
                 <div className="footer">
                     <img
                         alt="copy button"
