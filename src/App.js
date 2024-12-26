@@ -534,7 +534,7 @@ export function App() {
                             >
                                 <td>
                                     <input
-                                        name="name"
+                                        name={`name_${index}`}
                                         value={admission.name}
                                         type="text"
                                         disabled={true}
@@ -579,7 +579,7 @@ export function App() {
                                 </td>
                                 <td>
                                     <input
-                                        name="chronicLoadRatio"
+                                        name={`chronicLoadRatio_${index}`}
                                         type="text"
                                         value={admission.chronicLoadRatio}
                                         disabled={true}
