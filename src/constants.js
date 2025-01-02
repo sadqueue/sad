@@ -128,7 +128,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "15:30",
         endWithThreshold: "03:30",
         shiftTimePeriod: "5PM-5AM",
-        timestamp: "14:30"
+        timestamp: "15:30"
     },
     {
         admissionsId: "7",
