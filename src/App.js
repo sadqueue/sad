@@ -64,15 +64,20 @@ export function App() {
 
         
         // const mostRecentTimestamp = getMostRecentTransaction();
-        if (!loading) {
-            sortMain(allAdmissionsDataShifts);
-            setLoading(true);
+
+            
+            const fetchTransactions = async () => {
+                const data = await getLast10Transactions();
+                setTransactions(data);
+            };
+
             const fetchRecentTransaction = async () => {
                 const result = await getMostRecentTransaction();
 
                 if (result.success) {
-                    console.log("most recent transaction saved: ", result.transaction);
-                    // setAllAdmissionsDataShifts(result.transaction)
+                    console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
+                    setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
+                    setDropdown(result.transaction.admissionsObj.startTime);
                 } else {
                     //   setError(result.message || "Failed to fetch the most recent transaction.");
                 }
@@ -80,16 +85,14 @@ export function App() {
 
             fetchRecentTransaction();
 
-            const fetchTransactions = async () => {
-                const data = await getLast10Transactions();
-                setTransactions(data);
-            };
+
 
             fetchTransactions();
-        }
+            sortMain(allAdmissionsDataShifts);
+        
 
 
-    }, [loading])
+    }, [])
 
     const sortMain = (timeObj) => {
         return sortByTimestampAndCompositeScore(timeObj);
