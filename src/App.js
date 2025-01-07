@@ -49,23 +49,12 @@ export function App() {
     );
     const [dropdown, setDropdown] = useState(localStorage.getItem("dropdown") ? localStorage.getItem("dropdown") : "16:00");
     const [admissionsOutput, setAdmissionsOutput] = useState("");
-    const [loading, setLoading] = useState(false);
     const [transactions, setTransactions] = useState([]);
+    const [lastSaved, setLastSaved] = useState("");
+
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
-        // if (localStorage.getItem("allAdmissionsDataShifts")) {
-        //     const admissionsDataLocalStorage = JSON.parse(localStorage.getItem("allAdmissionsDataShifts"));
-        //     allAdmissionsDataShifts(admissionsDataLocalStorage);
-        // }
 
-        // if (localStorage.getItem("dropdown")){
-        //     setDropdown(localStorage.getItem("dropdown"));
-        // }
-
-        
-        // const mostRecentTimestamp = getMostRecentTransaction();
-
-            
             const fetchTransactions = async () => {
                 const data = await getLast10Transactions();
                 setTransactions(data);
@@ -76,6 +65,7 @@ export function App() {
 
                 if (result.success) {
                     console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
+                    setLastSaved(result.transaction.timestamp && new Date(result.transaction.timestamp) ? "Last Saved: "+new Date(result.transaction.timestamp).toLocaleString() : "");
                     setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
                     setDropdown(result.transaction.admissionsObj.startTime);
                 } else {
@@ -84,14 +74,8 @@ export function App() {
             };
 
             fetchRecentTransaction();
-
-
-
             fetchTransactions();
             sortMain(allAdmissionsDataShifts);
-        
-
-
     }, [])
 
     const sortMain = (timeObj) => {
@@ -494,30 +478,28 @@ export function App() {
                 <h2 className="subtitle">Standardized Admissions Distribution</h2>
             </div>
             <div className="container">
-                {timesDropdown()}
-                {/*!STATIC_TIMES.includes(allAdmissionsDataShifts.startTime) && <input
-                    className="customtime"
-                    name="customTime"
-                    type="time"
-                    onChange={(e) => {
-                        handleCustomTime(e.target.value);
-                    }}
-                    placeholder="Enter time"
-                    defaultValue={moment().format("HH:mm")}
-                />*/}
-                <div>
-                    <button className="clearall" onClick={() => {
-                        allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
-                            each.timestamp = "";
-                            each.numberOfAdmissions = "";
-                            each.chronicLoadRatio = "";
-                        })
-                        setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+                <div className="flex-container-just1item">
+                    {timesDropdown()}
+                </div>
+                <div className="flex-container">
+                    <span className="left-text">
+                        {lastSaved}
+                    </span>
+                    <span className="right-text">
+                        <button className="clearall" onClick={() => {
+                            allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
+                                each.timestamp = "";
+                                each.numberOfAdmissions = "";
+                                each.chronicLoadRatio = "";
+                            })
+                            setAllAdmissionsDataShifts(allAdmissionsDataShifts);
 
-                        setIsCleared(true);
-                        setTimeout(() => setIsCleared(false), 1000);
-                    }}>{"Clear All"}</button>
+                            setIsCleared(true);
+                            setTimeout(() => setIsCleared(false), 1000);
+                        }}>{"Clear All"}</button>
 
+                    </span>
+                    
                     <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
 
                 </div>
@@ -641,6 +623,20 @@ export function App() {
                         addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: allAdmissionsDataShifts.startTime });
 
                         console.log(transactions);
+                        const fetchRecentTransaction = async () => {
+                            const result = await getMostRecentTransaction();
+            
+                            if (result.success) {
+                                console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
+                                setLastSaved(result.transaction.timestamp && new Date(result.transaction.timestamp) ? "Last Saved: "+new Date(result.transaction.timestamp).toLocaleString() : "");
+                                setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
+                                setDropdown(result.transaction.admissionsObj.startTime);
+                            } else {
+                                //   setError(result.message || "Failed to fetch the most recent transaction.");
+                            }
+                        };
+            
+                        fetchRecentTransaction();
 
                     }}>
                         Generate Queue
