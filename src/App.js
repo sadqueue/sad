@@ -21,11 +21,15 @@ import githublogo from "./images/github-mark.png"
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
 import CopyMessages from "./CopyMessages";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, get, set } from "firebase/database";
+import { addTransaction, deteleAllTransactions, getMostRecentTransaction, getLast10Transactions } from "./transactionsApi";
+// import Last10Transactions from "./Last10Transactions";
 
 const CONFIG = CONFIG1;
 
 export function App() {
-    const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState(localStorage.getItem("allAdmissionsDataShifts") ? JSON.parse(localStorage.getItem("allAdmissionsDataShifts")) : { startTime: "16:00", shifts: SHIFT_TYPES})
+    const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState(localStorage.getItem("allAdmissionsDataShifts") ? JSON.parse(localStorage.getItem("allAdmissionsDataShifts")) : { startTime: "16:00", shifts: SHIFT_TYPES })
     const [sorted, setSorted] = useState("");
     const [seeDetails, setSeeDetails] = useState(false);
     const [explanation, setExplanation] = useState("");
@@ -44,7 +48,9 @@ export function App() {
         }
     );
     const [dropdown, setDropdown] = useState(localStorage.getItem("dropdown") ? localStorage.getItem("dropdown") : "16:00");
-    
+    const [admissionsOutput, setAdmissionsOutput] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [transactions, setTransactions] = useState([]);
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         // if (localStorage.getItem("allAdmissionsDataShifts")) {
@@ -56,20 +62,33 @@ export function App() {
         //     setDropdown(localStorage.getItem("dropdown"));
         // }
 
-        sortMain(allAdmissionsDataShifts);
+        
+        // const mostRecentTimestamp = getMostRecentTransaction();
+        if (!loading) {
+            sortMain(allAdmissionsDataShifts);
+            setLoading(true);
+            const fetchRecentTransaction = async () => {
+                const result = await getMostRecentTransaction();
 
-        /*const firebaseConfig = {
-            apiKey: CONFIG.REACT_APP_FIREBASE_API_KEY,
-            authDomain: CONFIG.REACT_APP_FIREBASE_AUTH_DOMAIN,
-            projectId: CONFIG.REACT_APP_FIREBASE_PROJECT_ID,
-            storageBucket: CONFIG.REACT_APP_FIREBASE_STORAGE_BUCKET,
-            messagingSenderId: CONFIG.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-            appId: CONFIG.REACT_APP_FIREBASE_APP_ID,
-            measurementId: CONFIG.REACT_APP_FIREBASE_MEASUREMENT_ID
-    
-        };
-        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();*/
-    }, []);
+                if (result.success) {
+                    setAllAdmissionsDataShifts(result.transaction)
+                } else {
+                    //   setError(result.message || "Failed to fetch the most recent transaction.");
+                }
+            };
+
+            fetchRecentTransaction();
+
+            const fetchTransactions = async () => {
+                const data = await getLast10Transactions();
+                setTransactions(data);
+            };
+
+            fetchTransactions();
+        }
+
+
+    }, [loading])
 
     const sortMain = (timeObj) => {
         return sortByTimestampAndCompositeScore(timeObj);
@@ -168,8 +187,8 @@ export function App() {
 
     const handleSetAllAdmissionsDataShifts = (obj) => {
         const newObj = Object.assign([], allAdmissionsDataShifts, obj.shifts)
-        setAllAdmissionsDataShifts({ startTime: obj.startTime, shifts: newObj});
-        localStorage.setItem("allAdmissionsDataShifts", JSON.stringify({ startTime: obj.startTime, shifts: newObj}));
+        setAllAdmissionsDataShifts({ startTime: obj.startTime, shifts: newObj });
+        localStorage.setItem("allAdmissionsDataShifts", JSON.stringify({ startTime: obj.startTime, shifts: newObj }));
     }
 
     const onChange = (e, admissionsId) => {
@@ -355,9 +374,9 @@ export function App() {
         sortRoles.push("\n");
 
         let timeObjShifts = admissionsDatax.shifts;
-        
+
         timeObjShifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[each.startTime].includes(each.name)){
+            if (SHOW_ROWS_COPY[each.startTime].includes(each.name)) {
                 if (each.numberOfHoursWorked + "" !== "0") {
                     sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
                 }
@@ -368,6 +387,8 @@ export function App() {
         sortRoles.push("\n");
         sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${moment(admissionsDatax.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
+
+        setAdmissionsOutput(sortRolesNameOnly.join(">"));
 
         setSorted(sortRoles);
 
@@ -492,7 +513,7 @@ export function App() {
                         setIsCleared(true);
                         setTimeout(() => setIsCleared(false), 1000);
                     }}>{"Clear All"}</button>
-                    
+
                     <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
 
                 </div>
@@ -613,11 +634,27 @@ export function App() {
                 <section style={{ textAlign: "center", margin: "30px" }}>
                     <button onClick={() => {
                         sortMain(allAdmissionsDataShifts);
+                        addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: allAdmissionsDataShifts.startTime });
+
+                        console.log(transactions);
 
                     }}>
                         Generate Queue
                     </button>
                 </section>
+                {/* <Last10Transactions /> */}
+                {/* {transactions.length === 0 ? (
+                    <p>No transactions found.</p>
+                ) : (
+                    <ul>
+                        {transactions.map((transaction) => {
+                            console.log(transaction);
+                            return (<li key={transaction.id}>
+                                <strong> Time: </strong> {transaction.admissionsObj.startTime} | <strong>Order:</strong> {transaction.admissionsObj.admissionsOutput} | <strong>Timestamp:</strong> {new Date(transaction.timestamp).toLocaleString()}
+                            </li>);
+                        })}
+                    </ul>
+                )} */}
 
                 <fieldset className="fieldsettocopy">
                     {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
@@ -716,7 +753,7 @@ export function App() {
                 /> */}
                 </fieldset>}
 
-                <CopyMessages/>
+                <CopyMessages />
                 <div className="footer">
                     <img
                         alt="copy button"
