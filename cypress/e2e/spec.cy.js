@@ -7,11 +7,28 @@ const url = "http://localhost:3000/sad"; //"https://sadqueue.github.io/sad/";
 // "4:00PM;17:00,17:00,17:00,17:00,17:00;5,4,3,2,1;DA>S2>S4>S1>S3",
 // "4:00PM;17:00,17:00,17:00,17:00,17:00;5,4,3,2,1;DA>S2>S4>S1>S3",
 
-const testArrFourPm = [
+const testArrFourPM = [
   // "7:00PM;17:00,17:00,17:00,17:00;5,4,3,2;S2>S4>N1>N2>N3>N4>S3>N5",
   // "7:00PM;17:29,17:15,17:16,17:41;4,3,3,2;S3>S4>S2>N1>N2>N3>N4>N5",
   "5:00PM;16:44,15:50,15:50,15:55;4,3,2,2;N5>S2>S3>S1>S4",
   // "4:00PM;14:35,15:20,15:50,15:50,15:55;4,3,3,2,2;DA>S1>S2>S3>S4"
+
+  "4:00PM;13:30,13:42,15:30,15:45,15:10;4,3,3,2,1;DA>S1>S4>S2>S3", //12/28/2024
+"5:00PM;16:16,15:30,15:45,16:20;4,3,2,2;S2>N5>S3>S1>S4", //12/28/2024
+"7:00PM;18:44,18:06,18:37,17:45;5,3,3,1;N1>N5>N2>S3>N3>S4>S2>N4", //12/28/2024
+
+"4:00PM;13:30,13:42,15:30,15:45,15:10;4,3,3,2,1;DA>S1>S4>S2>S3", //12/28/2024
+"5:00PM;16:16,15:30,15:45,16:20;4,3,2,2;S2>N5>S3>S1>S4", //12/28/2024
+"7:00PM;18:44,18:06,18:37,17:45;5,3,3,1;N1>N5>N2>S3>N3>S4>S2>N4", //12/28/2024
+
+"4:00PM;15:35,14:45,14:46,14:50,15:34;5,3,3,2,2;S1>S2>S3>S4>DA", //12/30/2024
+"5:00PM;14:45,14:46,14:50,15:34;3,3,2,2;N5>S1>S2>S3>S4", //12/30/2024
+"7:00PM;17:46,17:50,16:40,17:01;5,4,3,1,S4>N5>N1>S2>N2>N3>N4>S3", //12/30/2024
+
+"7:00PM;17:29,17:15,17:16,17:41;4,3,3,2;S3>S4>S2>N1>N2>N3>N4>N5", //12/31/2024
+"5:00PM;16:44,15:50,15:50,15:55;4,3,2,2;N5>S2>S3>S4>S1", //12/31/2024
+"4:00PM;14:35,15:20,15:50,15:50,15:55;4,3,3,2,2;DA>S1>S2>S3>S4", //12/31/2024
+
 ]
 
 
@@ -158,8 +175,8 @@ describe('template spec', () => {
   it(`4PM: fill out all timestamps and number of admissions test loop`, () => {
     cy.visit(url);
 
-    for (let i=0; i<testArrFourPm.length; i++){     
-      const splitArr = testArrFourPm[i].split(";");
+    for (let i=0; i<testArrFourPM.length; i++){     
+      const splitArr = testArrFourPM[i].split(";");
 
       const time = splitArr[0];
       const timestamps = splitArr[1].split(",");
@@ -179,11 +196,11 @@ describe('template spec', () => {
     }
   });
 
-  // for (let i=0; testArrFourPm.length; i++){
+  // for (let i=0; testArrFourPM.length; i++){
     // it(`7PM: fill out all timestamps and number of admissions test ${i}`, () => {
       // cy.visit(url);
 
-      // const splitArr = testArrFourPm.split(";");
+      // const splitArr = testArrFourPM.split(";");
       // const time = splitArr(0);
       // const timestamps = splitArr(1);
       // const numberOfAdmissions = splitArr(2);
