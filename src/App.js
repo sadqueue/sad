@@ -71,7 +71,8 @@ export function App() {
                 const result = await getMostRecentTransaction();
 
                 if (result.success) {
-                    setAllAdmissionsDataShifts(result.transaction)
+                    console.log("most recent transaction saved: ", result.transaction);
+                    // setAllAdmissionsDataShifts(result.transaction)
                 } else {
                     //   setError(result.message || "Failed to fetch the most recent transaction.");
                 }
