@@ -105,7 +105,9 @@ export function App() {
         });
         //if same chronic load ratio, then pick the one with lower number of admissions to go first
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`)
+            if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)){
+                explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`)
+            }
         });
 
         /*
@@ -118,11 +120,13 @@ export function App() {
         explanationArr.push(`Step 2: Determine the admitters with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}.`);
 
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) {
-                explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`);
-                shiftsGreaterThanThreshold.push(each);
-            } else {
-                shiftsLessThanThreshold.push(each);
+            if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)){
+                if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) {
+                    explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`);
+                    shiftsGreaterThanThreshold.push(each);
+                } else {
+                    shiftsLessThanThreshold.push(each);
+                }
             }
         });
 
@@ -262,6 +266,12 @@ export function App() {
                 allAdmissionsDataShifts.shifts.map((fromAdmissionsDataEach, fromAdmissionsDataEachIndex) => {
                     if (role == fromAdmissionsDataEach.name) {
                         carryOverRole = fromAdmissionsDataEach;
+                        if ((customTime == "17:00" && role == "N5") ||
+                            (customTime == "19:00" && (role == "N1" || role == "N2" || role == "N3" || role == "N4"))){
+                            carryOverRole.timestamp = fromAdmissionsDataEach.startWithThreshold;
+                            carryOverRole.numberOfAdmissions = "0";
+                            carryOverRole.chronicLoadRatio = getChronicLoadRatio(fromAdmissionsDataEach);
+                        }
                         return;
                     }
                 });
