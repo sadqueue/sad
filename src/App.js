@@ -53,6 +53,7 @@ export function App() {
     const [lastSaved, setLastSaved] = useState("");
 
     useEffect(() => {
+        // deleteAllTransactions() 
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
             const fetchTransactions = async () => {
                 const data = await getLast10Transactions();
@@ -132,9 +133,16 @@ export function App() {
 
         shiftsGreaterThanThreshold.sort((a, b) => {
             if (a.chronicLoadRatio === b.chronicLoadRatio) {
-                return a.numberOfAdmissions - b.numberOfAdmissions; // fewer admissions go first
+                return b.numberOfAdmissions - a.numberOfAdmissions; // higher admissions go first
             }
-            return b.chronicLoadRatio - a.chronicLoadRatio; // higher chronic load ratio goes later
+            return a.chronicLoadRatio - b.chronicLoadRatio; // lesser chronic load ratio goes later
+        });
+
+        shiftsGreaterThanThreshold.sort((a, b) => {
+            if (a.timestamp === b.timestamp) {
+                return b.timestamp - a.timestamp; //last timestamp goes first
+            }
+            return a.timestamp - b.timestamp; // most recent timestamp
         });
         
         explanationArr.push("\n");
