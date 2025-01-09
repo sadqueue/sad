@@ -54,7 +54,6 @@ export function App() {
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
-
             const fetchTransactions = async () => {
                 const data = await getLast10Transactions();
                 setTransactions(data);
@@ -64,7 +63,7 @@ export function App() {
                 const result = await getMostRecentTransaction();
 
                 if (result.success) {
-                    console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
+                    // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
                     setLastSaved(result.transaction.timestamp && new Date(result.transaction.timestamp) ? "Last Saved: "+new Date(result.transaction.timestamp).toLocaleString() : "");
                     if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts){
                         setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
@@ -126,6 +125,14 @@ export function App() {
                 shiftsLessThanThreshold.push(each);
             }
         });
+
+        shiftsGreaterThanThreshold.sort((a, b) => {
+            if (a.chronicLoadRatio === b.chronicLoadRatio) {
+                return a.numberOfAdmissions - b.numberOfAdmissions; // fewer admissions go first
+            }
+            return b.chronicLoadRatio - a.chronicLoadRatio; // higher chronic load ratio goes later
+        });
+        
         explanationArr.push("\n");
         explanationArr.push(`Step 3: De-prioritize admitters with high chronic loads to the back of the queue.`)
         const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
@@ -295,7 +302,9 @@ export function App() {
         return (
             <select
                 value={dropdown}
+                name="timesdropdown"
                 className="timesdropdown"
+                id="timesdropdown"
                 onChange={e => {
                     const startTime = e.target.value;
                     setDropdown(startTime);
@@ -623,12 +632,12 @@ export function App() {
                         sortMain(allAdmissionsDataShifts);
                         addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: allAdmissionsDataShifts.startTime });
 
-                        console.log(transactions);
+                        // console.log(transactions);
                         const fetchRecentTransaction = async () => {
                             const result = await getMostRecentTransaction();
             
                             if (result.success) {
-                                console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
+                                // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
                                 setLastSaved(result.transaction.timestamp && new Date(result.transaction.timestamp) ? "Last Saved: "+new Date(result.transaction.timestamp).toLocaleString() : "");
                                 setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
                                 setDropdown(result.transaction.admissionsObj.startTime);
@@ -700,7 +709,7 @@ export function App() {
                                 return <br></br>
                             } else if (eachIndex == sorted.length - 1) {
                                 return <div className="sortedWithButton">
-                                    <p>{each}
+                                    <p id="endoutput">{each}
                                         {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && <img
                                             alt="copy button"
                                             className="copybuttonjust1line"
