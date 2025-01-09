@@ -23,7 +23,7 @@ import CONFIG1 from "./config";
 import CopyMessages from "./CopyMessages";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, set } from "firebase/database";
-import { addTransaction, deteleAllTransactions, getMostRecentTransaction, getLast10Transactions } from "./transactionsApi";
+import { addTransaction, deleteAllTransactions, getMostRecentTransaction, getLast10Transactions } from "./transactionsApi";
 // import Last10Transactions from "./Last10Transactions";
 
 const CONFIG = CONFIG1;
@@ -66,13 +66,14 @@ export function App() {
                 if (result.success) {
                     console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
                     setLastSaved(result.transaction.timestamp && new Date(result.transaction.timestamp) ? "Last Saved: "+new Date(result.transaction.timestamp).toLocaleString() : "");
-                    setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
+                    if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts){
+                        setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
+                    }
                     setDropdown(result.transaction.admissionsObj.startTime);
                 } else {
                     //   setError(result.message || "Failed to fetch the most recent transaction.");
                 }
             };
-
             fetchRecentTransaction();
             fetchTransactions();
             sortMain(allAdmissionsDataShifts);
@@ -103,6 +104,7 @@ export function App() {
         timeObj && timeObj.shifts && timeObj.shifts.sort(function (a, b) {
             return moment(a.timestamp, TIME_FORMAT).diff(moment(b.timestamp, TIME_FORMAT));
         });
+        //if same chronic load ratio, then pick the one with lower number of admissions to go first
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`)
         });
@@ -239,7 +241,7 @@ export function App() {
     const getValuesFromExistingAdmissionsDate = (customTime) => {
         const customShifts = [];
         const customObj = {};
-        let admissionId = 0;
+        let admissionId = 1;
         let userInputTime = moment(customTime, TIME_FORMAT);
         if (userInputTime.isBefore(moment("07:00", TIME_FORMAT))) {
             userInputTime = moment(customTime, TIME_FORMAT).add(1, "days");
@@ -247,15 +249,7 @@ export function App() {
 
         SHIFT_TYPES.forEach((each, eachIndex) => {
 
-            const momentStart = moment(each.startWithThreshold, TIME_FORMAT);
-            let momentEndWithThreshold = moment(each.endWithThreshold, TIME_FORMAT);
-
-            if (each.name.includes("N")) {
-                momentEndWithThreshold = momentEndWithThreshold.add("1", "days");
-            }
-
-            if (userInputTime.isAfter(momentStart) && userInputTime.isBefore(momentEndWithThreshold)) {
-                const role = each.name;
+            const role = each.name;
 
                 let carryOverRole = "";
                 allAdmissionsDataShifts.shifts.map((fromAdmissionsDataEach, fromAdmissionsDataEachIndex) => {
@@ -288,7 +282,6 @@ export function App() {
                 }
 
                 admissionId++;
-            }
         });
         customObj["startTime"] = customTime;
         customObj["shifts"] = customShifts;
@@ -531,87 +524,95 @@ export function App() {
                             </tr>}
                     </thead>
                     <tbody>
-                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.map((admission, index) => (
-                            !admission.isStatic &&
-                            <tr
-                                style={SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name) ? {} : { display: "none" }}
-                                className={"admissionsDataRow_" + index}
-                                key={admission.admissionsId}
-
-                            >
-                                <td>
-                                    <input
-                                        name={`name_${index}`}
-                                        value={admission.name}
-                                        type="text"
-                                        disabled={true}
-                                    />
-                                </td>
-                                {openTable && <td>
-                                    <input
-                                        name="shiftTimePeriod"
-                                        value={admission.shiftTimePeriod}
-                                        type="text"
-                                        disabled={true}
-                                    />
-                                </td>}
-                                <td className="usercanedit"
-
-                                    tabIndex={-1}
-                                    onKeyDown={(e) => handleKeyDown(e, index)}
-                                >
-                                    <input
-                                        id={`numberOfAdmissions_${index}`}
-                                        name="numberOfAdmissions"
-                                        value={admission.numberOfAdmissions}
-                                        step="1"
-                                        type="text"
-                                        placeholder="---"
-                                        onChange={(e) => onChange(e, admission.admissionsId)}
-                                        disabled={admission.isStatic}
-                                    />
-                                </td>
-                                <td className="usercanedit"
-                                    tabIndex={-1}
-                                    onKeyDown={(e) => handleKeyDown(e, index)}
-                                >
-                                    <input
-                                        id={`timestamp_${index}`}
-                                        name="timestamp"
-                                        value={admission.timestamp}
-                                        type="time"
-                                        onChange={(e) => onChange(e, admission.admissionsId)}
-                                        disabled={admission.isStatic}
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        name={`chronicLoadRatio_${index}`}
-                                        type="text"
-                                        value={admission.chronicLoadRatio}
-                                        disabled={true}
-                                    />
-                                </td>
-                                {openTable && <td>
-                                    <input
-                                        name="numberHoursWorked"
-                                        value={admission.numberOfHoursWorked}
-                                        type="number"
-                                        placeholder="Enter number"
-                                        disabled={true}
-                                    />
-                                </td>}
-                                {openTable && <td>
-                                    <input
-                                        name="score"
-                                        type="text"
-                                        value={admission.score}
-                                        disabled={true}
-                                    />
-                                </td>}
-
-                            </tr>
-                        ))}
+                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.map((admission, indexx) => {
+                            let index = 0;
+                            if (SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name)){
+                                index = Number(admission.admissionsId);
+                                return(
+                                    !admission.isStatic &&
+                                    <tr
+                                        style={SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name) ? {} : { display: "none" }}
+                                        className={"admissionsDataRow_" + index}
+                                        key={admission.admissionsId}
+        
+                                    >
+                                        <td>
+                                            <input
+                                                name={`name_${index}`}
+                                                value={admission.name}
+                                                type="text"
+                                                disabled={true}
+                                            />
+                                        </td>
+                                        {openTable && <td>
+                                            <input
+                                                name="shiftTimePeriod"
+                                                value={admission.shiftTimePeriod}
+                                                type="text"
+                                                disabled={true}
+                                            />
+                                        </td>}
+                                        <td className="usercanedit"
+        
+                                            tabIndex={-1}
+                                            onKeyDown={(e) => handleKeyDown(e, index)}
+                                        >
+                                            <input
+                                                id={`numberOfAdmissions_${index}`}
+                                                name="numberOfAdmissions"
+                                                className="numberOfAdmissions"
+                                                value={admission.numberOfAdmissions}
+                                                step="1"
+                                                type="text"
+                                                placeholder="---"
+                                                onChange={(e) => onChange(e, admission.admissionsId)}
+                                                disabled={admission.isStatic}
+                                            />
+                                        </td>
+                                        <td className="usercanedit"
+                                            tabIndex={-1}
+                                            onKeyDown={(e) => handleKeyDown(e, index)}
+                                        >
+                                            <input
+                                                id={`timestamp_${index}`}
+                                                name="timestamp"
+                                                className="timestamp"
+                                                value={admission.timestamp}
+                                                type="time"
+                                                onChange={(e) => onChange(e, admission.admissionsId)}
+                                                disabled={admission.isStatic}
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                name={`chronicLoadRatio_${index}`}
+                                                type="text"
+                                                value={admission.chronicLoadRatio}
+                                                disabled={true}
+                                            />
+                                        </td>
+                                        {openTable && <td>
+                                            <input
+                                                name="numberHoursWorked"
+                                                value={admission.numberOfHoursWorked}
+                                                type="number"
+                                                placeholder="Enter number"
+                                                disabled={true}
+                                            />
+                                        </td>}
+                                        {openTable && <td>
+                                            <input
+                                                name="score"
+                                                type="text"
+                                                value={admission.score}
+                                                disabled={true}
+                                            />
+                                        </td>}
+        
+                                    </tr>);
+                            }
+                           
+                        })}
                     </tbody>
                 </table>
                 <button className="seedetails" onClick={() => {
@@ -740,17 +741,6 @@ export function App() {
                             return <p>{line}</p>
                         }
                     })}
-                    {/* Set Weight <input
-                    className="weight"
-                    name="weight"
-                    type="number"
-                    step=".1"
-                    value={weight}
-                    onChange={(ev) => {
-                        setWeight(ev.target.value);
-                    }}
-                    placeholder={"Set weight"}
-                /> */}
                 </fieldset>}
 
                 <CopyMessages />

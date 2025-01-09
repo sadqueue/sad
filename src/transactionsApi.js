@@ -70,7 +70,7 @@ export const getTransaction = async (role, admissions) => {
       });
   };
 
-export const deteleAllTransactions = async (role, admissions) => {
+export const deleteAllTransactions = async (role, admissions) => {
     const transactionsRef = ref(database, "transactions");
     try {
         await remove(transactionsRef);
