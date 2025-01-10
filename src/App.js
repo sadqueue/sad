@@ -51,21 +51,30 @@ export function App() {
     const [admissionsOutput, setAdmissionsOutput] = useState("");
     const [transactions, setTransactions] = useState([]);
     const [lastSaved, setLastSaved] = useState("");
-
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
-        // deleteAllTransactions() 
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
             const fetchTransactions = async () => {
                 const data = await getLast10Transactions();
                 setTransactions(data);
             };
-
+            let localDateTime="";
             const fetchRecentTransaction = async () => {
                 const result = await getMostRecentTransaction();
 
                 if (result.success) {
                     // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
-                    setLastSaved(result.transaction.timestamp ? result.transaction.timestamp : "");
+                    const timestamp = new Date(result.transaction.timestamp);
+                    const month = String(timestamp.getMonth()+1); // Months are zero-based
+                    const day = String(timestamp.getDate());
+                    let hours = timestamp.getHours();
+                    const minutes = String(timestamp.getMinutes()).padStart(2, '0');
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+                    
+                    localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
+                    
+                    setLastSaved(localDateTime);
                     if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts){
                         setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
                     }
@@ -73,17 +82,19 @@ export function App() {
                 } else {
                     //   setError(result.message || "Failed to fetch the most recent transaction.");
                 }
+                setLoading(false);
+                fetchTransactions();
+                sortMain(allAdmissionsDataShifts, localDateTime);
             };
             fetchRecentTransaction();
-            fetchTransactions();
-            sortMain(allAdmissionsDataShifts);
+            
     }, [])
 
-    const sortMain = (timeObj) => {
-        return sortByTimestampAndCompositeScore(timeObj);
+    const sortMain = (timeObj, lastSavedTime="") => {
+        return sortByTimestampAndCompositeScore(timeObj, lastSavedTime);
     }
 
-    const sortByTimestampAndCompositeScore = (timeObj) => {
+    const sortByTimestampAndCompositeScore = (timeObj, lastSavedTime="") => {
         timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
             each["startTime"] = timeObj.startTime;
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
@@ -160,7 +171,7 @@ export function App() {
 
         setExplanation(explanationArr);
 
-        setSortRoles(timeObj);
+        setSortRoles(timeObj, lastSavedTime);
 
         handleSetAllAdmissionsDataShifts(timeObj);
         sortByAscendingName(timeObj);
@@ -376,7 +387,7 @@ export function App() {
         handleSetAllAdmissionsDataShifts(returnObj);
     }
 
-    const setSortRoles = (admissionsDatax) => {
+    const setSortRoles = (admissionsDatax, lastSavedTime="") => {
         const sortRoles = [];
         const sortRolesNameOnly = [];
         sortRoles.push("\n");
@@ -393,18 +404,8 @@ export function App() {
         });
 
         sortRoles.push("\n");
-    const timestamp = new Date(lastSaved);
-        const year = timestamp.getFullYear();
-const month = String(timestamp.getMonth()+1); // Months are zero-based
-const day = String(timestamp.getDate());
-let hours = timestamp.getHours();
-const minutes = String(timestamp.getMinutes()).padStart(2, '0');
-const ampm = hours >= 12 ? 'PM' : 'AM';
-hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
 
-const localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
-
-        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${localDateTime} ${moment(admissionsDatax.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
+        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${lastSaved ? lastSaved.split(" ") && lastSaved.split(" ").length > 0 && lastSaved.split(" ")[0] : lastSavedTime.split(" ") && lastSavedTime.split(" ").length > 0 && lastSavedTime.split(" ")[0]} ${moment(admissionsDatax.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
 
         setAdmissionsOutput(sortRolesNameOnly.join(">"));
@@ -503,31 +504,20 @@ const localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
         }
     };
 
-    const timestamp = new Date(lastSaved);
-    const year = timestamp.getFullYear();
-const month = String(timestamp.getMonth()+1); // Months are zero-based
-const day = String(timestamp.getDate());
-let hours = timestamp.getHours();
-const minutes = String(timestamp.getMinutes()).padStart(2, '0');
-const ampm = hours >= 12 ? 'PM' : 'AM';
-hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
-
-const localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
-
-
     return (
         <div>
             <div className="header">
                 <h1 className="title">S.A.D. Queue</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution</h2>
             </div>
+            {loading ? <div className="container">Loading...</div> :
             <div className="container">
                 <div className="flex-container-just1item">
                     {timesDropdown()}
                 </div>
                 <div className="flex-container">
                     <span className="left-text">
-                        {"Last Saved: "+ localDateTime}
+                        {"Last Saved: "+ lastSaved}
                     </span>
                     <span className="right-text">
                         <button className="clearall" onClick={() => {
@@ -575,7 +565,7 @@ const localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
                             </tr>}
                     </thead>
                     <tbody>
-                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.map((admission, indexx) => {
+                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && allAdmissionsDataShifts.shifts.map((admission, indexx) => {
                             let index = 0;
                             if (SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name)){
                                 index = Number(admission.admissionsId);
@@ -680,7 +670,17 @@ const localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
             
                             if (result.success) {
                                 // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
-                                setLastSaved(result.transaction.timestamp ? result.transaction.timestamp : "");
+                                const timestamp = new Date(result.transaction.timestamp);
+                                const month = String(timestamp.getMonth()+1); // Months are zero-based
+                                const day = String(timestamp.getDate());
+                                let hours = timestamp.getHours();
+                                const minutes = String(timestamp.getMinutes()).padStart(2, '0');
+                                const ampm = hours >= 12 ? 'PM' : 'AM';
+                                hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+                                
+                                const localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
+                                
+                                setLastSaved(localDateTime);
                                 setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
                                 setDropdown(result.transaction.admissionsObj.startTime);
                             } else {
@@ -803,7 +803,7 @@ const localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
                             window.location.href = "https://github.com/sadqueue/sad/tree/main";
                         }} />
                 </div>
-            </div>
+            </div>}
         </div>
     )
 
