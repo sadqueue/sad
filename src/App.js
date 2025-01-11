@@ -29,7 +29,9 @@ import { addTransaction, deleteAllTransactions, getMostRecentTransaction, getLas
 const CONFIG = CONFIG1;
 
 export function App() {
-    const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState(localStorage.getItem("allAdmissionsDataShifts") ? JSON.parse(localStorage.getItem("allAdmissionsDataShifts")) : { startTime: "16:00", shifts: SHIFT_TYPES })
+    // const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState(localStorage.getItem("allAdmissionsDataShifts") ? JSON.parse(localStorage.getItem("allAdmissionsDataShifts")) : { startTime: "16:00", shifts: SHIFT_TYPES })
+    const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState({ startTime: "16:00", shifts: SHIFT_TYPES })
+
     const [sorted, setSorted] = useState("");
     const [seeDetails, setSeeDetails] = useState(false);
     const [explanation, setExplanation] = useState("");
@@ -47,7 +49,8 @@ export function App() {
             "score": true
         }
     );
-    const [dropdown, setDropdown] = useState(localStorage.getItem("dropdown") ? localStorage.getItem("dropdown") : "16:00");
+    // const [dropdown, setDropdown] = useState(localStorage.getItem("dropdown") ? localStorage.getItem("dropdown") : "16:00");
+    const [dropdown, setDropdown] = useState("16:00");
     const [admissionsOutput, setAdmissionsOutput] = useState("");
     const [transactions, setTransactions] = useState([]);
     const [lastSaved, setLastSaved] = useState("");
@@ -208,7 +211,7 @@ export function App() {
     const handleSetAllAdmissionsDataShifts = (obj) => {
         const newObj = Object.assign([], allAdmissionsDataShifts, obj.shifts)
         setAllAdmissionsDataShifts({ startTime: obj.startTime, shifts: newObj });
-        localStorage.setItem("allAdmissionsDataShifts", JSON.stringify({ startTime: obj.startTime, shifts: newObj }));
+        // localStorage.setItem("allAdmissionsDataShifts", JSON.stringify({ startTime: obj.startTime, shifts: newObj }));
     }
 
     const onChange = (e, admissionsId) => {
@@ -399,13 +402,17 @@ export function App() {
                 if (each.numberOfHoursWorked + "" !== "0") {
                     sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
                 }
-                sortRolesNameOnly.push(each.name);
+                if (window.location.hostname === 'localhost'){
+                    sortRolesNameOnly.push(`${each.name}(${each.chronicLoadRatio})`);
+                } else {
+                    sortRolesNameOnly.push(each.name);
+                }
             }
         });
 
         sortRoles.push("\n");
 
-        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${lastSaved ? lastSaved.split(" ") && lastSaved.split(" ").length > 0 && lastSaved.split(" ")[0] : lastSavedTime.split(" ") && lastSavedTime.split(" ").length > 0 && lastSavedTime.split(" ")[0]} ${moment(admissionsDatax.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
+        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${lastSaved ? lastSaved.split(" ") && lastSaved.split(" ").length > 0 && lastSaved.split(" ")[0] : lastSavedTime.split(" ") && lastSavedTime.split(" ").length > 0 && lastSavedTime.split(" ")[0]} ${moment(dropdown, TIME_FORMAT).format(TIME_FORMAT)}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
 
         setAdmissionsOutput(sortRolesNameOnly.join(">"));
