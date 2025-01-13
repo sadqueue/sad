@@ -374,4 +374,4 @@ export const CUSTOM_DATA = {
 
 export const ADMISSIONS_FORMAT = "[Role] [Number of admits] / [Hours worked so far] [Last timestamp]"
 
-export const COPIED_MSG_1 = "Please like/claim your patient with your personalized emoji or “Got ER#” to close the loop. Reminder: please pre-screen and update re: UHS, Kaiser, HHH, ICU, AMA, DC, EDP, and potential ICU. Mahalo!";
+export const COPIED_MSG_1 = "Welcome to the QAdmitters TT for admissions assignments. When it’s your turn, please like/claim your patient with your personalized emoji to close the loop (e.g., 🚀,🍕,❤️) and minimize texting/confusion. Reminder: please pre-screen and update group re: UHS, Kaiser, HHH, ICU, AMA, DC, EDP, borderline outpt non-admits and potential ICU. Mahalo!";
