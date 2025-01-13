@@ -145,19 +145,19 @@ export function App() {
             }
         });
 
-        // shiftsGreaterThanThreshold.sort((a, b) => {
-        //     if (a.chronicLoadRatio === b.chronicLoadRatio) {
-        //         return b.numberOfAdmissions - a.numberOfAdmissions; // higher admissions go first
-        //     }
-        //     return a.chronicLoadRatio - b.chronicLoadRatio; // lesser chronic load ratio goes later
-        // });
+        shiftsGreaterThanThreshold.sort((a, b) => {
+            if (a.chronicLoadRatio === b.chronicLoadRatio) {
+                return b.numberOfAdmissions - a.numberOfAdmissions; // higher admissions go first
+            }
+            // return a.chronicLoadRatio - b.chronicLoadRatio; // lesser chronic load ratio goes later
+        });
 
-        // shiftsGreaterThanThreshold.sort((a, b) => {
-        //     if (a.timestamp === b.timestamp) {
-        //         return b.timestamp - a.timestamp; //last timestamp goes first
-        //     }
-        //     return a.timestamp - b.timestamp; // most recent timestamp
-        // });
+        shiftsGreaterThanThreshold.sort((a, b) => {
+            if (a.timestamp === b.timestamp) {
+                return b.timestamp - a.timestamp; //last timestamp goes first
+            }
+            // return a.timestamp - b.timestamp; // most recent timestamp
+        });
         
         explanationArr.push("\n");
         explanationArr.push(`Step 3: De-prioritize admitters with high chronic loads to the back of the queue.`)
