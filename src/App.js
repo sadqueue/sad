@@ -58,47 +58,47 @@ export function App() {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
-            const fetchTransactions = async () => {
-                const data = await getLast10Transactions();
-                setTransactions(data);
-            };
-            let localDateTime="";
-            const fetchRecentTransaction = async () => {
-                const result = await getMostRecentTransaction();
+        const fetchTransactions = async () => {
+            const data = await getLast10Transactions();
+            setTransactions(data);
+        };
+        let localDateTime = "";
+        const fetchRecentTransaction = async () => {
+            const result = await getMostRecentTransaction();
 
-                if (result.success) {
-                    // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
-                    const timestamp = new Date(result.transaction.timestamp);
-                    const month = String(timestamp.getMonth()+1); // Months are zero-based
-                    const day = String(timestamp.getDate());
-                    let hours = timestamp.getHours();
-                    const minutes = String(timestamp.getMinutes()).padStart(2, '0');
-                    const ampm = hours >= 12 ? 'PM' : 'AM';
-                    hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
-                    
-                    localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
-                    
-                    setLastSaved(localDateTime);
-                    if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts){
-                        setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
-                    }
-                    setDropdown(result.transaction.admissionsObj.startTime);
-                } else {
-                    //   setError(result.message || "Failed to fetch the most recent transaction.");
+            if (result.success) {
+                // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
+                const timestamp = new Date(result.transaction.timestamp);
+                const month = String(timestamp.getMonth() + 1); // Months are zero-based
+                const day = String(timestamp.getDate());
+                let hours = timestamp.getHours();
+                const minutes = String(timestamp.getMinutes()).padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+
+                localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
+
+                setLastSaved(localDateTime);
+                if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
+                    setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
                 }
-                setLoading(false);
-                fetchTransactions();
-                sortMain(allAdmissionsDataShifts, localDateTime);
-            };
-            fetchRecentTransaction();
-            
+                setDropdown(result.transaction.admissionsObj.startTime);
+            } else {
+                //   setError(result.message || "Failed to fetch the most recent transaction.");
+            }
+            setLoading(false);
+            fetchTransactions();
+            sortMain(allAdmissionsDataShifts, localDateTime);
+        };
+        fetchRecentTransaction();
+
     }, [])
 
-    const sortMain = (timeObj, lastSavedTime="") => {
+    const sortMain = (timeObj, lastSavedTime = "") => {
         return sortByTimestampAndCompositeScore(timeObj, lastSavedTime);
     }
 
-    const sortByTimestampAndCompositeScore = (timeObj, lastSavedTime="") => {
+    const sortByTimestampAndCompositeScore = (timeObj, lastSavedTime = "") => {
         timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
             each["startTime"] = timeObj.startTime;
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
@@ -121,7 +121,7 @@ export function App() {
         });
         //if same chronic load ratio, then pick the one with lower number of admissions to go first
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)){
+            if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
                 explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`)
             }
         });
@@ -136,7 +136,7 @@ export function App() {
         explanationArr.push(`Step 2: Determine the admitters with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}.`);
 
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)){
+            if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
                 if ((each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
                     (timeObj.startTime == "17:00" && each.name !== "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
                     explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`);
@@ -160,7 +160,7 @@ export function App() {
             }
             // return a.timestamp - b.timestamp; // most recent timestamp
         });
-        
+
         explanationArr.push("\n");
         explanationArr.push(`Step 3: De-prioritize admitters with high chronic loads to the back of the queue.`)
         const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
@@ -286,43 +286,43 @@ export function App() {
 
             const role = each.name;
 
-                let carryOverRole = "";
-                allAdmissionsDataShifts.shifts.map((fromAdmissionsDataEach, fromAdmissionsDataEachIndex) => {
-                    if (role == fromAdmissionsDataEach.name) {
-                        carryOverRole = fromAdmissionsDataEach;
-                        if ((customTime == "17:00" && role == "N5") ||
-                            (customTime == "19:00" && (role == "N1" || role == "N2" || role == "N3" || role == "N4"))){
-                            carryOverRole.timestamp = fromAdmissionsDataEach.startWithThreshold;
-                            carryOverRole.numberOfAdmissions = "0";
-                            carryOverRole.chronicLoadRatio = getChronicLoadRatio(fromAdmissionsDataEach);
-                        }
-                        return;
+            let carryOverRole = "";
+            allAdmissionsDataShifts.shifts.map((fromAdmissionsDataEach, fromAdmissionsDataEachIndex) => {
+                if (role == fromAdmissionsDataEach.name) {
+                    carryOverRole = fromAdmissionsDataEach;
+                    if ((customTime == "17:00" && role == "N5") ||
+                        (customTime == "19:00" && (role == "N1" || role == "N2" || role == "N3" || role == "N4"))) {
+                        carryOverRole.timestamp = fromAdmissionsDataEach.startWithThreshold;
+                        carryOverRole.numberOfAdmissions = "0";
+                        carryOverRole.chronicLoadRatio = getChronicLoadRatio(fromAdmissionsDataEach);
                     }
+                    return;
+                }
+            });
+
+            if (carryOverRole) {
+                customShifts.push({
+                    ...carryOverRole,
+                    admissionsId: admissionId + ""
                 });
+            }
+            else {
+                customShifts.push({
+                    admissionsId: admissionId + "",
+                    minutesWorkedFromStartTime: getMinutesWorkedFromStartTime(each),
+                    numberOfHoursWorked: getNumberOfHoursWorked(each),
+                    chronicLoadRatio: getChronicLoadRatio(each),
+                    score: getCompositeScore(each),
+                    numberOfAdmissions: each.numberOfAdmissions,
+                    name: each.name,
+                    displayName: each.name + " " + each.displayStartTimeToEndTime,
+                    shiftTimePeriod: each.shiftTimePeriod,
+                    roleStartTime: each.start,
+                    timestamp: each.timestamp ? each.timestamp : ""
+                });
+            }
 
-                if (carryOverRole) {
-                    customShifts.push({
-                        ...carryOverRole,
-                        admissionsId: admissionId + ""
-                    });
-                }
-                else {
-                    customShifts.push({
-                        admissionsId: admissionId + "",
-                        minutesWorkedFromStartTime: getMinutesWorkedFromStartTime(each),
-                        numberOfHoursWorked: getNumberOfHoursWorked(each),
-                        chronicLoadRatio: getChronicLoadRatio(each),
-                        score: getCompositeScore(each),
-                        numberOfAdmissions: each.numberOfAdmissions,
-                        name: each.name,
-                        displayName: each.name + " " + each.displayStartTimeToEndTime,
-                        shiftTimePeriod: each.shiftTimePeriod,
-                        roleStartTime: each.start,
-                        timestamp: each.timestamp ? each.timestamp : ""
-                    });
-                }
-
-                admissionId++;
+            admissionId++;
         });
         customObj["startTime"] = customTime;
         customObj["shifts"] = customShifts;
@@ -392,7 +392,7 @@ export function App() {
         handleSetAllAdmissionsDataShifts(returnObj);
     }
 
-    const setSortRoles = (admissionsDatax, lastSavedTime="") => {
+    const setSortRoles = (admissionsDatax, lastSavedTime = "") => {
         const sortRoles = [];
         const sortRolesNameOnly = [];
         sortRoles.push("\n");
@@ -404,7 +404,7 @@ export function App() {
                 if (each.numberOfHoursWorked + "" !== "0") {
                     sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
                 }
-                if (window.location.hostname === 'localhost'){
+                if (window.location.hostname === 'localhost') {
                     sortRolesNameOnly.push(`${each.name}(${each.chronicLoadRatio})`);
                 } else {
                     sortRolesNameOnly.push(each.name);
@@ -520,191 +520,205 @@ export function App() {
                 <h2 className="subtitle">Standardized Admissions Distribution</h2>
             </div>
             {loading ? <div className="container">Loading...</div> :
-            <div className="container">
-                <div className="flex-container-just1item">
-                    {timesDropdown()}
-                </div>
-                <div className="flex-container">
-                    <span className="left-text">
-                        {"Last Saved: "+ lastSaved}
-                    </span>
-                    <span className="right-text">
-                        <button className="clearall" onClick={() => {
-                            allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
-                                each.timestamp = "";
-                                each.numberOfAdmissions = "";
-                                each.chronicLoadRatio = "";
-                            })
-                            setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+                <div className="container">
+                    <div>
+                        <p className="font 14px">
+                            Write the order down to help you follow along and know when you are up.  When it is your turn, to minimize texting/confusion, confirm admission receipt by attaching " 👍" emoji or, better yet, a personalized emoji (e.g., 1️⃣ for swing1).
 
-                            setIsCleared(true);
-                            setTimeout(() => setIsCleared(false), 1000);
-                        }}>{"Clear All"}</button>
-
-                    </span>
-                    
-                    <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
-
-                </div>
-                <table>
-                    <thead>
-                        {openTable ? <tr>
-                            {
-                                EXPAND_TABLE.map((each, eachIndex) => {
-                                    return (
-                                        <th onClick={() => handleSort(each[0])}>
-                                            {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
-                                        </th>
-                                    );
+                        </p>
+                        <p className="font 14px">
+                            Please screen your own patients (e.g., HHH, QEC/UHS, VA, Kaiser). If there are concerns, please let ED MD know and post update in the qadmitter group.
+                        </p>
+                        <p className="font 14px">
+                            Please opt in or out of your Tiger Text Swing Role during your shift. Don’t leave the group while still in your role; opting out will automatically remove you from the qadmitter thread. This process will eventually become automated.
+                        </p>
+                        <p className="font 14px">
+                        Thanks for your understanding.</p>
+                    </div>
+                    <div className="flex-container-just1item">
+                        {timesDropdown()}
+                    </div>
+                    <div className="flex-container">
+                        <span className="left-text backgroundcoloryellow">
+                            {"Last Saved: " + lastSaved}
+                        </span>
+                        <span className="right-text">
+                            <button className="clearall" onClick={() => {
+                                allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
+                                    each.timestamp = "";
+                                    each.numberOfAdmissions = "";
+                                    each.chronicLoadRatio = "";
                                 })
-                            }
-                        </tr> :
-                            <tr>
+                                setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+
+                                setIsCleared(true);
+                                setTimeout(() => setIsCleared(false), 1000);
+                            }}>{"Clear All"}</button>
+
+                        </span>
+
+                        <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
+
+                    </div>
+                    <table>
+                        <thead>
+                            {openTable ? <tr>
                                 {
-                                    MINIMIZE_TABLE.map((each, eachIndex) => {
+                                    EXPAND_TABLE.map((each, eachIndex) => {
                                         return (
-                                            <th onClick={() => {
-                                                handleSort(each[0]);
-                                            }}>
+                                            <th onClick={() => handleSort(each[0])}>
                                                 {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
                                             </th>
                                         );
                                     })
                                 }
-                            </tr>}
-                    </thead>
-                    <tbody>
-                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && allAdmissionsDataShifts.shifts.map((admission, indexx) => {
-                            let index = 0;
-                            if (SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name)){
-                                index = Number(admission.admissionsId);
-                                return(
-                                    !admission.isStatic &&
-                                    <tr
-                                        style={SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name) ? {} : { display: "none" }}
-                                        className={"admissionsDataRow_" + index}
-                                        key={admission.admissionsId}
-        
-                                    >
-                                        <td>
-                                            <input
-                                                name={`name_${index}`}
-                                                value={admission.name}
-                                                type="text"
-                                                disabled={true}
-                                            />
-                                        </td>
-                                        {openTable && <td>
-                                            <input
-                                                name="shiftTimePeriod"
-                                                value={admission.shiftTimePeriod}
-                                                type="text"
-                                                disabled={true}
-                                            />
-                                        </td>}
-                                        <td className="usercanedit"
-        
-                                            tabIndex={-1}
-                                            onKeyDown={(e) => handleKeyDown(e, index)}
-                                        >
-                                            <input
-                                                id={`numberOfAdmissions_${index}`}
-                                                name="numberOfAdmissions"
-                                                className="numberOfAdmissions"
-                                                value={admission.numberOfAdmissions}
-                                                step="1"
-                                                type="text"
-                                                placeholder="---"
-                                                onChange={(e) => onChange(e, admission.admissionsId)}
-                                                disabled={admission.isStatic}
-                                            />
-                                        </td>
-                                        <td className="usercanedit"
-                                            tabIndex={-1}
-                                            onKeyDown={(e) => handleKeyDown(e, index)}
-                                        >
-                                            <input
-                                                id={`timestamp_${index}`}
-                                                name="timestamp"
-                                                className="timestamp"
-                                                value={admission.timestamp}
-                                                type="time"
-                                                onChange={(e) => onChange(e, admission.admissionsId)}
-                                                disabled={admission.isStatic}
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                name={`chronicLoadRatio_${index}`}
-                                                type="text"
-                                                value={admission.chronicLoadRatio}
-                                                disabled={true}
-                                            />
-                                        </td>
-                                        {openTable && <td>
-                                            <input
-                                                name="numberHoursWorked"
-                                                value={admission.numberOfHoursWorked}
-                                                type="number"
-                                                placeholder="Enter number"
-                                                disabled={true}
-                                            />
-                                        </td>}
-                                        {openTable && <td>
-                                            <input
-                                                name="score"
-                                                type="text"
-                                                value={admission.score}
-                                                disabled={true}
-                                            />
-                                        </td>}
-        
-                                    </tr>);
-                            }
-                           
-                        })}
-                    </tbody>
-                </table>
-                <button className="seedetails" onClick={() => {
-                    setOpenTable(!openTable);
-                }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
-                <section style={{ textAlign: "center", margin: "30px" }}>
-                    <button onClick={() => {
-                        sortMain(allAdmissionsDataShifts);
-                        addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: allAdmissionsDataShifts.startTime });
+                            </tr> :
+                                <tr>
+                                    {
+                                        MINIMIZE_TABLE.map((each, eachIndex) => {
+                                            return (
+                                                <th onClick={() => {
+                                                    handleSort(each[0]);
+                                                }}>
+                                                    {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
+                                                </th>
+                                            );
+                                        })
+                                    }
+                                </tr>}
+                        </thead>
+                        <tbody>
+                            {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && allAdmissionsDataShifts.shifts.map((admission, indexx) => {
+                                let index = 0;
+                                if (SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name)) {
+                                    index = Number(admission.admissionsId);
+                                    return (
+                                        !admission.isStatic &&
+                                        <tr
+                                            style={SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name) ? {} : { display: "none" }}
+                                            className={"admissionsDataRow_" + index}
+                                            key={admission.admissionsId}
 
-                        // console.log(transactions);
-                        const fetchRecentTransaction = async () => {
-                            const result = await getMostRecentTransaction();
-            
-                            if (result.success) {
-                                // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
-                                const timestamp = new Date(result.transaction.timestamp);
-                                const month = String(timestamp.getMonth()+1); // Months are zero-based
-                                const day = String(timestamp.getDate());
-                                let hours = timestamp.getHours();
-                                const minutes = String(timestamp.getMinutes()).padStart(2, '0');
-                                const ampm = hours >= 12 ? 'PM' : 'AM';
-                                hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
-                                
-                                const localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
-                                
-                                setLastSaved(localDateTime);
-                                setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
-                                setDropdown(result.transaction.admissionsObj.startTime);
-                            } else {
-                                //   setError(result.message || "Failed to fetch the most recent transaction.");
-                            }
-                        };
-            
-                        fetchRecentTransaction();
+                                        >
+                                            <td>
+                                                <input
+                                                    name={`name_${index}`}
+                                                    value={admission.name}
+                                                    type="text"
+                                                    disabled={true}
+                                                />
+                                            </td>
+                                            {openTable && <td>
+                                                <input
+                                                    name="shiftTimePeriod"
+                                                    value={admission.shiftTimePeriod}
+                                                    type="text"
+                                                    disabled={true}
+                                                />
+                                            </td>}
+                                            <td className="usercanedit"
 
-                    }}>
-                        Generate Queue
-                    </button>
-                </section>
-                {/* <Last10Transactions /> */}
-                {/* {transactions.length === 0 ? (
+                                                tabIndex={-1}
+                                                onKeyDown={(e) => handleKeyDown(e, index)}
+                                            >
+                                                <input
+                                                    id={`numberOfAdmissions_${index}`}
+                                                    name="numberOfAdmissions"
+                                                    className="numberOfAdmissions"
+                                                    value={admission.numberOfAdmissions}
+                                                    step="1"
+                                                    type="text"
+                                                    placeholder="---"
+                                                    onChange={(e) => onChange(e, admission.admissionsId)}
+                                                    disabled={admission.isStatic}
+                                                />
+                                            </td>
+                                            <td className="usercanedit"
+                                                tabIndex={-1}
+                                                onKeyDown={(e) => handleKeyDown(e, index)}
+                                            >
+                                                <input
+                                                    id={`timestamp_${index}`}
+                                                    name="timestamp"
+                                                    className="timestamp"
+                                                    value={admission.timestamp}
+                                                    type="time"
+                                                    onChange={(e) => onChange(e, admission.admissionsId)}
+                                                    disabled={admission.isStatic}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    name={`chronicLoadRatio_${index}`}
+                                                    type="text"
+                                                    value={admission.chronicLoadRatio}
+                                                    disabled={true}
+                                                />
+                                            </td>
+                                            {openTable && <td>
+                                                <input
+                                                    name="numberHoursWorked"
+                                                    value={admission.numberOfHoursWorked}
+                                                    type="number"
+                                                    placeholder="Enter number"
+                                                    disabled={true}
+                                                />
+                                            </td>}
+                                            {openTable && <td>
+                                                <input
+                                                    name="score"
+                                                    type="text"
+                                                    value={admission.score}
+                                                    disabled={true}
+                                                />
+                                            </td>}
+
+                                        </tr>);
+                                }
+
+                            })}
+                        </tbody>
+                    </table>
+                    <button className="seedetails" onClick={() => {
+                        setOpenTable(!openTable);
+                    }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
+                    <section style={{ textAlign: "center", margin: "30px" }}>
+                        <button onClick={() => {
+                            sortMain(allAdmissionsDataShifts);
+                            addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: allAdmissionsDataShifts.startTime });
+
+                            // console.log(transactions);
+                            const fetchRecentTransaction = async () => {
+                                const result = await getMostRecentTransaction();
+
+                                if (result.success) {
+                                    // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
+                                    const timestamp = new Date(result.transaction.timestamp);
+                                    const month = String(timestamp.getMonth() + 1); // Months are zero-based
+                                    const day = String(timestamp.getDate());
+                                    let hours = timestamp.getHours();
+                                    const minutes = String(timestamp.getMinutes()).padStart(2, '0');
+                                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                                    hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+
+                                    const localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
+
+                                    setLastSaved(localDateTime);
+                                    setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
+                                    setDropdown(result.transaction.admissionsObj.startTime);
+                                } else {
+                                    //   setError(result.message || "Failed to fetch the most recent transaction.");
+                                }
+                            };
+
+                            fetchRecentTransaction();
+
+                        }}>
+                            Generate Queue
+                        </button>
+                    </section>
+                    {/* <Last10Transactions /> */}
+                    {/* {transactions.length === 0 ? (
                     <p>No transactions found.</p>
                 ) : (
                     <ul>
@@ -717,102 +731,105 @@ export function App() {
                     </ul>
                 )} */}
 
-                <fieldset className="fieldsettocopy">
-                    {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
-                        (
-                            <div>
-                                <img
-                                    alt="copy button"
-                                    className="copybutton"
-                                    src={copybuttonImg}
-                                    onClick={(ev) => {
-                                        let copiedMessage = "";
-                                        sorted.map((each, eachIndex) => {
-                                            if (each == "\n") {
-                                            } else if (eachIndex == sorted.length - 1) {
-                                                copiedMessage += each;
-                                            } else {
-                                                copiedMessage += each + "\n";
-                                            }
-                                        });
+                    <fieldset className="fieldsettocopy">
+                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
+                            (
+                                <div>
+                                    <img
+                                        alt="copy button"
+                                        className="copybutton"
+                                        src={copybuttonImg}
+                                        onClick={(ev) => {
+                                            let copiedMessage = "";
+                                            sorted.map((each, eachIndex) => {
+                                                if (each == "\n") {
+                                                } else if (eachIndex == sorted.length - 1) {
+                                                    copiedMessage += each;
+                                                } else {
+                                                    copiedMessage += each + "\n";
+                                                }
+                                            });
 
-                                        copiedMessage += "\nGenerated by https://sadqueue.github.io/sad/";
+                                            copiedMessage += "\nGenerated by https://sadqueue.github.io/sad/";
 
-                                        navigator.clipboard.writeText(`${copiedMessage}`);
-                                        // sendEmail(ev, copiedMessage, title);
-                                        setIsCopied(true);
-                                        setTimeout(() => setIsCopied(false), 1000);
+                                            navigator.clipboard.writeText(`${copiedMessage}`);
+                                            // sendEmail(ev, copiedMessage, title);
+                                            setIsCopied(true);
+                                            setTimeout(() => setIsCopied(false), 1000);
 
-                                    }} />
-                                <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
+                                        }} />
+                                    <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
 
-                            </div>)
-                    }
-                    <p className="boldCopy">
-                        <br />
-                        {allAdmissionsDataShifts.startTime ? `Admissions Update` : `Select a time. No roles in the queue.`}
-                        {/* ${moment(allAdmissionsDataShifts.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
-                    </p>
-                    {
-                        sorted && sorted.map((each, eachIndex) => {
-                            if (each == "\n") {
-                                return <br></br>
-                            } else if (eachIndex == sorted.length - 1) {
-                                return <div className="sortedWithButton">
-                                    <p id="endoutput">{each}
-                                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && <img
-                                            alt="copy button"
-                                            className="copybuttonjust1line"
-                                            src={copybuttonImg}
-                                            onClick={(ev) => {
-
-                                                navigator.clipboard.writeText(sorted[sorted.length - 1]);
-                                                // sendEmail(ev, copiedMessage, title);
-                                                setIsCopied(true);
-                                                setTimeout(() => setIsCopied(false), 1000);
-
-                                            }} />}
-                                    </p>
-
-                                </div>
-
-                            } else {
-                                return <p className="sorted">{each}</p>
-                            }
-                        })
-                    }
-
-                </fieldset>
-                <p className="admissionsorderlastline">{ADMISSIONS_FORMAT}</p>
-
-                <button className="seedetails" onClick={() => {
-                    setSeeDetails(!seeDetails);
-                }
-                }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
-
-                {seeDetails && <fieldset className="notes">
-                    <p className="bold">Explanation</p>
-
-                    {explanation && explanation.map((line, lineIndex) => {
-                        if (line == "\n") {
-                            return <br></br>
-                        } else {
-                            return <p>{line}</p>
+                                </div>)
                         }
-                    })}
-                </fieldset>}
+                        <p className="boldCopy">
+                            <br />
+                            {allAdmissionsDataShifts.startTime ? `Admissions Update` : `Select a time. No roles in the queue.`}
+                            {/* ${moment(allAdmissionsDataShifts.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
+                        </p>
+                        {
+                            sorted && sorted.map((each, eachIndex) => {
+                                if (each == "\n") {
+                                    return <br></br>
+                                } else if (eachIndex == sorted.length - 1) {
+                                    return <div className="sortedWithButton">
+                                        <p id="endoutput">{each}
+                                            {/*allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
+                                             <img
+                                                alt="copy button"
+                                                className="copybuttonjust1line"
+                                                src={copybuttonImg}
+                                                onClick={(ev) => {
 
-                <CopyMessages />
-                <div className="footer">
-                    <img
-                        alt="copy button"
-                        className="copybutton"
-                        src={githublogo}
-                        onClick={(ev) => {
-                            window.location.href = "https://github.com/sadqueue/sad/tree/main";
-                        }} />
-                </div>
-            </div>}
+                                                    navigator.clipboard.writeText(sorted[sorted.length - 1]);
+                                                    // sendEmail(ev, copiedMessage, title);
+                                                    setIsCopied(true);
+                                                    setTimeout(() => setIsCopied(false), 1000);
+
+                                                }} />*/}
+                                        </p>
+
+                                    </div>
+
+                                } else {
+                                    return <p className="sorted">{each}</p>
+                                }
+                            })
+                        }
+
+                    </fieldset>
+                    <p className="admissionsorderlastline">{ADMISSIONS_FORMAT}</p>
+
+                    <button className="seedetails" onClick={() => {
+                        setSeeDetails(!seeDetails);
+                    }
+                    }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
+
+                    {seeDetails && <fieldset className="notes">
+                        <p className="bold">Explanation</p>
+
+                        {explanation && explanation.map((line, lineIndex) => {
+                            if (line == "\n") {
+                                return <br></br>
+                            } else {
+                                return <p>{line}</p>
+                            }
+                        })}
+                    </fieldset>}
+
+                    <CopyMessages />
+                    
+                    <div className="footer">
+                        <img
+                            alt="copy button"
+                            className="githubbutton"
+                            src={githublogo}
+                            onClick={(ev) => {
+                                window.location.href = "https://github.com/sadqueue/sad/tree/main";
+                            }} />
+                        <p>&copy; <span>{new Date().getFullYear()}</span> SAD Queue. All rights reserved.</p>
+                    </div>
+                </div>}
         </div>
     )
 

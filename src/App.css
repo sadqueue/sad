@@ -51,11 +51,36 @@ div[class="header"] {
 .container {
   font-family: 'Poppins', sans-serif;
   /* width: 92%; */
-  max-width: 800px;
+  width: 100%;
+  max-width: 1140px;
   padding: 0 10px;
   margin: 0 auto;
   margin-top: 20px;
   text-align: center;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1280px;
+  }
 }
 
 table {
@@ -197,6 +222,13 @@ img.copybutton {
   margin-top: 8px;
 }
 
+img.githubbutton {
+  text-align: center;
+  width: 25px;
+  opacity: 0.5;
+  margin: 20px;
+}
+
 img.copybuttonjust1line {
   all: unset;
   float: right;
@@ -248,6 +280,10 @@ p {
   font-size: 18px;
 }
 
+p[class="font 14px"]{
+  font-size: 14px;
+}
+
 p[class="admissionsordertitle"] {
   margin-top: 32px;
 }
@@ -278,14 +314,14 @@ p.boldCopy {
 
 fieldset {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 50%;
+  width: 100%;
   margin: auto;
   margin-bottom: 10px;
 }
 
 fieldset.fieldsettocopy {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 50%;
+  width: 100%;
   margin: auto;
   margin-bottom: 10px;
 }
@@ -357,6 +393,7 @@ input[class="timeperiodbyrole"] {
 
 .left-text{
   text-align: left;
+  background-color: yellow;
 }
 
 .right-text{
