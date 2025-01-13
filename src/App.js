@@ -14,7 +14,8 @@ import {
     EXPAND_TABLE,
     ROLE_ORDER,
     SHOW_ROWS_TABLE,
-    SHOW_ROWS_COPY
+    SHOW_ROWS_COPY,
+    CHRONIC_LOAD_RATIO_THRESHOLD_S4
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
@@ -136,7 +137,8 @@ export function App() {
 
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)){
-                if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) {
+                if ((each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
+                    (timeObj.startTime == "17:00" && each.name !== "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
                     explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`);
                     shiftsGreaterThanThreshold.push(each);
                 } else {
@@ -676,7 +678,7 @@ export function App() {
                             const result = await getMostRecentTransaction();
             
                             if (result.success) {
-                                console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
+                                // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
                                 const timestamp = new Date(result.transaction.timestamp);
                                 const month = String(timestamp.getMonth()+1); // Months are zero-based
                                 const day = String(timestamp.getDate());
