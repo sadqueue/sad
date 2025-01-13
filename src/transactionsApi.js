@@ -38,8 +38,17 @@ export const addTransaction = async (admissionsObj) => {
     
     const transactionsRef = ref(database, "transactions");
 
+    const getUserDeviceDetails = () => {
+      return {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+      };
+    };
+
     const newTransaction = {
       timestamp: Date.now(),
+      userDeviceDetails: getUserDeviceDetails(),
       admissionsObj
     };
 
