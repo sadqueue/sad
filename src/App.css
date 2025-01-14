@@ -321,7 +321,7 @@ fieldset {
 
 fieldset.fieldsettocopy {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 100%;
+  width: 98%;
   margin: auto;
   margin-bottom: 10px;
 }
@@ -375,7 +375,19 @@ input[class="timeperiodbyrole"] {
 }
 
 .copyMessages {
+  width: 98%;
   margin-top: 100px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .flex-container-just1item{
