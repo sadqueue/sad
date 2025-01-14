@@ -34,34 +34,31 @@ export const getLast10Transactions = async () => {
 // Function to add a new transaction
 export const addTransaction = async (admissionsObj) => {
   
-  if (window.location.hostname === 'localhost') {
-  } else {
-    try {
+  try {
     
-      const transactionsRef = ref(database, "transactions");
-  
-      const getUserDeviceDetails = () => {
-        return {
-          userAgent: navigator.userAgent,
-          platform: navigator.platform,
-          language: navigator.language,
-        };
+    const transactionsRef = ref(database, "transactions");
+
+    const getUserDeviceDetails = () => {
+      return {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
       };
-  
-      const newTransaction = {
-        timestamp: Date.now(),
-        userDeviceDetails: getUserDeviceDetails(),
-        admissionsObj
-      };
-  
-      // Push the new transaction to the database
-      const newRef = await push(transactionsRef, newTransaction);
-      return { success: true, key: newRef.key }; // Return the unique key
-    } catch (error) {
-      console.error("Error adding transaction:", error);
-      return { success: false, error };
-    }  
-  }
+    };
+
+    const newTransaction = {
+      timestamp: Date.now(),
+      userDeviceDetails: getUserDeviceDetails(),
+      admissionsObj
+    };
+
+    // Push the new transaction to the database
+    const newRef = await push(transactionsRef, newTransaction);
+    return { success: true, key: newRef.key }; // Return the unique key
+  } catch (error) {
+    console.error("Error adding transaction:", error);
+    return { success: false, error };
+  }  
 };
 
 export const getTransaction = async (role, admissions) => {
