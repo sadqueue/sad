@@ -137,8 +137,10 @@ export function App() {
 
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
-                if ((each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
-                    (timeObj.startTime == "17:00" && each.name !== "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
+                if (timeObj.startTime == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) {
+                    explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`);
+                    shiftsGreaterThanThreshold.push(each);    
+                } else if (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) {
                     explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`);
                     shiftsGreaterThanThreshold.push(each);
                 } else {
