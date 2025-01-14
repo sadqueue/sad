@@ -15,7 +15,8 @@ import {
     ROLE_ORDER,
     SHOW_ROWS_TABLE,
     SHOW_ROWS_COPY,
-    CHRONIC_LOAD_RATIO_THRESHOLD_S4
+    CHRONIC_LOAD_RATIO_THRESHOLD_S4,
+    CHRONIC_LOAD_RATIO_THRESHOLD_N1_N2_N3_N4
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import githublogo from "./images/github-mark.png"
@@ -88,7 +89,7 @@ export function App() {
             }
             setLoading(false);
             fetchTransactions();
-            sortMain(allAdmissionsDataShifts, localDateTime);
+            sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, localDateTime);
         };
         fetchRecentTransaction();
 
