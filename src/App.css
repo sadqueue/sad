@@ -385,11 +385,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
 .flex-container-just1item{
   display: flex;
   justify-content: center; /* Center horizontally */
