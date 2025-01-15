@@ -1,6 +1,9 @@
 export const THRESHOLD = 90;
 export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.66;
 export const CHRONIC_LOAD_RATIO_THRESHOLD_S4 = 0.67;
+export const CHRONIC_LOAD_RATIO_THRESHOLD_N1_N2_N3_N4 = 0.87;
+export const CHRONIC_LOAD_RATIO_THRESHOLD_N5 = 0.87;
+export const NUMBER_OF_ADMISSIONS_CAP = 7;
 
 export const TIME_FORMAT = "h:mmA"; //hh:mm for non military
 
