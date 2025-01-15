@@ -465,7 +465,7 @@ export function App() {
                     if (each.numberOfAdmissions >= NUMBER_OF_ADMISSIONS_CAP){
                         sortRoles.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} (DONE)`);
                     } else{
-                        sortRoles.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} (DONE)`);
+                        sortRoles.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
                     }
                 }
                 if (each.numberOfAdmissions < NUMBER_OF_ADMISSIONS_CAP){
