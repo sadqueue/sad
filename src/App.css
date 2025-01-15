@@ -33,7 +33,7 @@ body {
 }
 
 div[class="header"] {
-  width: 105%;
+  width: 100%;
   padding: 1px;
   text-align: center;
   background: #1a0dab;
@@ -322,7 +322,7 @@ fieldset {
 
 fieldset.fieldsettocopy {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 98%;
+  width: 100%;
   margin: auto;
   margin-bottom: 10px;
 }
