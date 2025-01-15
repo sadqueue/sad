@@ -38,8 +38,8 @@ export const DATA_TYPE_TIME = [
 export const EXPAND_TABLE = [
     ["name", "Role"],
     ["shiftTimePeriod", "Shift Time Period"],
-    ["numberOfAdmissions", "Number of Admissions"],
     ["timestamp", "Last Admission Time"],
+    ["numberOfAdmissions", "Number of Admissions"],
     ["chronicLoadRatio", "Chronic Load Ratio"],
     ["numberOfHours", "# Hours Worked"],
     ["score", "Composite Score"]
@@ -47,8 +47,8 @@ export const EXPAND_TABLE = [
 
 export const MINIMIZE_TABLE = [
     ["name", "Role"],
-    ["numberOfAdmissions", "Number of Admissions"],
     ["timestamp", "Last Admission Time"],
+    ["numberOfAdmissions", "Number of Admissions"],
     ["chronicLoadRatio", "Chronic Load Ratio"]
 ];
 
