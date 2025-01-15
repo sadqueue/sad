@@ -29,10 +29,11 @@ body {
   color: #220f5f;
   font-family: 'Poppins', sans-serif;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 div[class="header"] {
-  width: 100%;
+  width: 105%;
   padding: 1px;
   text-align: center;
   background: #1a0dab;
@@ -59,7 +60,7 @@ div[class="header"] {
   text-align: center;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .container {
     max-width: 720px;
   }
@@ -81,7 +82,7 @@ div[class="header"] {
   .container {
     max-width: 1280px;
   }
-}
+} */
 
 table {
   border-collapse: collapse;
