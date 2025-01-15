@@ -19,7 +19,8 @@ import {
     CHRONIC_LOAD_RATIO_THRESHOLD_N1_N2_N3_N4,
     NUMBER_OF_ADMISSIONS_CAP
 } from "./constants";
-import copybuttonImg from "./images/snapshot.png";
+import copybuttonImg from "./images/copy.png";
+import snapshotImg from "./images/snapshot.png";
 import githublogo from "./images/github-mark.png"
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
@@ -428,11 +429,22 @@ export function App() {
               // Copy the image to the clipboard (modern browsers only)
               const response = await fetch(dataUrl);
               const blob = await response.blob();
-              await navigator.clipboard.write([
-                new ClipboardItem({ "image/png": blob })
-              ]);
+
+              if (navigator.clipboard && navigator.clipboard.write) {
+                // Clipboard functionality available
+                await navigator.clipboard.write([
+                  new ClipboardItem({ "image/png": blob }),
+                ]);
+                alert("Snapshot copied to clipboard!");
+              } else {
+                // Fallback to download
+                const link = document.createElement("a");
+                link.href = dataUrl;
+                link.download = "snapshot.png";
+                link.click();
+                alert("Snapshot downloaded.");
+              }
           
-              alert("Snapshot copied to clipboard!");
             } catch (error) {
               console.error("Failed to take snapshot:", error);
               alert("Could not copy the snapshot. Please check your browser compatibility.");
@@ -783,7 +795,7 @@ export function App() {
                                             alt="copy button"
                                             className="copybutton"
                                             id="snapshop-button"
-                                            src={copybuttonImg}
+                                            src={snapshotImg}
                                             onClick={(ev) => {
                                                 /* let copiedMessage = "";
                                                 sorted.map((each, eachIndex) => {

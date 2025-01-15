@@ -52,7 +52,7 @@ div[class="header"] {
 .container {
   font-family: 'Poppins', sans-serif;
   /* width: 92%; */
-  width: 100%;
+  width: 96%;
   max-width: 1140px;
   padding: 0 10px;
   margin: 0 auto;
@@ -60,29 +60,26 @@ div[class="header"] {
   text-align: center;
 }
 
-/* @media (min-width: 768px) {
+/* Small screens (phones) */
+@media (max-width: 600px) {
   .container {
-    max-width: 720px;
+    padding: 5px; /* Reduce padding for small screens */
   }
 }
 
-@media (min-width: 992px) {
+/* Medium screens (tablets) */
+@media (min-width: 601px) and (max-width: 1024px) {
   .container {
-    max-width: 960px;
+    max-width: 90%;
   }
 }
 
-@media (min-width: 1200px) {
+/* Large screens (desktops) */
+@media (min-width: 1025px) {
   .container {
-    max-width: 1140px;
+    max-width: 1200px;
   }
 }
-
-@media (min-width: 1440px) {
-  .container {
-    max-width: 1280px;
-  }
-} */
 
 table {
   border-collapse: collapse;
@@ -320,14 +317,20 @@ p.boldCopy {
 
 fieldset {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 100%;
+  width: 80%;
   margin: auto;
   margin-bottom: 10px;
+
+  word-wrap: break-word; /* Break long words */
+  word-break: break-word; /* Ensure long words break */
+  white-space: normal; /* Allow wrapping */
+  border: 1px solid #ccc; /* Optional: Add a border */
+  padding: 10px; /* Optional: Add padding */
 }
 
 fieldset.fieldsettocopy {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 100%;
+  width: 80%;
   margin: auto;
   margin-bottom: 10px;
 }
@@ -443,14 +446,14 @@ input::-webkit-inner-spin-button {
   }
 
   h2 {
-    font-size: 15px;
+    font-size: 16px;
     margin-top: -38px;
     margin-bottom: 40px;
   }
 
-  fieldset {
+  /* fieldset {
     width: 92%;
-  }
+  } */
 
   select,
   input,
@@ -468,13 +471,13 @@ input::-webkit-inner-spin-button {
 
   tr th,
   select {
-    font-size: 12px;
+    font-size: 16px;
     padding: 3px;
     /* white-space: nowrap; */
   }
 
   input {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   section {
