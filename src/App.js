@@ -19,7 +19,7 @@ import {
     CHRONIC_LOAD_RATIO_THRESHOLD_N1_N2_N3_N4,
     NUMBER_OF_ADMISSIONS_CAP
 } from "./constants";
-import copybuttonImg from "./images/copy.png";
+import copybuttonImg from "./images/snapshot.png";
 import githublogo from "./images/github-mark.png"
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
@@ -27,6 +27,8 @@ import CopyMessages from "./CopyMessages";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, set } from "firebase/database";
 import { addTransaction, deleteAllTransactions, getMostRecentTransaction, getLast10Transactions } from "./transactionsApi";
+import html2canvas from "html2canvas";
+
 // import Last10Transactions from "./Last10Transactions";
 
 const CONFIG = CONFIG1;
@@ -412,6 +414,32 @@ export function App() {
         handleSetAllAdmissionsDataShifts(returnObj);
     }
 
+    const takeScreenshot = () => {
+        document.getElementById("snapshot-button").addEventListener("click", async () => {
+            const fieldset = document.getElementById("fieldsettocopy_min");
+            
+            try {
+              // Convert the fieldset into a canvas
+              const canvas = await html2canvas(fieldset);
+              
+              // Convert the canvas to a data URL (base64 image)
+              const dataUrl = canvas.toDataURL("image/png");
+          
+              // Copy the image to the clipboard (modern browsers only)
+              const response = await fetch(dataUrl);
+              const blob = await response.blob();
+              await navigator.clipboard.write([
+                new ClipboardItem({ "image/png": blob })
+              ]);
+          
+              alert("Snapshot copied to clipboard!");
+            } catch (error) {
+              console.error("Failed to take snapshot:", error);
+              alert("Could not copy the snapshot. Please check your browser compatibility.");
+            }
+          });
+    }
+
     const setSortRoles = (admissionsDatax, lastSavedTime = "") => {
         const sortRoles = [];
         const sortRolesNameOnly = [];
@@ -746,69 +774,75 @@ export function App() {
                     </ul>
                 )} */}
 
-                    <fieldset className="fieldsettocopy">
-                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
-                            (
-                                <div>
-                                    <img
-                                        alt="copy button"
-                                        className="copybutton"
-                                        src={copybuttonImg}
-                                        onClick={(ev) => {
-                                            let copiedMessage = "";
-                                            sorted.map((each, eachIndex) => {
-                                                if (each == "\n") {
-                                                } else if (eachIndex == sorted.length - 1) {
-                                                    copiedMessage += each;
-                                                } else {
-                                                    copiedMessage += each + "\n";
-                                                }
-                                            });
+                    <fieldset className="fieldsettocopy" id="fieldsettocopy">
+                       
+                            {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
+                                (
+                                    <div>
+                                        <img
+                                            alt="copy button"
+                                            className="copybutton"
+                                            id="snapshop-button"
+                                            src={copybuttonImg}
+                                            onClick={(ev) => {
+                                                /* let copiedMessage = "";
+                                                sorted.map((each, eachIndex) => {
+                                                    if (each == "\n") {
+                                                    } else if (eachIndex == sorted.length - 1) {
+                                                        copiedMessage += each;
+                                                    } else {
+                                                        copiedMessage += each + "\n";
+                                                    }
+                                                });
 
-                                            navigator.clipboard.writeText(`${copiedMessage}`);
-                                            // sendEmail(ev, copiedMessage, title);
-                                            setIsCopied(true);
-                                            setTimeout(() => setIsCopied(false), 1000);
+                                                navigator.clipboard.writeText(`${copiedMessage}`);
+                                                // sendEmail(ev, copiedMessage, title);
+                                                setIsCopied(true);
+                                                setTimeout(() => setIsCopied(false), 1000); */
+                                                takeScreenshot();
 
-                                        }} />
-                                    <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
+                                            }} />
+                                           
+                                        <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
 
-                                </div>)
-                        }
-                        <p className="boldCopy">
-                            <br />
-                            {allAdmissionsDataShifts.startTime ? `Admissions Update ${lastSaved}` : `Select a time. No roles in the queue.`}
-                            {/* ${moment(allAdmissionsDataShifts.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
-                        </p>
-                        {
-                            sorted && sorted.map((each, eachIndex) => {
-                                if (each == "\n") {
-                                    return <br></br>
-                                } else if (eachIndex == sorted.length - 1) {
-                                    return <div className="sortedWithButton">
-                                        <p id="endoutput">{each}
-                                            {/*allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
-                                             <img
-                                                alt="copy button"
-                                                className="copybuttonjust1line"
-                                                src={copybuttonImg}
-                                                onClick={(ev) => {
+                                    </div>)
+                            }
+                            <div id="fieldsettocopy_min">
+                                <p className="boldCopy">
+                                    <br />
+                                    {allAdmissionsDataShifts.startTime ? `Admissions Update ${lastSaved}` : `Select a time. No roles in the queue.`}
+                                    {/* ${moment(allAdmissionsDataShifts.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
+                                </p>
+                                {
+                                sorted && sorted.map((each, eachIndex) => {
+                                    if (each == "\n") {
+                                        return <br></br>
+                                    } else if (eachIndex == sorted.length - 1) {
+                                        return <div className="sortedWithButton">
+                                            <p id="endoutput">{each}
+                                                {/*allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
+                                                <img
+                                                    alt="copy button"
+                                                    className="copybuttonjust1line"
+                                                    src={copybuttonImg}
+                                                    onClick={(ev) => {
 
-                                                    navigator.clipboard.writeText(sorted[sorted.length - 1]);
-                                                    // sendEmail(ev, copiedMessage, title);
-                                                    setIsCopied(true);
-                                                    setTimeout(() => setIsCopied(false), 1000);
+                                                        navigator.clipboard.writeText(sorted[sorted.length - 1]);
+                                                        // sendEmail(ev, copiedMessage, title);
+                                                        setIsCopied(true);
+                                                        setTimeout(() => setIsCopied(false), 1000);
 
-                                                }} />*/}
-                                        </p>
+                                                    }} />*/}
+                                            </p>
 
-                                    </div>
+                                        </div>
 
-                                } else {
-                                    return <p className="sorted">{each}</p>
-                                }
-                            })
-                        }
+                                    } else {
+                                        return <p className="sorted">{each}</p>
+                                    }
+                                })
+                            }</div>
+                          
 
                     </fieldset>
                     <p className="admissionsorderlastline">{ADMISSIONS_FORMAT}</p>

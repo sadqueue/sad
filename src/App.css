@@ -302,6 +302,11 @@ div.sortedWithButton {
   width: 100%;
 }
 
+div.fieldsettocopy_min {
+  all: unset;
+  width: 50%;
+}
+
 p.bold {
   font-weight: bold;
   text-align: left;
@@ -359,7 +364,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 input[class="timeperiodbyrole"] {
-  font-size: "14px"
+  font-size: "16px"
 }
 
 .copied-message, .cleared-message {
