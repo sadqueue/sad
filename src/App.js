@@ -72,12 +72,13 @@ export function App() {
                 const timestamp = new Date(result.transaction.timestamp);
                 const month = String(timestamp.getMonth() + 1); // Months are zero-based
                 const day = String(timestamp.getDate());
+                const year = timestamp.getFullYear() % 100;
                 let hours = timestamp.getHours();
                 const minutes = String(timestamp.getMinutes()).padStart(2, '0');
                 const ampm = hours >= 12 ? 'PM' : 'AM';
                 hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
 
-                localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
+                localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
 
                 setLastSaved(localDateTime);
                 if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
@@ -123,7 +124,7 @@ export function App() {
         //if same chronic load ratio, then pick the one with lower number of admissions to go first
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
-                explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`)
+                explanationArr.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`)
             }
         });
 
@@ -134,14 +135,13 @@ export function App() {
         const shiftsLessThanThreshold = [];
         const shiftsGreaterThanThreshold = [];
         explanationArr.push("\n");
-        explanationArr.push(`Step 2: Determine the admitters with chronic load ratio >${CHRONIC_LOAD_RATIO_THRESHOLD}.`);
+        explanationArr.push(`Step 2: Determine the admitters with high chronic load.`);
 
         timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
-                /* Only roles with less than the number of admissions less than 7 will be in the order */
                 if ((timeObj.startTime == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
                     (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
-                    explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`);
+                    explanationArr.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
                     shiftsGreaterThanThreshold.push(each);
                 } else {
                     shiftsLessThanThreshold.push(each);
@@ -149,34 +149,48 @@ export function App() {
             }
         });
 
-        /*
-        Step 2a: If chronic load ratio is the same, the higher number of admissions will go first
-        */
-        shiftsGreaterThanThreshold.sort((a, b) => {
-            if (a.chronicLoadRatio === b.chronicLoadRatio) {
-                return b.numberOfAdmissions - a.numberOfAdmissions; // higher admissions go first
-            }
-        });
+        // /*
+        // Step 2a: If chronic load ratio is the same, the higher number of admissions will go first
+        // */
+        // explanationArr.push("\n");
+        // explanationArr.push(`Step 2a: If chronic load ratio is the same, the higher number of admissions will go first.`);
+        // shiftsGreaterThanThreshold.sort((a, b) => {
+        //     if (a.chronicLoadRatio === b.chronicLoadRatio) {
+        //         explanationArr.push(`${a.name} and ${b.name} have the same chronic load ratio.`);
+        //         return b.numberOfAdmissions - a.numberOfAdmissions; // higher admissions go first
+        //     }
+        // });
 
-        /*
-        Step 2a: If timestamp is the same, the lesser number of admissions will go first
-        */
-        shiftsGreaterThanThreshold.sort((a, b) => {
-            if (a.timestamp === b.timestamp) {
-                return b.numberOfAdmissions - a.numberOfAdmissions;
-            }
-        });
+        // /*
+        // Step 2b: If timestamp is the same, the lesser number of admissions will go first
+        // */
+        // explanationArr.push("\n");
+        // explanationArr.push(`Step 2b: If the number of admissions is the same, the higher number of admissions will go first.`);
+        // shiftsGreaterThanThreshold.sort((a, b) => {
+        //     if (a.timestamp === b.timestamp) {
+        //         explanationArr.push(`${a.name} and ${b.name} have the same number of admissions.`);
+        //         return b.numberOfAdmissions - a.numberOfAdmissions;
+        //     }
+        // });
 
         explanationArr.push("\n");
-        explanationArr.push(`Step 3: De-prioritize admitters with high chronic loads to the back of the queue.`)
+        explanationArr.push(`Step 3: De-prioritize admitters with high chronic load to the back of the queue.`)
         const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
 
         shiftsCombined.forEach((each, eachIndex) => {
-            explanationArr.push(`${each.name}: ${getMomentTimeWithoutUndefined(each.timestamp)} | ${each.chronicLoadRatio}`)
+            explanationArr.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`)
         });
 
         explanationArr.push("\n");
-        explanationArr.push("Chronic Load Ratio: Number of Admissions / Numbers of hours worked");
+        explanationArr.push(`Step 4: Roles with number of admissions greater than ${NUMBER_OF_ADMISSIONS_CAP} are removed from the order of admissions.`)
+        shiftsCombined.forEach((each, eachIndex) => {
+            if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP){
+                explanationArr.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`)
+            }
+        });
+
+        explanationArr.push("\n");
+        explanationArr.push("Notes: Chronic Load Ratio: Number of Admissions / Numbers of hours worked");
 
         timeObj.shifts = shiftsCombined;
 
@@ -408,7 +422,11 @@ export function App() {
         timeObjShifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[each.startTime].includes(each.name)) {
                 if (each.numberOfHoursWorked + "" !== "0") {
-                    sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
+                    if (each.numberOfAdmissions >= NUMBER_OF_ADMISSIONS_CAP){
+                        sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} (DONE)`);
+                    } else{
+                        sortRoles.push(`${each.name} ${each.numberOfAdmissions} / ${each.numberOfHoursWorked} ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
+                    }
                 }
                 if (each.numberOfAdmissions < NUMBER_OF_ADMISSIONS_CAP){
                     if (window.location.hostname === 'localhost') {
@@ -690,14 +708,15 @@ export function App() {
                                 if (result.success) {
                                     // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
                                     const timestamp = new Date(result.transaction.timestamp);
-                                    const month = String(timestamp.getMonth() + 1); // Months are zero-based
-                                    const day = String(timestamp.getDate());
+                                    const month = timestamp.getMonth() + 1; // Months are zero-based
+                                    const day = timestamp.getDate();
+                                    const year = timestamp.getFullYear() % 100;
                                     let hours = timestamp.getHours();
                                     const minutes = String(timestamp.getMinutes()).padStart(2, '0');
                                     const ampm = hours >= 12 ? 'PM' : 'AM';
                                     hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
 
-                                    const localDateTime = `${month}/${day} ${hours}:${minutes}${ampm}`;
+                                    const localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
 
                                     setLastSaved(localDateTime);
                                     setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
