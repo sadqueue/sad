@@ -105,12 +105,13 @@ export function App() {
 
     const sortByTimestampAndCompositeScore = (timeObj, lastSavedTime = "") => {
         timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
-            each["startTime"] = timeObj.startTime;
+            each["startTime"] = timeObj.startTime ? timeObj.startTime : "";
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
             each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
             each["chronicLoadRatio"] = getChronicLoadRatio(each);
             each["score"] = getCompositeScore(each);
             each["numberOfAdmissions"] = each.numberOfAdmissions ? each.numberOfAdmissions : "";
+            each["timestamp"] = each.timestamp ? each.timestamp : ""
             return each;
         });
 
@@ -270,7 +271,7 @@ export function App() {
         if (chronicLoadRatio == "NaN" || chronicLoadRatio == "Infinity") {
             return "0.00";
         } else {
-            return chronicLoadRatio;
+            return chronicLoadRatio ? chronicLoadRatio : "";
 
         }
 
@@ -286,14 +287,14 @@ export function App() {
 
         const now = admission.startTime;
         const timeDifference = moment(now, TIME_FORMAT).diff(moment(startTime, TIME_FORMAT), "hours", true).toFixed();
-        return timeDifference;
+        return timeDifference ? timeDifference : "";
 
     }
 
     const getMinutesWorkedFromStartTime = (admission) => {
         const now = getMomentTimeWithoutUndefined(admission.startTime);
         const timeDifference = moment(now, TIME_FORMAT).diff(moment(admission.timestamp, TIME_FORMAT), "minutes", true).toFixed();
-        return timeDifference;
+        return timeDifference ? timeDifference : "";
     }
 
     const getValuesFromExistingAdmissionsDate = (customTime) => {
@@ -759,8 +760,8 @@ export function App() {
                                     const localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
 
                                     setLastSaved(localDateTime);
-                                    setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
-                                    setDropdown(result.transaction.admissionsObj.startTime);
+                                    setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+                                    setDropdown(allAdmissionsDataShifts.startTime);
                                 } else {
                                     //   setError(result.message || "Failed to fetch the most recent transaction.");
                                 }
