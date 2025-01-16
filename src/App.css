@@ -106,14 +106,14 @@ tr th,
 select {
   font-size: 16px;
   padding: 12px;
-  border: 1px solid darkgray;
+  border: 2px solid black;
   text-align: center;
   background-color: rgba(217, 221, 146, 0.2);
   /* white-space: nowrap; */
 }
 
 tr td {
-  border: 1px solid darkgray;
+  border: 2px solid black;
   text-align: center;
   /* white-space:nowrap; */
 }
@@ -121,7 +121,7 @@ tr td {
 tr td.usercanedit {
   background-color: yellow;
   padding: 10px;
-  border: 1px solid darkgray;
+  border: 2px solid black;
   /* outline: 1px solid black;
   outline-offset: -10px; */
 }
@@ -333,7 +333,7 @@ fieldset {
   word-wrap: break-word; /* Break long words */
   word-break: break-word; /* Ensure long words break */
   white-space: normal; /* Allow wrapping */
-  border: 1px solid #ccc; /* Optional: Add a border */
+  border: 2px solid black; /* Optional: Add a border */
   padding: 10px; /* Optional: Add padding */
 }
 
@@ -430,7 +430,8 @@ input::-webkit-inner-spin-button {
   text-align: center;
   margin: 0px;
   font-weight: bold;
-  border: 1px solid darkgray;
+  border: 2px solid black;
+  border-top: 0px;
   /* margin-top: 5px; */
 }
 

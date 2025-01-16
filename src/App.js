@@ -857,7 +857,7 @@ export function App() {
                             <div id="fieldsettocopy_min">
                                 <p className="boldCopy">
                                     <br />
-                                    {allAdmissionsDataShifts.startTime ? `Admin Update ${lastSaved}` : `Select a time. No roles in the queue.`}
+                                    {allAdmissionsDataShifts.startTime ? `Admit Update ${lastSaved}` : `Select a time. No roles in the queue.`}
                                     {/* ${moment(allAdmissionsDataShifts.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
                                 </p>
                                 {
