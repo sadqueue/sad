@@ -106,21 +106,22 @@ tr th,
 select {
   font-size: 16px;
   padding: 12px;
-  border: 1px solid #eeeeee;
+  border: 1px solid darkgray;
   text-align: center;
   background-color: rgba(217, 221, 146, 0.2);
   /* white-space: nowrap; */
 }
 
 tr td {
-  border: 1px solid #eeeeee;
+  border: 1px solid darkgray;
   text-align: center;
   /* white-space:nowrap; */
 }
 
 tr td.usercanedit {
-  /* background-color: rgba(80, 63, 205, 0.1); */
+  background-color: yellow;
   padding: 10px;
+  border: 1px solid darkgray;
   /* outline: 1px solid black;
   outline-offset: -10px; */
 }
@@ -319,6 +320,10 @@ p.boldCopy {
   text-align: left;
 }
 
+.bold-fields {
+  font-weight: bold;
+}
+
 fieldset {
   background-color: rgba(217, 221, 146, 0.2);
   width: 80%;
@@ -414,6 +419,19 @@ input::-webkit-inner-spin-button {
 .left-text{
   text-align: left;
   background-color: yellow;
+}
+
+#endoutput{
+  background-color: yellow;
+}
+
+#endoutputcenter{
+  background-color: yellow;
+  text-align: center;
+  margin: 0px;
+  font-weight: bold;
+  border: 1px solid darkgray;
+  /* margin-top: 5px; */
 }
 
 .right-text{
