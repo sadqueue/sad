@@ -1,4 +1,4 @@
-const url = "https://sadqueue.github.io/sad/";//"http://localhost:3000/sad"; //"
+const url = "http://localhost:3001/sad"; //""https://sadqueue.github.io/sad/";//
 
 
 const testArrFourPM = [
@@ -208,7 +208,8 @@ describe('template spec', () => {
       const today = new Date();
       const month = today.getMonth() + 1; // Months are 0-based, so add 1
       const day = today.getDate();
-      const formattedDate = `${month}/${day}`;
+      const year = today.getFullYear() % 100;
+      const formattedDate = `${month}/${day}/${year}`;
 
       cy.contains(`Order ${formattedDate} ${timex}`);
       // cy.contains(output);

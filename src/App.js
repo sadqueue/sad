@@ -588,7 +588,7 @@ export function App() {
                 <h1 className="title">S.A.D. Queue</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution</h2>
             </div>
-            {loading ? <div className="container">Loading...</div> :
+            {loading ? <div className="loading">Loading...</div> :
                 <div className="container">
                     <div className="flex-container-just1item">
                         {timesDropdown()}

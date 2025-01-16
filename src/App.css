@@ -60,6 +60,10 @@ div[class="header"] {
   text-align: center;
 }
 
+.loading {
+  margin-top: 30px;
+  text-align: center;
+}
 /* Small screens (phones) */
 @media (max-width: 600px) {
   .container {
@@ -450,6 +454,10 @@ input::-webkit-inner-spin-button {
     margin-top: -38px;
     margin-bottom: 40px;
   }
+  
+  .container {
+    margin-top: 0px;
+  }
 
   /* fieldset {
     width: 92%;
@@ -460,8 +468,9 @@ input::-webkit-inner-spin-button {
   p,
   tr,
   th,
-  button {
-    font-size: 16px;
+  button,
+  span {
+    font-size: 12px;
     touch-action: manipulation;
   }
 
@@ -471,13 +480,9 @@ input::-webkit-inner-spin-button {
 
   tr th,
   select {
-    font-size: 16px;
+    font-size: 12px;
     padding: 3px;
     /* white-space: nowrap; */
-  }
-
-  input {
-    font-size: 16px;
   }
 
   section {
