@@ -17,7 +17,8 @@ import {
     SHOW_ROWS_COPY,
     CHRONIC_LOAD_RATIO_THRESHOLD_S4,
     CHRONIC_LOAD_RATIO_THRESHOLD_N1_N2_N3_N4,
-    NUMBER_OF_ADMISSIONS_CAP
+    NUMBER_OF_ADMISSIONS_CAP,
+    NUMBER_OF_ADMISSIONS_S4_CAP
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import snapshotImg from "./images/snapshot.png";
@@ -194,6 +195,10 @@ export function App() {
         });
 
         explanationArr.push("\n");
+        explanationArr.push(`Step 5: If the start time is 7PM and S4 has 6 or more admissions, put N1-N4 in the beginning of the order of admissions.`)
+    
+
+        explanationArr.push("\n");
         explanationArr.push("Notes: Chronic Load Ratio: Number of Admissions / Numbers of hours worked");
 
         timeObj.shifts = shiftsCombined;
@@ -239,6 +244,13 @@ export function App() {
         setAllAdmissionsDataShifts({ startTime: obj.startTime, shifts: newObj });
         // localStorage.setItem("allAdmissionsDataShifts", JSON.stringify({ startTime: obj.startTime, shifts: newObj }));
     }
+
+    const convertTo12HourFormatSimple = (time24) => {
+        const [hours] = time24.split(':').map(Number);
+        const period = hours >= 12 ? 'PM' : 'AM';
+        const hours12 = hours % 12 || 12;
+        return `${hours12}${period}`;
+      }
 
     const onChange = (e, admissionsId) => {
         const { name, value } = e.target
@@ -455,21 +467,25 @@ export function App() {
 
     const setSortRoles = (admissionsDatax, lastSavedTime = "") => {
         const sortRoles = [];
-        const sortRolesNameOnly = [];
+        let sortRolesNameOnly = [];
         sortRoles.push("\n");
 
         let timeObjShifts = admissionsDatax.shifts;
 
+        let sevenPmS4greaterThanCap = false;
         timeObjShifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[each.startTime].includes(each.name)) {
+                if (admissionsDatax.startTime == "19:00" && each.name == "S4" && each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_S4_CAP){
+                    sevenPmS4greaterThanCap = true;
+                }
                 if (each.numberOfHoursWorked + "" !== "0") {
-                    if (each.numberOfAdmissions >= NUMBER_OF_ADMISSIONS_CAP){
+                    if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP){
                         sortRoles.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} (DONE)`);
-                    } else{
+                    } else {
                         sortRoles.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
                     }
                 }
-                if (each.numberOfAdmissions < NUMBER_OF_ADMISSIONS_CAP){
+                if (each.numberOfAdmissions <= NUMBER_OF_ADMISSIONS_CAP){
                     if (window.location.hostname === 'localhost') {
                         sortRolesNameOnly.push(`${each.name}(${each.chronicLoadRatio})`);
                     } else {
@@ -478,6 +494,14 @@ export function App() {
                 }
             }
         });
+
+        /* If 7PM and S4 has 6 or more admissions, then concatenate N1-N4 to the beginning of the order of admissions */
+        if (sevenPmS4greaterThanCap){
+            // for (let i=1; i<5; i++){
+            //     sortRolesNameOnly.push(`N${i}`);
+            // }
+            sortRolesNameOnly = ["N1", "N2", "N3", "N4", ...sortRolesNameOnly];
+        }
 
         sortRoles.push("\n");
 
@@ -621,8 +645,11 @@ export function App() {
                                 {
                                     EXPAND_TABLE.map((each, eachIndex) => {
                                         return (
-                                            <th onClick={() => handleSort(each[0])}>
+                                            /*<th onClick={() => handleSort(each[0])}>
                                                 {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
+                                            </th>*/
+                                            <th>
+                                                {each[1]}
                                             </th>
                                         );
                                     })
@@ -632,11 +659,14 @@ export function App() {
                                     {
                                         MINIMIZE_TABLE.map((each, eachIndex) => {
                                             return (
-                                                <th onClick={() => {
+                                                <th >
+                                                    {each[1]}
+                                                </th>
+                                                /*<th onClick={() => {
                                                     handleSort(each[0]);
                                                 }}>
                                                     {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
-                                                </th>
+                                                </th>*/
                                             );
                                         })
                                     }
@@ -658,6 +688,7 @@ export function App() {
                                             <td>
                                                 <input
                                                     name={`name_${index}`}
+                                                    className="bold-fields"
                                                     value={admission.name}
                                                     type="text"
                                                     disabled={true}
@@ -734,6 +765,9 @@ export function App() {
                             })}
                         </tbody>
                     </table>
+                    {/* highlighted order of admissions below table */}
+                    <p id="endoutputcenter">{`Order of Admissions ${convertTo12HourFormatSimple(allAdmissionsDataShifts.startTime)}`}</p>
+                    <p id="endoutputcenter">{sorted && sorted[sorted.length-1]}</p>
                     <button className="seedetails" onClick={() => {
                         setOpenTable(!openTable);
                     }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
@@ -823,7 +857,7 @@ export function App() {
                             <div id="fieldsettocopy_min">
                                 <p className="boldCopy">
                                     <br />
-                                    {allAdmissionsDataShifts.startTime ? `Admissions Update ${lastSaved}` : `Select a time. No roles in the queue.`}
+                                    {allAdmissionsDataShifts.startTime ? `Admin Update ${lastSaved}` : `Select a time. No roles in the queue.`}
                                     {/* ${moment(allAdmissionsDataShifts.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
                                 </p>
                                 {
