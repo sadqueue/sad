@@ -38,12 +38,12 @@ export const DATA_TYPE_TIME = [
 
 export const EXPAND_TABLE = [
     ["name", "Role"],
-    ["shiftTimePeriod", "Shift Time Period"],
+    ["shiftTimePeriod", "Shift Times"],
     ["timestamp", "Last Admit Time"],
     ["numberOfAdmissions", "Number of Admits"],
     ["chronicLoadRatio", "Chronic Load"],
     ["numberOfHours", "# Hours Worked"],
-    ["score", "Composite Score"]
+    // ["score", "Composite Score"]
 ];
 
 export const MINIMIZE_TABLE = [
