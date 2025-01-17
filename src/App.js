@@ -916,8 +916,10 @@ export function App() {
                                         return <p className="sorted">{each}</p>
                                     }
                                 })
-                                // <p>{`Last saved on sadqueue.github.io/sad at ${lastSaved && lastSaved.split(" ")[0]}`}</p>
-                            }</div>
+                            }
+                            <p>{`Last saved on sadqueue.github.io/sad at ${lastSaved}`}</p>
+
+                            </div>
                           
 
                     </fieldset>
