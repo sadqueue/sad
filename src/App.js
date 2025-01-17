@@ -429,41 +429,61 @@ export function App() {
         handleSetAllAdmissionsDataShifts(returnObj);
     }
 
-    const takeScreenshot = () => {
-        document.getElementById("snapshot-button").addEventListener("click", async () => {
-            const fieldset = document.getElementById("fieldsettocopy_min");
-            
-            try {
-              // Convert the fieldset into a canvas
-              const canvas = await html2canvas(fieldset);
-              
-              // Convert the canvas to a data URL (base64 image)
-              const dataUrl = canvas.toDataURL("image/png");
-          
-              // Copy the image to the clipboard (modern browsers only)
-              const response = await fetch(dataUrl);
-              const blob = await response.blob();
+    const takeScreenshot = async () => {
+        // const fieldset = document.getElementById("fieldsettocopy_min");
+        const element = document.getElementById("fieldsettocopy_min");
 
-              if (navigator.clipboard && navigator.clipboard.write) {
-                // Clipboard functionality available
-                await navigator.clipboard.write([
-                  new ClipboardItem({ "image/png": blob }),
-                ]);
-                alert("Snapshot copied to clipboard!");
-              } else {
-                // Fallback to download
-                const link = document.createElement("a");
-                link.href = dataUrl;
-                link.download = "snapshot.png";
-                link.click();
-                alert("Snapshot downloaded.");
-              }
+        // Capture the div as a canvas
+        const canvas = await html2canvas(element);
+  
+        // Convert the canvas to a Blob
+        canvas.toBlob(async (blob) => {
+          if (!blob) {
+            alert('Failed to capture the screenshot.');
+            return;
+          }
+  
+          // Copy the Blob to the clipboard
+          try {
+            const clipboardItem = new ClipboardItem({ 'image/png': blob });
+            await navigator.clipboard.write([clipboardItem]);
+            alert('Screenshot copied to clipboard!');
+          } catch (err) {
+            console.error('Failed to copy the screenshot to the clipboard:', err);
+            alert('Failed to copy the screenshot. Check your browser permissions.');
+          }
+        });
+            // try {
+            //   // Convert the fieldset into a canvas
+            //   const canvas = await html2canvas(fieldset);
+              
+            //   // Convert the canvas to a data URL (base64 image)
+            //   const dataUrl = canvas.toDataURL("image/png");
           
-            } catch (error) {
-              console.error("Failed to take snapshot:", error);
-              alert("Could not copy the snapshot. Please check your browser compatibility.");
-            }
-          });
+            //   // Copy the image to the clipboard (modern browsers only)
+            //   const response = await fetch(dataUrl);
+            //   const blob = await response.blob();
+
+              
+            //   if (navigator.clipboard && navigator.clipboard.write) {
+            //     // Clipboard functionality available
+            //     await navigator.clipboard.write([
+            //       new ClipboardItem({ "image/png": blob }),
+            //     ]);
+            //     alert("Snapshot copied to clipboard!");
+            //   } else {
+            //     // Fallback to download
+            //     const link = document.createElement("a");
+            //     link.href = dataUrl;
+            //     link.download = "snapshot.png";
+            //     link.click();
+            //     alert("Snapshot downloaded.");
+            //   }
+          
+            // } catch (error) {
+            //   console.error("Failed to take snapshot:", error);
+            //   alert("Could not copy the snapshot. Please check your browser compatibility.");
+            // }
     }
 
     const setSortRoles = (admissionsDatax, lastSavedTime = "") => {
@@ -858,20 +878,6 @@ export function App() {
                                             id="snapshot-button"
                                             src={snapshotImg}
                                             onClick={(ev) => {
-                                                /* let copiedMessage = "";
-                                                sorted.map((each, eachIndex) => {
-                                                    if (each == "\n") {
-                                                    } else if (eachIndex == sorted.length - 1) {
-                                                        copiedMessage += each;
-                                                    } else {
-                                                        copiedMessage += each + "\n";
-                                                    }
-                                                });
-
-                                                navigator.clipboard.writeText(`${copiedMessage}`);
-                                                // sendEmail(ev, copiedMessage, title);
-                                                setIsCopied(true);
-                                                setTimeout(() => setIsCopied(false), 1000); */
                                                 takeScreenshot();
 
                                             }} />
@@ -883,7 +889,6 @@ export function App() {
                                 <p className="boldCopy">
                                     <br />
                                     {allAdmissionsDataShifts.startTime ? `Order of Admissions ${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(allAdmissionsDataShifts.startTime)}` : `Select a time. No roles in the queue.`}
-                                    {/* ${moment(allAdmissionsDataShifts.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
                                 </p>
                                 <p id="endoutput">{sorted && sorted[sorted.length-1]}</p>
                                 {
@@ -892,25 +897,6 @@ export function App() {
                                         return <br></br>
                                     } 
                                     else if (eachIndex == sorted.length - 1) {
-                                        // return <div className="sortedWithButton">
-                                        //     <p id="endoutput">{each}
-                                        //         {/*allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
-                                        //         <img
-                                        //             alt="copy button"
-                                        //             className="copybuttonjust1line"
-                                        //             src={copybuttonImg}
-                                        //             onClick={(ev) => {
-
-                                        //                 navigator.clipboard.writeText(sorted[sorted.length - 1]);
-                                        //                 // sendEmail(ev, copiedMessage, title);
-                                        //                 setIsCopied(true);
-                                        //                 setTimeout(() => setIsCopied(false), 1000);
-
-                                        //             }} />*/}
-                                        //     </p>
-
-                                        // </div>
-
                                     } 
                                     else {
                                         return <p className="sorted">{each}</p>
