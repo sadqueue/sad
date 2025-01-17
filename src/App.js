@@ -327,12 +327,12 @@ export function App() {
             allAdmissionsDataShifts.shifts.map((fromAdmissionsDataEach, fromAdmissionsDataEachIndex) => {
                 if (role == fromAdmissionsDataEach.name) {
                     carryOverRole = fromAdmissionsDataEach;
-                    if ((customTime == "17:00" && role == "N5") ||
-                        (customTime == "19:00" && (role == "N1" || role == "N2" || role == "N3" || role == "N4"))) {
-                        carryOverRole.timestamp = fromAdmissionsDataEach.startWithThreshold;
-                        carryOverRole.numberOfAdmissions = "0";
-                        carryOverRole.chronicLoadRatio = getChronicLoadRatio(fromAdmissionsDataEach);
-                    }
+                    // if ((customTime == "17:00" && role == "N5") ||
+                    //     (customTime == "19:00" && (role == "N1" || role == "N2" || role == "N3" || role == "N4"))) {
+                    //     carryOverRole.timestamp = fromAdmissionsDataEach.startWithThreshold;
+                    //     carryOverRole.numberOfAdmissions = "0";
+                    //     carryOverRole.chronicLoadRatio = getChronicLoadRatio(fromAdmissionsDataEach);
+                    // }
                     return;
                 }
             });
@@ -462,6 +462,19 @@ export function App() {
 
         let timeObjShifts = admissionsDatax.shifts;
 
+        //sort by name
+        const customOrder = ["DA", "S1", "S2", "S3", "S4", "N5", "N1", "N2", "N3", "N4"];
+
+// Sort the data based on the custom order
+timeObjShifts.sort((a, b) => {
+  const indexA = customOrder.indexOf(a.name);
+  const indexB = customOrder.indexOf(b.name);
+
+  // If the names are not in the custom order, move them to the end
+  return (indexA !== -1 ? indexA : Infinity) - (indexB !== -1 ? indexB : Infinity);
+});
+
+
         // let sevenPmS4greaterThanCap = false;
         timeObjShifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[each.startTime].includes(each.name)) {
@@ -582,13 +595,13 @@ export function App() {
                     getInputById.focus();
                 }
             }
-        } else if (e.target.name == "numberOfAdmissions" && e.key === "ArrowRight") {
+        } else if (e.target.name == "numberOfAdmissions" && e.key === "ArrowLeft") {
 
             const getElementById = document.getElementById(`timestamp_${rowIndex}`);
             if (getElementById) {
                 getElementById.focus();
             }
-        } else if (e.target.name == "timestamp" && e.key === "ArrowLeft") {
+        } else if (e.target.name == "timestamp" && e.key === "ArrowRight") {
 
             const getElementById = document.getElementById(`numberOfAdmissions_${rowIndex}`);
             if (getElementById) {
@@ -612,25 +625,10 @@ export function App() {
                         <span className="left-text backgroundcoloryellow">
                             {"Last Saved: " + lastSaved}
                         </span>
-                        {/*<span className="right-text">
-                            <button className="clearall" onClick={() => {
-                                allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
-                                    each.timestamp = "";
-                                    each.numberOfAdmissions = "";
-                                    each.chronicLoadRatio = "";
-                                })
-                                setAllAdmissionsDataShifts(allAdmissionsDataShifts);
-
-                                setIsCleared(true);
-                                setTimeout(() => setIsCleared(false), 1000);
-                            }}>{"Clear All"}</button>
-
-                        </span>*/}
-
                         <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
 
                     </div>
-                    <table>
+                    <table id="reacttable">
                         <thead>
                             {openTable ? <tr>
                                 {
@@ -667,12 +665,16 @@ export function App() {
                             {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && allAdmissionsDataShifts.shifts.map((admission, indexx) => {
                                 let index = 0;
                                 if (SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name)) {
-                                    index = Number(admission.admissionsId);
+                                    // index = Number(admission.admissionsId);
+                                    index = SHOW_ROWS_TABLE[admission.startTime].findIndex((user) => {
+                                        return user == admission.name
+                                    });
                                     return (
                                         !admission.isStatic &&
                                         <tr
                                             style={SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name) ? {} : { display: "none" }}
-                                            className={"admissionsDataRow_" + index}
+                                            id={"admissionsDataRow_" + index}
+                                            className={"admissionsDataRow"}
                                             key={admission.admissionsId}
 
                                         >

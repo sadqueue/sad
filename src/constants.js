@@ -48,8 +48,8 @@ export const EXPAND_TABLE = [
 
 export const MINIMIZE_TABLE = [
     ["name", "Role"],
-    ["timestamp", "Last Admission Time"],
-    ["numberOfAdmissions", "Number of Admissions"],
+    ["timestamp", "Last Admit Time"],
+    ["numberOfAdmissions", "Number of Admits"],
     ["chronicLoadRatio", "Chronic Load Ratio"]
 ];
 
