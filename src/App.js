@@ -76,7 +76,7 @@ export function App() {
                 const timestamp = new Date(result.transaction.timestamp);
                 const month = String(timestamp.getMonth() + 1); // Months are zero-based
                 const day = String(timestamp.getDate());
-                const year = timestamp.getFullYear() % 100;
+                const year = timestamp.getFullYear();
                 let hours = timestamp.getHours();
                 const minutes = String(timestamp.getMinutes()).padStart(2, '0');
                 const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -89,10 +89,11 @@ export function App() {
                     setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
                 }
                 setDropdown(result.transaction.admissionsObj.startTime);
+                setLoading(false);
             } else {
                 //   setError(result.message || "Failed to fetch the most recent transaction.");
             }
-            setLoading(false);
+            
             // fetchTransactions();
             sortMain(result.transaction ? result.transaction.admissionsObj.allAdmissionsDataShifts : allAdmissionsDataShifts, localDateTime);
         };
@@ -249,7 +250,7 @@ export function App() {
         const [hours] = time24.split(':').map(Number);
         const period = hours >= 12 ? 'PM' : 'AM';
         const hours12 = hours % 12 || 12;
-        return `${hours12}${period}`;
+        return `${hours12}:00 ${period}`;
       }
 
     const onChange = (e, admissionsId) => {
@@ -505,7 +506,6 @@ export function App() {
 
         sortRoles.push("\n");
 
-        sortRoles.push(sortRolesNameOnly.length > 0 ? `\nOrder ${lastSaved ? lastSaved.split(" ") && lastSaved.split(" ").length > 0 && lastSaved.split(" ")[0] : lastSavedTime.split(" ") && lastSavedTime.split(" ").length > 0 && lastSavedTime.split(" ")[0]} ${moment(admissionsDatax.startTime, TIME_FORMAT).format(TIME_FORMAT)}` : "");
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
 
         setAdmissionsOutput(sortRolesNameOnly.join(">"));
@@ -621,7 +621,7 @@ export function App() {
                         <span className="left-text backgroundcoloryellow">
                             {"Last Saved: " + lastSaved}
                         </span>
-                        <span className="right-text">
+                        {/*<span className="right-text">
                             <button className="clearall" onClick={() => {
                                 allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
                                     each.timestamp = "";
@@ -634,7 +634,7 @@ export function App() {
                                 setTimeout(() => setIsCleared(false), 1000);
                             }}>{"Clear All"}</button>
 
-                        </span>
+                        </span>*/}
 
                         <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
 
@@ -733,7 +733,7 @@ export function App() {
                                                     disabled={admission.isStatic}
                                                 />
                                             </td>
-                                            <td>
+                                            <td className="backgroundlightgray">
                                                 <input
                                                     name={`chronicLoadRatio_${index}`}
                                                     type="text"
@@ -750,14 +750,14 @@ export function App() {
                                                     disabled={true}
                                                 />
                                             </td>}
-                                            {openTable && <td>
+                                            {/*openTable && <td>
                                                 <input
                                                     name="score"
                                                     type="text"
                                                     value={admission.score}
                                                     disabled={true}
                                                 />
-                                            </td>}
+                                            </td>*/}
 
                                         </tr>);
                                 }
@@ -768,10 +768,15 @@ export function App() {
                     {/* highlighted order of admissions below table */}
                     <p id="endoutputcenter">{`Order of Admissions ${convertTo12HourFormatSimple(allAdmissionsDataShifts.startTime)}`}</p>
                     <p id="endoutputcenter">{sorted && sorted[sorted.length-1]}</p>
-                    <button className="seedetails" onClick={() => {
-                        setOpenTable(!openTable);
-                    }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
-                    <section style={{ textAlign: "center", margin: "30px" }}>
+                    <div className="flex-container">
+                        <span className="right-text">
+                            <button className="seedetails" onClick={() => {
+                            setOpenTable(!openTable);
+                        }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
+                        </span>
+                    </div>
+                    
+                    <section>
                         <button onClick={() => {
                             sortMain(allAdmissionsDataShifts);
                             addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: allAdmissionsDataShifts.startTime });
@@ -785,7 +790,7 @@ export function App() {
                                     const timestamp = new Date(result.transaction.timestamp);
                                     const month = timestamp.getMonth() + 1; // Months are zero-based
                                     const day = timestamp.getDate();
-                                    const year = timestamp.getFullYear() % 100;
+                                    const year = timestamp.getFullYear();
                                     let hours = timestamp.getHours();
                                     const minutes = String(timestamp.getMinutes()).padStart(2, '0');
                                     const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -826,10 +831,31 @@ export function App() {
                             {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
                                 (
                                     <div>
-                                        <img
+                                        
+                                           <img
                                             alt="copy button"
                                             className="copybutton"
-                                            id="snapshop-button"
+                                            src={copybuttonImg}
+                                            onClick={(ev) => {
+                                                let copiedMessage = "";
+                                                sorted.map((each, eachIndex) => {
+                                                    if (each == "\n") {
+                                                    } else if (eachIndex == sorted.length - 1) {
+                                                        copiedMessage += each;
+                                                    } else {
+                                                        copiedMessage += each + "\n";
+                                                    }
+                                                });
+
+                                                navigator.clipboard.writeText(`${copiedMessage}`);
+                                                // sendEmail(ev, copiedMessage, title);
+                                                setIsCopied(true);
+                                                setTimeout(() => setIsCopied(false), 1000);
+                                            }} />
+                                            <img
+                                            alt="copy button"
+                                            className="copybutton"
+                                            id="snapshot-button"
                                             src={snapshotImg}
                                             onClick={(ev) => {
                                                 /* let copiedMessage = "";
@@ -849,7 +875,6 @@ export function App() {
                                                 takeScreenshot();
 
                                             }} />
-                                           
                                         <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
 
                                     </div>)
@@ -857,37 +882,41 @@ export function App() {
                             <div id="fieldsettocopy_min">
                                 <p className="boldCopy">
                                     <br />
-                                    {allAdmissionsDataShifts.startTime ? `Admit Update ${lastSaved}` : `Select a time. No roles in the queue.`}
+                                    {allAdmissionsDataShifts.startTime ? `Order of Admissions ${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(allAdmissionsDataShifts.startTime)}` : `Select a time. No roles in the queue.`}
                                     {/* ${moment(allAdmissionsDataShifts.startTime, TIME_FORMAT).format(TIME_FORMAT)} */}
                                 </p>
+                                <p id="endoutput">{sorted && sorted[sorted.length-1]}</p>
                                 {
                                 sorted && sorted.map((each, eachIndex) => {
                                     if (each == "\n") {
                                         return <br></br>
-                                    } else if (eachIndex == sorted.length - 1) {
-                                        return <div className="sortedWithButton">
-                                            <p id="endoutput">{each}
-                                                {/*allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
-                                                <img
-                                                    alt="copy button"
-                                                    className="copybuttonjust1line"
-                                                    src={copybuttonImg}
-                                                    onClick={(ev) => {
+                                    } 
+                                    else if (eachIndex == sorted.length - 1) {
+                                        // return <div className="sortedWithButton">
+                                        //     <p id="endoutput">{each}
+                                        //         {/*allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
+                                        //         <img
+                                        //             alt="copy button"
+                                        //             className="copybuttonjust1line"
+                                        //             src={copybuttonImg}
+                                        //             onClick={(ev) => {
 
-                                                        navigator.clipboard.writeText(sorted[sorted.length - 1]);
-                                                        // sendEmail(ev, copiedMessage, title);
-                                                        setIsCopied(true);
-                                                        setTimeout(() => setIsCopied(false), 1000);
+                                        //                 navigator.clipboard.writeText(sorted[sorted.length - 1]);
+                                        //                 // sendEmail(ev, copiedMessage, title);
+                                        //                 setIsCopied(true);
+                                        //                 setTimeout(() => setIsCopied(false), 1000);
 
-                                                    }} />*/}
-                                            </p>
+                                        //             }} />*/}
+                                        //     </p>
 
-                                        </div>
+                                        // </div>
 
-                                    } else {
+                                    } 
+                                    else {
                                         return <p className="sorted">{each}</p>
                                     }
                                 })
+                                // <p>{`Last saved on sadqueue.github.io/sad at ${lastSaved && lastSaved.split(" ")[0]}`}</p>
                             }</div>
                           
 
