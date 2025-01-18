@@ -18,7 +18,8 @@ import {
     CHRONIC_LOAD_RATIO_THRESHOLD_S4,
     CHRONIC_LOAD_RATIO_THRESHOLD_N1_N2_N3_N4,
     NUMBER_OF_ADMISSIONS_CAP,
-    NUMBER_OF_ADMISSIONS_S4_CAP
+    NUMBER_OF_ADMISSIONS_S4_CAP,
+    ROLES_WITH_DEFAULT_TIMES
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import snapshotImg from "./images/snapshot.png";
@@ -62,6 +63,7 @@ export function App() {
     const [loading, setLoading] = useState(true);
     const [orderOfAdmissions, setOrderOfAdmissions] = useState("");
     useEffect(() => {
+        // deleteAllTransactions();
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         const fetchTransactions = async () => {
             const data = await getLast10Transactions();
@@ -87,15 +89,21 @@ export function App() {
                 setLastSaved(localDateTime);
                 if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
                     setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
+                    setDropdown(result.transaction.admissionsObj.startTime);
+                    sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, localDateTime);
                 }
-                setDropdown(result.transaction.admissionsObj.startTime);
-                setLoading(false);
+                
+                // setLoading(false);
+
             } else {
+                setAllAdmissionsDataShifts({ startTime: "16:00", shifts: SHIFT_TYPES });
+                // setLoading(false);
+                sortMain(allAdmissionsDataShifts, localDateTime);
+
                 //   setError(result.message || "Failed to fetch the most recent transaction.");
             }
-            
+            setLoading(false);
             // fetchTransactions();
-            sortMain(result.transaction ? result.transaction.admissionsObj.allAdmissionsDataShifts : allAdmissionsDataShifts, localDateTime);
         };
         fetchRecentTransaction();
 
@@ -106,7 +114,7 @@ export function App() {
     }
 
     const sortByTimestampAndCompositeScore = (timeObj, lastSavedTime = "") => {
-        timeObj && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
+        timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             each["startTime"] = timeObj.startTime ? timeObj.startTime : "";
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
             each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
@@ -124,18 +132,26 @@ export function App() {
         /*
         Step 1: Step 1: Sort based on timestamp 
         */
-        timeObj && timeObj.shifts && timeObj.shifts.sort(function (a, b) {
-            return moment(a.timestamp, TIME_FORMAT).diff(moment(b.timestamp, TIME_FORMAT));
-        });
-        //if same chronic load ratio, then pick the one with lower number of admissions to go first
-        timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
-                explanationArr.push(`${each.name} | ${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio} | ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`)
-            }
-        });
-
-        /*
-        Step 2: For each admitter, if chronic load ratio is >0.66, then deprioritize in the order 
+        const newObject = JSON.parse(JSON.stringify(timeObj))
+        if (newObject.shifts){
+            newObject.shifts.map((each, eachIndex) => {
+                if (ROLES_WITH_DEFAULT_TIMES[dropdown] && ROLES_WITH_DEFAULT_TIMES[dropdown].includes(each.name)){
+                    each.timestamp = each.timestampDefault;
+                }
+                return each;
+            });
+    
+            newObject && newObject.shifts && newObject.shifts.sort(function (a, b) {
+                return moment(a.timestamp, TIME_FORMAT).diff(moment(b.timestamp, TIME_FORMAT));
+            });
+            //if same chronic load ratio, then pick the one with lower number of admissions to go first
+            newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
+                if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
+                    explanationArr.push(`${each.name} | ${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio} | ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`)
+                }
+            });
+            /*
+        Step 2: For each admitter, if chronic load ratio is >0.67, then deprioritize in the order 
         (either putting in back or pushing back by X spots depending on how great the ratio is)
         */
         const shiftsLessThanThreshold = [];
@@ -143,41 +159,18 @@ export function App() {
         explanationArr.push("\n");
         explanationArr.push(`Step 2: Determine the admitters with high chronic load.`);
 
-        timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
-                if ((timeObj.startTime == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
-                    (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
-                    explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
-                    shiftsGreaterThanThreshold.push(each);
-                } else {
-                    shiftsLessThanThreshold.push(each);
-                }
+        newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[allAdmissionsDataShifts.startTime].includes(each.name)){
+                if ((allAdmissionsDataShifts.startTime == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
+                (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
+                explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
+                shiftsGreaterThanThreshold.push(each);
+            } else {
+                shiftsLessThanThreshold.push(each);
             }
+            }
+
         });
-
-        // /*
-        // Step 2a: If chronic load ratio is the same, the higher number of admissions will go first
-        // */
-        // explanationArr.push("\n");
-        // explanationArr.push(`Step 2a: If chronic load ratio is the same, the higher number of admissions will go first.`);
-        // shiftsGreaterThanThreshold.sort((a, b) => {
-        //     if (a.chronicLoadRatio === b.chronicLoadRatio) {
-        //         explanationArr.push(`${a.name} and ${b.name} have the same chronic load ratio.`);
-        //         return b.numberOfAdmissions - a.numberOfAdmissions; // higher admissions go first
-        //     }
-        // });
-
-        // /*
-        // Step 2b: If timestamp is the same, the lesser number of admissions will go first
-        // */
-        // explanationArr.push("\n");
-        // explanationArr.push(`Step 2b: If the number of admissions is the same, the higher number of admissions will go first.`);
-        // shiftsGreaterThanThreshold.sort((a, b) => {
-        //     if (a.timestamp === b.timestamp) {
-        //         explanationArr.push(`${a.name} and ${b.name} have the same number of admissions.`);
-        //         return b.numberOfAdmissions - a.numberOfAdmissions;
-        //     }
-        // });
 
         explanationArr.push("\n");
         explanationArr.push(`Step 3: De-prioritize admitters with high chronic load to the back of the queue.`)
@@ -190,26 +183,35 @@ export function App() {
         explanationArr.push("\n");
         explanationArr.push(`Step 4: Roles with number of admissions greater than ${NUMBER_OF_ADMISSIONS_CAP} are removed from the order of admissions.`)
         shiftsCombined.forEach((each, eachIndex) => {
-            if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP){
+            if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
                 explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} (DONE)`)
             }
         });
-
-        explanationArr.push("\n");
-        explanationArr.push(`Step 5: If the start time is 7PM and S4 has 6 or more admissions, put N1-N4 in the beginning of the order of admissions.`)
-    
-
         explanationArr.push("\n");
         explanationArr.push("Notes: Chronic Load Ratio: Number of Admissions / Numbers of hours worked");
 
-        timeObj.shifts = shiftsCombined;
+        // timeObj.shifts = shiftsCombined;
 
+        let orderOfAdmissions = [];
+        shiftsCombined.map((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
+                if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                    orderOfAdmissions.push(each.name);
+                }
+            }
+        })
+
+        
+        setOrderOfAdmissions(orderOfAdmissions.join(">"));
         setExplanation(explanationArr);
 
         setSortRoles(timeObj, lastSavedTime);
 
         handleSetAllAdmissionsDataShifts(timeObj);
         sortByAscendingName(timeObj);
+        }
+        
+
     }
 
     const setInitialForDropdown = (timeObj) => {
@@ -241,17 +243,16 @@ export function App() {
     }
 
     const handleSetAllAdmissionsDataShifts = (obj) => {
-        const newObj = Object.assign([], allAdmissionsDataShifts, obj.shifts)
-        setAllAdmissionsDataShifts({ startTime: obj.startTime, shifts: newObj });
+        setAllAdmissionsDataShifts(obj);
         // localStorage.setItem("allAdmissionsDataShifts", JSON.stringify({ startTime: obj.startTime, shifts: newObj }));
     }
 
     const convertTo12HourFormatSimple = (time24) => {
-        const [hours] = time24.split(':').map(Number);
+        const [hours] = time24 && time24.split(':').map(Number);
         const period = hours >= 12 ? 'PM' : 'AM';
         const hours12 = hours % 12 || 12;
-        return `${hours12}:00 ${period}`;
-      }
+        return `${hours12}:00${period}`;
+    }
 
     const onChange = (e, admissionsId) => {
         const { name, value } = e.target
@@ -263,7 +264,7 @@ export function App() {
         )
 
         updatedShifts.map((each, eachIndex) => {
-            each["startTime"] = allAdmissionsDataShifts.startTime;
+            each["startTime"] = dropdown;
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
             each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
             each["chronicLoadRatio"] = getChronicLoadRatio(each);
@@ -271,9 +272,10 @@ export function App() {
             return each;
         });
 
-        newObj["startTime"] = allAdmissionsDataShifts.startTime;
+        newObj["startTime"] = dropdown;
         newObj["shifts"] = updatedShifts ? updatedShifts : [];
-
+        // allAdmissionsDataShifts.startTime = dropdown;
+        // allAdmissionsDataShifts.shifts = updatedShifts;
         handleSetAllAdmissionsDataShifts(newObj);
     }
 
@@ -379,31 +381,12 @@ export function App() {
                 onChange={e => {
                     const startTime = e.target.value;
                     setDropdown(startTime);
-
-                    let getObj = {};
-                    switch (startTime) {
-                        case "16:00":
-                            getObj = getValuesFromExistingAdmissionsDate(moment("16:00", TIME_FORMAT).format("HH:mm"));
-                            setInitialForDropdown(getObj);
-                            break;
-                        case "17:00":
-                            getObj = getValuesFromExistingAdmissionsDate(moment("17:00", TIME_FORMAT).format("HH:mm"));
-                            setInitialForDropdown(getObj);
-                            break;
-                        case "19:00":
-                            getObj = getValuesFromExistingAdmissionsDate(moment("19:00", TIME_FORMAT).format("HH:mm"));
-                            setInitialForDropdown(getObj);
-                            break;
-                        case "CUSTOM":
-                            getObj = getValuesFromExistingAdmissionsDate(moment().format("HH:mm"));
-                            setInitialForDropdown(getObj);
-                            break;
-                        default:
-                            getObj = getValuesFromExistingAdmissionsDate(moment().format("HH:mm"));
-                            setInitialForDropdown(getObj);
-                            break;
-                    }
-
+                    const newObj = {};
+                    newObj["startTime"] = startTime;
+                    newObj["shifts"] = allAdmissionsDataShifts.shifts;
+                    // allAdmissionsDataShifts.startTime = startTime;
+                    setAllAdmissionsDataShifts(newObj);
+                    setInitialForDropdown(allAdmissionsDataShifts);
                 }
                 }>
                 {START_TIMES.map((startTime, startTimeIndex) => {
@@ -434,25 +417,25 @@ export function App() {
 
         // Capture the div as a canvas
         const canvas = await html2canvas(element);
-  
+
         // Convert the canvas to a Blob
         canvas.toBlob(async (blob) => {
-          if (!blob) {
-            alert('Failed to capture the screenshot.');
-            return;
-          }
-  
-          // Copy the Blob to the clipboard
-          try {
-            const clipboardItem = new ClipboardItem({ 'image/png': blob });
-            await navigator.clipboard.write([clipboardItem]);
-            alert('Screenshot copied to clipboard!');
-          } catch (err) {
-            console.error('Failed to copy the screenshot to the clipboard:', err);
-            alert('Failed to copy the screenshot. Check your browser permissions.');
-          }
+            if (!blob) {
+                alert('Failed to capture the screenshot.');
+                return;
+            }
+
+            // Copy the Blob to the clipboard
+            try {
+                const clipboardItem = new ClipboardItem({ 'image/png': blob });
+                await navigator.clipboard.write([clipboardItem]);
+                alert('Screenshot copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy the screenshot to the clipboard:', err);
+                alert('Failed to copy the screenshot. Check your browser permissions.');
+            }
         });
-           
+
     }
 
     const setSortRoles = (admissionsDatax, lastSavedTime = "") => {
@@ -465,30 +448,30 @@ export function App() {
         //sort by name
         const customOrder = ["DA", "S1", "S2", "S3", "S4", "N5", "N1", "N2", "N3", "N4"];
 
-// Sort the data based on the custom order
-timeObjShifts.sort((a, b) => {
-  const indexA = customOrder.indexOf(a.name);
-  const indexB = customOrder.indexOf(b.name);
+        // Sort the data based on the custom order
+        timeObjShifts && Array.isArray(timeObjShifts) && timeObjShifts.sort((a, b) => {
+            const indexA = customOrder.indexOf(a.name);
+            const indexB = customOrder.indexOf(b.name);
 
-  // If the names are not in the custom order, move them to the end
-  return (indexA !== -1 ? indexA : Infinity) - (indexB !== -1 ? indexB : Infinity);
-});
+            // If the names are not in the custom order, move them to the end
+            return (indexA !== -1 ? indexA : Infinity) - (indexB !== -1 ? indexB : Infinity);
+        });
 
 
         // let sevenPmS4greaterThanCap = false;
-        timeObjShifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[each.startTime].includes(each.name)) {
+        timeObjShifts && Array.isArray(timeObjShifts) && timeObjShifts.forEach((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
                 // if (admissionsDatax.startTime == "19:00" && each.name == "S4" && each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_S4_CAP){
                 //     sevenPmS4greaterThanCap = true;
                 // }
                 if (each.numberOfHoursWorked + "" !== "0") {
-                    if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP){
+                    if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
                         sortRoles.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} (DONE)`);
                     } else {
                         sortRoles.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
                     }
                 }
-                if (each.numberOfAdmissions <= NUMBER_OF_ADMISSIONS_CAP){
+                if (each.numberOfAdmissions <= NUMBER_OF_ADMISSIONS_CAP) {
                     if (window.location.hostname === 'localhost') {
                         sortRolesNameOnly.push(`${each.name}(${each.chronicLoadRatio})`);
                     } else {
@@ -509,9 +492,9 @@ timeObjShifts.sort((a, b) => {
         sortRoles.push("\n");
 
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
-        setOrderOfAdmissions(`${sortRolesNameOnly.join(">")}`);
+        // setOrderOfAdmissions(`${sortRolesNameOnly.join(">")}`);
 
-        setAdmissionsOutput(sortRolesNameOnly.join(">"));
+        // setAdmissionsOutput(sortRolesNameOnly.join(">"));
 
         // sortRoles.push("\n");
         // sortRoles.push(`Generated by sadqueue.github.io/sad`);
@@ -550,15 +533,12 @@ timeObjShifts.sort((a, b) => {
 
         });
         let returnObj = {};
-        returnObj.startTime = allAdmissionsDataShifts.startTime;
+        returnObj.startTime = dropdown;
         returnObj.shifts = updatedShifts;
 
         handleSetAllAdmissionsDataShifts(returnObj);
     };
 
-    const handleCustomTime = (target) => {
-        getValuesFromExistingAdmissionsDate(target);
-    }
 
     const sendEmail = (e, copiedContent, title) => {
         e.preventDefault();
@@ -622,7 +602,7 @@ timeObjShifts.sort((a, b) => {
                         {timesDropdown()}
                     </div>
                     <div className="flex-container">
-                        <span className="left-text backgroundcoloryellow">
+                        <span id="lastsavedhighlight" className="left-text backgroundcoloryellow">
                             {"Last Saved: " + lastSaved}
                         </span>
                         <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
@@ -664,15 +644,15 @@ timeObjShifts.sort((a, b) => {
                         <tbody>
                             {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && allAdmissionsDataShifts.shifts.map((admission, indexx) => {
                                 let index = 0;
-                                if (SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name)) {
+                                if (SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name)) {
                                     // index = Number(admission.admissionsId);
-                                    index = SHOW_ROWS_TABLE[admission.startTime].findIndex((user) => {
+                                    index = SHOW_ROWS_TABLE[dropdown].findIndex((user) => {
                                         return user == admission.name
                                     });
                                     return (
                                         !admission.isStatic &&
                                         <tr
-                                            style={SHOW_ROWS_TABLE[admission.startTime] && SHOW_ROWS_TABLE[admission.startTime].includes(admission.name) ? {} : { display: "none" }}
+                                            style={SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name) ? {} : { display: "none" }}
                                             id={"admissionsDataRow_" + index}
                                             className={"admissionsDataRow"}
                                             key={admission.admissionsId}
@@ -743,15 +723,6 @@ timeObjShifts.sort((a, b) => {
                                                     disabled={true}
                                                 />
                                             </td>}
-                                            {/*openTable && <td>
-                                                <input
-                                                    name="score"
-                                                    type="text"
-                                                    value={admission.score}
-                                                    disabled={true}
-                                                />
-                                            </td>*/}
-
                                         </tr>);
                                 }
 
@@ -759,20 +730,20 @@ timeObjShifts.sort((a, b) => {
                         </tbody>
                     </table>
                     {/* highlighted order of admissions below table */}
-                    <p id="endoutputcenter">{`Order of Admissions ${convertTo12HourFormatSimple(allAdmissionsDataShifts.startTime)}`}</p>
-                    <p id="endoutputcenter">{orderOfAdmissions}</p>
+                    <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admissions ${convertTo12HourFormatSimple(dropdown)}`}</p>
+                    <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                     <div className="flex-container">
                         <span className="right-text">
                             <button className="seedetails" onClick={() => {
-                            setOpenTable(!openTable);
-                        }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
+                                setOpenTable(!openTable);
+                            }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
                         </span>
                     </div>
-                    
+
                     <section>
                         <button onClick={() => {
                             sortMain(allAdmissionsDataShifts);
-                            addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: allAdmissionsDataShifts.startTime });
+                            addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown });
 
                             // console.log(transactions);
                             const fetchRecentTransaction = async () => {
@@ -793,7 +764,7 @@ timeObjShifts.sort((a, b) => {
 
                                     setLastSaved(localDateTime);
                                     setAllAdmissionsDataShifts(allAdmissionsDataShifts);
-                                    setDropdown(allAdmissionsDataShifts.startTime);
+                                    setDropdown(dropdown);
                                 } else {
                                     //   setError(result.message || "Failed to fetch the most recent transaction.");
                                 }
@@ -805,53 +776,53 @@ timeObjShifts.sort((a, b) => {
                             Generate Queue
                         </button>
                     </section>
-                   
+
                     <fieldset className="fieldsettocopy" id="fieldsettocopy">
-                       
-                            {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
-                                (
-                                    <div>
-                                        
-                                           <img
-                                            alt="copy button"
-                                            className="copybutton"
-                                            src={copybuttonImg}
-                                            onClick={(ev) => {
-                                                let copiedMessage = document.getElementById("fieldsettocopy_min") && document.getElementById("fieldsettocopy_min").innerText.replaceAll("\n\n", "\n").replaceAll("\n\n", "\n");
-                                                if (copiedMessage.charAt(0) == "\n"){
-                                                    copiedMessage = copiedMessage.substring(1);
-                                                }
-                                                navigator.clipboard.writeText(`${copiedMessage}`);
-                                                // sendEmail(ev, copiedMessage, title);
-                                                setIsCopied(true);
-                                                setTimeout(() => setIsCopied(false), 1000);
-                                            }} />
-                                            <img
-                                            alt="copy button"
-                                            className="copybutton"
-                                            id="snapshot-button"
-                                            src={snapshotImg}
-                                            onClick={(ev) => {
-                                                takeScreenshot();
 
-                                            }} />
-                                        <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
+                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
+                            (
+                                <div>
 
-                                    </div>)
-                            }
-                            <div id="fieldsettocopy_min">
-                                <p className="boldCopy">
-                                    <br />
-                                    {allAdmissionsDataShifts.startTime ? `Order of Admissions ${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(allAdmissionsDataShifts.startTime)}` : `Select a time. No roles in the queue.`}
-                                </p>
-                                <p id="endoutput">{orderOfAdmissions}</p>
-                                {
+                                    <img
+                                        alt="copy button"
+                                        className="copybutton"
+                                        src={copybuttonImg}
+                                        onClick={(ev) => {
+                                            let copiedMessage = document.getElementById("fieldsettocopy_min") && document.getElementById("fieldsettocopy_min").innerText.replaceAll("\n\n", "\n").replaceAll("\n\n", "\n");
+                                            if (copiedMessage.charAt(0) == "\n") {
+                                                copiedMessage = copiedMessage.substring(1);
+                                            }
+                                            navigator.clipboard.writeText(`${copiedMessage}`);
+                                            // sendEmail(ev, copiedMessage, title);
+                                            setIsCopied(true);
+                                            setTimeout(() => setIsCopied(false), 1000);
+                                        }} />
+                                    <img
+                                        alt="copy button"
+                                        className="copybutton"
+                                        id="snapshot-button"
+                                        src={snapshotImg}
+                                        onClick={(ev) => {
+                                            takeScreenshot();
+
+                                        }} />
+                                    <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
+
+                                </div>)
+                        }
+                        <div id="fieldsettocopy_min">
+                            <p className="boldCopy">
+                                <br />
+                                {dropdown ? `Order of Admissions ${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}` : `Select a time. No roles in the queue.`}
+                            </p>
+                            <p id="endoutput">{orderOfAdmissions}</p>
+                            {
                                 sorted && sorted.map((each, eachIndex) => {
                                     if (each == "\n") {
                                         return <br></br>
-                                    } 
+                                    }
                                     else if (eachIndex == sorted.length - 1) {
-                                    } 
+                                    }
                                     else {
                                         return <p className="sorted">{each}</p>
                                     }
@@ -859,8 +830,8 @@ timeObjShifts.sort((a, b) => {
                             }
                             <p>{`Last saved on sadqueue.github.io/sad at ${lastSaved}`}</p>
 
-                            </div>
-                          
+                        </div>
+
 
                     </fieldset>
                     <p className="admissionsorderlastline">{ADMISSIONS_FORMAT}</p>
@@ -883,7 +854,7 @@ timeObjShifts.sort((a, b) => {
                     </fieldset>}
 
                     <CopyMessages />
-                    
+
                     <div className="footer">
                         <img
                             alt="copy button"
