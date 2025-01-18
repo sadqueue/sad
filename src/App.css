@@ -434,7 +434,7 @@ input::-webkit-inner-spin-button {
   background-color: yellow;
 }
 
-#endoutputcenter{
+.endoutputcenter{
   background-color: #1a0dab63;
   text-align: center;
   margin: 0px;

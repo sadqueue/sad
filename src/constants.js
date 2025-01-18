@@ -1,5 +1,5 @@
 export const THRESHOLD = 90;
-export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.66;
+export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.67;
 export const CHRONIC_LOAD_RATIO_THRESHOLD_S4 = 0.67;
 export const CHRONIC_LOAD_RATIO_THRESHOLD_N1_N2_N3_N4 = 0.87;
 export const CHRONIC_LOAD_RATIO_THRESHOLD_N5 = 0.87;
@@ -18,6 +18,12 @@ export const DATA_TYPE_INT = [
     "numberOfHoursWorked",
     "score",
 ];
+
+export const ROLES_WITH_DEFAULT_TIMES = {
+    "16:00": [],
+    "17:00": ["N5"],
+    "19:00": ["N1", "N2", "N3", "N4"]
+};
 
 export const SHOW_ROWS_TABLE = {
     "16:00": ["DA", "S1", "S2", "S3", "S4"],
@@ -78,7 +84,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "05:30",
         endWithThreshold: "17:00",
         shiftTimePeriod: "7AM-7PM",
-        timestamp: "14:30"
+        timestampDefault: "14:30"
     },
     {
         admissionsId: "2",
@@ -89,7 +95,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "08:30",
         endWithThreshold: "18:30",
         shiftTimePeriod: "10AM-8PM",
-        timestamp: "14:30"
+        timestampDefault: "14:30"
     },
     {
         admissionsId: "3",
@@ -100,7 +106,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "09:30",
         endWithThreshold: "19:30",
         shiftTimePeriod: "11AM-9PM",
-        timestamp: "14:30"
+        timestampDefault: "14:30"
     },
     {
         admissionsId: "4",
@@ -111,7 +117,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "11:30",
         endWithThreshold: "21:30",
         shiftTimePeriod: "1PM-11PM",
-        timestamp: "14:30"
+        timestampDefault: "14:30"
     },
     {
         admissionsId: "5",
@@ -122,7 +128,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "12:30",
         endWithThreshold: "22:30",
         shiftTimePeriod: "2PM-12AM",
-        timestamp: "14:30"
+        timestampDefault: "14:30"
     },
     {
         admissionsId: "6",
@@ -133,7 +139,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "15:30",
         endWithThreshold: "03:30",
         shiftTimePeriod: "5PM-5AM",
-        timestamp: "15:30"
+        timestampDefault: "15:30"
     },
     {
         admissionsId: "7",
@@ -144,7 +150,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        timestamp: "17:30"
+        timestampDefault: "17:30"
     },
     {
         admissionsId: "8",
@@ -155,7 +161,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        timestamp: "18:00"
+        timestampDefault: "18:00"
     },
     {
         admissionsId: "9",
@@ -166,7 +172,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        timestamp: "18:30"
+        timestampDefault: "18:30"
     },
     {
         admissionsId: "10",
@@ -177,7 +183,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        timestamp: "19:00"
+        timestampDefault: "19:00"
     }
 ];
 
@@ -225,7 +231,7 @@ export const FOURPM = [
         displayName: "S4 (2PM-12AM)",
         roleStartTime: "14:00",
         numberOfAdmissions: "1",
-        timestamp: "14:30"
+        timestampDefault: "14:30"
     }
 ];
 

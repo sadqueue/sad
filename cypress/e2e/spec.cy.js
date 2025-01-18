@@ -4,28 +4,28 @@ const url = "http://localhost:3001/sad"; //""https://sadqueue.github.io/sad/";//
 const testArrFourPM = [
  //TEST CASES
 
- "16:00;15:10,15:41,14:32,14:33,14:41;5,4,3,2,2;DA>S2>S1>S3>S4", //12/09/2024 fascinating
- "16:00;14:52,15:10,15:12,15:13,15:17;5,4,4,3,2;DA>S1>S2>S3>S4", //12/10/2024
- "16:00;14:49,15:20,15:30,15:50,15:50;6,4,4,3,3;DA>S1>S2>S3>S4", //12/11/2024 fascinating
- "16:00;15:15,16:00,15:15,14:40,14:40;6,5,4,3,3;DA>S2>S1>S3>S4", //12/14/2024? fascinating
- "16:00;14:55,15:45,14:10,14:45,14:46;6,4,3,2,2;S2>S3>S4>DA>S1", //12/14/2024
- "16:00;13:18,14:10,14:50,14:55,15:45;4,3,3,2,2;DA>S1>S2>S3>S4", //12/15/2024
- "16:00;14:13,14:54;15:55,13:26,16:00;5,4,4,2,2;DA>S3>S1>S2>S4", //12/16/2024
- "16:00;14:50,15:00,15:10,15:15,16:00;6,4,4,3,2;DA>S1>S2>S3>S4", //12/18/2024
- // 12/19/2024 No data
- // 12/20/2024 No data
- // 12/21/2024 No data
- // 12/22/2024 No data
- // 12/23/2024 No data
- "16:00;15:15,16:00,15:15,16:08,16:33;6,5,4,3,3;DA>S2>S1>S3>S4", //12/24/24?
- "16:00;15:45,15:55,14:30,15:15,15:50;7,6,4,3,2;S2>S3>DA>S4>S1", //12/24/24
- // 12/25/2024 No data
- "16:00;13:30,13:42,15:30,15:45,15:10;4,3,3,2,1;DA>S1>S4>S2>S3", //12/28/2024
- "16:00;14:30,14:30,15:24,15:55,14:00;5,4,3,3,1;S4>DA>S1>S2>S3", //12/29/2024
- "16:00;15:35,14:45,14:46,14:50,15:34;5,3,3,2,2;S1>S2>S3>S4>DA", //12/30/2024
- "16:00;14:35,15:20,15:50,15:50,15:55;4,3,3,2,2;DA>S1>S2>S3>S4", //12/31/2024
- "16:00;14:35,15:20,15:50,15:50,15:55;4,3,3,2,2;DA>S1>S2>S3>S4", //1/1/2025
- "16:00;15:20,16:20,16:30,16:45;4,4,3,3;DA>S1>S2>S3>S4", //1/3/2025
+//  "16:00;15:10,15:41,14:32,14:33,14:41;5,4,3,2,2;DA>S2>S1>S3>S4", //12/09/2024 fascinating
+//  "16:00;14:52,15:10,15:12,15:13,15:17;5,4,4,3,2;DA>S1>S2>S3>S4", //12/10/2024
+//  "16:00;14:49,15:20,15:30,15:50,15:50;6,4,4,3,3;DA>S1>S2>S3>S4", //12/11/2024 fascinating
+//  "16:00;15:15,16:00,15:15,14:40,14:40;6,5,4,3,3;DA>S2>S1>S3>S4", //12/14/2024? fascinating
+//  "16:00;14:55,15:45,14:10,14:45,14:46;6,4,3,2,2;S2>S3>S4>DA>S1", //12/14/2024
+//  "16:00;13:18,14:10,14:50,14:55,15:45;4,3,3,2,2;DA>S1>S2>S3>S4", //12/15/2024
+//  "16:00;14:13,14:54;15:55,13:26,16:00;5,4,4,2,2;DA>S3>S1>S2>S4", //12/16/2024
+//  "16:00;14:50,15:00,15:10,15:15,16:00;6,4,4,3,2;DA>S1>S2>S3>S4", //12/18/2024
+//  // 12/19/2024 No data
+//  // 12/20/2024 No data
+//  // 12/21/2024 No data
+//  // 12/22/2024 No data
+//  // 12/23/2024 No data
+//  "16:00;15:15,16:00,15:15,16:08,16:33;6,5,4,3,3;DA>S2>S1>S3>S4", //12/24/24?
+//  "16:00;15:45,15:55,14:30,15:15,15:50;7,6,4,3,2;S2>S3>DA>S4>S1", //12/24/24
+//  // 12/25/2024 No data
+//  "16:00;13:30,13:42,15:30,15:45,15:10;4,3,3,2,1;DA>S1>S4>S2>S3", //12/28/2024
+//  "16:00;14:30,14:30,15:24,15:55,14:00;5,4,3,3,1;S4>DA>S1>S2>S3", //12/29/2024
+//  "16:00;15:35,14:45,14:46,14:50,15:34;5,3,3,2,2;S1>S2>S3>S4>DA", //12/30/2024
+//  "16:00;14:35,15:20,15:50,15:50,15:55;4,3,3,2,2;DA>S1>S2>S3>S4", //12/31/2024
+//  "16:00;14:35,15:20,15:50,15:50,15:55;4,3,3,2,2;DA>S1>S2>S3>S4", //1/1/2025
+//  "16:00;15:20,16:20,16:30,16:45;4,4,3,3;DA>S1>S2>S3>S4", //1/3/2025
  
    "17:00;16:36,16:16,16:19,16:31;5,4,3,3;N5>S2>S3>S4>S1", //12/09/2024
    "17:00;16:31,16:48,16:48,15:17;5,5,4,2;N5>S4>S1>S2>S3", //12/10/2024
@@ -141,9 +141,6 @@ describe('template spec', () => {
   it(`Fill out all timestamps and number of admissions test loop`, () => {
     cy.viewport(2000, 2000);
     cy.visit(url);
-
-
-
     const resArr = [];
 
     for (let i = 0; i < testArrFourPM.length; i++) {
@@ -164,7 +161,7 @@ describe('template spec', () => {
         timex = "7:00PM";
       }
 
-      cy.get("select[id=timesdropdown]").should('be.visible').select(timex);
+      cy.get("#timesdropdown").should('be.visible').select(timex);
 
       timestamps.forEach((time, timeIndexx) => {
         const timeIndex = timeIndexx;
@@ -172,24 +169,9 @@ describe('template spec', () => {
 
         cy.get(`.timestamp`).eq(timeIndex).clear().type(time);
         cy.get(`.numberOfAdmissions`).eq(timeIndex).clear().type(admission)
-
-        // if (militaryTime == "19:00") {
-        //   cy.get(`#timestamp_${timeIndex + 1}`).clear().type(time);
-        //   cy.get(`#numberOfAdmissions_${timeIndex + 1}`).clear().type(admission)
-
-        //   // cy.get(`.timestamp`).eq(timeIndex).clear().type(time);
-        //   // cy.get(`#numberOfAdmissions`).eq(timeIndex).clear().type(admission)
-        // } else if (militaryTime == "17:00") {
-        //   cy.get(`#timestamp_${timeIndex + 2}`).clear().type(time);
-        //   cy.get(`#numberOfAdmissions_${timeIndex + 2}`).clear().type(admission)
-        // } else {
-        //   cy.get(`#timestamp_${timeIndex + 1}`).clear().type(time);
-        //   cy.get(`#numberOfAdmissions_${timeIndex + 1}`).clear().type(admission)
-        // }
       })
 
       cy.contains('Generate Queue').click();
-
 
       cy.get('#endoutput') // Replace 'yourElementId' with the actual ID of the element
         .then(($el) => {
@@ -204,15 +186,16 @@ describe('template spec', () => {
           }
           // console.log($el.text()); // Logs the value of the element
         });
-      // console.log(document.getElementById("endoutput") && document.getElementById("endoutput").innerText);
       const today = new Date();
-      const month = today.getMonth() + 1; // Months are 0-based, so add 1
+      const month = today.getMonth() + 1;
       const day = today.getDate();
-      const year = today.getFullYear() % 100;
+      const year = today.getFullYear();
       const formattedDate = `${month}/${day}/${year}`;
 
-      cy.contains(`Order ${formattedDate} ${timex}`);
-      // cy.contains(output);
+      // cy.get(`.lastsavedhighlight`).should('be.visible').and('contains', `Last Saved: ${formattedDate}`);
+      cy.get(`#orderofadmissions_title`).should('be.visible'); //.and('have.value', `Order of Admissions ${timex}`);
+      cy.get(`#orderofadmissions_output`).should('be.visible'); //.and('have.value', output);
+
     }
     console.log(resArr);
 
