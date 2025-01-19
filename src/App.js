@@ -91,7 +91,20 @@ export function App() {
                     setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
                     setDropdown(result.transaction.admissionsObj.startTime);
                     sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, localDateTime);
+
+                    let orderOfAdmissions = [];
+                    result.transaction.admissionsObj.allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
+                        if (SHOW_ROWS_COPY[result.transaction.admissionsObj.startTime].includes(each.name)) {
+                            if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                                orderOfAdmissions.push(each.name);
+                            }
+                        }
+                    });
+                    setOrderOfAdmissions(orderOfAdmissions.join(">"));
+
                 }
+                
+        
                 
                 // setLoading(false);
 
