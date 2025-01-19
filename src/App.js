@@ -205,7 +205,7 @@ export function App() {
 
         // timeObj.shifts = shiftsCombined;
 
-        let orderOfAdmissions = [];
+        const orderOfAdmissions = [];
         shiftsCombined.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
                 if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
@@ -400,6 +400,18 @@ export function App() {
                     // allAdmissionsDataShifts.startTime = startTime;
                     setAllAdmissionsDataShifts(newObj);
                     setInitialForDropdown(allAdmissionsDataShifts);
+
+                    const orderOfAdmissions = [];
+                    allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
+                        if (SHOW_ROWS_COPY[startTime].includes(each.name)) {
+                            if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                                orderOfAdmissions.push(each.name);
+                            }
+                        }
+                    })
+            
+                    
+                    setOrderOfAdmissions(orderOfAdmissions.join(">"));
                 }
                 }>
                 {START_TIMES.map((startTime, startTimeIndex) => {
@@ -756,9 +768,13 @@ export function App() {
                     <section>
                         <button onClick={() => {
                             sortMain(allAdmissionsDataShifts);
-                            addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown });
 
-                            // console.log(transactions);
+                            if (window.location.hostname === 'localhost') {
+                            } else {
+                                addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown });
+                            }
+
+                            console.log(transactions);
                             const fetchRecentTransaction = async () => {
                                 const result = await getMostRecentTransaction();
 
@@ -782,9 +798,9 @@ export function App() {
                                     //   setError(result.message || "Failed to fetch the most recent transaction.");
                                 }
                             };
-
                             fetchRecentTransaction();
-
+                            setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+                            setDropdown(dropdown);      
                         }}>
                             Generate Queue
                         </button>
