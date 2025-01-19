@@ -65,13 +65,13 @@ export function App() {
     useEffect(() => {
         // deleteAllTransactions();
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
-        const fetchTransactions = async () => {
-            const data = await getLast10Transactions();
-            setTransactions(data);
-        };
+        // const fetchTransactions = async () => {
+        //     const data = await getLast10Transactions();
+        //     setTransactions(data);
+        // };
         let localDateTime = "";
         const fetchRecentTransaction = async () => {
-            const result = await getMostRecentTransaction();
+            const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
 
             if (result.success) {
                 // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
@@ -103,9 +103,9 @@ export function App() {
                     setOrderOfAdmissions(orderOfAdmissions.join(">"));
 
                 }
-                
-        
-                
+
+
+
                 // setLoading(false);
 
             } else {
@@ -146,14 +146,14 @@ export function App() {
         Step 1: Step 1: Sort based on timestamp 
         */
         const newObject = JSON.parse(JSON.stringify(timeObj))
-        if (newObject.shifts){
+        if (newObject.shifts) {
             newObject.shifts.map((each, eachIndex) => {
-                if (ROLES_WITH_DEFAULT_TIMES[dropdown] && ROLES_WITH_DEFAULT_TIMES[dropdown].includes(each.name)){
+                if (ROLES_WITH_DEFAULT_TIMES[dropdown] && ROLES_WITH_DEFAULT_TIMES[dropdown].includes(each.name)) {
                     each.timestamp = each.timestampDefault;
                 }
                 return each;
             });
-    
+
             newObject && newObject.shifts && newObject.shifts.sort(function (a, b) {
                 return moment(a.timestamp, TIME_FORMAT).diff(moment(b.timestamp, TIME_FORMAT));
             });
@@ -167,63 +167,63 @@ export function App() {
         Step 2: For each admitter, if chronic load ratio is >0.67, then deprioritize in the order 
         (either putting in back or pushing back by X spots depending on how great the ratio is)
         */
-        const shiftsLessThanThreshold = [];
-        const shiftsGreaterThanThreshold = [];
-        explanationArr.push("\n");
-        explanationArr.push(`Step 2: Determine the admitters with high chronic load.`);
+            const shiftsLessThanThreshold = [];
+            const shiftsGreaterThanThreshold = [];
+            explanationArr.push("\n");
+            explanationArr.push(`Step 2: Determine the admitters with high chronic load.`);
 
-        newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[allAdmissionsDataShifts.startTime].includes(each.name)){
-                if ((allAdmissionsDataShifts.startTime == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
-                (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
-                explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
-                shiftsGreaterThanThreshold.push(each);
-            } else {
-                shiftsLessThanThreshold.push(each);
-            }
-            }
-
-        });
-
-        explanationArr.push("\n");
-        explanationArr.push(`Step 3: De-prioritize admitters with high chronic load to the back of the queue.`)
-        const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
-
-        shiftsCombined.forEach((each, eachIndex) => {
-            explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`)
-        });
-
-        explanationArr.push("\n");
-        explanationArr.push(`Step 4: Roles with number of admissions greater than ${NUMBER_OF_ADMISSIONS_CAP} are removed from the order of admissions.`)
-        shiftsCombined.forEach((each, eachIndex) => {
-            if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
-                explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} (DONE)`)
-            }
-        });
-        explanationArr.push("\n");
-        explanationArr.push("Notes: Chronic Load Ratio: Number of Admissions / Numbers of hours worked");
-
-        // timeObj.shifts = shiftsCombined;
-
-        const orderOfAdmissions = [];
-        shiftsCombined.map((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
-                if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
-                    orderOfAdmissions.push(each.name);
+            newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
+                if (SHOW_ROWS_COPY[allAdmissionsDataShifts.startTime].includes(each.name)) {
+                    if ((allAdmissionsDataShifts.startTime == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
+                        (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
+                        explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
+                        shiftsGreaterThanThreshold.push(each);
+                    } else {
+                        shiftsLessThanThreshold.push(each);
+                    }
                 }
-            }
-        })
 
-        
-        setOrderOfAdmissions(orderOfAdmissions.join(">"));
-        setExplanation(explanationArr);
+            });
 
-        setSortRoles(timeObj, lastSavedTime);
+            explanationArr.push("\n");
+            explanationArr.push(`Step 3: De-prioritize admitters with high chronic load to the back of the queue.`)
+            const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
 
-        handleSetAllAdmissionsDataShifts(timeObj);
-        sortByAscendingName(timeObj);
+            shiftsCombined.forEach((each, eachIndex) => {
+                explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`)
+            });
+
+            explanationArr.push("\n");
+            explanationArr.push(`Step 4: Roles with number of admissions greater than ${NUMBER_OF_ADMISSIONS_CAP} are removed from the order of admissions.`)
+            shiftsCombined.forEach((each, eachIndex) => {
+                if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
+                    explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} (DONE)`)
+                }
+            });
+            explanationArr.push("\n");
+            explanationArr.push("Notes: Chronic Load Ratio: Number of Admissions / Numbers of hours worked");
+
+            // timeObj.shifts = shiftsCombined;
+
+            const orderOfAdmissions = [];
+            shiftsCombined.map((each, eachIndex) => {
+                if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
+                    if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                        orderOfAdmissions.push(each.name);
+                    }
+                }
+            })
+
+
+            setOrderOfAdmissions(orderOfAdmissions.join(">"));
+            setExplanation(explanationArr);
+
+            setSortRoles(timeObj, lastSavedTime);
+
+            handleSetAllAdmissionsDataShifts(timeObj);
+            sortByAscendingName(timeObj);
         }
-        
+
 
     }
 
@@ -395,25 +395,68 @@ export function App() {
                     const startTime = e.target.value;
                     setDropdown(startTime);
                     const newObj = {};
-                    newObj["startTime"] = startTime;
-                    newObj["shifts"] = allAdmissionsDataShifts.shifts;
-                    // allAdmissionsDataShifts.startTime = startTime;
-                    setAllAdmissionsDataShifts(newObj);
-                    setInitialForDropdown(allAdmissionsDataShifts);
+                    const getMostRecentTransactionx = async (startTime) => {
+                        const res = getMostRecentTransaction(startTime);
+                        newObj["startTime"] = startTime;
+                        let whichShifts = res.transaction ? res.transaction.admissionsObj.allAdmissionsDataShifts.shifts : SHIFT_TYPES;
+                        newObj["shifts"] = whichShifts;
 
-                    const orderOfAdmissions = [];
-                    allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
-                        if (SHOW_ROWS_COPY[startTime].includes(each.name)) {
-                            if (dropdown == "19:00" && Number(each.numberOfAdmissions) >= NUMBER_OF_ADMISSIONS_CAP){
+                        setAllAdmissionsDataShifts(newObj);
+                        setInitialForDropdown(newObj);
 
-                            } else {
-                                orderOfAdmissions.push(each.name);
+                        const orderOfAdmissions = [];
+                        whichShifts.map((each, eachIndex) => {
+                            if (SHOW_ROWS_COPY[startTime].includes(each.name)) {
+                                if (dropdown == "19:00" && Number(each.numberOfAdmissions) >= NUMBER_OF_ADMISSIONS_CAP){
+
+                                } else {
+                                    orderOfAdmissions.push(each.name);
+                                }
                             }
-                        }
-                    })
-            
-                    
-                    setOrderOfAdmissions(orderOfAdmissions.join(">"));
+                        })
+                        setOrderOfAdmissions(orderOfAdmissions.join(">"));
+                    }
+                    getMostRecentTransaction(startTime);
+
+                    // let localDateTime = "";
+                    // const fetchRecentTransaction = async () => {
+                    //     const result = await getMostRecentTransaction(startTime);
+
+                    //     if (result.success) {
+                            
+                    //         if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
+                    //             setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
+                    //             // setDropdown(result.transaction.admissionsObj.startTime);
+                    //             // sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, localDateTime);
+
+                    //             let orderOfAdmissions = [];
+                    //             result.transaction.admissionsObj.allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
+                    //                 if (SHOW_ROWS_COPY[result.transaction.admissionsObj.startTime].includes(each.name)) {
+                    //                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                    //                         orderOfAdmissions.push(each.name);
+                    //                     }
+                    //                 }
+                    //             });
+                    //             setOrderOfAdmissions(orderOfAdmissions.join(">"));
+
+                    //         }
+
+
+
+                    //         // setLoading(false);
+
+                    //     } else {
+                    //         // setAllAdmissionsDataShifts({ startTime: startTime, shifts: SHIFT_TYPES });
+                    //         // // setLoading(false);
+                    //         // sortMain({ startTime: startTime, shifts: SHIFT_TYPES }, localDateTime);
+
+                    //         //   setError(result.message || "Failed to fetch the most recent transaction.");
+                    //     }
+                    //     setLoading(false);
+                    //     // fetchTransactions();
+                    // };
+                    // fetchRecentTransaction();
+
                 }
                 }>
                 {START_TIMES.map((startTime, startTimeIndex) => {
@@ -771,14 +814,11 @@ export function App() {
                         <button onClick={() => {
                             sortMain(allAdmissionsDataShifts);
 
-                            if (window.location.hostname === 'localhost') {
-                            } else {
-                                addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown });
-                            }
+                            addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown });
 
                             console.log(transactions);
                             const fetchRecentTransaction = async () => {
-                                const result = await getMostRecentTransaction();
+                                const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
 
                                 if (result.success) {
                                     // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
@@ -802,7 +842,7 @@ export function App() {
                             };
                             fetchRecentTransaction();
                             setAllAdmissionsDataShifts(allAdmissionsDataShifts);
-                            setDropdown(dropdown);      
+                            setDropdown(dropdown);
                         }}>
                             Generate Queue
                         </button>
