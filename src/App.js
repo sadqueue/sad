@@ -892,7 +892,7 @@ export function App() {
                                 <br />
                                 {dropdown ? `Order of Admits` : `Select a time. No roles in the queue.`}
                             </p>
-                            <p>`${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}`</p>
+                            <p>{`${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}`}</p>
                             <p id="endoutput">{orderOfAdmissions}</p>
                             {
                                 sorted && sorted.map((each, eachIndex) => {
