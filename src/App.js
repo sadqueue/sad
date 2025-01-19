@@ -126,8 +126,7 @@ export function App() {
         return sortByTimestampAndCompositeScore(timeObj, lastSavedTime);
     }
     const getFormattedOutput = (each) => {
-        //S1 [ 3:45PM ] (3/7) = 0.43
-        return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`;
+        return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`;
     }
     const sortByTimestampAndCompositeScore = (timeObj, lastSavedTime = "") => {
         timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
@@ -200,7 +199,7 @@ export function App() {
             explanationArr.push(`Step 4: Roles with number of admissions greater than ${NUMBER_OF_ADMISSIONS_CAP} are removed from the order of admissions.`)
             shiftsCombined.forEach((each, eachIndex) => {
                 if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
-                    explanationArr.push(getFormattedOutput(each)+" (DONE)")
+                    explanationArr.push(getFormattedOutput(each) + " (DONE)")
                 }
             });
             explanationArr.push("\n");
@@ -410,7 +409,7 @@ export function App() {
                         const orderOfAdmissions = [];
                         whichShifts.map((each, eachIndex) => {
                             if (SHOW_ROWS_COPY[startTime].includes(each.name)) {
-                                if (dropdown == "19:00" && Number(each.numberOfAdmissions) >= NUMBER_OF_ADMISSIONS_CAP){
+                                if (dropdown == "19:00" && Number(each.numberOfAdmissions) >= NUMBER_OF_ADMISSIONS_CAP) {
 
                                 } else {
                                     orderOfAdmissions.push(each.name);
@@ -420,45 +419,6 @@ export function App() {
                         setOrderOfAdmissions(orderOfAdmissions.join(">"));
                     }
                     getMostRecentTransactionx(startTime);
-
-                    // let localDateTime = "";
-                    // const fetchRecentTransaction = async () => {
-                    //     const result = await getMostRecentTransaction(startTime);
-
-                    //     if (result.success) {
-                            
-                    //         if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
-                    //             setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
-                    //             // setDropdown(result.transaction.admissionsObj.startTime);
-                    //             // sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, localDateTime);
-
-                    //             let orderOfAdmissions = [];
-                    //             result.transaction.admissionsObj.allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
-                    //                 if (SHOW_ROWS_COPY[result.transaction.admissionsObj.startTime].includes(each.name)) {
-                    //                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
-                    //                         orderOfAdmissions.push(each.name);
-                    //                     }
-                    //                 }
-                    //             });
-                    //             setOrderOfAdmissions(orderOfAdmissions.join(">"));
-
-                    //         }
-
-
-
-                    //         // setLoading(false);
-
-                    //     } else {
-                    //         // setAllAdmissionsDataShifts({ startTime: startTime, shifts: SHIFT_TYPES });
-                    //         // // setLoading(false);
-                    //         // sortMain({ startTime: startTime, shifts: SHIFT_TYPES }, localDateTime);
-
-                    //         //   setError(result.message || "Failed to fetch the most recent transaction.");
-                    //     }
-                    //     setLoading(false);
-                    //     // fetchTransactions();
-                    // };
-                    // fetchRecentTransaction();
 
                 }
                 }>
@@ -486,7 +446,7 @@ export function App() {
 
     const takeScreenshot = async () => {
         // const fieldset = document.getElementById("fieldsettocopy_min");
-        const element = document.getElementById("fieldsettocopy_min");
+        const element = document.getElementById("screenshotimg");
 
         // Capture the div as a canvas
         const canvas = await html2canvas(element);
@@ -539,7 +499,7 @@ export function App() {
                 // }
                 if (each.numberOfHoursWorked + "" !== "0") {
                     if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
-                        sortRoles.push(getFormattedOutput(each)+" (DONE)");
+                        sortRoles.push(getFormattedOutput(each) + " (DONE)");
                     } else {
                         sortRoles.push(getFormattedOutput(each));
                     }
@@ -677,143 +637,154 @@ export function App() {
                     <div className="flex-container">
                         <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
                     </div>
-                    <table id="reacttable">
-                        <thead>
-                            {openTable ? <tr>
-                                {
-                                    EXPAND_TABLE.map((each, eachIndex) => {
-                                        return (
-                                            /*<th onClick={() => handleSort(each[0])}>
-                                                {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
-                                            </th>*/
-                                            <th>
-                                                {each[1]}
-                                            </th>
-                                        );
-                                    })
-                                }
-                            </tr> :
-                                <tr>
+                    <img
+                        alt="copy button"
+                        className="copybutton"
+                        id="snapshot-button"
+                        src={snapshotImg}
+                        onClick={(ev) => {
+                            takeScreenshot();
+
+                        }} />
+                    <div id="screenshotimg">
+                        <table id="reacttable">
+                            <thead>
+                                {openTable ? <tr>
                                     {
-                                        MINIMIZE_TABLE.map((each, eachIndex) => {
+                                        EXPAND_TABLE.map((each, eachIndex) => {
                                             return (
-                                                <th >
-                                                    {each[1]}
-                                                </th>
-                                                /*<th onClick={() => {
-                                                    handleSort(each[0]);
-                                                }}>
+                                                /*<th onClick={() => handleSort(each[0])}>
                                                     {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
                                                 </th>*/
+                                                <th>
+                                                    {each[1]}
+                                                </th>
                                             );
                                         })
                                     }
-                                </tr>}
-                        </thead>
-                        <tbody>
-                            {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && allAdmissionsDataShifts.shifts.map((admission, indexx) => {
-                                let index = 0;
-                                if (SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name)) {
-                                    // index = Number(admission.admissionsId);
-                                    index = SHOW_ROWS_TABLE[dropdown].findIndex((user) => {
-                                        return user == admission.name
-                                    });
-                                    return (
-                                        !admission.isStatic &&
-                                        <tr
-                                            style={SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name) ? {} : { display: "none" }}
-                                            id={"admissionsDataRow_" + index}
-                                            className={"admissionsDataRow"}
-                                            key={admission.admissionsId}
+                                </tr> :
+                                    <tr>
+                                        {
+                                            MINIMIZE_TABLE.map((each, eachIndex) => {
+                                                return (
+                                                    <th >
+                                                        {each[1]}
+                                                    </th>
+                                                    /*<th onClick={() => {
+                                                        handleSort(each[0]);
+                                                    }}>
+                                                        {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
+                                                    </th>*/
+                                                );
+                                            })
+                                        }
+                                    </tr>}
+                            </thead>
+                            <tbody>
+                                {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && allAdmissionsDataShifts.shifts.map((admission, indexx) => {
+                                    let index = 0;
+                                    if (SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name)) {
+                                        // index = Number(admission.admissionsId);
+                                        index = SHOW_ROWS_TABLE[dropdown].findIndex((user) => {
+                                            return user == admission.name
+                                        });
+                                        return (
+                                            !admission.isStatic &&
+                                            <tr
+                                                style={SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name) ? {} : { display: "none" }}
+                                                id={"admissionsDataRow_" + index}
+                                                className={"admissionsDataRow"}
+                                                key={admission.admissionsId}
 
-                                        >
-                                            <td>
-                                                <input
-                                                    name={`name_${index}`}
-                                                    className="bold-fields"
-                                                    value={admission.name}
-                                                    type="text"
-                                                    disabled={true}
-                                                />
-                                            </td>
-                                            {openTable && <td>
-                                                <input
-                                                    name="shiftTimePeriod"
-                                                    value={admission.shiftTimePeriod}
-                                                    type="text"
-                                                    disabled={true}
-                                                />
-                                            </td>}
-                                            <td className="usercanedit"
-                                                tabIndex={-1}
-                                                onKeyDown={(e) => handleKeyDown(e, index)}
                                             >
-                                                <input
-                                                    id={`timestamp_${index}`}
-                                                    name="timestamp"
-                                                    className="timestamp"
-                                                    value={admission.timestamp}
-                                                    type="time"
-                                                    onChange={(e) => onChange(e, admission.admissionsId)}
-                                                    disabled={admission.isStatic}
-                                                />
-                                            </td>
-                                            <td className="usercanedit"
+                                                <td>
+                                                    <input
+                                                        name={`name_${index}`}
+                                                        className="bold-fields"
+                                                        value={admission.name}
+                                                        type="text"
+                                                        disabled={true}
+                                                    />
+                                                </td>
+                                                {openTable && <td>
+                                                    <input
+                                                        name="shiftTimePeriod"
+                                                        value={admission.shiftTimePeriod}
+                                                        type="text"
+                                                        disabled={true}
+                                                    />
+                                                </td>}
+                                                <td className="usercanedit"
+                                                    tabIndex={-1}
+                                                    onKeyDown={(e) => handleKeyDown(e, index)}
+                                                >
+                                                    <input
+                                                        id={`timestamp_${index}`}
+                                                        name="timestamp"
+                                                        className="timestamp"
+                                                        value={admission.timestamp}
+                                                        type="time"
+                                                        onChange={(e) => onChange(e, admission.admissionsId)}
+                                                        disabled={admission.isStatic}
+                                                    />
+                                                </td>
+                                                <td className="usercanedit"
 
-                                                tabIndex={-1}
-                                                onKeyDown={(e) => handleKeyDown(e, index)}
-                                            >
-                                                <input
-                                                    id={`numberOfAdmissions_${index}`}
-                                                    name="numberOfAdmissions"
-                                                    className="numberOfAdmissions"
-                                                    value={admission.numberOfAdmissions}
-                                                    step="1"
-                                                    type="number"
-                                                    placeholder="---"
-                                                    onChange={(e) => onChange(e, admission.admissionsId)}
-                                                    disabled={admission.isStatic}
-                                                />
-                                            </td>
-                                            <td className="backgroundlightgray">
-                                                <input
-                                                    name={`chronicLoadRatio_${index}`}
-                                                    type="text"
-                                                    value={admission.chronicLoadRatio}
-                                                    disabled={true}
-                                                />
-                                            </td>
-                                            {openTable && <td>
-                                                <input
-                                                    name="numberHoursWorked"
-                                                    value={admission.numberOfHoursWorked}
-                                                    type="number"
-                                                    placeholder="Enter number"
-                                                    disabled={true}
-                                                />
-                                            </td>}
-                                        </tr>);
-                                }
+                                                    tabIndex={-1}
+                                                    onKeyDown={(e) => handleKeyDown(e, index)}
+                                                >
+                                                    <input
+                                                        id={`numberOfAdmissions_${index}`}
+                                                        name="numberOfAdmissions"
+                                                        className="numberOfAdmissions"
+                                                        value={admission.numberOfAdmissions}
+                                                        step="1"
+                                                        type="number"
+                                                        placeholder="---"
+                                                        onChange={(e) => onChange(e, admission.admissionsId)}
+                                                        disabled={admission.isStatic}
+                                                    />
+                                                </td>
+                                                <td className="backgroundlightgray">
+                                                    <input
+                                                        name={`chronicLoadRatio_${index}`}
+                                                        type="text"
+                                                        value={admission.chronicLoadRatio}
+                                                        disabled={true}
+                                                    />
+                                                </td>
+                                                {openTable && <td>
+                                                    <input
+                                                        name="numberHoursWorked"
+                                                        value={admission.numberOfHoursWorked}
+                                                        type="number"
+                                                        placeholder="Enter number"
+                                                        disabled={true}
+                                                    />
+                                                </td>}
+                                            </tr>);
+                                    }
 
-                            })}
-                        </tbody>
-                    </table>
-                    {/* highlighted order of admissions below table */}
-                    <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${convertTo12HourFormatSimple(dropdown)}`}</p>
-                    <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
-                    <div className="flex-container">
-                  
-                    <span className="left-text backgroundcoloryellow">
-                        {"Last Saved: " + lastSaved}
-                    
-                    </span>
-                    <span className="right-text">
-                            <button className="seedetails" onClick={() => {
-                                setOpenTable(!openTable);
-                            }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
-                        </span>
-                    
-                       
+                                })}
+                            </tbody>
+                        </table>
+                        {/* highlighted order of admissions below table */}
+                        <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${convertTo12HourFormatSimple(dropdown)}`}</p>
+                        <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
+                        <div className="flex-container">
+
+                            <span className="left-text backgroundcoloryellow">
+                                {"Last Saved: " + lastSaved}
+
+                            </span>
+
+                            <span className="right-text">
+                                <button className="seedetails" onClick={() => {
+                                    setOpenTable(!openTable);
+                                }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
+                            </span>
+
+                        </div>
                     </div>
 
                     <section>
@@ -874,15 +845,7 @@ export function App() {
                                             setIsCopied(true);
                                             setTimeout(() => setIsCopied(false), 1000);
                                         }} />
-                                    <img
-                                        alt="copy button"
-                                        className="copybutton"
-                                        id="snapshot-button"
-                                        src={snapshotImg}
-                                        onClick={(ev) => {
-                                            takeScreenshot();
 
-                                        }} />
                                     <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
 
                                 </div>)
