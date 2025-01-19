@@ -41,6 +41,10 @@ div[class="header"] {
   font-size: 30px;
 }
 
+#reacttable{
+  margin-top: 20px;
+}
+
 .footer {
   display: table;
   text-align: center;

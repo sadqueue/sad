@@ -675,11 +675,7 @@ export function App() {
                         {timesDropdown()}
                     </div>
                     <div className="flex-container">
-                        <span id="lastsavedhighlight" className="left-text backgroundcoloryellow">
-                            {"Last Saved: " + lastSaved}
-                        </span>
                         <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
-
                     </div>
                     <table id="reacttable">
                         <thead>
@@ -806,11 +802,18 @@ export function App() {
                     <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${convertTo12HourFormatSimple(dropdown)}`}</p>
                     <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                     <div className="flex-container">
-                        <span className="right-text">
+                  
+                    <span className="left-text backgroundcoloryellow">
+                        {"Last Saved: " + lastSaved}
+                    
+                    </span>
+                    <span className="right-text">
                             <button className="seedetails" onClick={() => {
                                 setOpenTable(!openTable);
                             }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
                         </span>
+                    
+                       
                     </div>
 
                     <section>
@@ -887,8 +890,9 @@ export function App() {
                         <div id="fieldsettocopy_min">
                             <p className="boldCopy">
                                 <br />
-                                {dropdown ? `Order of Admits ${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}` : `Select a time. No roles in the queue.`}
+                                {dropdown ? `Order of Admits` : `Select a time. No roles in the queue.`}
                             </p>
+                            <p>`${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}`</p>
                             <p id="endoutput">{orderOfAdmissions}</p>
                             {
                                 sorted && sorted.map((each, eachIndex) => {
@@ -902,7 +906,7 @@ export function App() {
                                     }
                                 })
                             }
-                            <p>{`sadqueue.github.io/sad`}</p>
+                            <p>{`@ sadqueue.github.io/sad`}</p>
                             <p>{lastSaved}</p>
 
                         </div>
