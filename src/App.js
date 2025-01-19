@@ -125,7 +125,10 @@ export function App() {
     const sortMain = (timeObj, lastSavedTime = "") => {
         return sortByTimestampAndCompositeScore(timeObj, lastSavedTime);
     }
-
+    const getFormattedOutput = (each) => {
+        //S1 [ 3:45PM ] (3/7) = 0.43
+        return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`;
+    }
     const sortByTimestampAndCompositeScore = (timeObj, lastSavedTime = "") => {
         timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             each["startTime"] = timeObj.startTime ? timeObj.startTime : "";
@@ -160,7 +163,7 @@ export function App() {
             //if same chronic load ratio, then pick the one with lower number of admissions to go first
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
-                    explanationArr.push(`${each.name} | ${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio} | ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`)
+                    explanationArr.push(getFormattedOutput(each))
                 }
             });
             /*
@@ -176,7 +179,7 @@ export function App() {
                 if (SHOW_ROWS_COPY[allAdmissionsDataShifts.startTime].includes(each.name)) {
                     if ((allAdmissionsDataShifts.startTime == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
                         (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
-                        explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
+                        explanationArr.push(getFormattedOutput(each));
                         shiftsGreaterThanThreshold.push(each);
                     } else {
                         shiftsLessThanThreshold.push(each);
@@ -190,14 +193,14 @@ export function App() {
             const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
 
             shiftsCombined.forEach((each, eachIndex) => {
-                explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`)
+                explanationArr.push(getFormattedOutput(each))
             });
 
             explanationArr.push("\n");
             explanationArr.push(`Step 4: Roles with number of admissions greater than ${NUMBER_OF_ADMISSIONS_CAP} are removed from the order of admissions.`)
             shiftsCombined.forEach((each, eachIndex) => {
                 if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
-                    explanationArr.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} (DONE)`)
+                    explanationArr.push(getFormattedOutput(each)+" (DONE)")
                 }
             });
             explanationArr.push("\n");
@@ -536,9 +539,9 @@ export function App() {
                 // }
                 if (each.numberOfHoursWorked + "" !== "0") {
                     if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
-                        sortRoles.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} (DONE)`);
+                        sortRoles.push(getFormattedOutput(each)+" (DONE)");
                     } else {
-                        sortRoles.push(`${each.name} [${each.numberOfAdmissions}/${each.numberOfHoursWorked}=${each.chronicLoadRatio}] ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"}`);
+                        sortRoles.push(getFormattedOutput(each));
                     }
                 }
                 if (each.numberOfAdmissions <= NUMBER_OF_ADMISSIONS_CAP) {
@@ -800,7 +803,7 @@ export function App() {
                         </tbody>
                     </table>
                     {/* highlighted order of admissions below table */}
-                    <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admissions ${convertTo12HourFormatSimple(dropdown)}`}</p>
+                    <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${convertTo12HourFormatSimple(dropdown)}`}</p>
                     <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                     <div className="flex-container">
                         <span className="right-text">
@@ -884,7 +887,7 @@ export function App() {
                         <div id="fieldsettocopy_min">
                             <p className="boldCopy">
                                 <br />
-                                {dropdown ? `Order of Admissions ${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}` : `Select a time. No roles in the queue.`}
+                                {dropdown ? `Order of Admits ${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}` : `Select a time. No roles in the queue.`}
                             </p>
                             <p id="endoutput">{orderOfAdmissions}</p>
                             {
