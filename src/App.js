@@ -902,7 +902,8 @@ export function App() {
                                     }
                                 })
                             }
-                            <p>{`Last saved on sadqueue.github.io/sad at ${lastSaved}`}</p>
+                            <p>{`sadqueue.github.io/sad`}</p>
+                            <p>{lastSaved}</p>
 
                         </div>
 
