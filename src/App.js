@@ -399,7 +399,7 @@ export function App() {
                     setDropdown(startTime);
                     const newObj = {};
                     const getMostRecentTransactionx = async (startTime) => {
-                        const res = getMostRecentTransaction(startTime);
+                        const res = await getMostRecentTransaction(startTime);
                         newObj["startTime"] = startTime;
                         let whichShifts = res.transaction ? res.transaction.admissionsObj.allAdmissionsDataShifts.shifts : SHIFT_TYPES;
                         newObj["shifts"] = whichShifts;
@@ -419,7 +419,7 @@ export function App() {
                         })
                         setOrderOfAdmissions(orderOfAdmissions.join(">"));
                     }
-                    getMostRecentTransaction(startTime);
+                    getMostRecentTransactionx(startTime);
 
                     // let localDateTime = "";
                     // const fetchRecentTransaction = async () => {
