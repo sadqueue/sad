@@ -404,7 +404,9 @@ export function App() {
                     const orderOfAdmissions = [];
                     allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
                         if (SHOW_ROWS_COPY[startTime].includes(each.name)) {
-                            if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                            if (dropdown == "19:00" && Number(each.numberOfAdmissions) >= NUMBER_OF_ADMISSIONS_CAP){
+
+                            } else {
                                 orderOfAdmissions.push(each.name);
                             }
                         }
