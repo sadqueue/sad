@@ -444,6 +444,16 @@ export function App() {
         handleSetAllAdmissionsDataShifts(returnObj);
     }
 
+    const isMobileDevice = () => {
+      if (/Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent)) {
+        console.log("User is on a phone or tablet.");
+        return true;
+      } else {
+        console.log("User is on a desktop.");
+        return false;
+      }
+    }
+
     const takeScreenshot = async () => {
         // const fieldset = document.getElementById("fieldsettocopy_min");
         const element = document.getElementById("screenshotimg");
@@ -637,7 +647,7 @@ export function App() {
                     <div className="flex-container">
                         <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
                     </div>
-                    <img
+                    {!isMobileDevice() && <img
                         alt="copy button"
                         className="copybutton"
                         id="snapshot-button"
@@ -645,7 +655,7 @@ export function App() {
                         onClick={(ev) => {
                             takeScreenshot();
 
-                        }} />
+                        }} />}
                     <div id="screenshotimg">
                         <table id="reacttable">
                             <thead>
