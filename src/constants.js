@@ -68,7 +68,7 @@ export const SCORE_NEW_ROLE = {
 export const STATIC_TIMES = ["16:00", "17:00", "19:00"];
 
 export const START_TIMES = [
-    { value: "16:00", label: "4:00PM" },
+    // { value: "16:00", label: "4:00PM" },
     { value: "17:00", label: "5:00PM" },
     { value: "19:00", label: "7:00PM" },
     // { value: "CUSTOM", label: "Custom " }
