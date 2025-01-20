@@ -100,7 +100,7 @@ export function App() {
                             }
                         }
                     });
-                    setOrderOfAdmissions(orderOfAdmissions.join(">"));
+                    setOrderOfAdmissions(orderOfAdmissions.join(" > "));
 
                 }
 
@@ -779,7 +779,7 @@ export function App() {
                             </tbody>
                         </table>
                         {/* highlighted order of admissions below table */}
-                        <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${convertTo12HourFormatSimple(dropdown)}`}</p>
+                        <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${lastSaved.split(" ")[0] + " " + convertTo12HourFormatSimple(dropdown)}`}</p>
                         <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         <div className="flex-container">
 
@@ -879,8 +879,9 @@ export function App() {
                                     }
                                 })
                             }
+                            
+                            <p>{`Updated ${lastSaved}`}</p>
                             <p>{`@ sadqueue.github.io/sad`}</p>
-                            <p>{lastSaved}</p>
 
                         </div>
 
