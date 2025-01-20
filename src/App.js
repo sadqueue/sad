@@ -37,7 +37,7 @@ import html2canvas from "html2canvas";
 const CONFIG = CONFIG1;
 
 export function App() {
-    const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState({ startTime: "16:00", shifts: SHIFT_TYPES })
+    const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState({ startTime: "17:00", shifts: SHIFT_TYPES })
 
     const [sorted, setSorted] = useState("");
     const [seeDetails, setSeeDetails] = useState(false);
@@ -56,7 +56,7 @@ export function App() {
             "score": true
         }
     );
-    const [dropdown, setDropdown] = useState("16:00");
+    const [dropdown, setDropdown] = useState("17:00");
     const [admissionsOutput, setAdmissionsOutput] = useState("");
     const [transactions, setTransactions] = useState([]);
     const [lastSaved, setLastSaved] = useState("");
@@ -109,7 +109,7 @@ export function App() {
                 // setLoading(false);
 
             } else {
-                setAllAdmissionsDataShifts({ startTime: "16:00", shifts: SHIFT_TYPES });
+                setAllAdmissionsDataShifts({ startTime: "17:00", shifts: SHIFT_TYPES });
                 // setLoading(false);
                 sortMain(allAdmissionsDataShifts, localDateTime);
 
