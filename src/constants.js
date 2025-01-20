@@ -33,8 +33,8 @@ export const SHOW_ROWS_TABLE = {
 
 export const SHOW_ROWS_COPY = {
     // "16:00": ["DA", "S1", "S2", "S3", "S4"],
-    "17:00": ["S1", "S2", "S3", "S4"],
-    "19:00": ["S2", "S3", "S4", "N5"]
+    "17:00": ["S1", "S2", "S3", "S4", "N5"],
+    "19:00": ["S2", "S3", "S4", "N5", "N1", "N2", "N3", "N4"]
 }
 
 export const DATA_TYPE_TIME = [

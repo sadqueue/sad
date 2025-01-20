@@ -846,11 +846,29 @@ export function App() {
                                         className="copybutton"
                                         src={copybuttonImg}
                                         onClick={(ev) => {
-                                            let copiedMessage = document.getElementById("fieldsettocopy_min") && document.getElementById("fieldsettocopy_min").innerText.replaceAll("\n\n", "\n").replaceAll("\n\n", "\n");
-                                            if (copiedMessage.charAt(0) == "\n") {
-                                                copiedMessage = copiedMessage.substring(1);
-                                            }
-                                            navigator.clipboard.writeText(`${copiedMessage}`);
+                                            const divText = document.getElementById("fieldsettocopy_min").innerHTML; // Get the plain text of the div
+                                            const linkText = "sadqueue.github.io/sad"; // Get the link part
+
+                                            // Create the hyperlink HTML part for the link
+                                            const hyperlink = "https://"+linkText;
+
+                                            // Combine the text (keeping the link as a hyperlink)
+                                            const contentToCopy = divText.replace(linkText, hyperlink);
+
+                                            // Copy the combined content (HTML with the link as hyperlink)
+                                            navigator.clipboard.write([
+                                                new ClipboardItem({
+                                                "text/html": new Blob([contentToCopy], { type: "text/html" }), // Copy as HTML
+                                                "text/plain": new Blob([divText.replace(linkText, `https://${linkText}`)], { type: "text/plain" }) // Copy as plain text (with link as URL)
+                                                })
+                                            ])
+                                            .then(() => {
+                                                console.log("Link and text copied to clipboard!");
+                                            })
+                                            .catch((err) => {
+                                                console.error("Failed to copy: ", err);
+                                            });
+                                            
                                             // sendEmail(ev, copiedMessage, title);
                                             setIsCopied(true);
                                             setTimeout(() => setIsCopied(false), 1000);
@@ -862,11 +880,10 @@ export function App() {
                         }
                         <div id="fieldsettocopy_min">
                             <p className="boldCopy">
-                                <br />
                                 {dropdown ? `Order of Admits` : `Select a time. No roles in the queue.`}
                             </p>
                             <p>{`${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}`}</p>
-                            <p id="endoutput">{orderOfAdmissions}</p>
+                            <p id="endoutput">{orderOfAdmissions}</p><br></br>
                             {
                                 sorted && sorted.map((each, eachIndex) => {
                                     if (each == "\n") {
@@ -881,7 +898,7 @@ export function App() {
                             }
                             
                             <p>{`Updated ${lastSaved}`}</p>
-                            <p>{`@ sadqueue.github.io/sad`}</p>
+                            <p>{"@ "}<a id="sadqueuelink" href="sadqueue.github.io/sad">{`sadqueue.github.io/sad`}</a></p>
 
                         </div>
 
