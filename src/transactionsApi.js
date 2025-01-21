@@ -89,8 +89,8 @@ export const getMostRecentShiftByStartTime = (data) => {
 }
 
 
-export const deleteAllTransactions = async (admissionsObj) => {
-  const transactionsRef = getFirebaseRef(admissionsObj.startTime);
+export const deleteAllTransactions = async (startTime) => {
+  const transactionsRef = getFirebaseRef(startTime);
   try {
     await remove(transactionsRef);
     console.log("All transactions deleted successfully!");
