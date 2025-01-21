@@ -88,7 +88,7 @@ export function App() {
                 if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
                     // setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
                     setDropdown(result.transaction.admissionsObj.startTime);
-                    sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, localDateTime);
+                    sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, result.transaction.admissionsObj.startTime, localDateTime);
 
                     // let orderOfAdmissions = [];
                     // result.transaction.admissionsObj.allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
@@ -119,7 +119,7 @@ export function App() {
 
     }, [])
 
-    const sortMain = (timeObj, lastSavedTime = "") => {
+    const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
         timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             each["startTime"] = timeObj.startTime ? timeObj.startTime : "";
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
@@ -141,7 +141,7 @@ export function App() {
         const newObject = JSON.parse(JSON.stringify(timeObj))
         if (newObject.shifts) {
             newObject.shifts.map((each, eachIndex) => {
-                if (ROLES_WITH_DEFAULT_TIMES[timeObj.startTime] && ROLES_WITH_DEFAULT_TIMES[timeObj.startTime].includes(each.name)) {
+                if (ROLES_WITH_DEFAULT_TIMES[dropdownSelected] && ROLES_WITH_DEFAULT_TIMES[dropdownSelected].includes(each.name)) {
                     each.timestamp = each.timestampDefault;
                 }
                 return each;
@@ -152,7 +152,7 @@ export function App() {
             });
             //if same chronic load ratio, then pick the one with lower number of admissions to go first
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
-                if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
+                if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     explanationArr.push(getFormattedOutput(each))
                 }
             });
@@ -166,8 +166,8 @@ export function App() {
             explanationArr.push(`Step 2: Determine the admitters with high chronic load.`);
 
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
-                if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
-                    if ((timeObj.startTime == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
+                if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                    if ((dropdownSelected == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
                         (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
                         explanationArr.push(getFormattedOutput(each));
                         shiftsGreaterThanThreshold.push(each);
@@ -200,7 +200,7 @@ export function App() {
 
             const orderOfAdmissions = [];
             shiftsCombined.map((each, eachIndex) => {
-                if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
+                if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
                         orderOfAdmissions.push(each.name);
                     }
@@ -210,7 +210,7 @@ export function App() {
             setOrderOfAdmissions(orderOfAdmissions.join(">"));
             setExplanation(explanationArr);
 
-            setSortRoles(timeObj, lastSavedTime);
+            setSortRoles(timeObj, dropdownSelected, lastSavedTime);
 
             setAllAdmissionsDataShifts(timeObj);
             sortByAscendingName(timeObj);
@@ -362,7 +362,7 @@ export function App() {
         customObj["startTime"] = customTime;
         customObj["shifts"] = customShifts;
 
-        sortMain(customObj);
+        sortMain(customObj, customTime);
 
         return customObj;
     }
@@ -380,7 +380,7 @@ export function App() {
                     const newObj = {};
                     const getMostRecentTransactionx = async (startTime) => {
                         const res = await getMostRecentTransaction(startTime);
-                        sortMain(res.transaction && res.transaction.admissionsObj ? res.transaction.admissionsObj.allAdmissionsDataShifts : { startTime: startTime, shifts: SHIFT_TYPES});
+                        sortMain(res.transaction && res.transaction.admissionsObj ? res.transaction.admissionsObj.allAdmissionsDataShifts : { startTime: startTime, shifts: SHIFT_TYPES}, startTime);
                     }
                     getMostRecentTransactionx(startTime);
 
@@ -445,7 +445,7 @@ export function App() {
 
     }
 
-    const setSortRoles = (admissionsDatax, lastSavedTime = "") => {
+    const setSortRoles = (admissionsDatax, dropdownSelected, lastSavedTime = "") => {
         const sortRoles = [];
         let sortRolesNameOnly = [];
         // sortRoles.push("\n");
@@ -467,7 +467,7 @@ export function App() {
 
         // let sevenPmS4greaterThanCap = false;
         timeObjShifts && Array.isArray(timeObjShifts) && timeObjShifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 // if (admissionsDatax.startTime == "19:00" && each.name == "S4" && each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_S4_CAP){
                 //     sevenPmS4greaterThanCap = true;
                 // }
@@ -555,7 +555,7 @@ export function App() {
     };
 
     const handleGenerateQueue = () => {
-        sortMain(allAdmissionsDataShifts);
+        sortMain(allAdmissionsDataShifts, dropdown);
 
         addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown });
 
