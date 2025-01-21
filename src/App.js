@@ -141,7 +141,7 @@ export function App() {
         const newObject = JSON.parse(JSON.stringify(timeObj))
         if (newObject.shifts) {
             newObject.shifts.map((each, eachIndex) => {
-                if (ROLES_WITH_DEFAULT_TIMES[dropdown] && ROLES_WITH_DEFAULT_TIMES[dropdown].includes(each.name)) {
+                if (ROLES_WITH_DEFAULT_TIMES[timeObj.startTime] && ROLES_WITH_DEFAULT_TIMES[timeObj.startTime].includes(each.name)) {
                     each.timestamp = each.timestampDefault;
                 }
                 return each;
@@ -152,7 +152,7 @@ export function App() {
             });
             //if same chronic load ratio, then pick the one with lower number of admissions to go first
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
-                if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
+                if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
                     explanationArr.push(getFormattedOutput(each))
                 }
             });
@@ -200,7 +200,7 @@ export function App() {
 
             const orderOfAdmissions = [];
             shiftsCombined.map((each, eachIndex) => {
-                if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
+                if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
                         orderOfAdmissions.push(each.name);
                     }
@@ -380,7 +380,7 @@ export function App() {
                     const newObj = {};
                     const getMostRecentTransactionx = async (startTime) => {
                         const res = await getMostRecentTransaction(startTime);
-                        sortMain(res.transaction && res.transaction.admissionsObj ? res.transaction.admissionsObj.allAdmissionsDataShifts : SHIFT_TYPES);
+                        sortMain(res.transaction && res.transaction.admissionsObj ? res.transaction.admissionsObj.allAdmissionsDataShifts : { startTime: startTime, shifts: SHIFT_TYPES});
                     }
                     getMostRecentTransactionx(startTime);
 
