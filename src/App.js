@@ -37,6 +37,9 @@ import html2canvas from "html2canvas";
 const CONFIG = CONFIG1;
 
 export function App() {
+    // deleteAllTransactions("17:00")
+    // deleteAllTransactions("16:00")
+    // deleteAllTransactions("19:00")
     const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState({ startTime: "17:00", shifts: SHIFT_TYPES })
 
     const [sorted, setSorted] = useState("");
@@ -63,12 +66,7 @@ export function App() {
     const [loading, setLoading] = useState(true);
     const [orderOfAdmissions, setOrderOfAdmissions] = useState("");
     useEffect(() => {
-        // deleteAllTransactions();
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
-        // const fetchTransactions = async () => {
-        //     const data = await getLast10Transactions();
-        //     setTransactions(data);
-        // };
         let localDateTime = "";
         const fetchRecentTransaction = async () => {
             const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
@@ -116,19 +114,12 @@ export function App() {
                 //   setError(result.message || "Failed to fetch the most recent transaction.");
             }
             setLoading(false);
-            // fetchTransactions();
         };
         fetchRecentTransaction();
 
     }, [])
 
     const sortMain = (timeObj, lastSavedTime = "") => {
-        return sortByTimestampAndCompositeScore(timeObj, lastSavedTime);
-    }
-    const getFormattedOutput = (each) => {
-        return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`;
-    }
-    const sortByTimestampAndCompositeScore = (timeObj, lastSavedTime = "") => {
         timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             each["startTime"] = timeObj.startTime ? timeObj.startTime : "";
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
@@ -175,8 +166,8 @@ export function App() {
             explanationArr.push(`Step 2: Determine the admitters with high chronic load.`);
 
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
-                if (SHOW_ROWS_COPY[allAdmissionsDataShifts.startTime].includes(each.name)) {
-                    if ((allAdmissionsDataShifts.startTime == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
+                if (SHOW_ROWS_COPY[timeObj.startTime].includes(each.name)) {
+                    if ((timeObj.startTime == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
                         (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
                         explanationArr.push(getFormattedOutput(each));
                         shiftsGreaterThanThreshold.push(each);
@@ -216,22 +207,17 @@ export function App() {
                 }
             })
 
-
             setOrderOfAdmissions(orderOfAdmissions.join(">"));
             setExplanation(explanationArr);
 
             setSortRoles(timeObj, lastSavedTime);
 
-            handleSetAllAdmissionsDataShifts(timeObj);
+            setAllAdmissionsDataShifts(timeObj);
             sortByAscendingName(timeObj);
         }
-
-
     }
-
-    const setInitialForDropdown = (timeObj) => {
-        setSortRoles(timeObj);
-        handleSetAllAdmissionsDataShifts(timeObj);
+    const getFormattedOutput = (each) => {
+        return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`;
     }
 
     const getMomentTimeWithoutUndefined = (time) => {
@@ -255,11 +241,6 @@ export function App() {
             score = Number(compositeScore.toFixed(3));
         }
         return score ? score : "";
-    }
-
-    const handleSetAllAdmissionsDataShifts = (obj) => {
-        setAllAdmissionsDataShifts(obj);
-        // localStorage.setItem("allAdmissionsDataShifts", JSON.stringify({ startTime: obj.startTime, shifts: newObj }));
     }
 
     const convertTo12HourFormatSimple = (time24) => {
@@ -291,7 +272,7 @@ export function App() {
         newObj["shifts"] = updatedShifts ? updatedShifts : [];
         // allAdmissionsDataShifts.startTime = dropdown;
         // allAdmissionsDataShifts.shifts = updatedShifts;
-        handleSetAllAdmissionsDataShifts(newObj);
+        setAllAdmissionsDataShifts(newObj);
     }
 
     const getChronicLoadRatio = (admission) => {
@@ -399,24 +380,7 @@ export function App() {
                     const newObj = {};
                     const getMostRecentTransactionx = async (startTime) => {
                         const res = await getMostRecentTransaction(startTime);
-                        newObj["startTime"] = startTime;
-                        let whichShifts = res.transaction ? res.transaction.admissionsObj.allAdmissionsDataShifts.shifts : SHIFT_TYPES;
-                        newObj["shifts"] = whichShifts;
-
-                        setAllAdmissionsDataShifts(newObj);
-                        setInitialForDropdown(newObj);
-
-                        const orderOfAdmissions = [];
-                        whichShifts.map((each, eachIndex) => {
-                            if (SHOW_ROWS_COPY[startTime].includes(each.name)) {
-                                if (dropdown == "19:00" && Number(each.numberOfAdmissions) >= NUMBER_OF_ADMISSIONS_CAP) {
-
-                                } else {
-                                    orderOfAdmissions.push(each.name);
-                                }
-                            }
-                        })
-                        setOrderOfAdmissions(orderOfAdmissions.join(">"));
+                        sortMain(res.transaction && res.transaction.admissionsObj ? res.transaction.admissionsObj.allAdmissionsDataShifts : SHIFT_TYPES);
                     }
                     getMostRecentTransactionx(startTime);
 
@@ -441,17 +405,17 @@ export function App() {
         returnObj.startTime = admissionsDatax.startTime;
         returnObj.shifts = returnObjShifts;
 
-        handleSetAllAdmissionsDataShifts(returnObj);
+        setAllAdmissionsDataShifts(returnObj);
     }
 
     const isMobileDevice = () => {
-      if (/Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent)) {
-        console.log("User is on a phone or tablet.");
-        return true;
-      } else {
-        console.log("User is on a desktop.");
-        return false;
-      }
+        if (/Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent)) {
+            console.log("User is on a phone or tablet.");
+            return true;
+        } else {
+            console.log("User is on a desktop.");
+            return false;
+        }
     }
 
     const takeScreenshot = async () => {
@@ -579,7 +543,7 @@ export function App() {
         returnObj.startTime = dropdown;
         returnObj.shifts = updatedShifts;
 
-        handleSetAllAdmissionsDataShifts(returnObj);
+        setAllAdmissionsDataShifts(returnObj);
     };
 
 
@@ -597,6 +561,39 @@ export function App() {
 
     };
 
+    const handleGenerateQueue = () => {
+        sortMain(allAdmissionsDataShifts);
+
+        addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown });
+
+        console.log(transactions);
+        const fetchRecentTransaction = async () => {
+            const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
+
+            if (result.success) {
+                // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
+                const timestamp = new Date(result.transaction.timestamp);
+                const month = timestamp.getMonth() + 1; // Months are zero-based
+                const day = timestamp.getDate();
+                const year = timestamp.getFullYear();
+                let hours = timestamp.getHours();
+                const minutes = String(timestamp.getMinutes()).padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+
+                const localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
+
+                setLastSaved(localDateTime);
+                setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+                setDropdown(dropdown);
+            } else {
+                //   setError(result.message || "Failed to fetch the most recent transaction.");
+            }
+        };
+        fetchRecentTransaction();
+        setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+        setDropdown(dropdown);
+    }
     const handleKeyDown = (e, rowIndex) => {
         const data = allAdmissionsDataShifts.shifts;
         if (e.key === 'ArrowDown') {
@@ -799,37 +796,7 @@ export function App() {
 
                     <section>
                         <button onClick={() => {
-                            sortMain(allAdmissionsDataShifts);
-
-                            addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown });
-
-                            console.log(transactions);
-                            const fetchRecentTransaction = async () => {
-                                const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
-
-                                if (result.success) {
-                                    // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
-                                    const timestamp = new Date(result.transaction.timestamp);
-                                    const month = timestamp.getMonth() + 1; // Months are zero-based
-                                    const day = timestamp.getDate();
-                                    const year = timestamp.getFullYear();
-                                    let hours = timestamp.getHours();
-                                    const minutes = String(timestamp.getMinutes()).padStart(2, '0');
-                                    const ampm = hours >= 12 ? 'PM' : 'AM';
-                                    hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
-
-                                    const localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
-
-                                    setLastSaved(localDateTime);
-                                    setAllAdmissionsDataShifts(allAdmissionsDataShifts);
-                                    setDropdown(dropdown);
-                                } else {
-                                    //   setError(result.message || "Failed to fetch the most recent transaction.");
-                                }
-                            };
-                            fetchRecentTransaction();
-                            setAllAdmissionsDataShifts(allAdmissionsDataShifts);
-                            setDropdown(dropdown);
+                            handleGenerateQueue();
                         }}>
                             Generate Queue
                         </button>
@@ -850,7 +817,7 @@ export function App() {
                                             const linkText = "sadqueue.github.io/sad"; // Get the link part
 
                                             // Create the hyperlink HTML part for the link
-                                            const hyperlink = "https://"+linkText;
+                                            const hyperlink = "https://" + linkText;
 
                                             // Combine the text (keeping the link as a hyperlink)
                                             const contentToCopy = divText.replace(linkText, hyperlink);
@@ -858,17 +825,17 @@ export function App() {
                                             // Copy the combined content (HTML with the link as hyperlink)
                                             navigator.clipboard.write([
                                                 new ClipboardItem({
-                                                "text/html": new Blob([contentToCopy], { type: "text/html" }), // Copy as HTML
-                                                "text/plain": new Blob([divText.replace(linkText, `https://${linkText}`)], { type: "text/plain" }) // Copy as plain text (with link as URL)
+                                                    "text/html": new Blob([contentToCopy], { type: "text/html" }), // Copy as HTML
+                                                    "text/plain": new Blob([divText.replace(linkText, `https://${linkText}`)], { type: "text/plain" }) // Copy as plain text (with link as URL)
                                                 })
                                             ])
-                                            .then(() => {
-                                                console.log("Link and text copied to clipboard!");
-                                            })
-                                            .catch((err) => {
-                                                console.error("Failed to copy: ", err);
-                                            });
-                                            
+                                                .then(() => {
+                                                    console.log("Link and text copied to clipboard!");
+                                                })
+                                                .catch((err) => {
+                                                    console.error("Failed to copy: ", err);
+                                                });
+
                                             // sendEmail(ev, copiedMessage, title);
                                             setIsCopied(true);
                                             setTimeout(() => setIsCopied(false), 1000);
@@ -896,7 +863,7 @@ export function App() {
                                     }
                                 })
                             }
-                            
+
                             <p>{`Updated ${lastSaved}`}</p>
                             <p>{"@ "}<a id="sadqueuelink" href="sadqueue.github.io/sad">{`sadqueue.github.io/sad`}</a></p>
 
