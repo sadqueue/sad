@@ -626,7 +626,7 @@ export function App() {
     return (
         <div>
             <div className="header">
-                <h1 className="title">S.A.D. Queue</h1>
+                <h1 className="title">S.A.D.Q.</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution</h2>
             </div>
             {loading ? <div className="loading">Loading...</div> :
