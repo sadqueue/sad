@@ -163,20 +163,6 @@ export function App() {
                     explanationArr.push(getFormattedOutput(each) + " (DONE)")
                 }
             });
-
-            /*
-            19:00;17:31,18:01,18:30,18:45;6,4,6,3;		[1] N1>N2>S3>N3>N4>S2>		[2] N1>N2>S3>N3>N4>S4>N5 (who goes first?)
-                
-            - Array 1:
-                - [DONE] Step 1: sortMain()
-                - [DONE] Step 2: If any admissions >= 7, then remove from array. 
-                - Step 3: If S3 or S4 has number of admissions == 6 or N5 has number of admissions of 3+, remove from Array 1. This means that we have to copy Array 1 to Array 2.
-            - Array 2:
-                - Step 1: Copied over from Array 1
-                    - N1>N2>S3>N3>N4>S2
-                - Step 2: Insert S4>N5 to the end
-                    - N1>N2>S3>N3>N4>S4>N5 
-            */
             explanationArr.push("\n");
             explanationArr.push(`Step 5: Edge Cases`);
             let scenario1 = false;
@@ -298,7 +284,14 @@ export function App() {
                         array1.push(innerEach);
                     }
                 });
-                const array2 = [...array1];
+                const array2 = [];
+                const copyArray2 = [...array1];
+                copyArray2.forEach((innerEach, innerEachIndex) => {
+                    if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6){
+                    } else {
+                        array2.push(innerEach);
+                    }
+                })
 
                 const newElement = getS3; 
 
