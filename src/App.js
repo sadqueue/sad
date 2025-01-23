@@ -72,7 +72,7 @@ export function App() {
             const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
 
             if (result.success) { 
-                setLastSaved(result.transaction.timestamp);
+                setLastSaved(result.transaction.localDateTime);
                 if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
                     setDropdown(result.transaction.admissionsObj.startTime);
                     sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, result.transaction.admissionsObj.startTime ? result.transaction.admissionsObj.startTime : "17:00", localDateTime);
@@ -181,6 +181,7 @@ export function App() {
             explanationArr.push(`Step 5: Edge Cases`);
             let scenario1 = false;
             let scenario2 = false;
+            let scenario3 = false
             if (allAdmissionsDataShifts.startTime == "19:00"){
                 shiftsCombined.forEach((each, eachIndex) => {
                     /* Scenario 1: If S3 or S4 has number of admissions == 6 or N5 has number of admissions of 3+ */
@@ -189,11 +190,18 @@ export function App() {
                         (each.name == "N5" && Number(each.numberOfAdmissions) >= 3)){
                             explanationArr.push(`Step 5a: For 7:00PM, 2, if S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.`)
                             scenario1 = true;
+                            return;
                     
                     } else if (each.name == "S4" && Number(each.numberOfAdmissions) == 5){
                         explanationArr.push(`Step 5b: If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4`);
                         scenario2 = true;
-                    }
+                        return;
+                    //If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4 “Insert after N1 in Array2”
+                    } else if (each.name == "S3" && Number(each.numberOfAdmissions) == 5){
+                        explanationArr.push(`Step 5c: If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4`);
+                        scenario3 = true;
+                        return;
+                    } 
                 });
             }
 
@@ -246,7 +254,67 @@ export function App() {
                 // }
             }
 
-            if (scenario2){
+            else if (scenario2){
+                /* If S4 has number of admissions of 5, then remove S4 from Array 1. This means that we have to copy Array 1 to Array 2. */
+                const array1 = [];
+                
+                let getS4 = {};
+
+                
+                const resultArr = [];
+                shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                    if (innerEach.name == "S4"){
+                        getS4 = innerEach;
+                    } else {
+
+                        array1.push(innerEach);
+                    }
+                });
+                const array2 = [...array1];
+                
+
+                const newElement = getS4; 
+
+                let index = 0;
+                for (let i=0; i<array2.length; i++){
+                    if (array2[i].name == "N2"){
+                        index = i;
+                    }
+                }
+
+                if (index !== -1) {
+                // Insert the new element after the found element
+                    array2.splice(index + 1, 0, newElement);
+                }
+                const combinedArr = array1.concat(array2);
+                shiftsCombined = combinedArr
+            } else if (scenario3){
+                const array1 = [];
+                let getS3 = {};
+                shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                    if (innerEach.name == "S3"){
+                        getS3 = innerEach;
+                    } else {
+                        array1.push(innerEach);
+                    }
+                });
+                const array2 = [...array1];
+
+                const newElement = getS3; 
+
+                let index = 0;
+                for (let i=0; i<array2.length; i++){
+                    if (array2[i].name == "N1"){
+                        index = i;
+                    }
+                }
+
+                if (index !== -1) {
+                // Insert the new element after the found element
+                    array2.splice(index + 1, 0, newElement);
+                }
+                const combinedArr = array1.concat(array2);
+                shiftsCombined = combinedArr;
             }
 
             explanationArr.push("\n");
@@ -438,14 +506,9 @@ export function App() {
                         const res = await getMostRecentTransaction(startTime);
 
                         if (res && res.transaction){
-                            // const copyBox = res.transaction.copyBox;
                             const order = res.transaction.order;
                             const allAdmissionsDataShifts = res.transaction.admissionsObj.allAdmissionsDataShifts;
-                            
-                            // if (copyBox){
-                            //     setSorted(copyBox)
-                            // }
-
+                            const lastSavedTime = res.transaction.localDateTime;
                             if (allAdmissionsDataShifts){
                                 setAllAdmissionsDataShifts(allAdmissionsDataShifts);
                             }
@@ -453,9 +516,8 @@ export function App() {
                             if (order){
                                 setOrderOfAdmissions(order);
                             }
+                            setSortRoles(allAdmissionsDataShifts, startTime, lastSavedTime);
                         }
-                        
-                        // sortMain(res.transaction && res.transaction.admissionsObj ? res.transaction.admissionsObj.allAdmissionsDataShifts : { startTime: startTime, shifts: SHIFT_TYPES}, startTime);
                     }
                     getMostRecentTransactionx(startTime);
 
@@ -562,15 +624,6 @@ export function App() {
                 }
             }
         });
-
-        /* If 7PM and S4 has 6 or more admissions, then concatenate N1-N4 to the beginning of the order of admissions */
-        // if (sevenPmS4greaterThanCap){
-        //     // for (let i=1; i<5; i++){
-        //     //     sortRolesNameOnly.push(`N${i}`);
-        //     // }
-        //     sortRolesNameOnly = ["N1", "N2", "N3", "N4", ...sortRolesNameOnly];
-        // }
-
         sortRoles.push("\n");
 
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
@@ -643,7 +696,7 @@ export function App() {
             const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
 
             if (result.success) {
-                setLastSaved(result.transaction.timestamp);
+                setLastSaved(result.transaction.localDateTime);
                 setAllAdmissionsDataShifts(allAdmissionsDataShifts);
                 setDropdown(dropdown);
             } else {
