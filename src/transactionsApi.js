@@ -42,8 +42,15 @@ export const getLast10Transactions = async (admissionsObj) => {
 };
 
 // Function to add a new transaction
-export const addTransaction = async (admissionsObj) => {
+export const addTransaction = async (admissionsObj, order, copyBox) => {
   const transactionsRef = getFirebaseRef(admissionsObj.startTime);
+
+  // const splitArr = copyBox.split("\n\n")
+  // const newCopyBox = splitArr.slice(4, splitArr.length-2)
+  // newCopyBox.push(order);
+
+  // console.log(newCopyBox);
+
 
   try {
     const getUserDeviceDetails = () => {
@@ -54,10 +61,23 @@ export const addTransaction = async (admissionsObj) => {
       };
     };
 
+    const timestamp = new Date();
+    const month = timestamp.getMonth() + 1; // Months are zero-based
+    const day = timestamp.getDate();
+    const year = timestamp.getFullYear();
+    let hours = timestamp.getHours();
+    const minutes = String(timestamp.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+
+    const localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
+    
     const newTransaction = {
-      timestamp: Date.now(),
+      timestamp: localDateTime,
       userDeviceDetails: getUserDeviceDetails(),
-      admissionsObj
+      admissionsObj,
+      order: order ? order : "",
+      // copyBox: copyBox ? copyBox : ""
     };
 
     // Push the new transaction to the database
