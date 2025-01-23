@@ -73,7 +73,8 @@ export const addTransaction = async (admissionsObj, order, copyBox) => {
     const localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
     
     const newTransaction = {
-      timestamp: localDateTime,
+      timestamp: timestamp,
+      localDateTime: localDateTime,
       userDeviceDetails: getUserDeviceDetails(),
       admissionsObj,
       order: order ? order : "",
