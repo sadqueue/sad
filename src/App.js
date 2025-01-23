@@ -71,47 +71,16 @@ export function App() {
         const fetchRecentTransaction = async () => {
             const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
 
-            if (result.success) {
-                // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
-                const timestamp = new Date(result.transaction.timestamp);
-                const month = String(timestamp.getMonth() + 1); // Months are zero-based
-                const day = String(timestamp.getDate());
-                const year = timestamp.getFullYear();
-                let hours = timestamp.getHours();
-                const minutes = String(timestamp.getMinutes()).padStart(2, '0');
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
-
-                localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
-
-                setLastSaved(localDateTime);
+            if (result.success) { 
+                setLastSaved(result.transaction.timestamp);
                 if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
-                    // setAllAdmissionsDataShifts(result.transaction.admissionsObj.allAdmissionsDataShifts);
                     setDropdown(result.transaction.admissionsObj.startTime);
-                    sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, result.transaction.admissionsObj.startTime, localDateTime);
-
-                    // let orderOfAdmissions = [];
-                    // result.transaction.admissionsObj.allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
-                    //     if (SHOW_ROWS_COPY[result.transaction.admissionsObj.startTime].includes(each.name)) {
-                    //         if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
-                    //             orderOfAdmissions.push(each.name);
-                    //         }
-                    //     }
-                    // });
-                    // setOrderOfAdmissions(orderOfAdmissions.join(" > "));
+                    sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, result.transaction.admissionsObj.startTime ? result.transaction.admissionsObj.startTime : "17:00", localDateTime);
 
                 }
 
-
-
-                // setLoading(false);
-
             } else {
-                // setAllAdmissionsDataShifts({ startTime: "17:00", shifts: SHIFT_TYPES });
-                // setLoading(false);
-                sortMain(allAdmissionsDataShifts, localDateTime);
-
-                //   setError(result.message || "Failed to fetch the most recent transaction.");
+                sortMain(allAdmissionsDataShifts, "17:00", localDateTime);
             }
             setLoading(false);
         };
@@ -120,6 +89,7 @@ export function App() {
     }, [])
 
     const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
+        const orderOfAdmissions = [];
         timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             each["startTime"] = timeObj.startTime ? timeObj.startTime : "";
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
@@ -180,7 +150,7 @@ export function App() {
 
             explanationArr.push("\n");
             explanationArr.push(`Step 3: De-prioritize admitters with high chronic load to the back of the queue.`)
-            const shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
+            let shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
 
             shiftsCombined.forEach((each, eachIndex) => {
                 explanationArr.push(getFormattedOutput(each))
@@ -193,12 +163,98 @@ export function App() {
                     explanationArr.push(getFormattedOutput(each) + " (DONE)")
                 }
             });
+
+            /*
+            19:00;17:31,18:01,18:30,18:45;6,4,6,3;		[1] N1>N2>S3>N3>N4>S2>		[2] N1>N2>S3>N3>N4>S4>N5 (who goes first?)
+                
+            - Array 1:
+                - [DONE] Step 1: sortMain()
+                - [DONE] Step 2: If any admissions >= 7, then remove from array. 
+                - Step 3: If S3 or S4 has number of admissions == 6 or N5 has number of admissions of 3+, remove from Array 1. This means that we have to copy Array 1 to Array 2.
+            - Array 2:
+                - Step 1: Copied over from Array 1
+                    - N1>N2>S3>N3>N4>S2
+                - Step 2: Insert S4>N5 to the end
+                    - N1>N2>S3>N3>N4>S4>N5 
+            */
+            explanationArr.push("\n");
+            explanationArr.push(`Step 5: Edge Cases`);
+            let scenario1 = false;
+            let scenario2 = false;
+            if (allAdmissionsDataShifts.startTime == "19:00"){
+                shiftsCombined.forEach((each, eachIndex) => {
+                    /* Scenario 1: If S3 or S4 has number of admissions == 6 or N5 has number of admissions of 3+ */
+                    if ((each.name == "S3" && Number(each.numberOfAdmissions) == 6) ||
+                        (each.name == "S4" && Number(each.numberOfAdmissions) == 6) ||
+                        (each.name == "N5" && Number(each.numberOfAdmissions) >= 3)){
+                            explanationArr.push(`Step 5a: For 7:00PM, 2, if S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.`)
+                            scenario1 = true;
+                    
+                    } else if (each.name == "S4" && Number(each.numberOfAdmissions) == 5){
+                        explanationArr.push(`Step 5b: If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4`);
+                        scenario2 = true;
+                    }
+                });
+            }
+
+            if (scenario1){
+                /* Step 1: Remove from Array 1. This means that we have to copy Array 1 to Array 2.*/
+                const retainOriginalArray1 = [];
+                shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                    if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6){
+
+                    } else {
+                        retainOriginalArray1.push(innerEach);
+                    }
+                });
+                // [...shiftsCombined];
+
+                const removeElementsFromShiftsCombined = [];
+                let getS3 = {};
+                let getS4 = {};
+                let getN5 = {};
+                shiftsCombined.map((innerEach, innerEachIndex) => {
+                    // if (innerEach.name == "S4"){
+                    //     getS4 = innerEach;
+                    // } else if (innerEach.name == "S3"){
+                    //     getS3 = innerEach;
+                    // } else if (innerEach.name == "N5"){
+                    //     getN5 = innerEach;
+                    // }
+
+                    if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
+                    (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
+                    (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3)){
+
+                    } else {
+                        removeElementsFromShiftsCombined.push(innerEach);
+                    }                        
+                })
+
+                /* Step 2: Create Array 2 but copying over from Array 1*/
+                shiftsCombined = removeElementsFromShiftsCombined.concat(retainOriginalArray1);
+                    
+                /* Step 3: Insert S4>N5 to the end */
+                // if (getS3){
+                //     shiftsCombined.push(getS3);
+                // }
+                // if (getS4){
+                //     shiftsCombined.push(getS4);ls
+                // }
+                // if (getN5){
+                //     shiftsCombined.push(getN5);
+                // }
+            }
+
+            if (scenario2){
+            }
+
             explanationArr.push("\n");
             explanationArr.push("Notes: Chronic Load Ratio: Number of Admissions / Numbers of hours worked");
 
             // timeObj.shifts = shiftsCombined;
 
-            const orderOfAdmissions = [];
+            // const orderOfAdmissions = [];
             shiftsCombined.map((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
@@ -215,6 +271,7 @@ export function App() {
             setAllAdmissionsDataShifts(timeObj);
             sortByAscendingName(timeObj);
         }
+        return orderOfAdmissions.join(">");
     }
     const getFormattedOutput = (each) => {
         return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`;
@@ -377,10 +434,28 @@ export function App() {
                 onChange={e => {
                     const startTime = e.target.value;
                     setDropdown(startTime);
-                    const newObj = {};
                     const getMostRecentTransactionx = async (startTime) => {
                         const res = await getMostRecentTransaction(startTime);
-                        sortMain(res.transaction && res.transaction.admissionsObj ? res.transaction.admissionsObj.allAdmissionsDataShifts : { startTime: startTime, shifts: SHIFT_TYPES}, startTime);
+
+                        if (res && res.transaction){
+                            // const copyBox = res.transaction.copyBox;
+                            const order = res.transaction.order;
+                            const allAdmissionsDataShifts = res.transaction.admissionsObj.allAdmissionsDataShifts;
+                            
+                            // if (copyBox){
+                            //     setSorted(copyBox)
+                            // }
+
+                            if (allAdmissionsDataShifts){
+                                setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+                            }
+
+                            if (order){
+                                setOrderOfAdmissions(order);
+                            }
+                        }
+                        
+                        // sortMain(res.transaction && res.transaction.admissionsObj ? res.transaction.admissionsObj.allAdmissionsDataShifts : { startTime: startTime, shifts: SHIFT_TYPES}, startTime);
                     }
                     getMostRecentTransactionx(startTime);
 
@@ -410,10 +485,10 @@ export function App() {
 
     const isMobileDevice = () => {
         if (/Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent)) {
-            console.log("User is on a phone or tablet.");
+            // console.log("User is on a phone or tablet.");
             return true;
         } else {
-            console.log("User is on a desktop.");
+            // console.log("User is on a desktop.");
             return false;
         }
     }
@@ -499,6 +574,7 @@ export function App() {
         sortRoles.push("\n");
 
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
+        // console.log("sort roles", sorted);
         setSorted(sortRoles);
 
         return timeObjShifts;
@@ -555,28 +631,19 @@ export function App() {
     };
 
     const handleGenerateQueue = () => {
-        sortMain(allAdmissionsDataShifts, dropdown);
+        const orderOfAdmissions_ = sortMain(allAdmissionsDataShifts, dropdown);
 
-        addTransaction({ allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown });
+        addTransaction(
+            { allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown }, 
+            orderOfAdmissions_
+            // sorted
+        );
 
-        console.log(transactions);
         const fetchRecentTransaction = async () => {
             const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
 
             if (result.success) {
-                // console.log("most recent transaction saved: ", new Date(result.transaction.timestamp), result.transaction);
-                const timestamp = new Date(result.transaction.timestamp);
-                const month = timestamp.getMonth() + 1; // Months are zero-based
-                const day = timestamp.getDate();
-                const year = timestamp.getFullYear();
-                let hours = timestamp.getHours();
-                const minutes = String(timestamp.getMinutes()).padStart(2, '0');
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
-
-                const localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
-
-                setLastSaved(localDateTime);
+                setLastSaved(result.transaction.timestamp);
                 setAllAdmissionsDataShifts(allAdmissionsDataShifts);
                 setDropdown(dropdown);
             } else {
@@ -627,7 +694,7 @@ export function App() {
         <div>
             <div className="header">
                 <h1 className="title">S.A.D.Q.</h1>
-                <h2 className="subtitle">Standardized Admissions Distribution</h2>
+                <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
             </div>
             {loading ? <div className="loading">Loading...</div> :
                 <div className="container">
@@ -788,7 +855,7 @@ export function App() {
                     </div>
 
                     <section>
-                        <button onClick={() => {
+                        <button id="generateQueue" onClick={() => {
                             handleGenerateQueue();
                         }}>
                             Generate Queue
