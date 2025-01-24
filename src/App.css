@@ -389,18 +389,6 @@ fieldset.fieldsettocopy {
 input[type="time"]::-webkit-calendar-picker-indicator {
   display: none;
 }
-.number-picker input {
-  font-size: 18px;
-  text-align: center;
-  width: 100px;
-  appearance: none; /* Removes default styles for better control */
-}
-
-.number-picker input::-webkit-outer-spin-button,
-.number-picker input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
 input[class="timeperiodbyrole"] {
   font-size: "16px"
@@ -495,6 +483,18 @@ input::-webkit-inner-spin-button {
   background-color: #0056b3; /* Darker blue on hover */
 }
 
+.number-picker input {
+  font-size: 18px;
+  text-align: center;
+  width: 100px;
+  appearance: none; /* Removes default styles for better control */
+}
+
+.number-picker input::-webkit-outer-spin-button,
+.number-picker input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 @media (max-width: 600px) {
   h1 {
     font-size: 42px;
