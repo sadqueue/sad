@@ -71,7 +71,14 @@ export function App() {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         let localDateTime = "";
         const fetchRecentTransaction = async () => {
-            const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
+            function default5PMIfBetween7AMAnd6PM() {
+                const now = new Date(); 
+                const currentHour = now.getHours();
+              
+                return currentHour >= 7 && currentHour < 18;
+              }
+            
+            const result = await getMostRecentTransaction(default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00");
 
             if (result.success) { 
                 setLastSaved(result.transaction.localDateTime);
@@ -845,30 +852,18 @@ export function App() {
                                                     onKeyDown={(e) => handleKeyDown(e, index)}
                                                 >
                                                     <input
-                                                        type="number"
-                                                        id={`numberOfAdmissions_${index}`}
-                                                        value={admission.numberOfAdmissions || 0}
-                                                        onChange={(e) => onChange(e, admission.admissionsId)}
-                                                        disabled={admission.isStatic}
-                                                        min="0"
-                                                        max="100"
-                                                        step="1"
-                                                    />
-                                                    {/* <input
                                                         id={`numberOfAdmissions_${index}`}
                                                         name="numberOfAdmissions"
                                                         className="numberOfAdmissions"
                                                         value={admission.numberOfAdmissions ? admission.numberOfAdmissions : ""}
                                                         step="1"
                                                         type="number"
-                                                        // placeholder="---"
+                                                        placeholder="---"
                                                         onChange={(e) => onChange(e, admission.admissionsId)}
                                                         disabled={admission.isStatic}
-                                                        // inputMode="numeric"
-                                                        // pattern="[0-9]*"
-                                                        min="0"
-                                                        max="100"
-                                                    /> */}
+                                                        inputMode="numeric"
+                                                        pattern="[0-9]*"
+                                                    />
                                                 </td>
                                                 <td className="backgroundlightgray">
                                                     <input
