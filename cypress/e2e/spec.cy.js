@@ -256,7 +256,10 @@ describe('template spec', () => {
             // console.log(testArrFourPM[i] + "::::::" + $el.text() + "----MATCHES");
             // resArr.push(testArrFourPM[i] + "::::::" + $el.text() + "----MATCHES");
           } else {
-            console.log("["+ count +"] " + testArrFourPM[i] + "::::::" + $el.text() + "----NO MATCH");
+            console.log("["+ count +"] ");
+            console.log(testArrFourPM[i]);
+            console.log(output);
+            console.log($el.text() + "----NO MATCH");
             count++;
             // resArr.push(":::::: NO MATCH");
 
