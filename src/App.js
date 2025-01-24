@@ -854,8 +854,10 @@ export function App() {
                                                         placeholder="---"
                                                         onChange={(e) => onChange(e, admission.admissionsId)}
                                                         disabled={admission.isStatic}
-                                                        inputMode="numeric"
-                                                        pattern="[0-9]*"
+                                                        // inputMode="numeric"
+                                                        // pattern="[0-9]*"
+                                                        min="0"
+                                                        max="100"
                                                     />
                                                 </td>
                                                 <td className="backgroundlightgray">

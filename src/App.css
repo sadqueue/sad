@@ -389,14 +389,17 @@ fieldset.fieldsettocopy {
 input[type="time"]::-webkit-calendar-picker-indicator {
   display: none;
 }
-input[type="number"]::-webkit-inner-spin-button, 
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none; /* Removes spinner on Chrome/Safari */
-  margin: 0; /* Ensures proper spacing */
+.number-picker input {
+  font-size: 18px;
+  text-align: center;
+  width: 100px;
+  appearance: none; /* Removes default styles for better control */
 }
 
-input[type="number"] {
-  -moz-appearance: textfield; /* Removes spinner on Firefox */
+.number-picker input::-webkit-outer-spin-button,
+.number-picker input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 input[class="timeperiodbyrole"] {
