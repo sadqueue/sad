@@ -177,7 +177,7 @@ export function App() {
             let scenario1 = false;
             let scenario2 = false;
             let scenario3 = false
-            if (allAdmissionsDataShifts.startTime == "19:00"){
+            if (timeObj.startTime == "19:00"){
                 shiftsCombined.forEach((each, eachIndex) => {
                     /* Scenario 1: If S3 or S4 has number of admissions == 6 or N5 has number of admissions of 3+ */
                     if ((each.name == "S3" && Number(each.numberOfAdmissions) == 6) ||
@@ -487,32 +487,70 @@ export function App() {
                 id="timesdropdown"
                 onChange={e => {
                     const startTime = e.target.value;
-                    setDropdown(startTime);
-                    setLastSaved("")
-                    setAllAdmissionsDataShifts({shifts: SHIFT_TYPES, dropdown: startTime});
-                    const getMostRecentTransactionx = async (startTime) => {
-                        const res = await getMostRecentTransaction(startTime);
 
-                        if (res && res.transaction){
-                            const order = res.transaction.order;
-                            const allAdmissionsDataShifts = res.transaction.admissionsObj.allAdmissionsDataShifts;
-                            const lastSavedTime = res.transaction.localDateTime;
-                            if (allAdmissionsDataShifts){
-                                setAllAdmissionsDataShifts(allAdmissionsDataShifts);
-                            }
+                    if (startTime == "19:00"){
 
-                            if (order){
-                                setOrderOfAdmissions(order);
-                            }
+                        const getMostRecentTransactionx = async (startTime) => {
+                            const res = await getMostRecentTransaction(startTime);
 
-                            if (lastSavedTime){
-                                setLastSaved(lastSavedTime);
+                            if (res && res.transaction){
+                                let getN5 = {};
+
+                                res.transaction.admissionsObj.allAdmissionsDataShifts.shifts.forEach((each, eachIndex) => {
+                                    if (each.name == "N5"){
+                                        getN5 = each;
+                                        return;
+                                    }
+                                })
+
+                                const newObj = {};
+                                
+                                const shifts = [];
+
+                                allAdmissionsDataShifts.shifts.forEach((each, eachIndex) => {
+                                    if (each.name == "N5"){
+                                        each = getN5;
+                                    }
+                                    shifts.push(each);
+                                })
+                                newObj["startTime"] = "19:00";
+                                newObj["shifts"] = shifts;
+                                setDropdown("19:00");
+                                // setAllAdmissionsDataShifts(newObj);
+                                sortMain(newObj, "19:00")
+                                // setLastSaved("")
+
                             }
-                            setSortRoles(allAdmissionsDataShifts, startTime, lastSavedTime);
                         }
-                    }
-                    getMostRecentTransactionx(startTime);
+                        getMostRecentTransactionx("19:00");
+  
+                    } else {
+                        setDropdown(startTime);
+                        setLastSaved("")
+                        setAllAdmissionsDataShifts({shifts: SHIFT_TYPES, dropdown: startTime});
+                        const getMostRecentTransactionx = async (startTime) => {
+                            const res = await getMostRecentTransaction(startTime);
 
+                            if (res && res.transaction){
+                                const order = res.transaction.order;
+                                const allAdmissionsDataShifts = res.transaction.admissionsObj.allAdmissionsDataShifts;
+                                const lastSavedTime = res.transaction.localDateTime;
+                                if (allAdmissionsDataShifts){
+                                    setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+                                }
+
+                                if (order){
+                                    setOrderOfAdmissions(order);
+                                }
+
+                                if (lastSavedTime){
+                                    setLastSaved(lastSavedTime);
+                                }
+                                setSortRoles(allAdmissionsDataShifts, startTime, lastSavedTime);
+                            }
+                        }
+                        getMostRecentTransactionx(startTime);
+                    }
                 }
                 }>
                 {START_TIMES.map((startTime, startTimeIndex) => {
