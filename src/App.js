@@ -481,6 +481,8 @@ export function App() {
                 onChange={e => {
                     const startTime = e.target.value;
                     setDropdown(startTime);
+                    setLastSaved("")
+                    setAllAdmissionsDataShifts({shifts: SHIFT_TYPES, dropdown: startTime});
                     const getMostRecentTransactionx = async (startTime) => {
                         const res = await getMostRecentTransaction(startTime);
 
@@ -494,6 +496,10 @@ export function App() {
 
                             if (order){
                                 setOrderOfAdmissions(order);
+                            }
+
+                            if (lastSavedTime){
+                                setLastSaved(lastSavedTime);
                             }
                             setSortRoles(allAdmissionsDataShifts, startTime, lastSavedTime);
                         }
@@ -683,8 +689,8 @@ export function App() {
             }
         };
         fetchRecentTransaction();
-        setAllAdmissionsDataShifts(allAdmissionsDataShifts);
-        setDropdown(dropdown);
+        // setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+        // setDropdown(dropdown);
     }
     const handleKeyDown = (e, rowIndex) => {
         const data = allAdmissionsDataShifts.shifts;
