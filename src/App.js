@@ -65,6 +65,8 @@ export function App() {
     const [lastSaved, setLastSaved] = useState("");
     const [loading, setLoading] = useState(true);
     const [orderOfAdmissions, setOrderOfAdmissions] = useState("");
+    const [array1, setArray1] =  useState("");
+    const [array2, setArray2] =  useState("");
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         let localDateTime = "";
@@ -193,51 +195,31 @@ export function App() {
 
             if (scenario1){
                 /* Step 1: Remove from Array 1. This means that we have to copy Array 1 to Array 2.*/
-                const retainOriginalArray1 = [];
+                const array1 = [];
+                const array2 = [];
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6){
 
                     } else {
-                        retainOriginalArray1.push(innerEach);
+                        array2.push(innerEach);
                     }
                 });
-                // [...shiftsCombined];
 
-                const removeElementsFromShiftsCombined = [];
-                let getS3 = {};
-                let getS4 = {};
-                let getN5 = {};
                 shiftsCombined.map((innerEach, innerEachIndex) => {
-                    // if (innerEach.name == "S4"){
-                    //     getS4 = innerEach;
-                    // } else if (innerEach.name == "S3"){
-                    //     getS3 = innerEach;
-                    // } else if (innerEach.name == "N5"){
-                    //     getN5 = innerEach;
-                    // }
-
                     if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
                     (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
                     (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3)){
 
                     } else {
-                        removeElementsFromShiftsCombined.push(innerEach);
+                        array1.push(innerEach);
                     }                        
                 })
 
                 /* Step 2: Create Array 2 but copying over from Array 1*/
-                shiftsCombined = removeElementsFromShiftsCombined.concat(retainOriginalArray1);
-                    
-                /* Step 3: Insert S4>N5 to the end */
-                // if (getS3){
-                //     shiftsCombined.push(getS3);
-                // }
-                // if (getS4){
-                //     shiftsCombined.push(getS4);ls
-                // }
-                // if (getN5){
-                //     shiftsCombined.push(getN5);
-                // }
+                shiftsCombined = array1.concat(array2);
+                
+                setArray1(array1 && array1.map((each)=>{ return each.name }));
+                setArray2(array2 && array2.map((each)=>{ return each.name }));
             }
 
             else if (scenario2){
@@ -274,6 +256,8 @@ export function App() {
                 }
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr
+                setArray1(array1 && array1.map((each)=>{ return each.name }));
+                setArray2(array2 && array2.map((each)=>{ return each.name }));
             } else if (scenario3){
                 const array1 = [];
                 let getS3 = {};
@@ -306,6 +290,8 @@ export function App() {
                 // Insert the new element after the found element
                     array2.splice(index + 1, 0, newElement);
                 }
+                setArray1(array1 && array1.map((each)=>{ return each.name }));
+                setArray2(array2 && array2.map((each)=>{ return each.name }));
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr;
             }
@@ -736,6 +722,12 @@ export function App() {
         }
     };
 
+    function hasTwoOccurrences(str, target) {
+        // Split the string by the target substring and check if there are more than 2 parts
+        const parts = str.split(target);
+        return parts.length > 2;
+      }
+      
     return (
         <div>
             <div className="header">
@@ -883,7 +875,14 @@ export function App() {
                         </table>
                         {/* highlighted order of admissions below table */}
                         <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${lastSaved.split(" ")[0] + " " + convertTo12HourFormatSimple(dropdown)}`}</p>
-                        <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
+                        {hasTwoOccurrences(orderOfAdmissions, "N1") ?
+                            <div>
+                                <p className="endoutputcenter" id="orderofadmissions_output">{array1 && array1.join(">")}<br></br>{array2 && array2.join(">")}</p>
+                                {/* <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions.split("N1")}</p> */}
+                            </div>
+                        : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
+                        }
+                        {/* <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p> */}
                         <div className="flex-container">
 
                             <span className="left-text backgroundcoloryellow">
