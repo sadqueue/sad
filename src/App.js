@@ -1024,7 +1024,7 @@ export function App() {
                             }
 
                             <p>{`Updated ${lastSaved}`}</p>
-                            <p>{"@ "}<a id="sadqueuelink" href="https://sadqueue.github.io/sad">{`sadqueue.github.io/sad`}</a></p>
+                            <p>{"@ "}<a id="sadqueuelink" href="">{`sadqueue.github.io/sad`}</a></p>
 
                         </div>
 
