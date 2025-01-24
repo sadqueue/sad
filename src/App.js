@@ -192,11 +192,12 @@ export function App() {
                         scenario2 = true;
                         return;
                     //If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4 “Insert after N1 in Array2”
-                    } else if (each.name == "S3" && Number(each.numberOfAdmissions) == 5){
+                    } 
+                    /*else if (each.name == "S3" && Number(each.numberOfAdmissions) == 5){
                         explanationArr.push(`Step 5c: If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4`);
                         scenario3 = true;
                         return;
-                    } 
+                    }*/
                 });
             }
 
