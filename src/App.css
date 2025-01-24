@@ -389,6 +389,15 @@ fieldset.fieldsettocopy {
 input[type="time"]::-webkit-calendar-picker-indicator {
   display: none;
 }
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Removes spinner on Chrome/Safari */
+  margin: 0; /* Ensures proper spacing */
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Removes spinner on Firefox */
+}
 
 input[class="timeperiodbyrole"] {
   font-size: "16px"
