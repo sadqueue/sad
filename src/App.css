@@ -293,6 +293,11 @@ p {
   font-size: 18px;
 }
 
+#orderofadmissions_output {
+  word-wrap: break-word;
+  white-space: normal; 
+}
+
 p[class="font 14px"]{
   font-size: 14px;
 }
