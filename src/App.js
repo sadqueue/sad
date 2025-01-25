@@ -1017,7 +1017,13 @@ export function App() {
                                 {dropdown ? `Order of Admits` : `Select a time. No roles in the queue.`}
                             </p>
                             <p>{`${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}`}</p>
-                            <p id="endoutput">{orderOfAdmissions}</p><br></br>
+                            {/* <p id="endoutput">{orderOfAdmissions}</p> */}
+                            {hasTwoOccurrences(orderOfAdmissions, "N1") ?
+                                <div>
+                                    <p className="endoutput" id="orderofadmissions_output">{array1 && array1.join(">")}<br></br>{array2 && array2.join(">")}</p>
+                                </div>
+                            : <p className="endoutput" id="orderofadmissions_output">{orderOfAdmissions}</p>
+                            }<br></br>
                             {
                                 sorted && sorted.map((each, eachIndex) => {
                                     if (each == "\n") {
