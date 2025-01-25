@@ -61,10 +61,9 @@ describe('template spec', () => {
             // console.log(testArr[i] + "::::::" + $el.text() + "----MATCHES");
             // resArr.push(testArr[i] + "::::::" + $el.text() + "----MATCHES");
           } else {
-            console.log("[" + count + "] ", testArr[i][1]);
-            console.log(testArr[i][0]);
-            console.log(output);
-            console.log($el.text() + "----NO MATCH");
+            console.log("[" + count + "] ", testArr[i][1] + " -- No Match");
+            console.log("Expected:  ",testArr[i][0]);
+            console.log("Actual:    ",output);
             count++;
             // resArr.push(":::::: NO MATCH");
 
