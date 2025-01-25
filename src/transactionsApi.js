@@ -127,7 +127,7 @@ export const getMostRecentTransaction = async (startTime) => {
 
     const snapshot = await get(recentQuery);
 
-    if (snapshot.exists()) {
+    if (snapshot && snapshot.exists()) {
       const data = snapshot.val();
       const [key, value] = Object.entries(data)[0];
       return { success: true, transaction: { id: key, ...value } };
