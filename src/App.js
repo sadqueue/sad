@@ -980,28 +980,32 @@ export function App() {
                                         className="copybutton"
                                         src={copybuttonImg}
                                         onClick={(ev) => {
-                                            const divText = document.getElementById("fieldsettocopy_min").innerHTML; // Get the plain text of the div
-                                            const linkText = "sadqueue.github.io/sad"; // Get the link part
+                                            // const divText = document.getElementById("fieldsettocopy_min").innerText; // Get the plain text of the div
+                                            // const linkText = "sadqueue.github.io/sad"; // Get the link part
 
-                                            // Create the hyperlink HTML part for the link
-                                            const hyperlink = "https://" + linkText;
+                                            // // Create the hyperlink HTML part for the link
+                                            // const hyperlink = "https://" + linkText;
 
-                                            // Combine the text (keeping the link as a hyperlink)
-                                            const contentToCopy = divText.replace(linkText, hyperlink);
+                                            // // Combine the text (keeping the link as a hyperlink)
+                                            // const contentToCopy = divText.replace(linkText, hyperlink);
 
-                                            // Copy the combined content (HTML with the link as hyperlink)
-                                            navigator.clipboard.write([
-                                                new ClipboardItem({
-                                                    "text/html": new Blob([contentToCopy], { type: "text/html" }), // Copy as HTML
-                                                    "text/plain": new Blob([divText.replace(linkText, `https://${linkText}`)], { type: "text/plain" }) // Copy as plain text (with link as URL)
-                                                })
-                                            ])
-                                                .then(() => {
-                                                    console.log("Link and text copied to clipboard!");
-                                                })
-                                                .catch((err) => {
-                                                    console.error("Failed to copy: ", err);
-                                                });
+                                            // // Copy the combined content (HTML with the link as hyperlink)
+                                            // navigator.clipboard.write([
+                                            //     new ClipboardItem({
+                                            //         "text/html": new Blob([contentToCopy], { type: "text/html" }), // Copy as HTML
+                                            //         "text/plain": new Blob([divText.replace(linkText, `https://${linkText}`)], { type: "text/plain" }) // Copy as plain text (with link as URL)
+                                            //     })
+                                            // ])
+                                            //     .then(() => {
+                                            //         console.log("Link and text copied to clipboard!");
+                                            //     })
+                                            //     .catch((err) => {
+                                            //         console.error("Failed to copy: ", err);
+                                            //     });
+                                            const contentToCopy = document.getElementById("fieldsettocopy_min") && document.getElementById("fieldsettocopy_min").innerText.replaceAll("\n\n","\n")
+
+                                            navigator.clipboard.writeText(contentToCopy);
+
 
                                             // sendEmail(ev, copiedMessage, title);
                                             setIsCopied(true);
