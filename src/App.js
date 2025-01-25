@@ -71,6 +71,7 @@ export function App() {
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         let localDateTime = "";
+
         const fetchRecentTransaction = async () => {
             function default5PMIfBetween7AMAnd6PM() {
                 const now = new Date(); 
@@ -78,7 +79,6 @@ export function App() {
               
                 return currentHour >= 7 && currentHour < 18;
               }
-            
             const result = await getMostRecentTransaction(default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00");
 
             if (result.success) { 
@@ -220,7 +220,6 @@ export function App() {
                     (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
                     (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3) ||
                     Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
-                        console.log("don't push", innerEach.name);
                     } else {
                         array1.push(innerEach);
                     }                        
