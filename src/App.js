@@ -23,6 +23,7 @@ import {
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import snapshotImg from "./images/snapshot.png";
+import sadqueuelogo_bluebackgroundImg from "./images/sadqueuelogo_bluebackground.png";
 import githublogo from "./images/github-mark.png"
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
@@ -183,13 +184,14 @@ export function App() {
                     if ((each.name == "S3" && Number(each.numberOfAdmissions) == 6) ||
                         (each.name == "S4" && Number(each.numberOfAdmissions) == 6) ||
                         (each.name == "N5" && Number(each.numberOfAdmissions) >= 3)){
-                            explanationArr.push(`Step 5a: For 7:00PM, 2, if S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.`)
                             scenario1 = true;
+                            explanationArr.push("Step 5a: For 7:00PM, 2, if S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
                             return;
-                    
                     } else if (each.name == "S4" && Number(each.numberOfAdmissions) == 5){
-                        explanationArr.push(`Step 5b: If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4`);
+                        scenario1 = false;
                         scenario2 = true;
+                        explanationArr.push("Step 5b: If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
+                        
                         return;
                     //If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4 “Insert after N1 in Array2”
                     } 
@@ -200,8 +202,7 @@ export function App() {
                     }*/
                 });
             }
-
-            if (scenario1){
+            if (scenario1) {
                 /* Step 1: Remove from Array 1. This means that we have to copy Array 1 to Array 2.*/
                 const array1 = [];
                 const array2 = [];
@@ -213,42 +214,36 @@ export function App() {
                     }
                 });
 
-                shiftsCombined.map((innerEach, innerEachIndex) => {
+                shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
                     (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
                     (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3)){
-
+                        console.log("don't push", innerEach.name);
                     } else {
                         array1.push(innerEach);
                     }                        
                 })
 
                 /* Step 2: Create Array 2 but copying over from Array 1*/
+                console.log(array1.forEach((e)=>e.name+" "));
                 shiftsCombined = array1.concat(array2);
                 
                 setArray1(array1 && array1.map((each)=>{ return each.name }));
                 setArray2(array2 && array2.map((each)=>{ return each.name }));
-            }
-
-            else if (scenario2){
+            } else if (scenario2){
                 /* If S4 has number of admissions of 5, then remove S4 from Array 1. This means that we have to copy Array 1 to Array 2. */
                 const array1 = [];
                 
                 let getS4 = {};
-
-                
-                const resultArr = [];
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if (innerEach.name == "S4"){
                         getS4 = innerEach;
                     } else {
-
                         array1.push(innerEach);
                     }
                 });
                 const array2 = [...array1];
-                
-
+            
                 const newElement = getS4; 
 
                 let index = 0;
@@ -262,6 +257,9 @@ export function App() {
                 // Insert the new element after the found element
                     array2.splice(index + 1, 0, newElement);
                 }
+
+                // N5 is inserted after N4, if S4 qualifies then S4 inserted After N4, if S3 qualifies then S3 inserted after N4 
+
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr
                 setArray1(array1 && array1.map((each)=>{ return each.name }));
@@ -783,8 +781,13 @@ export function App() {
     return (
         <div>
             <div className="header">
-                <h1 className="title">S.A.D.Q.</h1>
-                <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
+            <img
+            alt="clock"
+            className="clock"
+            id="clock-button"
+            src={sadqueuelogo_bluebackgroundImg}/>
+                {/* <h1 className="title">S.A.D.Q.</h1>
+                <h2 className="subtitle">Standardized Admissions Distribution Queue</h2> */}
             </div>
             {loading ? <div className="loading">Loading...</div> :
                 <div className="container">

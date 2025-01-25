@@ -341,7 +341,7 @@ p.boldCopy {
 
 fieldset {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 80%;
+  width: 100%;
   margin: auto;
   margin-bottom: 10px;
 
@@ -354,7 +354,7 @@ fieldset {
 
 fieldset.fieldsettocopy {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 80%;
+  width: 100%;
   margin: auto;
   margin-bottom: 10px;
 }
@@ -384,6 +384,13 @@ fieldset.fieldsettocopy {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+}
+
+.clock {
+  width: 500px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  padding-right: 27px;
 }
 
 input[type="time"]::-webkit-calendar-picker-indicator {
