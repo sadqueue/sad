@@ -183,7 +183,7 @@ export function App() {
                     /* Scenario 1: If S3 or S4 has number of admissions == 6 or N5 has number of admissions of 3+ */
                     if ((each.name == "S3" && Number(each.numberOfAdmissions) == 6) ||
                         (each.name == "S4" && Number(each.numberOfAdmissions) == 6) ||
-                        (each.name == "N5" && Number(each.numberOfAdmissions) >= 3)){
+                        (each.name == "N5" && Number(each.numberOfAdmissions) >= 3 && each.name == "N5" && Number(each.numberOfAdmissions) <= 6)){
                             scenario1 = true;
                             explanationArr.push("Step 5a: For 7:00PM, 2, if S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
                             return;
@@ -207,7 +207,8 @@ export function App() {
                 const array1 = [];
                 const array2 = [];
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6){
+                    if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
+                    Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
 
                     } else {
                         array2.push(innerEach);
@@ -217,7 +218,8 @@ export function App() {
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
                     (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
-                    (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3)){
+                    (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3) ||
+                    Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
                         console.log("don't push", innerEach.name);
                     } else {
                         array1.push(innerEach);
@@ -225,18 +227,20 @@ export function App() {
                 })
 
                 /* Step 2: Create Array 2 but copying over from Array 1*/
-                console.log(array1.forEach((e)=>e.name+" "));
                 shiftsCombined = array1.concat(array2);
                 
                 setArray1(array1 && array1.map((each)=>{ return each.name }));
                 setArray2(array2 && array2.map((each)=>{ return each.name }));
+                const combinedArr = array1.concat(array2);
+                shiftsCombined = combinedArr;
             } else if (scenario2){
                 /* If S4 has number of admissions of 5, then remove S4 from Array 1. This means that we have to copy Array 1 to Array 2. */
                 const array1 = [];
                 
                 let getS4 = {};
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if (innerEach.name == "S4"){
+                    if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
+                    } else if (innerEach.name == "S4"){
                         getS4 = innerEach;
                     } else {
                         array1.push(innerEach);
@@ -268,7 +272,8 @@ export function App() {
                 const array1 = [];
                 let getS3 = {};
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if (innerEach.name == "S3"){
+                    if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
+                    } else if (innerEach.name == "S3"){
                         getS3 = innerEach;
                     } else {
                         array1.push(innerEach);
@@ -277,7 +282,8 @@ export function App() {
                 const array2 = [];
                 const copyArray2 = [...array1];
                 copyArray2.forEach((innerEach, innerEachIndex) => {
-                    if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6){
+                    if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
+                    Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
                     } else {
                         array2.push(innerEach);
                     }
@@ -781,13 +787,13 @@ export function App() {
     return (
         <div>
             <div className="header">
-            <img
+            {/* <img
             alt="clock"
             className="clock"
             id="clock-button"
-            src={sadqueuelogo_bluebackgroundImg}/>
-                {/* <h1 className="title">S.A.D.Q.</h1>
-                <h2 className="subtitle">Standardized Admissions Distribution Queue</h2> */}
+            src={sadqueuelogo_bluebackgroundImg}/> */}
+                <h1 className="title">S.A.D.Q.</h1>
+                <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
             </div>
             {loading ? <div className="loading">Loading...</div> :
                 <div className="container">
@@ -935,7 +941,6 @@ export function App() {
                         {hasTwoOccurrences(orderOfAdmissions, "N1") ?
                             <div>
                                 <p className="endoutputcenter" id="orderofadmissions_output">{array1 && array1.join(">")}<br></br>{array2 && array2.join(">")}</p>
-                                {/* <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions.split("N1")}</p> */}
                             </div>
                         : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         }
