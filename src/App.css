@@ -341,7 +341,7 @@ p.boldCopy {
 
 fieldset {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 100%;
+  width: 98%;
   margin: auto;
   margin-bottom: 10px;
 
@@ -354,7 +354,7 @@ fieldset {
 
 fieldset.fieldsettocopy {
   background-color: rgba(217, 221, 146, 0.2);
-  width: 100%;
+  width: 98%;
   margin: auto;
   margin-bottom: 10px;
 }
