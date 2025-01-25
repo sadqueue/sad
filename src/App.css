@@ -543,6 +543,12 @@ input::-webkit-inner-spin-button {
     /* white-space: nowrap; */
   }
 
+  fieldset{
+    width: 94%;
+  }
+  #fieldsettocopy {
+    width: 94%;
+  }
   /* section {
     margin: 20px;
   } */
