@@ -12,7 +12,7 @@
 
 <h1>Purpose</h1><a name="purpose"></a>
 Purpose of this UI tool is for hospitalists to generate the order of admissions at a certain timestamp. User can click the dropdown and select a timestamp. The options are 4PM, 5PM, 7PM or a custom time the user can select.
-The deployed website link <a href=https://sadqueue.github.io/sad/" target="_blank">here</a>.
+The deployed website link https://sadqueue.github.io/sad/.
 
 <h2>Example Screenshots</h2><a name="examplescreenshots"></a>
 
