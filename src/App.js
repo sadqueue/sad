@@ -179,13 +179,24 @@ export function App() {
                 explanationArr.push(getFormattedOutput(each))
             });
 
-            explanationArr.push("\n");
-            explanationArr.push(`Step 4: Roles with number of admissions greater than ${NUMBER_OF_ADMISSIONS_CAP} are removed from the order of admissions.`)
+            let step4 = false;
             shiftsCombined.forEach((each, eachIndex) => {
                 if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
-                    explanationArr.push(getFormattedOutput(each) + " (DONE)")
+                    step4 = true;
+                    // explanationArr.push(getFormattedOutput(each) + " (DONE)")
                 }
             });
+
+            if (step4){
+                explanationArr.push("\n");
+                explanationArr.push(`Step 4: Roles with number of admissions greater than ${NUMBER_OF_ADMISSIONS_CAP} are removed from the order of admissions.`)
+                shiftsCombined.forEach((each, eachIndex) => {
+                    if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
+                        step4 = true;
+                        explanationArr.push(getFormattedOutput(each) + " (DONE)")
+                    }
+                });
+            }
             explanationArr.push("\n");
             let scenario1 = false;
             let scenario2 = false;
@@ -319,8 +330,7 @@ export function App() {
                 shiftsCombined = combinedArr;
             }
 
-            explanationArr.push("\n");
-            explanationArr.push("Notes: Chronic Load Ratio: Number of Admissions / Numbers of hours worked");
+            // explanationArr.push("Notes: Chronic Load Ratio = Number of Admissions / Numbers of hours worked");
 
             // timeObj.shifts = shiftsCombined;
 

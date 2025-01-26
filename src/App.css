@@ -523,7 +523,6 @@ input::-webkit-inner-spin-button {
 
   select,
   input,
-  p,
   tr,
   th,
   button,
@@ -552,5 +551,8 @@ input::-webkit-inner-spin-button {
   /* section {
     margin: 20px;
   } */
+  .endoutputcenter, p {
+    font-size: 16px;
+  }
 
 }
