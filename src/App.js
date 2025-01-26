@@ -174,7 +174,6 @@ export function App() {
                 }
             });
             explanationArr.push("\n");
-            explanationArr.push(`Step 5: Edge Cases`);
             let scenario1 = false;
             let scenario2 = false;
             let scenario3 = false
@@ -185,18 +184,18 @@ export function App() {
                         (each.name == "S4" && Number(each.numberOfAdmissions) == 6) ||
                         (each.name == "N5" && Number(each.numberOfAdmissions) >= 3 && each.name == "N5" && Number(each.numberOfAdmissions) <= 6)){
                             scenario1 = true;
-                            explanationArr.push("Step 5a: For 7:00PM, 2, if S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
+                            explanationArr.push("Step 5: For 7:00PM, 2, if S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
                             return;
                     } else if (each.name == "S4" && Number(each.numberOfAdmissions) == 5){
                         scenario1 = false;
                         scenario2 = true;
-                        explanationArr.push("Step 5b: If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
+                        explanationArr.push("Step 5: If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
                         
                         return;
                     //If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4 “Insert after N1 in Array2”
                     } 
                     /*else if (each.name == "S3" && Number(each.numberOfAdmissions) == 5){
-                        explanationArr.push(`Step 5c: If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4`);
+                        explanationArr.push(`Step 5: If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4`);
                         scenario3 = true;
                         return;
                     }*/
