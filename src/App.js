@@ -1092,7 +1092,7 @@ export function App() {
                             onClick={(ev) => {
                                 window.open("https://github.com/sadqueue/sad/tree/main", '_blank');
                             }} />
-                        <p>&copy; <span>{new Date().getFullYear()}</span> SAD Queue. All rights reserved.</p>
+                        <p>&copy; {new Date().getFullYear()} S.A.D. Queue. All rights reserved.</p>
                     </div>
                 </div>}
         </div>
