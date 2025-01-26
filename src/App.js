@@ -127,9 +127,22 @@ export function App() {
                 return each;
             });
 
-            newObject && newObject.shifts && newObject.shifts.sort(function (a, b) {
-                return moment(a.timestamp, TIME_FORMAT).diff(moment(b.timestamp, TIME_FORMAT));
-            });
+            // newObject && newObject.shifts && newObject.shifts.sort(function (a, b) {
+            //     return moment(a.timestamp, TIME_FORMAT).diff(moment(b.timestamp, TIME_FORMAT));
+            // });
+
+            /* sort by timestamp. if timestamp is the same, sort by chronic load */
+            newObject && newObject.shifts && newObject.shifts.sort((a, b) => {
+                // Compare timestamps first
+                if (a.timestamp < b.timestamp) return -1;
+                if (a.timestamp > b.timestamp) return 1;
+            
+                // If timestamps are equal, compare chronicLoadRatio
+                if (a.chronicLoadRatio < b.chronicLoadRatio) return -1;
+                if (a.chronicLoadRatio > b.chronicLoadRatio) return 1;
+            
+                return 0; // If both are equal
+            }); 
             //if same chronic load ratio, then pick the one with lower number of admissions to go first
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
@@ -938,7 +951,7 @@ export function App() {
                         <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${lastSaved.split(" ")[0] + " " + convertTo12HourFormatSimple(dropdown)}`}</p>
                         {hasTwoOccurrences(orderOfAdmissions, "N1") ?
                             <div>
-                                <p className="endoutputcenter" id="orderofadmissions_output">{array1 && array1.join(">")}<br></br>{array2 && array2.join(">")}</p>
+                                <p className="endoutputcenter" id="orderofadmissions_output">{array1 ? array1.join(">") + ">" : ""}<br></br>{array2 && array2.join(">")}</p>
                             </div>
                         : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         }
@@ -1000,7 +1013,7 @@ export function App() {
                                             //     .catch((err) => {
                                             //         console.error("Failed to copy: ", err);
                                             //     });
-                                            const contentToCopy = document.getElementById("fieldsettocopy_min") && document.getElementById("fieldsettocopy_min").innerText.replaceAll("\n\n","\n")
+                                            const contentToCopy = document.getElementById("fieldsettocopy_min") && document.getElementById("fieldsettocopy_min").innerText.replaceAll("\n\n","\n").replaceAll("\n\n","\n");
 
                                             navigator.clipboard.writeText(contentToCopy);
 
@@ -1022,7 +1035,7 @@ export function App() {
                             {/* <p id="endoutput">{orderOfAdmissions}</p> */}
                             {hasTwoOccurrences(orderOfAdmissions, "N1") ?
                                 <div>
-                                    <p className="endoutput" id="orderofadmissions_output">{array1 && array1.join(">")}<br></br>{array2 && array2.join(">")}</p>
+                                    <p className="endoutput" id="orderofadmissions_output">{array1 ? array1.join(">") + ">" : ""}<br></br>{array2 && array2.join(">")}</p>
                                 </div>
                             : <p className="endoutput" id="orderofadmissions_output">{orderOfAdmissions}</p>
                             }<br></br>
