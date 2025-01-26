@@ -116,7 +116,7 @@ export function App() {
         explanationArr.push("Step 1: Merge with nights based on last timestamp.");
 
         /*
-        Step 1: Step 1: Sort based on timestamp 
+        Step 1: Step 1: Sort based on timestamp. If timestamp is the same, sort by chronic load ratio
         */
         const newObject = JSON.parse(JSON.stringify(timeObj))
         if (newObject.shifts) {
@@ -126,10 +126,6 @@ export function App() {
                 }
                 return each;
             });
-
-            // newObject && newObject.shifts && newObject.shifts.sort(function (a, b) {
-            //     return moment(a.timestamp, TIME_FORMAT).diff(moment(b.timestamp, TIME_FORMAT));
-            // });
 
             /* sort by timestamp. if timestamp is the same, sort by chronic load */
             newObject && newObject.shifts && newObject.shifts.sort((a, b) => {
@@ -150,9 +146,9 @@ export function App() {
                 }
             });
             /*
-        Step 2: For each admitter, if chronic load ratio is >0.67, then deprioritize in the order 
-        (either putting in back or pushing back by X spots depending on how great the ratio is)
-        */
+            Step 2: For each admitter, if chronic load ratio is >0.67, then deprioritize in the order 
+            (either putting in back or pushing back by X spots depending on how great the ratio is)
+            */
             const shiftsLessThanThreshold = [];
             const shiftsGreaterThanThreshold = [];
             explanationArr.push("\n");
@@ -171,6 +167,7 @@ export function App() {
 
             });
 
+            /* Step 3: De-prioritize admitters with high chronic load to the back of the queue */
             explanationArr.push("\n");
             explanationArr.push(`Step 3: De-prioritize admitters with high chronic load to the back of the queue.`)
             let shiftsCombined = shiftsLessThanThreshold.concat(shiftsGreaterThanThreshold);
@@ -179,24 +176,17 @@ export function App() {
                 explanationArr.push(getFormattedOutput(each))
             });
 
-            let step4 = false;
+            /* Step 4: Remove roles with number of admissions greater than 7 */
+            explanationArr.push("\n");
+            explanationArr.push(`Step 4: Roles with number of admissions greater than ${NUMBER_OF_ADMISSIONS_CAP} are removed from the order of admissions.`)
             shiftsCombined.forEach((each, eachIndex) => {
                 if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
-                    step4 = true;
-                    // explanationArr.push(getFormattedOutput(each) + " (DONE)")
+                    explanationArr.push(getFormattedOutput(each) + " (DONE)")
                 }
             });
 
-            if (step4){
-                explanationArr.push("\n");
-                explanationArr.push(`Step 4: Roles with number of admissions greater than ${NUMBER_OF_ADMISSIONS_CAP} are removed from the order of admissions.`)
-                shiftsCombined.forEach((each, eachIndex) => {
-                    if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
-                        step4 = true;
-                        explanationArr.push(getFormattedOutput(each) + " (DONE)")
-                    }
-                });
-            }
+            /* Step 5: High chronic load scenarios */
+
             explanationArr.push("\n");
             let scenario1 = false;
             let scenario2 = false;
@@ -208,12 +198,10 @@ export function App() {
                         (each.name == "S4" && Number(each.numberOfAdmissions) == 6) ||
                         (each.name == "N5" && Number(each.numberOfAdmissions) >= 3 && each.name == "N5" && Number(each.numberOfAdmissions) <= 6)){
                             scenario1 = true;
-                            explanationArr.push("Step 5: For 7:00PM, 2, if S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
                             return;
                     } else if (each.name == "S4" && Number(each.numberOfAdmissions) == 5){
                         scenario1 = false;
                         scenario2 = true;
-                        explanationArr.push("Step 5: If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
                         
                         return;
                     //If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4 “Insert after N1 in Array2”
@@ -226,6 +214,8 @@ export function App() {
                 });
             }
             if (scenario1) {
+                explanationArr.push("Step 5: 7PM High Chronic Load Scenario. If S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
+
                 /* Step 1: Remove from Array 1. This means that we have to copy Array 1 to Array 2.*/
                 const array1 = [];
                 const array2 = [];
@@ -243,6 +233,7 @@ export function App() {
                     (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
                     (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3) ||
                     Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
+                        explanationArr.push(getFormattedOutput(innerEach));
                     } else {
                         array1.push(innerEach);
                     }                        
@@ -256,6 +247,8 @@ export function App() {
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr;
             } else if (scenario2){
+                explanationArr.push("Step 5: 7PM High Chronic Load Scenario. If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
+
                 /* If S4 has number of admissions of 5, then remove S4 from Array 1. This means that we have to copy Array 1 to Array 2. */
                 const array1 = [];
                 
@@ -263,6 +256,7 @@ export function App() {
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
                     } else if (innerEach.name == "S4"){
+                        explanationArr.push(getFormattedOutput(innerEach))
                         getS4 = innerEach;
                     } else {
                         array1.push(innerEach);
