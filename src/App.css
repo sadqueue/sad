@@ -68,6 +68,7 @@ div[class="header"] {
   margin-top: 30px;
   text-align: center;
 }
+
 /* Small screens (phones) */
 @media (max-width: 600px) {
   .container {
@@ -432,7 +433,8 @@ input::-webkit-inner-spin-button {
 .flex-container-just1item{
   display: flex;
   justify-content: center; /* Center horizontally */
-  align-items: center;    /* Center vertically */
+  align-items: center;
+  margin-bottom: -20px;
 }
 
 .flex-container{
