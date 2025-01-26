@@ -85,7 +85,7 @@ div[class="header"] {
 /* Large screens (desktops) */
 @media (min-width: 1025px) {
   .container {
-    max-width: 1200px;
+    max-width: 800px;
   }
 }
 
@@ -277,12 +277,13 @@ img.copybuttonforcopymsg:hover {
 
 
 h1 {
-  font-size: 60px;
+  font-size: 70px;
+  margin-top: 22px;
 }
 
 h2 {
-  font-size: 12px;
-  margin-top: -48px;
+  font-size: 24px;
+  margin-top: -64px;
   margin-bottom: 40px;
 }
 
@@ -502,6 +503,10 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.notes{
+  margin-top: 30px;
+}
 @media (max-width: 600px) {
   h1 {
     font-size: 42px;
@@ -525,7 +530,6 @@ input::-webkit-inner-spin-button {
   input,
   tr,
   th,
-  button,
   span {
     font-size: 12px;
     touch-action: manipulation;
@@ -551,7 +555,9 @@ input::-webkit-inner-spin-button {
   /* section {
     margin: 20px;
   } */
-  .endoutputcenter, p {
+  .endoutputcenter, p,
+  button
+  {
     font-size: 16px;
   }
 
