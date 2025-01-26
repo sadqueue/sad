@@ -563,4 +563,7 @@ input::-webkit-inner-spin-button {
     font-size: 16px;
   }
 
+  .flex-container-just1item {
+    margin-bottom: -15px;
+  }
 }
