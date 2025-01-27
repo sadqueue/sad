@@ -1,7 +1,7 @@
 
 <p align="center"><img width="244" alt="Screenshot 2024-12-10 at 1 09 14 PM" src="https://github.com/user-attachments/assets/1ea87648-9a46-48fe-a720-338a2c429fd0"></p>
 
-<h1 align="center">S.A.D. Queue (Standardized Admissions Distribution)</h1>
+<h1 align="center">S.A.D.Q. (Standardized Admissions Distribution)</h1>
 
 # Table of Contents
 1. [Purpose](#purpose)
