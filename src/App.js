@@ -237,6 +237,16 @@ export function App() {
                     }
                 });
 
+                array2 && array2.sort((a, b) => {
+                    if (a.chronicLoadRatio > b.chronicLoadRatio){
+                        return 1;
+                    } 
+                    if (a.chronicLoadRatio < b.chronicLoadRatio) {
+                        return -1;
+                    }
+                    return 0;
+                })
+
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
                     (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
