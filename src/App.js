@@ -69,6 +69,8 @@ export function App() {
     const [array1, setArray1] =  useState("");
     const [array2, setArray2] =  useState("");
     const [inputManually, setInputManually] = useState("");
+    const [clickedGenerateQueue, setClickedGenerateQueue] = useState(false);
+
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         let localDateTime = "";
@@ -413,6 +415,9 @@ export function App() {
     }
 
     const onChange = (e, admissionsId) => {
+        if (dropdown == "17:00"){
+            setClickedGenerateQueue(false);
+        }
         const { name, value } = e.target
 
         const newObj = {};
@@ -538,9 +543,8 @@ export function App() {
                 id="timesdropdown"
                 onChange={e => {
                     const startTime = e.target.value;
-
-                    if (startTime == "19:00"){
-
+                    console.log("clickedGenerateQueue", clickedGenerateQueue);
+                    if (startTime == "19:00" && clickedGenerateQueue){
                         const getMostRecentTransactionx = async (startTime) => {
                             const res = await getMostRecentTransaction(startTime);
 
@@ -765,6 +769,7 @@ export function App() {
     };
 
     const handleGenerateQueue = () => {
+        setClickedGenerateQueue(true);
         const orderOfAdmissions_ = sortMain(allAdmissionsDataShifts, dropdown);
 
         addTransaction(
