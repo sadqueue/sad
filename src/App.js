@@ -999,7 +999,7 @@ export function App() {
                         <div className="flex-container">
 
                             <span className="left-text backgroundcoloryellow">
-                                {"Last Saved: " + lastSaved}
+                                {"Last Saved: " + lastSaved + " @ sadqueue.github.io/sad"}
 
                             </span>
                             <span className="right-text">

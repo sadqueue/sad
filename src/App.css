@@ -447,6 +447,7 @@ input::-webkit-inner-spin-button {
 .left-text{
   text-align: left;
   background-color: yellow;
+  font-size: 12px;
 }
 
 #endoutput{
