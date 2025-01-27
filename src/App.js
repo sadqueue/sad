@@ -237,6 +237,7 @@ export function App() {
                     }
                 });
 
+
                 array2 && array2.sort((a, b) => {
                     if (a.chronicLoadRatio > b.chronicLoadRatio){
                         return 1;
@@ -1121,7 +1122,7 @@ export function App() {
                             onClick={(ev) => {
                                 window.open("https://github.com/sadqueue/sad/tree/main", '_blank');
                             }} />
-                        <p>&copy; {new Date().getFullYear()} S.A.D. Queue. All rights reserved.</p>
+                        <p>&copy; {new Date().getFullYear()} S.A.D.Q. All rights reserved.</p>
                     </div>
                 </div>}
         </div>
