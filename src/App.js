@@ -68,6 +68,7 @@ export function App() {
     const [orderOfAdmissions, setOrderOfAdmissions] = useState("");
     const [array1, setArray1] =  useState("");
     const [array2, setArray2] =  useState("");
+    const [inputManually, setInputManually] = useState("");
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         let localDateTime = "";
@@ -136,6 +137,10 @@ export function App() {
                 // If timestamps are equal, compare chronicLoadRatio
                 if (a.chronicLoadRatio < b.chronicLoadRatio) return -1;
                 if (a.chronicLoadRatio > b.chronicLoadRatio) return 1;
+
+                // If timestamps are equal, compare chronicLoadRatio
+                if (a.numberOfAdmissions < b.numberOfAdmissions) return -1;
+                if (a.numberOfAdmissions > b.numberOfAdmissions) return 1;
             
                 return 0; // If both are equal
             }); 
@@ -193,12 +198,16 @@ export function App() {
             let scenario3 = false
             if (timeObj.startTime == "19:00"){
                 shiftsCombined.forEach((each, eachIndex) => {
-                    /* Scenario 1: If S3 or S4 has number of admissions == 6 or N5 has number of admissions of 3+ */
+                    /* Scenario 1: 
+                    // If S3 has 6 admissions,
+                    // S4 has 6 admissions or
+                    // N5 has 3+ admissions */
                     if ((each.name == "S3" && Number(each.numberOfAdmissions) == 6) ||
                         (each.name == "S4" && Number(each.numberOfAdmissions) == 6) ||
                         (each.name == "N5" && Number(each.numberOfAdmissions) >= 3 && each.name == "N5" && Number(each.numberOfAdmissions) <= 6)){
                             scenario1 = true;
                             return;
+                    /* Scenario 2: If S4 has 5 admissions */
                     } else if (each.name == "S4" && Number(each.numberOfAdmissions) == 5){
                         scenario1 = false;
                         scenario2 = true;
@@ -214,7 +223,7 @@ export function App() {
                 });
             }
             if (scenario1) {
-                explanationArr.push("Step 5: 7PM High Chronic Load Scenario. If S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
+                explanationArr.push("Step 5 (Scenario 1): 7PM High Chronic Load Scenario. If S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
 
                 /* Step 1: Remove from Array 1. This means that we have to copy Array 1 to Array 2.*/
                 const array1 = [];
@@ -247,22 +256,33 @@ export function App() {
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr;
             } else if (scenario2){
-                explanationArr.push("Step 5: 7PM High Chronic Load Scenario. If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
+                explanationArr.push("Step 5 (Scenario 2): 7PM High Chronic Load Scenario. If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
 
                 /* If S4 has number of admissions of 5, then remove S4 from Array 1. This means that we have to copy Array 1 to Array 2. */
                 const array1 = [];
-                
+                const array2 = [];
                 let getS4 = {};
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
                     } else if (innerEach.name == "S4"){
                         explanationArr.push(getFormattedOutput(innerEach))
                         getS4 = innerEach;
+                    } else if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) {
+                        array1.push(innerEach);
+                    } else if (innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) {
+                        array2.push(innerEach);
                     } else {
                         array1.push(innerEach);
+                        array2.push(innerEach);
                     }
                 });
-                const array2 = [...array1];
+                
+                // const array2 = [...array1].filter((each) => {
+                //     if (each.name == "S2" && Number(each.numberOfAdmissions) == 6){
+                //     } else {
+                //         return each;
+                //     }
+                // })
             
                 const newElement = getS4; 
 
@@ -966,7 +986,6 @@ export function App() {
                                 {"Last Saved: " + lastSaved}
 
                             </span>
-
                             <span className="right-text">
                                 <button className="seedetails" onClick={() => {
                                     setOpenTable(!openTable);
