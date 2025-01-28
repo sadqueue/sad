@@ -66,8 +66,8 @@ export function App() {
     const [lastSaved, setLastSaved] = useState("");
     const [loading, setLoading] = useState(true);
     const [orderOfAdmissions, setOrderOfAdmissions] = useState("");
-    const [array1, setArray1] =  useState("");
-    const [array2, setArray2] =  useState("");
+    const [array1, setArray1] = useState("");
+    const [array2, setArray2] = useState("");
     const [inputManually, setInputManually] = useState("");
     const [clickedGenerateQueue, setClickedGenerateQueue] = useState(false);
 
@@ -77,14 +77,14 @@ export function App() {
 
         const fetchRecentTransaction = async () => {
             function default5PMIfBetween7AMAnd6PM() {
-                const now = new Date(); 
+                const now = new Date();
                 const currentHour = now.getHours();
-              
+
                 return currentHour >= 7 && currentHour < 18;
-              }
+            }
             const result = await getMostRecentTransaction(default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00");
 
-            if (result.success) { 
+            if (result.success) {
                 setLastSaved(result.transaction.localDateTime);
                 if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
                     setDropdown(result.transaction.admissionsObj.startTime);
@@ -135,7 +135,7 @@ export function App() {
                 // Compare timestamps first
                 if (a.timestamp < b.timestamp) return -1;
                 if (a.timestamp > b.timestamp) return 1;
-            
+
                 // If timestamps are equal, compare chronicLoadRatio
                 if (a.chronicLoadRatio < b.chronicLoadRatio) return -1;
                 if (a.chronicLoadRatio > b.chronicLoadRatio) return 1;
@@ -143,9 +143,9 @@ export function App() {
                 // If timestamps are equal, compare chronicLoadRatio
                 if (a.numberOfAdmissions < b.numberOfAdmissions) return -1;
                 if (a.numberOfAdmissions > b.numberOfAdmissions) return 1;
-            
+
                 return 0; // If both are equal
-            }); 
+            });
             //if same chronic load ratio, then pick the one with lower number of admissions to go first
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
@@ -198,7 +198,7 @@ export function App() {
             let scenario1 = false;
             let scenario2 = false;
             let scenario3 = false
-            if (timeObj.startTime == "19:00"){
+            if (timeObj.startTime == "19:00") {
                 shiftsCombined.forEach((each, eachIndex) => {
                     /* Scenario 1: 
                     // If S3 has 6 admissions,
@@ -206,17 +206,17 @@ export function App() {
                     // N5 has 3+ admissions */
                     if ((each.name == "S3" && Number(each.numberOfAdmissions) == 6) ||
                         (each.name == "S4" && Number(each.numberOfAdmissions) == 6) ||
-                        (each.name == "N5" && Number(each.numberOfAdmissions) >= 3 && each.name == "N5" && Number(each.numberOfAdmissions) <= 6)){
-                            scenario1 = true;
-                            return;
-                    /* Scenario 2: If S4 has 5 admissions */
-                    } else if (each.name == "S4" && Number(each.numberOfAdmissions) == 5){
+                        (each.name == "N5" && Number(each.numberOfAdmissions) >= 3 && each.name == "N5" && Number(each.numberOfAdmissions) <= 6)) {
+                        scenario1 = true;
+                        return;
+                        /* Scenario 2: If S4 has 5 admissions */
+                    } else if (each.name == "S4" && Number(each.numberOfAdmissions) == 5) {
                         scenario1 = false;
                         scenario2 = true;
-                        
+
                         return;
-                    //If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4 “Insert after N1 in Array2”
-                    } 
+                        //If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4 “Insert after N1 in Array2”
+                    }
                     /*else if (each.name == "S3" && Number(each.numberOfAdmissions) == 5){
                         explanationArr.push(`Step 5: If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4`);
                         scenario3 = true;
@@ -232,7 +232,7 @@ export function App() {
                 const array2 = [];
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
-                    Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
+                        Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
 
                     } else {
                         array2.push(innerEach);
@@ -241,9 +241,9 @@ export function App() {
 
 
                 array2 && array2.sort((a, b) => {
-                    if (a.chronicLoadRatio > b.chronicLoadRatio){
+                    if (a.chronicLoadRatio > b.chronicLoadRatio) {
                         return 1;
-                    } 
+                    }
                     if (a.chronicLoadRatio < b.chronicLoadRatio) {
                         return -1;
                     }
@@ -252,23 +252,23 @@ export function App() {
 
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
-                    (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
-                    (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3) ||
-                    Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
+                        (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
+                        (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3) ||
+                        Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                         explanationArr.push(getFormattedOutput(innerEach));
                     } else {
                         array1.push(innerEach);
-                    }                        
+                    }
                 })
 
                 /* Step 2: Create Array 2 but copying over from Array 1*/
                 shiftsCombined = array1.concat(array2);
-                
-                setArray1(array1 && array1.map((each)=>{ return each.name }));
-                setArray2(array2 && array2.map((each)=>{ return each.name }));
+
+                setArray1(array1 && array1.map((each) => { return each.name }));
+                setArray2(array2 && array2.map((each) => { return each.name }));
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr;
-            } else if (scenario2){
+            } else if (scenario2) {
                 explanationArr.push("Step 5 (Scenario 2): 7PM High Chronic Load Scenario. If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
 
                 /* If S4 has number of admissions of 5, then remove S4 from Array 1. This means that we have to copy Array 1 to Array 2. */
@@ -276,8 +276,8 @@ export function App() {
                 const array2 = [];
                 let getS4 = {};
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
-                    } else if (innerEach.name == "S4"){
+                    if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
+                    } else if (innerEach.name == "S4") {
                         explanationArr.push(getFormattedOutput(innerEach))
                         getS4 = innerEach;
                     } else if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) {
@@ -289,25 +289,25 @@ export function App() {
                         array2.push(innerEach);
                     }
                 });
-                
+
                 // const array2 = [...array1].filter((each) => {
                 //     if (each.name == "S2" && Number(each.numberOfAdmissions) == 6){
                 //     } else {
                 //         return each;
                 //     }
                 // })
-            
-                const newElement = getS4; 
+
+                const newElement = getS4;
 
                 let index = 0;
-                for (let i=0; i<array2.length; i++){
-                    if (array2[i].name == "N2"){
+                for (let i = 0; i < array2.length; i++) {
+                    if (array2[i].name == "N2") {
                         index = i;
                     }
                 }
 
                 if (index !== -1) {
-                // Insert the new element after the found element
+                    // Insert the new element after the found element
                     array2.splice(index + 1, 0, newElement);
                 }
 
@@ -315,14 +315,14 @@ export function App() {
 
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr
-                setArray1(array1 && array1.map((each)=>{ return each.name }));
-                setArray2(array2 && array2.map((each)=>{ return each.name }));
-            } else if (scenario3){
+                setArray1(array1 && array1.map((each) => { return each.name }));
+                setArray2(array2 && array2.map((each) => { return each.name }));
+            } else if (scenario3) {
                 const array1 = [];
                 let getS3 = {};
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
-                    } else if (innerEach.name == "S3"){
+                    if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
+                    } else if (innerEach.name == "S3") {
                         getS3 = innerEach;
                     } else {
                         array1.push(innerEach);
@@ -332,27 +332,27 @@ export function App() {
                 const copyArray2 = [...array1];
                 copyArray2.forEach((innerEach, innerEachIndex) => {
                     if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
-                    Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP){
+                        Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                     } else {
                         array2.push(innerEach);
                     }
                 })
 
-                const newElement = getS3; 
+                const newElement = getS3;
 
                 let index = 0;
-                for (let i=0; i<array2.length; i++){
-                    if (array2[i].name == "N1"){
+                for (let i = 0; i < array2.length; i++) {
+                    if (array2[i].name == "N1") {
                         index = i;
                     }
                 }
 
                 if (index !== -1) {
-                // Insert the new element after the found element
+                    // Insert the new element after the found element
                     array2.splice(index + 1, 0, newElement);
                 }
-                setArray1(array1 && array1.map((each)=>{ return each.name }));
-                setArray2(array2 && array2.map((each)=>{ return each.name }));
+                setArray1(array1 && array1.map((each) => { return each.name }));
+                setArray2(array2 && array2.map((each) => { return each.name }));
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr;
             }
@@ -415,7 +415,7 @@ export function App() {
     }
 
     const onChange = (e, admissionsId) => {
-        if (dropdown == "17:00"){
+        if (dropdown == "17:00") {
             setClickedGenerateQueue(false);
         }
         const { name, value } = e.target
@@ -544,26 +544,26 @@ export function App() {
                 onChange={e => {
                     const startTime = e.target.value;
                     console.log("clickedGenerateQueue", clickedGenerateQueue);
-                    if (startTime == "19:00" && clickedGenerateQueue){
+                    if (startTime == "19:00" && clickedGenerateQueue) {
                         const getMostRecentTransactionx = async (startTime) => {
                             const res = await getMostRecentTransaction(startTime);
 
-                            if (res && res.transaction){
+                            if (res && res.transaction) {
                                 let getN5 = {};
 
                                 res.transaction.admissionsObj.allAdmissionsDataShifts.shifts.forEach((each, eachIndex) => {
-                                    if (each.name == "N5"){
+                                    if (each.name == "N5") {
                                         getN5 = each;
                                         return;
                                     }
                                 })
 
                                 const newObj = {};
-                                
+
                                 const shifts = [];
 
                                 allAdmissionsDataShifts.shifts.forEach((each, eachIndex) => {
-                                    if (each.name == "N5"){
+                                    if (each.name == "N5") {
                                         each = getN5;
                                     }
                                     shifts.push(each);
@@ -578,27 +578,57 @@ export function App() {
                             }
                         }
                         getMostRecentTransactionx("19:00");
-  
+
                     } else {
                         setDropdown(startTime);
                         setLastSaved("")
-                        setAllAdmissionsDataShifts({shifts: SHIFT_TYPES, dropdown: startTime});
+                        setAllAdmissionsDataShifts({ shifts: SHIFT_TYPES, dropdown: startTime });
                         const getMostRecentTransactionx = async (startTime) => {
                             const res = await getMostRecentTransaction(startTime);
 
-                            if (res && res.transaction){
+                            if (res && res.transaction) {
                                 const order = res.transaction.order;
                                 const allAdmissionsDataShifts = res.transaction.admissionsObj.allAdmissionsDataShifts;
                                 const lastSavedTime = res.transaction.localDateTime;
-                                if (allAdmissionsDataShifts){
+                                if (allAdmissionsDataShifts) {
                                     setAllAdmissionsDataShifts(allAdmissionsDataShifts);
                                 }
 
-                                if (order){
+                                if (order.split(">").length > 10){
+                                    const splitArr = order.split(">");
+                                    function splitArrayAtSecondOccurrence(arr, value) {
+                                        let count = 0; // To track occurrences of the value
+                                        let splitIndex = -1;
+                                      
+                                        // Iterate over the array to find the second occurrence
+                                        for (let i = 0; i < arr.length; i++) {
+                                          if (arr[i] === value) {
+                                            count++;
+                                            if (count === 2) {
+                                              splitIndex = i;
+                                              break;
+                                            }
+                                          }
+                                        }
+                                      
+                                        // If the value is found twice, split the array
+                                        if (splitIndex !== -1) {
+                                            setArray1(arr.slice(0, splitIndex));
+                                            setArray2(arr.slice(splitIndex));
+                                          return [arr.slice(0, splitIndex), arr.slice(splitIndex)];
+                                        } else {
+                                          // If the value is not found twice, return the whole array as the first element
+                                          return [arr];
+                                        }
+                                      }
+                                      setOrderOfAdmissions(order);
+                                      splitArrayAtSecondOccurrence(splitArr, "N1");
+
+                                } else if (order) {
                                     setOrderOfAdmissions(order);
                                 }
 
-                                if (lastSavedTime){
+                                if (lastSavedTime) {
                                     setLastSaved(lastSavedTime);
                                 }
                                 setSortRoles(allAdmissionsDataShifts, startTime, lastSavedTime);
@@ -773,7 +803,7 @@ export function App() {
         const orderOfAdmissions_ = sortMain(allAdmissionsDataShifts, dropdown);
 
         addTransaction(
-            { allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown }, 
+            { allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown },
             orderOfAdmissions_
             // sorted
         );
@@ -833,12 +863,12 @@ export function App() {
         // Split the string by the target substring and check if there are more than 2 parts
         const parts = str.split(target);
         return parts.length > 2;
-      }
-      
+    }
+
     return (
         <div>
             <div className="header">
-            {/* <img
+                {/* <img
             alt="clock"
             className="clock"
             id="clock-button"
@@ -870,9 +900,6 @@ export function App() {
                                     {
                                         EXPAND_TABLE.map((each, eachIndex) => {
                                             return (
-                                                /*<th onClick={() => handleSort(each[0])}>
-                                                    {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
-                                                </th>*/
                                                 <th>
                                                     {each[1]}
                                                 </th>
@@ -945,6 +972,25 @@ export function App() {
                                                         disabled={admission.isStatic}
                                                     />
                                                 </td>
+                                                {/* <td className="usercanedit"
+
+                                                    tabIndex={-1}
+                                                    onKeyDown={(e) => handleKeyDown(e, index)}
+                                                >
+                                                    <input
+                                                        id={`isTwoAdmits_${index}`}
+                                                        name="isTwoAdmits"
+                                                        className="isTwoAdmits"
+                                                        value={admission.isTwoAdmits ? admission.isTwoAdmits : ""}
+                                                        step="1"
+                                                        type="checkbox"
+                                                        placeholder="---"
+                                                        onChange={(e) => onChange(e, admission.admissionsId)}
+                                                        // disabled={admission.isStatic}
+                                                        inputMode="numeric"
+                                                        pattern="[0-9]*"
+                                                    />
+                                                </td> */}
                                                 <td className="usercanedit"
 
                                                     tabIndex={-1}
@@ -993,7 +1039,7 @@ export function App() {
                             <div>
                                 <p className="endoutputcenter" id="orderofadmissions_output">{array1 ? array1.join(">") + ">" : ""}<br></br>{array2 && array2.join(">")}</p>
                             </div>
-                        : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
+                            : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         }
                         {/* <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p> */}
                         <div className="flex-container">
@@ -1052,7 +1098,7 @@ export function App() {
                                             //     .catch((err) => {
                                             //         console.error("Failed to copy: ", err);
                                             //     });
-                                            const contentToCopy = document.getElementById("fieldsettocopy_min") && document.getElementById("fieldsettocopy_min").innerText.replaceAll("\n\n","\n").replaceAll("\n\n","\n");
+                                            const contentToCopy = document.getElementById("fieldsettocopy_min") && document.getElementById("fieldsettocopy_min").innerText.replaceAll("\n\n", "\n").replaceAll("\n\n", "\n");
 
                                             navigator.clipboard.writeText(contentToCopy);
 
@@ -1076,7 +1122,7 @@ export function App() {
                                 <div>
                                     <p className="endoutput" id="orderofadmissions_output">{array1 ? array1.join(">") + ">" : ""}<br></br>{array2 && array2.join(">")}</p>
                                 </div>
-                            : <p className="endoutput" id="orderofadmissions_output">{orderOfAdmissions}</p>
+                                : <p className="endoutput" id="orderofadmissions_output">{orderOfAdmissions}</p>
                             }<br></br>
                             {
                                 sorted && sorted.map((each, eachIndex) => {
