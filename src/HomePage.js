@@ -578,6 +578,7 @@ export function App() {
                         getMostRecentTransactionx("19:00");
 
                     } else {
+                        setClickedGenerateQueue(false);
                         setDropdown(startTime);
                         setLastSaved("")
                         setAllAdmissionsDataShifts({ shifts: SHIFT_TYPES, dropdown: startTime });
