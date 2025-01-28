@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.a0c867dc.css",
-    "main.js": "/static/js/main.20523c8b.js",
-    "static/js/453.9718cc1d.chunk.js": "/static/js/453.9718cc1d.chunk.js",
-    "static/media/sadqueuelogo_bluebackground.png": "/static/media/sadqueuelogo_bluebackground.3f9a9783050202a9daa7.png",
-    "index.html": "/index.html",
-    "main.a0c867dc.css.map": "/static/css/main.a0c867dc.css.map",
-    "main.20523c8b.js.map": "/static/js/main.20523c8b.js.map",
-    "453.9718cc1d.chunk.js.map": "/static/js/453.9718cc1d.chunk.js.map"
+    "main.css": "/sad/static/css/main.a0c867dc.css",
+    "main.js": "/sad/static/js/main.df687c03.js",
+    "static/js/453.9718cc1d.chunk.js": "/sad/static/js/453.9718cc1d.chunk.js",
+    "static/media/sadqueuelogo_bluebackground.png": "/sad/static/media/sadqueuelogo_bluebackground.3f9a9783050202a9daa7.png",
+    "index.html": "/sad/index.html",
+    "main.a0c867dc.css.map": "/sad/static/css/main.a0c867dc.css.map",
+    "main.df687c03.js.map": "/sad/static/js/main.df687c03.js.map",
+    "453.9718cc1d.chunk.js.map": "/sad/static/js/453.9718cc1d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a0c867dc.css",
-    "static/js/main.20523c8b.js"
+    "static/js/main.df687c03.js"
   ]
 }
