@@ -382,9 +382,9 @@ export function App() {
 
     const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
         if (compositeScoreAlgorithm) {
-            sortMainByCompositeScore(timeObj, dropdownSelected, lastSavedTime);
+            return sortMainByCompositeScore(timeObj, dropdownSelected, lastSavedTime);
         } else {
-            sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
+            return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
         }
     }
     const sortMainByCompositeScore = (timeObj, dropdownSelected, lastSavedTime = "") => {
