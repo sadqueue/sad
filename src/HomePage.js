@@ -1267,7 +1267,7 @@ export function App() {
                                 </div>)
                         }
                         <div id="fieldsettocopy_min">
-                            <p className="boldCopy">
+                            <p className="bold">
                                 {dropdown ? `Order of Admits` : `Select a time. No roles in the queue.`}
                             </p>
                             <p>{`${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}`}</p>

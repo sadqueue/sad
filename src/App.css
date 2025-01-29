@@ -388,6 +388,7 @@ fieldset.fieldsettocopy {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  margin-bottom: 0px;
 }
 
 input[type="time"]::-webkit-calendar-picker-indicator {
