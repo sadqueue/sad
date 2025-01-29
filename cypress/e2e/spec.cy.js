@@ -197,14 +197,14 @@ describe('template spec', () => {
 
           cy.get("#generateQueue").click();
 
-          cy.get('#alr') // Replace 'yourElementId' with the actual ID of the element
-          .then(($el) => {
-            console.log("ALR: ", $el.text())
-          });
-          cy.get('#clr') // Replace 'yourElementId' with the actual ID of the element
-          .then(($el) => {
-            console.log("CLR: ", $el.text())
-          });
+          // cy.get('#alr') // Replace 'yourElementId' with the actual ID of the element
+          // .then(($el) => {
+          //   console.log("ALR: ", $el.text())
+          // });
+          // cy.get('#clr') // Replace 'yourElementId' with the actual ID of the element
+          // .then(($el) => {
+          //   console.log("CLR: ", $el.text())
+          // });
           cy.get('#orderofadmissions_output') // Replace 'yourElementId' with the actual ID of the element
             .then(($el) => {
 
