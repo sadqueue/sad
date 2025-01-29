@@ -548,8 +548,9 @@ input::-webkit-inner-spin-button {
   input,
   tr,
   th,
-  span {
-    font-size: 12px;
+  span, 
+  button {
+    font-size: 16px;
     touch-action: manipulation;
   }
 
@@ -571,13 +572,30 @@ input::-webkit-inner-spin-button {
     width: 94%;
   }
 
-  .endoutputcenter, p,
-  button
-  {
+  p {
+    font-size: 16px;
+  }
+
+  .endoutputcenter {
     font-size: 16px;
   }
 
   .flex-container-just1item {
     margin-bottom: -15px;
+  }
+
+  .timesdropdown {
+    font-size: 16px;
+    height: 3rem;
+    margin-bottom: 25px;;
+  }
+
+  .left-text,
+  .boldCopy  {
+    font-size: 16px;
+  }
+
+  .backgroundcoloryellow{
+    width: 230px;
   }
 }
