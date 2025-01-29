@@ -43,7 +43,7 @@ export function CopyMessages() {
 
                     }} />
                 <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
-                <p><br/>{COPIED_MSG_1}</p>
+                <p>{COPIED_MSG_1}</p>
             </div>
 
             {}

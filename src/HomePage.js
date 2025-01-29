@@ -47,7 +47,6 @@ export function App() {
     const [openTable, setOpenTable] = useState(false);
     const [weight, setWeight] = useState(0.3);
     const [isCopied, setIsCopied] = useState(false);
-    const [isCleared, setIsCleared] = useState(false);
     const [sortConfig, setSortConfig] = useState(
         {
             "name": true,
@@ -68,6 +67,9 @@ export function App() {
     const [array2, setArray2] = useState("");
     const [inputManually, setInputManually] = useState("");
     const [clickedGenerateQueue, setClickedGenerateQueue] = useState(false);
+    const [compositeScoreAlgorithm, setCompositeScoreAlgorithm] = useState(false);
+    const [alr, setAlr] = useState(0.5);
+    const [clr, setClr] = useState(0.5)
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         let localDateTime = "";
@@ -98,7 +100,7 @@ export function App() {
 
     }, [])
 
-    const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
+    const sortMainOriginal = (timeObj, dropdownSelected, lastSavedTime = "") => {
         const orderOfAdmissions = [];
         timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             each["startTime"] = timeObj.startTime ? timeObj.startTime : "";
@@ -378,6 +380,162 @@ export function App() {
         return orderOfAdmissions.join(">");
     }
 
+    const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
+        if (compositeScoreAlgorithm) {
+            sortMainByCompositeScore(timeObj, dropdownSelected, lastSavedTime);
+        } else {
+            sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
+        }
+    }
+    const sortMainByCompositeScore = (timeObj, dropdownSelected, lastSavedTime = "") => {
+        const orderOfAdmissions = [];
+        timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
+            each["startTime"] = timeObj.startTime ? timeObj.startTime : "";
+            each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
+            each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
+            each["chronicLoadRatio"] = getChronicLoadRatio(each);
+            each["score"] = getCompositeScore(each);
+            each["numberOfAdmissions"] = each.numberOfAdmissions ? each.numberOfAdmissions : "";
+            each["timestamp"] = each.timestamp ? each.timestamp : ""
+            return each;
+        });
+
+        const explanationArr = [];
+        explanationArr.push("\n");
+        explanationArr.push("Step 1: Sort by the difference of the shift time with the timestamp.");
+        explanationArr.push("ALR: "+ alr);
+        explanationArr.push("CLR: "+ clr);
+        explanationArr.push("\n");
+        const getTimeDifference = (time1) => {
+
+            if (time1) {
+                const time2 = dropdownSelected;
+                // Convert times to minutes
+                const [hours1, minutes1] = time1.split(':').map(Number);
+                const [hours2, minutes2] = time2.split(':').map(Number);
+
+                const totalMinutes1 = hours1 * 60 + minutes1;
+                const totalMinutes2 = hours2 * 60 + minutes2;
+
+                // Calculate difference in minutes
+                let diffMinutes = totalMinutes2 - totalMinutes1;
+
+                // Convert back to HH:mm
+                const hours = Math.floor(diffMinutes / 60);
+                const minutes = diffMinutes % 60;
+
+                // Format with leading zeros
+                return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+            } else {
+                return "00:00";
+            }
+
+        }
+
+        const alr_f = alr;//0.50;
+        const clr_f = clr;//0.50;
+
+        const calculateRatio = (difference) => {
+            const split = difference.split(":");
+            const hours = Number(split[0]);
+            const minutes = Number(split[1]);
+            return (1 - ((hours * 60 + minutes) / 180)).toFixed(3);
+        }
+
+        const getClr = (each) => {
+            const admissions = Number(each.numberOfAdmissions);
+            let clr = 0;
+
+            if (each.name == "S2") {
+                clr = Number(admissions) / 8;
+            } else if (each.name == "S3") {
+                clr = Number(admissions) / 6;
+            } else if (each.name == "S4") {
+                clr = Number(admissions) / 5;
+            } else if (each.name == "N5") {
+                clr = Number(admissions) / 2;
+            }
+            return clr.toFixed(3);
+        }
+
+        const getComposite = (each, ratio, clr) => {
+            const comp = ((alr_f * ratio) + (clr_f * clr)).toFixed(3);
+
+            explanationArr.push(`CS for ${each.name}: (${alr_f} * ${ratio}) + (${clr_f} * ${clr}) = ${comp}`);
+            if (!comp || comp == "NaN") {
+                return 0;
+            }
+            else {
+                return comp;
+            }
+        }
+
+        const getCompositeExplanation = (each, ratio, clr) => {
+            const comp = ((alr_f * ratio) + (clr_f * clr)).toFixed(3);
+
+            explanationArr.push(`CS for ${each.name}: (${alr_f} * ${ratio}) + (${clr_f} * ${clr}) = ${comp}`);
+            if (!comp || comp == "NaN") {
+                return 0;
+            }
+            else {
+                return comp;
+            }
+        }
+
+        timeObj.shifts.forEach((each, eachIndex) => {
+            const difference = getTimeDifference(each.timestamp);
+            const ratio = calculateRatio(difference);
+            const clr = getClr(each)
+            const composite = getComposite(each, ratio, clr);
+            each["difference"] = difference;
+            each["ratio"] = ratio;
+            each["clr"] = clr;
+            each["composite"] = composite;
+        });
+
+        explanationArr.push("\n");
+
+        timeObj.shifts.sort((a, b) => {
+            if (a.composite < b.composite) {
+                return -1;
+            }
+            if (b.composite > b.composite) {
+                return 1;
+            }
+            return 0;
+        });
+
+        timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                explanationArr.push(getFormattedOutput(each));
+                explanationArr.push("Time difference: " + each.difference);
+                explanationArr.push("Ratio: " + each.ratio);
+                explanationArr.push("Clr: " + each.clr);
+                explanationArr.push("Composite: " + each.composite);
+                explanationArr.push("\n");
+            }
+        });
+
+
+        timeObj.shifts.map((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                    orderOfAdmissions.push(each.name);
+                }
+            }
+        })
+
+        setOrderOfAdmissions(orderOfAdmissions.join(">"));
+        setExplanation(explanationArr);
+
+        setSortRoles(timeObj, dropdownSelected, lastSavedTime);
+
+        setAllAdmissionsDataShifts(timeObj);
+        sortByAscendingName(timeObj);
+
+        return orderOfAdmissions.join(">");
+    }
+
     const getFormattedOutput = (each) => {
         return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`;
     }
@@ -593,35 +751,35 @@ export function App() {
                                     setAllAdmissionsDataShifts(allAdmissionsDataShifts);
                                 }
 
-                                if (order.split(">").length > 10){
+                                if (order.split(">").length > 10) {
                                     const splitArr = order.split(">");
                                     function splitArrayAtSecondOccurrence(arr, value) {
                                         let count = 0; // To track occurrences of the value
                                         let splitIndex = -1;
-                                      
+
                                         // Iterate over the array to find the second occurrence
                                         for (let i = 0; i < arr.length; i++) {
-                                          if (arr[i] === value) {
-                                            count++;
-                                            if (count === 2) {
-                                              splitIndex = i;
-                                              break;
+                                            if (arr[i] === value) {
+                                                count++;
+                                                if (count === 2) {
+                                                    splitIndex = i;
+                                                    break;
+                                                }
                                             }
-                                          }
                                         }
-                                      
+
                                         // If the value is found twice, split the array
                                         if (splitIndex !== -1) {
                                             setArray1(arr.slice(0, splitIndex));
                                             setArray2(arr.slice(splitIndex));
-                                          return [arr.slice(0, splitIndex), arr.slice(splitIndex)];
+                                            return [arr.slice(0, splitIndex), arr.slice(splitIndex)];
                                         } else {
-                                          // If the value is not found twice, return the whole array as the first element
-                                          return [arr];
+                                            // If the value is not found twice, return the whole array as the first element
+                                            return [arr];
                                         }
-                                      }
-                                      setOrderOfAdmissions(order);
-                                      splitArrayAtSecondOccurrence(splitArr, "N1");
+                                    }
+                                    setOrderOfAdmissions(order);
+                                    splitArrayAtSecondOccurrence(splitArr, "N1");
 
                                 } else if (order) {
                                     setOrderOfAdmissions(order);
@@ -880,9 +1038,6 @@ export function App() {
                     <div className="flex-container-just1item">
                         {timesDropdown()}
                     </div>
-                    <div className="flex-container">
-                        <span className={`cleared-message ${isCleared ? 'visible' : ''}`}>Cleared!</span>
-                    </div>
                     {!isMobileDevice() && <img
                         alt="copy button"
                         className="copybutton"
@@ -1048,7 +1203,7 @@ export function App() {
 
                             </span>
                             <span className="right-text">
-                                <button className="seedetails" onClick={() => {
+                                <button id="seedetails" className="seedetails" onClick={() => {
                                     setOpenTable(!openTable);
                                 }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
                             </span>
@@ -1145,7 +1300,7 @@ export function App() {
                     </fieldset>
                     <p className="admissionsorderlastline">{ADMISSIONS_FORMAT}</p>
 
-                    <button className="seedetails" onClick={() => {
+                    <button className="seedetails" id="seedetails" onClick={() => {
                         setSeeDetails(!seeDetails);
                     }
                     }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
@@ -1159,7 +1314,50 @@ export function App() {
                             } else {
                                 return <p>{line}</p>
                             }
-                        })}
+                        })}<br></br>
+
+                        <div className="flex">
+                            <input
+                                id="compositeScoreCheckbox"
+                                placeholder="Composite Score Algorithm"
+                                className="input-left"
+                                label="Composite Score Algorithm"
+                                type="checkbox"
+                                onChange={(e) => {
+                                    setCompositeScoreAlgorithm(e.target.checked);
+                                }}
+                            />
+                            <p>Composite Score Algorithm</p>
+
+                        </div>
+
+                        {compositeScoreAlgorithm &&
+                            <div>
+                                <div className="flex"><p>ALR: </p><input
+                                    id="alr"
+                                    placeholder="ALR"
+                                    className="input-left"
+                                    label="ALR"
+                                    type="input"
+                                    onChange={(e) => {
+                                        setAlr(e.target.value);
+                                    }}
+                                    value={alr}
+                                /></div>
+                                <div className="flex"><p>CLR: </p><input
+                                    id="clr"
+                                    placeholder="CLR"
+                                    className="input-left"
+                                    label="CLR"
+                                    type="input"
+                                    onChange={(e) => {
+                                        setClr(e.target.value);
+                                    }}
+                                    value={clr}
+                                /></div>
+                                <p>Select the Generate Queue button above</p>
+                            </div>}
+                            
                     </fieldset>}
 
                     <CopyMessages />

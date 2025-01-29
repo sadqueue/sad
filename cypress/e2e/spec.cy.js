@@ -169,6 +169,12 @@ describe('template spec', () => {
     cy.visit(url);
     let count = 1;
     
+    // cy.contains("Expand").click();
+    // cy.get("#compositeScoreCheckbox").click();
+
+    // cy.get(`#alr`).clear().type(0.7);
+    // cy.get(`#clr`).clear().type(0.3);
+
     if (testArr5pm) {
       /* test 5PM */
       cy.get("#timesdropdown").should('be.visible').select("17:00");
@@ -191,6 +197,14 @@ describe('template spec', () => {
 
           cy.get("#generateQueue").click();
 
+          cy.get('#alr') // Replace 'yourElementId' with the actual ID of the element
+          .then(($el) => {
+            console.log("ALR: ", $el.text())
+          });
+          cy.get('#clr') // Replace 'yourElementId' with the actual ID of the element
+          .then(($el) => {
+            console.log("CLR: ", $el.text())
+          });
           cy.get('#orderofadmissions_output') // Replace 'yourElementId' with the actual ID of the element
             .then(($el) => {
 
