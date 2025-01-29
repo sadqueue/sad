@@ -461,7 +461,7 @@ export function App() {
         const getComposite = (each, ratio, clr) => {
             const comp = ((alr_f * ratio) + (clr_f * clr)).toFixed(3);
 
-            explanationArr.push(`CS for ${each.name}: (${alr_f} * ${ratio}) + (${clr_f} * ${clr}) = ${comp}`);
+            // explanationArr.push(`CS for ${each.name}: (${alr_f} * ${ratio}) + (${clr_f} * ${clr}) = ${comp}`);
             if (!comp || comp == "NaN") {
                 return 0;
             }
@@ -473,12 +473,12 @@ export function App() {
         const getCompositeExplanation = (each, ratio, clr) => {
             const comp = ((alr_f * ratio) + (clr_f * clr)).toFixed(3);
 
-            explanationArr.push(`CS for ${each.name}: (${alr_f} * ${ratio}) + (${clr_f} * ${clr}) = ${comp}`);
+            // explanationArr.push(`CS for ${each.name}: (${alr_f} * ${ratio}) + (${clr_f} * ${clr}) = ${comp}`);
             if (!comp || comp == "NaN") {
-                return 0;
+                return "";
             }
             else {
-                return comp;
+                return `CS: (${alr_f} * ${ratio}) + (${clr_f} * ${clr}) = ${comp}`;
             }
         }
 
@@ -510,7 +510,7 @@ export function App() {
                 explanationArr.push(getFormattedOutput(each));
                 explanationArr.push("Time difference: " + each.difference);
                 explanationArr.push("Ratio: " + each.ratio);
-                explanationArr.push("Clr: " + each.clr);
+                explanationArr.push(getCompositeExplanation(each, each.ratio, each.clr));
                 explanationArr.push("Composite: " + each.composite);
                 explanationArr.push("\n");
             }
@@ -1333,7 +1333,7 @@ export function App() {
 
                         {compositeScoreAlgorithm &&
                             <div>
-                                <div className="flex"><p>ALR: </p><input
+                                <div className="flex"><p className="weightwidth">ALR: </p><input
                                     id="alr"
                                     placeholder="ALR"
                                     className="input-left"
@@ -1344,7 +1344,7 @@ export function App() {
                                     }}
                                     value={alr}
                                 /></div>
-                                <div className="flex"><p>CLR: </p><input
+                                <div className="flex"><p className="weightwidth">CLR: </p><input
                                     id="clr"
                                     placeholder="CLR"
                                     className="input-left"
