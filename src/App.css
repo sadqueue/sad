@@ -217,7 +217,7 @@ button.seedetails {
   /* float: right; */
   opacity: 0.5;
   margin: 3px;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 button.seedetails:hover {
@@ -225,7 +225,27 @@ button.seedetails:hover {
   /* float: right; */
   opacity: 1;
   margin: 3px;
-  font-size: 12px;
+  font-size: 16px;
+}
+
+button.explanation {
+  all: unset;
+  /* float: left; */
+  opacity: 0.6;
+  /* margin: 3px; */
+  font-size: 24px;
+  /* margin-bottom: 6px; */
+  font-weight: bold;
+}
+
+button.explanation:hover {
+  all: unset;
+  /* float: left; */
+  opacity: 1;
+  /* margin: 3px; */
+  font-size: 24px;
+  /* margin-bottom: 6px; */
+  font-weight: bold;
 }
 
 img.copybutton {
@@ -235,6 +255,15 @@ img.copybutton {
   opacity: 0.5;
   margin: 10px 10px 8px 0px;
 }
+
+img.copybutton:hover {
+  all: unset;
+  float: right;
+  width: 30px;
+  opacity: 1;
+  margin: 10px 10px 8px 0px;
+}
+
 
 img.githubbutton {
   text-align: center;
@@ -251,13 +280,6 @@ img.copybuttonjust1line {
   margin-top: -3px;
 }
 
-img.copybutton:hover {
-  all: unset;
-  float: right;
-  width: 25px;
-  opacity: 1;
-  margin: 10px 10px 8px 0px;
-}
 
 
 img.copybuttonforcopymsg {
@@ -265,7 +287,6 @@ img.copybuttonforcopymsg {
   float: right;
   width: 25px;
   opacity: 0.5;
-  margin-top: -35px;
 }
 
 img.copybuttonforcopymsg:hover {
@@ -273,7 +294,6 @@ img.copybuttonforcopymsg:hover {
   float: right;
   width: 25px;
   opacity: 1;
-  margin-top: -35px;
 }
 
 
@@ -529,7 +549,15 @@ input::-webkit-inner-spin-button {
 }
 
 .notes{
+  text-align: left;
   margin-top: 30px;
+  padding-bottom: 15px;
+}
+
+.copymessage {
+  width: 89%;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .flex {
@@ -635,5 +663,27 @@ input::-webkit-inner-spin-button {
     font-size: 16px;
     height: 3.5rem;
     
+  }
+  .bold { 
+    font-size: 16px;
+  }
+  button.explanation {
+    all: unset;
+    /* float: left; */
+    opacity: 0.6;
+    /* margin: 3px; */
+    font-size: 16px;
+    /* margin-bottom: 6px; */
+    font-weight: bold;
+  }
+
+  button.explanation:hover {
+    all: unset;
+    /* float: left; */
+    opacity: 1;
+    /* margin: 3px; */
+    font-size: 16px;
+    /* margin-bottom: 6px; */
+    font-weight: bold;
   }
 }

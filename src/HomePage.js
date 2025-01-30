@@ -70,7 +70,13 @@ export function App() {
     const [clickedGenerateQueue, setClickedGenerateQueue] = useState(false);
     const [compositeScoreAlgorithm, setCompositeScoreAlgorithm] = useState(false);
     const [alr, setAlr] = useState(0.5);
-    const [clr, setClr] = useState(0.5)
+    const [clr, setClr] = useState(0.5);
+    const [show1, setShow1] = useState(false);
+    const [show2, setShow2] = useState(false);
+    const [show3, setShow3] = useState(false);
+    const [show4, setShow4] = useState(false);
+
+
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         let localDateTime = "";
@@ -1253,11 +1259,17 @@ export function App() {
                     }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
 
                     {seeDetails && <fieldset className="notes">
-                        {/* Part 1: Order of Admits */ }
+                        <p className="bold">Explanation</p>
 
-                        <div id="fieldsettocopy_min">
+                        {/* Part 1: Order of Admits */ }
+                        <button className="explanation" onClick={() => {
+                            setShow1(!show1);
+                        }
+                        }>{seeDetails ? "> Order of Admissions" : "< Order of Admissions"}</button><br></br>
+                        
+                        {show1 && <div id="fieldsettocopy_min">
                             <p className="bold">
-                                {`Order of Admits`}
+                                {/* {`Order of Admits`} */}
                             </p>
                             {/* <p>{ADMISSIONS_FORMAT}</p> */}
 
@@ -1285,22 +1297,40 @@ export function App() {
                             <p>{`Updated ${lastSaved}`}</p>
                             <p>{"@ "}<a id="sadqueuelink" href="">{`https://sadqueue.github.io/sad`}</a></p><br></br>
 
-                        </div>
-
-
-                
-
-                        <p className="bold">Explanation</p>
-
-                        {explanation && explanation.map((line, lineIndex) => {
+                        </div>}
+                        
+                        {/* Part 2: Explanation */ }
+                        <button className="explanation" onClick={() => {
+                            setShow2(!show2);
+                        }
+                        }>{seeDetails ? "> Step by Step Details" : "< Step by Step Details"}</button><br></br>
+                        
+                        {show2 && <div>
+                            {explanation && explanation.map((line, lineIndex) => {
                             if (line == "\n") {
                                 return <br></br>
                             } else {
                                 return <p>{line}</p>
                             }
                         })}<br></br>
+                        </div>}
+                        {/* Part 3: Copy Message */ }
 
-                        <div className="flex">
+                        <button className="explanation" onClick={() => {
+                            setShow3(!show3);
+                        }
+                        }>{seeDetails ? "> Copy Messages" : "< Copy Messages"}</button><br></br>
+                        
+                        {show3 && <CopyMessages />}
+
+                        
+                        {/* Part 4: Set Composite Score */ }
+                        <button className="explanation" onClick={() => {
+                            setShow4(!show4);
+                        }
+                        }>{seeDetails ? "> Set Composite Algorithm" : "< Set Composite Algorithm"}</button><br></br>
+                        
+                        { show4 &&<div className="flex">
                             <input
                                 id="compositeScoreCheckbox"
                                 placeholder="Composite Score Algorithm"
@@ -1315,8 +1345,8 @@ export function App() {
                             <p>Composite Score Algorithm</p>
 
                         </div>
-
-                        {compositeScoreAlgorithm &&
+}
+                        { show4 && compositeScoreAlgorithm &&
                             <div>
                                 <div className="flex"><p className="weightwidth">ALR: </p><input
                                     id="alr"
@@ -1341,12 +1371,12 @@ export function App() {
                                     value={clr}
                                 /></div>
                                 <p>Select the Generate Queue button above</p>
-                            </div>}
+
+   
+                            </div>
+                            }
                             
                     </fieldset>}
-
-                    <CopyMessages />
-
                     <div className="footer">
                         <img
                             alt="copy button"
