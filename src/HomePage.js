@@ -32,6 +32,7 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, set } from "firebase/database";
 import { addTransaction, deleteAllTransactions, getMostRecentTransaction, getLast10Transactions } from "./transactionsApi";
 import html2canvas from "html2canvas";
+// import CypressTestRunner from "./CypressTestRunner";
 
 const CONFIG = CONFIG1;
 
@@ -389,6 +390,20 @@ export function App() {
     }
     const sortMainByCompositeScore = (timeObj, dropdownSelected, lastSavedTime = "") => {
         const orderOfAdmissions = [];
+        timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                if (each.name == "N5"){
+                    each["timestamp"] = "15:30";
+                    each["score"] = "0.5";
+                }
+                return each;
+            } else {
+                each["timestamp"] = "";
+                each["numberOfAdmissions"] = "";
+            }
+            return each;
+        });
+
         timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
             each["startTime"] = timeObj.startTime ? timeObj.startTime : "";
             each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
@@ -440,6 +455,14 @@ export function App() {
             const hours = Number(split[0]);
             const minutes = Number(split[1]);
             return (1 - ((hours * 60 + minutes) / 180)).toFixed(3);
+        }
+
+        const calculateRatioExplanation = (difference) => {
+            const split = difference.split(":");
+            const hours = Number(split[0]);
+            const minutes = Number(split[1]);
+            const output = (1 - ((hours * 60 + minutes) / 180)).toFixed(3);
+            return `Ratio: 1 - ((${hours} * 60 + ${minutes}) / 180)=${output}`;
         }
 
         const getClr = (each) => {
@@ -509,7 +532,7 @@ export function App() {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 explanationArr.push(getFormattedOutput(each));
                 explanationArr.push("Time difference: " + each.difference);
-                explanationArr.push("Ratio: " + each.ratio);
+                explanationArr.push(calculateRatioExplanation(each.difference));
                 explanationArr.push(getCompositeExplanation(each, each.ratio, each.clr));
                 explanationArr.push("Composite: " + each.composite);
                 explanationArr.push("\n");
@@ -1035,6 +1058,7 @@ export function App() {
             </div>
             {loading ? <div className="loading">Loading...</div> :
                 <div className="container">
+                    {/* <CypressTestRunner /> */}
                     <div className="flex-container-just1item">
                         {timesDropdown()}
                     </div>
@@ -1324,6 +1348,7 @@ export function App() {
                                 label="Composite Score Algorithm"
                                 type="checkbox"
                                 onChange={(e) => {
+                                    // setAllAdmissionsDataShifts({startTime: dropdown, shifts: SHIFT_TYPES})
                                     setCompositeScoreAlgorithm(e.target.checked);
                                 }}
                             />
