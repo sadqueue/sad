@@ -28,8 +28,7 @@ export function CopyMessages() {
     const [isCopied, setIsCopied] = useState(false);
     
     return (
-        <fieldset className="notes">
-            <p className="bold">Copy Message</p>
+        <fieldset className="copymessage">
             <div>
                 <img
                     alt="copy button"
