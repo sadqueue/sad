@@ -115,7 +115,7 @@ export function App() {
         });
 
         const explanationArr = [];
-        explanationArr.push("\n");
+        // explanationArr.push("\n");
         explanationArr.push("Step 1: Merge with nights based on last timestamp.");
 
         /*
@@ -718,7 +718,7 @@ export function App() {
             <select
                 value={dropdown}
                 name="timesdropdown"
-                className="timesdropdown"
+                className={isMobileDevice() ? "timesdropdownwithoutsnapshot" : "timesdropdown"}
                 id="timesdropdown"
                 onChange={e => {
                     const startTime = e.target.value;
@@ -1247,57 +1247,20 @@ export function App() {
                         </button>
                     </section>
 
-                    <fieldset className="fieldsettocopy" id="fieldsettocopy">
+                    <button className="seedetails" id="seedetails" onClick={() => {
+                        setSeeDetails(!seeDetails);
+                    }
+                    }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
 
-                        {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 &&
-                            (
-                                <div>
+                    {seeDetails && <fieldset className="notes">
+                        {/* Part 1: Order of Admits */ }
 
-                                    <img
-                                        alt="copy button"
-                                        className="copybutton"
-                                        src={copybuttonImg}
-                                        onClick={(ev) => {
-                                            // const divText = document.getElementById("fieldsettocopy_min").innerText; // Get the plain text of the div
-                                            // const linkText = "sadqueue.github.io/sad"; // Get the link part
-
-                                            // // Create the hyperlink HTML part for the link
-                                            // const hyperlink = "https://" + linkText;
-
-                                            // // Combine the text (keeping the link as a hyperlink)
-                                            // const contentToCopy = divText.replace(linkText, hyperlink);
-
-                                            // // Copy the combined content (HTML with the link as hyperlink)
-                                            // navigator.clipboard.write([
-                                            //     new ClipboardItem({
-                                            //         "text/html": new Blob([contentToCopy], { type: "text/html" }), // Copy as HTML
-                                            //         "text/plain": new Blob([divText.replace(linkText, `https://${linkText}`)], { type: "text/plain" }) // Copy as plain text (with link as URL)
-                                            //     })
-                                            // ])
-                                            //     .then(() => {
-                                            //         console.log("Link and text copied to clipboard!");
-                                            //     })
-                                            //     .catch((err) => {
-                                            //         console.error("Failed to copy: ", err);
-                                            //     });
-                                            const contentToCopy = document.getElementById("fieldsettocopy_min") && document.getElementById("fieldsettocopy_min").innerText.replaceAll("\n\n", "\n").replaceAll("\n\n", "\n");
-
-                                            navigator.clipboard.writeText(contentToCopy);
-
-
-                                            // sendEmail(ev, copiedMessage, title);
-                                            setIsCopied(true);
-                                            setTimeout(() => setIsCopied(false), 1000);
-                                        }} />
-
-                                    <span className={`copied-message ${isCopied ? 'visible' : ''}`}>Copied!</span>
-
-                                </div>)
-                        }
                         <div id="fieldsettocopy_min">
                             <p className="bold">
-                                {dropdown ? `Order of Admits` : `Select a time. No roles in the queue.`}
+                                {`Order of Admits`}
                             </p>
+                            {/* <p>{ADMISSIONS_FORMAT}</p> */}
+
                             <p>{`${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}`}</p>
                             {/* <p id="endoutput">{orderOfAdmissions}</p> */}
                             {hasTwoOccurrences(orderOfAdmissions, "N1") ?
@@ -1320,20 +1283,13 @@ export function App() {
                             }
 
                             <p>{`Updated ${lastSaved}`}</p>
-                            <p>{"@ "}<a id="sadqueuelink" href="">{`https://sadqueue.github.io/sad`}</a></p>
+                            <p>{"@ "}<a id="sadqueuelink" href="">{`https://sadqueue.github.io/sad`}</a></p><br></br>
 
                         </div>
 
 
-                    </fieldset>
-                    <p className="admissionsorderlastline">{ADMISSIONS_FORMAT}</p>
+                
 
-                    <button className="seedetails" id="seedetails" onClick={() => {
-                        setSeeDetails(!seeDetails);
-                    }
-                    }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
-
-                    {seeDetails && <fieldset className="notes">
                         <p className="bold">Explanation</p>
 
                         {explanation && explanation.map((line, lineIndex) => {
