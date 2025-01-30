@@ -1220,19 +1220,23 @@ export function App() {
                             : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         }
                         {/* <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p> */}
-                        <div className="flex-container">
+                        <div className="lastsaved-yellowmessage">
+                                {"Last Saved: " + lastSaved + " @ https://sadqueue.github.io/sad"}
 
-                            <span className="left-text backgroundcoloryellow">
-                                {"Last Saved: " + lastSaved + " @ sadqueue.github.io/sad"}
+                            </div>
+                        {/* <div className="flex-container">
 
-                            </span>
+                            <div className="left-text backgroundcoloryellow">
+                                {"Last Saved: " + lastSaved + " @ https://sadqueue.github.io/sad"}
+
+                            </div>
                             <span className="right-text">
                                 <button id="seedetails" className="seedetails" onClick={() => {
                                     setOpenTable(!openTable);
                                 }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
                             </span>
 
-                        </div>
+                        </div> */}
                     </div>
 
                     <section>
@@ -1316,7 +1320,7 @@ export function App() {
                             }
 
                             <p>{`Updated ${lastSaved}`}</p>
-                            <p>{"@ "}<a id="sadqueuelink" href="">{`sadqueue.github.io/sad`}</a></p>
+                            <p>{"@ "}<a id="sadqueuelink" href="">{`https://sadqueue.github.io/sad`}</a></p>
 
                         </div>
 
