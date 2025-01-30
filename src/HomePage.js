@@ -1316,10 +1316,10 @@ export function App() {
                         </div>}
                         {/* Part 3: Copy Message */ }
 
-                        <button className="explanation" onClick={() => {
+                        <button className="explanation" 
+                        onClick={() => {
                             setShow3(!show3);
-                        }
-                        }>{seeDetails ? "> Copy Messages" : "< Copy Messages"}</button><br></br>
+                        }}>{seeDetails ? "> Copy Messages" : "< Copy Messages"}</button><br></br>
                         
                         {show3 && <CopyMessages />}
 
