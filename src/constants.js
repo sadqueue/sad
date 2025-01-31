@@ -162,7 +162,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        timestampDefault: "18:00"
+        timestampDefault: "17:55"
     },
     {
         admissionsId: "9",
@@ -173,7 +173,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        timestampDefault: "18:30"
+        timestampDefault: "18:20"
     },
     {
         admissionsId: "10",
@@ -184,7 +184,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        timestampDefault: "19:00"
+        timestampDefault: "18:45"
     }
 ];
 

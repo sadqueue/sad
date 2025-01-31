@@ -37,9 +37,9 @@ import html2canvas from "html2canvas";
 const CONFIG = CONFIG1;
 
 export function App() {
-    // deleteAllTransactions("17:00")
-    // deleteAllTransactions("16:00")
-    // deleteAllTransactions("19:00")
+    deleteAllTransactions("17:00")
+    deleteAllTransactions("16:00")
+    deleteAllTransactions("19:00")
     const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState({ startTime: "17:00", shifts: SHIFT_TYPES })
 
     const [sorted, setSorted] = useState("");
