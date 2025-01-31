@@ -46,6 +46,7 @@ export const EXPAND_TABLE = [
     ["name", "Role"],
     ["shiftTimePeriod", "Shift Times"],
     ["timestamp", "Last Admit Time"],
+    ["isTwoAdmits", "2 Admits in Last 2 hrs?"],
     ["numberOfAdmissions", "Number of Admits"],
     ["chronicLoadRatio", "Chronic Load"],
     ["numberOfHours", "# Hours Worked"],
