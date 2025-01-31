@@ -240,7 +240,8 @@ export function App() {
                 let s4HasFiveAdmissions = false;
                 let s4HasFiveAdmissions_obj = {};
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if (innerEach.name == "S4" && innerEach.numberOfAdmissions+"" == "5"){
+                    if (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5
+                    ){
                         s4HasFiveAdmissions = true;
                         s4HasFiveAdmissions_obj = innerEach;
                     } 
@@ -255,15 +256,15 @@ export function App() {
                     }
                 });
 
-                array2 && array2.sort((a, b) => {
-                    if (a.chronicLoadRatio > b.chronicLoadRatio) {
-                        return 1;
-                    }
-                    if (a.chronicLoadRatio < b.chronicLoadRatio) {
-                        return -1;
-                    }
-                    return 0;
-                });
+                // array2 && array2.sort((a, b) => {
+                //     if (a.chronicLoadRatio > b.chronicLoadRatio) {
+                //         return 1;
+                //     }
+                //     if (a.chronicLoadRatio < b.chronicLoadRatio) {
+                //         return -1;
+                //     }
+                //     return 0;
+                // });
 
                 if (s4HasFiveAdmissions){
                     let index = array2.findIndex(obj => obj.name === "S4");
