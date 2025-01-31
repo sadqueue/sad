@@ -603,6 +603,10 @@ export function App() {
         return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`;
     }
 
+    const getFormattedOutputCompositeScore = (each) => {
+        return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.composite}`;
+    }
+
     const getMomentTimeWithoutUndefined = (time) => {
         return time ? moment(time, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"
     }
@@ -1292,23 +1296,26 @@ export function App() {
                         <button className="explanation" onClick={() => {
                             setShow1(!show1);
                         }
-                        }>{show1 ? "> Order of Admissions" : "< Order of Admissions"}</button><br></br>
+                        }>{!show1 ? "> Order of Admissions" : "< Order of Admissions"}</button><br></br>
                         
                         {show1 && <div id="fieldsettocopy_min">
-                            <p className="bold">
-                                {/* {`Order of Admits`} */}
-                            </p>
-                            {/* <p>{ADMISSIONS_FORMAT}</p> */}
+                            
+                            { compositeScoreAlgorithm && 
+                            <div>
+                                <p> Composite score algorithm is being used. </p>
+                                {
+                                    allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
+                                        if (SHOW_ROWS_TABLE[dropdown].includes(each.name)){
+                                            //S1 [ --:-- -- ] ( /7)=0.00
+                                            return <p> {getFormattedOutputCompositeScore(each)} </p>
+                                        }
+                                    })
+                                }
+                            </div>
+                                
+                            }
 
-                            <p>{`${lastSaved && lastSaved.split(" ")[0]} ${convertTo12HourFormatSimple(dropdown)}`}</p>
-                            {/* <p id="endoutput">{orderOfAdmissions}</p> */}
-                            {hasTwoOccurrences(orderOfAdmissions, "N1") ?
-                                <div>
-                                    <p className="endoutput" id="orderofadmissions_output">{array1 ? array1.join(">") + ">" : ""}<br></br>{array2 && array2.join(">")}</p>
-                                </div>
-                                : <p className="endoutput" id="orderofadmissions_output">{orderOfAdmissions}</p>
-                            }<br></br>
-                            {
+                            { !compositeScoreAlgorithm && 
                                 sorted && sorted.map((each, eachIndex) => {
                                     if (each == "\n") {
                                         return <br></br>
@@ -1320,17 +1327,13 @@ export function App() {
                                     }
                                 })
                             }
-
-                            <p>{`Updated ${lastSaved}`}</p>
-                            <p>{"@ "}<a id="sadqueuelink" href="">{`https://sadqueue.github.io/sad`}</a></p><br></br>
-
                         </div>}
                         
                         {/* Part 2: Explanation */ }
                         <button className="explanation" onClick={() => {
                             setShow2(!show2);
                         }
-                        }>{show2 ? "> Step by Step Details" : "< Step by Step Details"}</button><br></br>
+                        }>{!show2 ? "> Step by Step Details" : "< Step by Step Details"}</button><br></br>
                         
                         {show2 && <div>
                             {explanation && explanation.map((line, lineIndex) => {
@@ -1346,7 +1349,7 @@ export function App() {
                         <button className="explanation" 
                         onClick={() => {
                             setShow3(!show3);
-                        }}>{show3 ? "> Copy Messages" : "< Copy Messages"}</button><br></br>
+                        }}>{!show3 ? "> Copy Messages" : "< Copy Messages"}</button><br></br>
                         
                         {show3 && <CopyMessages />}
 
@@ -1355,7 +1358,7 @@ export function App() {
                         <button className="explanation" onClick={() => {
                             setShow4(!show4);
                         }
-                        }>{show4 ? "> Set Composite Algorithm" : "< Set Composite Algorithm"}</button><br></br>
+                        }>{!show4 ? "> Set Composite Algorithm" : "< Set Composite Algorithm"}</button><br></br>
                         
                         { show4 &&<div className="flex">
                             <input
@@ -1372,8 +1375,7 @@ export function App() {
                             <p>Composite Score Algorithm</p>
 
                         </div>
-}
-                        { show4 && compositeScoreAlgorithm &&
+}                       { show4 && compositeScoreAlgorithm &&
                             <div>
                                 <div className="flex"><p className="weightwidth">ALR: </p><input
                                     id="alr"
@@ -1384,7 +1386,7 @@ export function App() {
                                     onChange={(e) => {
                                         setAlr(e.target.value);
                                         if (Number(e.target.value)){
-                                            setClr(1-Number(e.target.value));
+                                            setClr(1-Number(e.target.value).toFixed(2));
 
                                         }
                                     }}
@@ -1399,7 +1401,7 @@ export function App() {
                                     onChange={(e) => {
                                         setClr(e.target.value);
                                         if (Number(e.target.value)){
-                                            setAlr(1-Number(e.target.value));
+                                            setAlr(1-Number(e.target.value).toFixed(2));
                                         }
                                     }}
                                     value={clr}
@@ -1409,6 +1411,7 @@ export function App() {
    
                             </div>
                             }
+                        
                             
                     </fieldset>}
                     <div className="footer">

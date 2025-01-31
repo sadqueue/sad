@@ -72,7 +72,8 @@ div[class="header"] {
 /* Small screens (phones) */
 @media (max-width: 600px) {
   .container {
-    padding: 5px; /* Reduce padding for small screens */
+    padding: 5px;
+    /* Reduce padding for small screens */
   }
 }
 
@@ -321,10 +322,10 @@ p {
 
 #orderofadmissions_output {
   word-wrap: break-word;
-  white-space: normal; 
+  white-space: normal;
 }
 
-p[class="font 14px"]{
+p[class="font 14px"] {
   font-size: 14px;
 }
 
@@ -373,11 +374,16 @@ fieldset {
   margin: auto;
   margin-bottom: 10px;
 
-  word-wrap: break-word; /* Break long words */
-  word-break: break-word; /* Ensure long words break */
-  white-space: normal; /* Allow wrapping */
-  border: 2px solid black; /* Optional: Add a border */
-  padding: 10px; /* Optional: Add padding */
+  word-wrap: break-word;
+  /* Break long words */
+  word-break: break-word;
+  /* Ensure long words break */
+  white-space: normal;
+  /* Allow wrapping */
+  border: 2px solid black;
+  /* Optional: Add a border */
+  padding: 10px;
+  /* Optional: Add padding */
 }
 
 fieldset.fieldsettocopy {
@@ -416,7 +422,7 @@ fieldset.fieldsettocopy {
 }
 
 .timesdropdownwithoutsnapshot {
-    /* float: right;
+  /* float: right;
   margin-top: -93px; */
   background-color: #1a0dab;
   border-radius: 8px;
@@ -448,7 +454,8 @@ input[class="timeperiodbyrole"] {
   font-size: "16px"
 }
 
-.copied-message, .cleared-message {
+.copied-message,
+.cleared-message {
   position: absolute;
   font-size: 12px;
   color: green;
@@ -457,7 +464,8 @@ input[class="timeperiodbyrole"] {
   white-space: nowrap;
 }
 
-.copied-message.visible, .cleared-message.visible {
+.copied-message.visible,
+.cleared-message.visible {
   opacity: 1;
 }
 
@@ -469,37 +477,39 @@ input[class="timeperiodbyrole"] {
 .backgroundlightgray {
   background-color: lightgray;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.flex-container-just1item{
+.flex-container-just1item {
   display: flex;
-  justify-content: center; /* Center horizontally */
+  justify-content: center;
+  /* Center horizontally */
   align-items: center;
   margin-bottom: -20px;
 }
 
-.flex-container{
+.flex-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
 
-.lastsaved-yellowmessage{
+.lastsaved-yellowmessage {
   text-align: center;
   background-color: yellow;
   font-size: 24px;
 }
 
-#endoutput{
+#endoutput {
   background-color: yellow;
 }
 
-.endoutputcenter{
+.endoutputcenter {
   background-color: #1a0dab63;
   text-align: center;
   margin: 0px;
@@ -511,39 +521,53 @@ input::-webkit-inner-spin-button {
   /* margin-top: 5px; */
 }
 
-.right-text{
+.right-text {
   text-align: right;
 }
 
-.middle-text{
-  margin: 0 auto; /* Centers the middle text */
+.middle-text {
+  margin: 0 auto;
+  /* Centers the middle text */
   text-align: center;
 }
 
 .admin-button {
-  position: absolute; /* Position relative to the nearest positioned ancestor */
-  top: 10px;         /* Adjust as needed */
-  right: 10px;       /* Adjust as needed */
-  padding: 5px 10px; /* Small size */
-  font-size: 12px;   /* Small text */
-  background-color: #007bff; /* Blue background */
-  color: white;      /* White text */
-  border: none;      /* Remove border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer;   /* Pointer cursor on hover */
-  transition: background-color 0.3s ease; /* Smooth hover effect */
+  position: absolute;
+  /* Position relative to the nearest positioned ancestor */
+  top: 10px;
+  /* Adjust as needed */
+  right: 10px;
+  /* Adjust as needed */
+  padding: 5px 10px;
+  /* Small size */
+  font-size: 12px;
+  /* Small text */
+  background-color: #007bff;
+  /* Blue background */
+  color: white;
+  /* White text */
+  border: none;
+  /* Remove border */
+  border-radius: 5px;
+  /* Rounded corners */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  transition: background-color 0.3s ease;
+  /* Smooth hover effect */
   height: 25px;
 }
 
 .admin-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3;
+  /* Darker blue on hover */
 }
 
 .number-picker input {
   font-size: 18px;
   text-align: center;
   width: 100px;
-  appearance: none; /* Removes default styles for better control */
+  appearance: none;
+  /* Removes default styles for better control */
 }
 
 .number-picker input::-webkit-outer-spin-button,
@@ -552,7 +576,7 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.notes{
+.notes {
   text-align: left;
   margin-top: 30px;
   padding-bottom: 15px;
@@ -569,12 +593,13 @@ input::-webkit-inner-spin-button {
   align-items: center;
 }
 
-#compositeScoreCheckbox{
+#compositeScoreCheckbox {
   width: 24px;
   margin-left: 10px;
 }
 
-#alr, #clr {
+#alr,
+#clr {
   width: 70px;
   border: 1px solid;
 }
@@ -594,7 +619,7 @@ input::-webkit-inner-spin-button {
     margin-top: -38px;
     margin-bottom: 18px;
   }
-  
+
   .container {
     margin-top: 0px;
   }
@@ -607,7 +632,7 @@ input::-webkit-inner-spin-button {
   input,
   tr,
   th,
-  span, 
+  span,
   button {
     font-size: 16px;
     touch-action: manipulation;
@@ -624,9 +649,10 @@ input::-webkit-inner-spin-button {
     /* white-space: nowrap; */
   }
 
-  fieldset{
+  fieldset {
     width: 94%;
   }
+
   #fieldsettocopy {
     width: 94%;
   }
@@ -639,42 +665,30 @@ input::-webkit-inner-spin-button {
     margin-bottom: -15px;
   }
 
-  /* .timesdropdown {
-    font-size: 16px;
-    height: 3rem;
-    margin-bottom: 27px;
-    margin-top: 8px;;
-  } */
-
   .left-text,
   .boldCopy,
-  p  {
+  p {
     font-size: 16px;
   }
 
-  
-.lastsaved-yellowmessage {
+
+  .lastsaved-yellowmessage {
     font-size: 12px;
   }
 
-  .backgroundcoloryellow{
+  .backgroundcoloryellow {
     width: 230px;
   }
 
-  button { 
+  button {
     font-size: 16px;
     height: 3.5rem;
   }
 
-  .timesdropdownwithoutsnapshot {
-    margin-top: 10px;
-    font-size: 16px;
-    height: 3.5rem;
-    
-  }
-  .bold { 
+  .bold {
     font-size: 16px;
   }
+
   button.explanation {
     all: unset;
     /* float: left; */
@@ -697,5 +711,12 @@ input::-webkit-inner-spin-button {
     font-weight: bold;
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+
+  .timesdropdown,
+  .timesdropdownwithoutsnapshot {
+    margin-top: 10px;
+    font-size: 16px;
+    height: 3.5rem; 
   }
 }
