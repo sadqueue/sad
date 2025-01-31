@@ -14,7 +14,7 @@ export const getFirebaseRef = (startTime) => {
   let transactionsRef = "";
 
   if (window.location.hostname === 'localhost') {
-    transactionsRef = ref(database, `transactions_local_${startTime}`);
+    transactionsRef = ref(database, `transaction_${startTime}`);
   } else {
     transactionsRef = ref(database, `transactions_${startTime}`);
   }
