@@ -37,9 +37,9 @@ import html2canvas from "html2canvas";
 const CONFIG = CONFIG1;
 
 export function App() {
-    deleteAllTransactions("17:00")
-    deleteAllTransactions("16:00")
-    deleteAllTransactions("19:00")
+    // deleteAllTransactions("17:00")
+    // deleteAllTransactions("16:00")
+    // deleteAllTransactions("19:00")
     const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState({ startTime: "17:00", shifts: SHIFT_TYPES })
 
     const [sorted, setSorted] = useState("");
@@ -496,16 +496,29 @@ export function App() {
             const admissions = Number(each.numberOfAdmissions);
             let clr = 0;
 
-            if (each.name == "S2") {
-                clr = Number(admissions) / 8;
-            } else if (each.name == "S3") {
-                clr = Number(admissions) / 6;
-            } else if (each.name == "S4") {
-                clr = Number(admissions) / 5;
-            } else if (each.name == "N5") {
-                clr = Number(admissions) / 2;
+            if (dropdownSelected == "19:00"){
+                if (each.name == "S2") {
+                    clr = Number(admissions) / 8;
+                } else if (each.name == "S3") {
+                    clr = Number(admissions) / 6;
+                } else if (each.name == "S4") {
+                    clr = Number(admissions) / 5;
+                } else if (each.name == "N5") {
+                    clr = Number(admissions) / 2;
+                }
+                return clr.toFixed(3);
+            } else if (dropdownSelected == "17:00"){
+                if (each.name == "S1") {
+                    clr = Number(admissions) / 7;
+                } else if (each.name == "S2") {
+                    clr = Number(admissions) / 6;
+                } else if (each.name == "S3") {
+                    clr = Number(admissions) / 4;
+                } else if (each.name == "S4") {
+                    clr = Number(admissions) / 3;
+                }
+                return clr.toFixed(3);
             }
-            return clr.toFixed(3);
         }
 
         const getComposite = (each, ratio, clr) => {
@@ -749,7 +762,7 @@ export function App() {
                 id="timesdropdown"
                 onChange={e => {
                     const startTime = e.target.value;
-                    console.log("clickedGenerateQueue", clickedGenerateQueue);
+                    // console.log("clickedGenerateQueue", clickedGenerateQueue);
                     if (startTime == "19:00" && clickedGenerateQueue) {
                         const getMostRecentTransactionx = async (startTime) => {
                             const res = await getMostRecentTransaction(startTime);
@@ -1279,7 +1292,7 @@ export function App() {
                         <button className="explanation" onClick={() => {
                             setShow1(!show1);
                         }
-                        }>{seeDetails ? "> Order of Admissions" : "< Order of Admissions"}</button><br></br>
+                        }>{show1 ? "> Order of Admissions" : "< Order of Admissions"}</button><br></br>
                         
                         {show1 && <div id="fieldsettocopy_min">
                             <p className="bold">
@@ -1317,7 +1330,7 @@ export function App() {
                         <button className="explanation" onClick={() => {
                             setShow2(!show2);
                         }
-                        }>{seeDetails ? "> Step by Step Details" : "< Step by Step Details"}</button><br></br>
+                        }>{show2 ? "> Step by Step Details" : "< Step by Step Details"}</button><br></br>
                         
                         {show2 && <div>
                             {explanation && explanation.map((line, lineIndex) => {
@@ -1333,7 +1346,7 @@ export function App() {
                         <button className="explanation" 
                         onClick={() => {
                             setShow3(!show3);
-                        }}>{seeDetails ? "> Copy Messages" : "< Copy Messages"}</button><br></br>
+                        }}>{show3 ? "> Copy Messages" : "< Copy Messages"}</button><br></br>
                         
                         {show3 && <CopyMessages />}
 
@@ -1342,7 +1355,7 @@ export function App() {
                         <button className="explanation" onClick={() => {
                             setShow4(!show4);
                         }
-                        }>{seeDetails ? "> Set Composite Algorithm" : "< Set Composite Algorithm"}</button><br></br>
+                        }>{show4 ? "> Set Composite Algorithm" : "< Set Composite Algorithm"}</button><br></br>
                         
                         { show4 &&<div className="flex">
                             <input
@@ -1367,9 +1380,13 @@ export function App() {
                                     placeholder="ALR"
                                     className="input-left"
                                     label="ALR"
-                                    type="input"
+                                    type="number"
                                     onChange={(e) => {
                                         setAlr(e.target.value);
+                                        if (Number(e.target.value)){
+                                            setClr(1-Number(e.target.value));
+
+                                        }
                                     }}
                                     value={alr}
                                 /></div>
@@ -1378,9 +1395,12 @@ export function App() {
                                     placeholder="CLR"
                                     className="input-left"
                                     label="CLR"
-                                    type="input"
+                                    type="number"
                                     onChange={(e) => {
                                         setClr(e.target.value);
+                                        if (Number(e.target.value)){
+                                            setAlr(1-Number(e.target.value));
+                                        }
                                     }}
                                     value={clr}
                                 /></div>
