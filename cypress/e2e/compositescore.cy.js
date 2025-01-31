@@ -198,14 +198,6 @@ describe('template spec', () => {
 
           cy.get("#generateQueue").click();
 
-          // cy.get('#alr') // Replace 'yourElementId' with the actual ID of the element
-          // .then(($el) => {
-          //   console.log("ALR: ", $el.text())
-          // });
-          // cy.get('#clr') // Replace 'yourElementId' with the actual ID of the element
-          // .then(($el) => {
-          //   console.log("CLR: ", $el.text())
-          // });
           cy.get('#orderofadmissions_output') // Replace 'yourElementId' with the actual ID of the element
             .then(($el) => {
 
@@ -216,9 +208,25 @@ describe('template spec', () => {
                 // resArr.push(testArr[i] + "::::::" + $el.text() + "----MATCHES");
               } else {
                 console.log("[" + count + "] 5PM " + testArr5pm[i][1] + " -- NO MATCH");
-                console.log("Data:        ", testArr5pm[i][0].split(";").slice(0, testArr5pm[i][0].split(";").length - 1).join(";"));
-                console.log("Manny:       ", output);
-                console.log("From UI:     ", $el.text());
+                console.log("Data:              ", testArr5pm[i][0].split(";").slice(0, testArr5pm[i][0].split(";").length - 1).join(";"));
+                console.log("Manny:             ", output);
+                console.log("Current Algo:      ", $el.text());
+
+                cy.get("#seedetails").click();
+                cy.contains("Set Composite Algorithm").click()
+                cy.get("#compositeScoreCheckbox").click();
+
+                cy.get(`#alr`).clear().type(0.7);
+                cy.get(`#clr`).clear().type(0.3);
+                cy.get("#generateQueue").click();
+
+                //S1(ALR,CLR,C_score)>S2(ALR,CLR,C_score)>S4(ALR,CLR,C_score)>N5(ALR,CLR,C_score)>S3(ALR,CLR,score)
+                cy.get('#orderofadmissions_output').then(($el) => {
+                    console.log(`CS_Algo(0.7):      ${$el.text()}`)
+                });
+            
+
+            }
                 count++;
                 // resArr.push(":::::: NO MATCH");
 
