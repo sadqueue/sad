@@ -236,6 +236,16 @@ export function App() {
                 /* Step 1: Remove from Array 1. This means that we have to copy Array 1 to Array 2.*/
                 const array1 = [];
                 const array2 = [];
+
+                let s4HasFiveAdmissions = false;
+                let s4HasFiveAdmissions_obj = {};
+                shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                    if (innerEach.name == "S4" && innerEach.numberOfAdmissions+"" == "5"){
+                        s4HasFiveAdmissions = true;
+                        s4HasFiveAdmissions_obj = innerEach;
+                    } 
+                });
+
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
                         Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
@@ -245,7 +255,6 @@ export function App() {
                     }
                 });
 
-
                 array2 && array2.sort((a, b) => {
                     if (a.chronicLoadRatio > b.chronicLoadRatio) {
                         return 1;
@@ -254,11 +263,22 @@ export function App() {
                         return -1;
                     }
                     return 0;
-                })
+                });
+
+                if (s4HasFiveAdmissions){
+                    let index = array2.findIndex(obj => obj.name === "S4");
+
+                    if (index !== -1) {
+                        let [removed] = array2.splice(index, 1);
+
+                        array2.splice(2, 0, removed);
+                    }
+                }
 
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
+                        (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
                         (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3) ||
                         Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                         explanationArr.push(getFormattedOutput(innerEach));
@@ -733,7 +753,13 @@ export function App() {
                         const getMostRecentTransactionx = async (startTime) => {
                             const res = await getMostRecentTransaction(startTime);
 
-                            if (res && res.transaction) {
+                            if (!res.success) {
+                                const newObj = {};
+                                newObj["startTime"] = "19:00";
+                                newObj["shifts"] = SHIFT_TYPES;
+                                setDropdown("19:00");
+                                sortMain(newObj, "19:00")
+                            } else if (res && res.transaction) {
                                 let getN5 = {};
 
                                 res.transaction.admissionsObj.allAdmissionsDataShifts.shifts.forEach((each, eachIndex) => {
@@ -1227,22 +1253,9 @@ export function App() {
                         }
                         {/* <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p> */}
                         <div className="lastsaved-yellowmessage">
-                                {"Last Saved: " + lastSaved + " @ https://sadqueue.github.io/sad"}
+                                {"Updated " + lastSaved + " @ https://sadqueue.github.io/sad"}
 
                             </div>
-                        {/* <div className="flex-container">
-
-                            <div className="left-text backgroundcoloryellow">
-                                {"Last Saved: " + lastSaved + " @ https://sadqueue.github.io/sad"}
-
-                            </div>
-                            <span className="right-text">
-                                <button id="seedetails" className="seedetails" onClick={() => {
-                                    setOpenTable(!openTable);
-                                }}>{openTable ? "Minimize Table" : "Expand Table"}</button>
-                            </span>
-
-                        </div> */}
                     </div>
 
                     <section>
