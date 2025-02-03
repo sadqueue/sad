@@ -1032,11 +1032,6 @@ export function App() {
     return (
         <div>
             <div className="header">
-                {/* <img
-            alt="clock"
-            className="clock"
-            id="clock-button"
-            src={sadqueuelogo_bluebackgroundImg}/> */}
                 <h1 className="title">S.A.D.Q.</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
             </div>
@@ -1055,7 +1050,7 @@ export function App() {
                             takeScreenshot();
 
                         }} />}
-                    <div id="screenshotimg">
+                    <table id="screenshotimg">
                         <table id="reacttable">
                             <thead>
                                 {openTable ? <tr>
@@ -1217,7 +1212,7 @@ export function App() {
                                 {"Updated " + lastSaved + " @ https://sadqueue.github.io/sad"}
 
                             </div>
-                    </div>
+                    </table>
 
                     <section>
                         <button id="generateQueue" onClick={() => {
