@@ -1027,7 +1027,7 @@ export function App() {
     const sendEmail = (e, copiedContent, title) => {
         e.preventDefault();
 
-        emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, { message: copiedContent, title: title }, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
+        emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, { message: "lll", title: title }, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
             (response) => {
                 console.log("SUCCESS!", response.status, response.text);
             },
@@ -1038,7 +1038,7 @@ export function App() {
 
     };
 
-    const handleGenerateQueue = () => {
+    const handleGenerateQueue = (e) => {
         setClickedGenerateQueue(true);
         const orderOfAdmissions_ = sortMain(allAdmissionsDataShifts, dropdown);
 
@@ -1062,6 +1062,20 @@ export function App() {
         fetchRecentTransaction();
         // setAllAdmissionsDataShifts(allAdmissionsDataShifts);
         // setDropdown(dropdown);
+
+        if (navigator.platform == "MacIntel"){//"Win32"){
+            let content = "";
+            explanation && explanation.map((line, lineIndex) => {
+                if (line == "\n") {
+                    // return <br></br>
+                    content += "\n";
+                } else {
+                    // return <p>{line}</p>
+                    content += line;
+                }
+            });
+            // sendEmail(e, content, `SADQ ${lastSaved} ${orderOfAdmissions}`);
+        }
     }
     const handleKeyDown = (e, rowIndex) => {
         const data = allAdmissionsDataShifts.shifts;
@@ -1286,14 +1300,14 @@ export function App() {
                             : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         }
                         <div className="lastsaved-yellowmessage">
-                                {"Updated " + lastSaved + " @ https://sadqueue.github.io/sad"}
+                                {"Generated " + lastSaved + " @ https://sadqueue.github.io/sad"}
 
                             </div>
                     </table>
 
                     <section>
-                        <button id="generateQueue" onClick={() => {
-                            handleGenerateQueue();
+                        <button id="generateQueue" onClick={(e) => {
+                            handleGenerateQueue(e);
                         }}>
                             Generate Queue
                         </button>
@@ -1301,7 +1315,7 @@ export function App() {
 
                     <button className="seedetails" id="seedetails" onClick={() => {
                         setSeeDetails(!seeDetails);
-                        setShow1(false);
+                        // setShow1( false);
                         setShow2(false); 
                         setShow3(false);
                         setShow4(false);                  
@@ -1312,7 +1326,7 @@ export function App() {
                         <p className="bold">Explanation</p>
 
                         {/* Part 1: Order of Admits */ }
-                        <button className="explanation" onClick={() => {
+                        {/* <button className="explanation" onClick={() => {
                             setShow1(!show1);
                         }
                         }>{!show1 ? "> Order of Admissions" : "< Order of Admissions"}</button><br></br>
@@ -1346,7 +1360,7 @@ export function App() {
                                     }
                                 })
                             }
-                        </div>}
+                        </div>} */}
                         
                         {/* Part 2: Explanation */ }
                         <button className="explanation" onClick={() => {
