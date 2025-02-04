@@ -656,7 +656,7 @@ input::-webkit-inner-spin-button {
   min-width: 35px; /* Ensures space for text */
   text-align: right;
   white-space: nowrap;
-  margin-right: 10px;
+  margin-right: 5%;
 }
 
 @media (max-width: 1000px) {
