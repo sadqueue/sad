@@ -1125,7 +1125,15 @@ export function App() {
                 <h1 className="title">S.A.D.Q.</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
             </div>
-            {loading ? <div className="loading">Loading...</div> :
+            {loading ? <div className="loading">
+                <div class="spinner">
+                    <div class="rect1"></div>
+                    <div class="rect2"></div>
+                    <div class="rect3"></div>
+                    <div class="rect4"></div>
+                    <div class="rect5"></div>
+                    </div>
+            </div> :
                 <div className="container">
                     {/* <CypressTestRunner /> */}
                     <div className="flex-container-just1item">
