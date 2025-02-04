@@ -703,6 +703,7 @@ input::-webkit-inner-spin-button {
   select {
     font-size: 12px;
     padding: 3px;
+    color: black;
     /* white-space: nowrap; */
   }
 
