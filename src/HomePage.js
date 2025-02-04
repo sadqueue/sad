@@ -241,10 +241,10 @@ export function App() {
                 let s4HasFiveAdmissions_obj = {};
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
                     if (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5
-                    ){
+                    ) {
                         s4HasFiveAdmissions = true;
                         s4HasFiveAdmissions_obj = innerEach;
-                    } 
+                    }
                 });
 
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
@@ -256,7 +256,7 @@ export function App() {
                     }
                 });
 
-                if (s4HasFiveAdmissions){
+                if (s4HasFiveAdmissions) {
                     let index = array2.findIndex(obj => obj.name === "S4");
 
                     if (index !== -1) {
@@ -420,7 +420,7 @@ export function App() {
         const alrArr = [];
         const clrArr = [];
         const compositeArr = [];
-        
+
         const getTimeDifference = (time1) => {
 
             if (time1) {
@@ -474,7 +474,7 @@ export function App() {
             const admissions = Number(each.numberOfAdmissions);
             let clr = 0;
 
-            if (dropdownSelected == "19:00"){
+            if (dropdownSelected == "19:00") {
                 if (each.name == "S2") {
                     clr = Number(admissions) / 8;
                 } else if (each.name == "S3") {
@@ -485,7 +485,7 @@ export function App() {
                     clr = Number(admissions) / 2;
                 }
                 return clr.toFixed(3);
-            } else if (dropdownSelected == "17:00"){
+            } else if (dropdownSelected == "17:00") {
                 if (each.name == "S1") {
                     clr = Number(admissions) / 7;
                 } else if (each.name == "S2") {
@@ -503,41 +503,41 @@ export function App() {
             let clr = 0;
 
             let str = "";
-            if (dropdownSelected == "19:00"){
+            if (dropdownSelected == "19:00") {
                 if (each.name == "S2") {
                     clr = Number(admissions) / 8;
                     str = `${each.name}: ${admissions} / 8 = ${clr.toFixed(3)}`;
                 } else if (each.name == "S3") {
                     clr = Number(admissions) / 6;
                     str = `${each.name}: ${admissions} / 6 = ${clr.toFixed(3)}`;
-                    
+
                 } else if (each.name == "S4") {
                     clr = Number(admissions) / 5;
                     str = `${each.name}: ${admissions} / 5 = ${clr.toFixed(3)}`;
-                    
+
                 } else if (each.name == "N5") {
                     clr = Number(admissions) / 2;
                     str = `${each.name}: ${admissions} / 2 = ${clr.toFixed(3)}`;
-                    
+
                 }
                 return str;
-            } else if (dropdownSelected == "17:00"){
+            } else if (dropdownSelected == "17:00") {
                 if (each.name == "S1") {
                     clr = Number(admissions) / 7;
                     str = `${each.name}: ${admissions} / 7 = ${clr.toFixed(3)}`;
-                   
+
                 } else if (each.name == "S2") {
                     clr = Number(admissions) / 6;
                     str = `${each.name}: ${admissions} / 6 = ${clr.toFixed(3)}`;
-                   
+
                 } else if (each.name == "S3") {
                     clr = Number(admissions) / 4;
                     str = `${each.name}: ${admissions} / 4 = ${clr.toFixed(3)}`;
-                    
+
                 } else if (each.name == "S4") {
                     clr = Number(admissions) / 3;
                     str = `${each.name}: ${admissions} / 3 = ${clr.toFixed(3)}`;
-                   
+
                 }
                 return str;
             }
@@ -586,22 +586,22 @@ export function App() {
             //     alrArr.push(getAlrExplanation(each));
             //     clrArr.push(getClrExplanation(each));
             //     compositeArr.push(getCompositeExplanation(each))
-                
+
             // }
         });
 
         explanationArr.push(`Sort by composite score with ALR ${alr} and CLR ${clr}.`);
         explanationArr.push("\n");
-        
+
         /*
         Step 1: Time Difference
         */
         explanationArr.push("Step 1: Sort by the difference of the shift time with the timestamp.");
         timeObj.shifts.sort((a, b) => {
-            if (a.difference > b.difference){
+            if (a.difference > b.difference) {
                 return 1;
             }
-            if (a.difference < b.difference){
+            if (a.difference < b.difference) {
                 return -1;
             }
             return 0;
@@ -628,29 +628,29 @@ export function App() {
 
         explanationArr.push(`Step 2: Calculate Acute Load Ratio (ALR) for each Role.`);
 
-        alrArr.map((each, eachIndex) => { 
+        alrArr.map((each, eachIndex) => {
             explanationArr.push(each);
         });
 
         explanationArr.push("\n")
         explanationArr.push(`Step 3: Calculate Chronic Load Ratio (CLR) for each Role. CLR = Admits/Hours Worked`);
 
-        clrArr.map((each, eachIndex) => { 
+        clrArr.map((each, eachIndex) => {
             explanationArr.push(each);
         });
 
         timeObj.shifts.sort((a, b) => {
-            if (Number(a.composite) > Number(b.composite)){
+            if (Number(a.composite) > Number(b.composite)) {
                 return 1;
             }
-            if (Number(a.composite) < Number(b.composite)){
+            if (Number(a.composite) < Number(b.composite)) {
                 return -1;
             }
             return 0;
         });
         explanationArr.push("\n")
         explanationArr.push(`Step 4: Generate the Order based on Composite Score, with Roles having the Lowest Composite Score being Prioritized First.`);
-        
+
         // compositeArr.map((each, eachIndex) => {
         //     explanationArr.push(each);
         // });
@@ -672,7 +672,7 @@ export function App() {
                         orderOfAdmissions.push(each.name);
                     }
                     // return `${each.name}(${each.alr},${each.clr},${each.composite})>`;
-                    
+
                 }
             }
         })
@@ -1063,7 +1063,7 @@ export function App() {
         // setAllAdmissionsDataShifts(allAdmissionsDataShifts);
         // setDropdown(dropdown);
 
-        if (navigator.platform == "MacIntel"){//"Win32"){
+        if (navigator.platform == "MacIntel") {//"Win32"){
             let content = "";
             explanation && explanation.map((line, lineIndex) => {
                 if (line == "\n") {
@@ -1141,112 +1141,112 @@ export function App() {
 
                         }} />}
                     <table id="screenshotimg">
-                    <table id="reacttable">
-    <thead>
-        {openTable ? (
-            <tr>
-                {EXPAND_TABLE.map((each, eachIndex) => (
-                    <th key={eachIndex}>{each[1]}</th>
-                ))}
-            </tr>
-        ) : (
-            <tr>
-                {MINIMIZE_TABLE.map((each, eachIndex) => (
-                    <th key={eachIndex}>{each[1]}</th>
-                ))}
-            </tr>
-        )}
-    </thead>
-    <tbody>
-        {allAdmissionsDataShifts.shifts &&
-            allAdmissionsDataShifts.shifts.length > 0 &&
-            allAdmissionsDataShifts.shifts.map((admission, indexx) => {
-                let index = 0;
-                if (SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name)) {
-                    index = SHOW_ROWS_TABLE[dropdown].findIndex((user) => user == admission.name);
-                    return (
-                        !admission.isStatic && (
-                            <tr
-                                style={SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name) ? {} : { display: "none" }}
-                                id={"admissionsDataRow_" + index}
-                                className={"admissionsDataRow"}
-                                key={admission.admissionsId}
-                            >
-                                <td>
-                                    <input name={`name_${index}`} className="bold-fields" value={admission.name || ""} type="text" disabled={true} />
-                                </td>
-                                {openTable && (
-                                    <td>
-                                        <input name="shiftTimePeriod" value={admission.shiftTimePeriod} type="text" disabled={true} />
-                                    </td>
+                        <table id="reacttable">
+                            <thead>
+                                {openTable ? (
+                                    <tr>
+                                        {EXPAND_TABLE.map((each, eachIndex) => (
+                                            <th key={eachIndex}>{each[1]}</th>
+                                        ))}
+                                    </tr>
+                                ) : (
+                                    <tr>
+                                        {MINIMIZE_TABLE.map((each, eachIndex) => (
+                                            <th key={eachIndex}>{each[1]}</th>
+                                        ))}
+                                    </tr>
                                 )}
-                                <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
-                                    <input
-                                        id={`timestamp_${index}`}
-                                        name="timestamp"
-                                        className="timestamp"
-                                        value={admission.timestamp || ""}
-                                        type="time"
-                                        onChange={(e) => onChange(e, admission.admissionsId)}
-                                        disabled={admission.isStatic}
-                                    />
-                                </td>
-                                <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
-                                    <input
-                                        id={`numberOfAdmissions_${index}`}
-                                        name="numberOfAdmissions"
-                                        className="numberOfAdmissions"
-                                        value={admission.numberOfAdmissions || ""}
-                                        step="1"
-                                        type="number"
-                                        placeholder="---"
-                                        onChange={(e) => onChange(e, admission.admissionsId)}
-                                        disabled={admission.isStatic}
-                                        inputMode="numeric"
-                                        pattern="[0-9]*"
-                                    />
-                                </td>
-                                <td className="backgroundlightgray">
-                                    <div  className="progress-cell">
-    <div className="progress-container">
-        <div
-            className="progress-bar"
-            style={{
-                width: `${(admission.chronicLoadRatio || 0) * 100}%`,
-                background: (admission.chronicLoadRatio || 0) > 0.5 
-                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
-                    : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
-            }}
-        />
-    </div>
-    <span className="progress-text">
-        {Math.round((admission.chronicLoadRatio || 0) * 100)}%
-    </span>
-    </div>
-</td>
+                            </thead>
+                            <tbody>
+                                {allAdmissionsDataShifts.shifts &&
+                                    allAdmissionsDataShifts.shifts.length > 0 &&
+                                    allAdmissionsDataShifts.shifts.map((admission, indexx) => {
+                                        let index = 0;
+                                        if (SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name)) {
+                                            index = SHOW_ROWS_TABLE[dropdown].findIndex((user) => user == admission.name);
+                                            return (
+                                                !admission.isStatic && (
+                                                    <tr
+                                                        style={SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name) ? {} : { display: "none" }}
+                                                        id={"admissionsDataRow_" + index}
+                                                        className={"admissionsDataRow"}
+                                                        key={admission.admissionsId}
+                                                    >
+                                                        <td>
+                                                            <input name={`name_${index}`} className="bold-fields" value={admission.name || ""} type="text" disabled={true} />
+                                                        </td>
+                                                        {openTable && (
+                                                            <td>
+                                                                <input name="shiftTimePeriod" value={admission.shiftTimePeriod} type="text" disabled={true} />
+                                                            </td>
+                                                        )}
+                                                        <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
+                                                            <input
+                                                                id={`timestamp_${index}`}
+                                                                name="timestamp"
+                                                                className="timestamp"
+                                                                value={admission.timestamp || ""}
+                                                                type="time"
+                                                                onChange={(e) => onChange(e, admission.admissionsId)}
+                                                                disabled={admission.isStatic}
+                                                            />
+                                                        </td>
+                                                        <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
+                                                            <input
+                                                                id={`numberOfAdmissions_${index}`}
+                                                                name="numberOfAdmissions"
+                                                                className="numberOfAdmissions"
+                                                                value={admission.numberOfAdmissions || ""}
+                                                                step="1"
+                                                                type="number"
+                                                                placeholder="---"
+                                                                onChange={(e) => onChange(e, admission.admissionsId)}
+                                                                disabled={admission.isStatic}
+                                                                inputMode="numeric"
+                                                                pattern="[0-9]*"
+                                                            />
+                                                        </td>
+                                                        <td className="backgroundlightgray">
+                                                            <div className="progress-cell">
+                                                                <div className="progress-container">
+                                                                    <div
+                                                                        className="progress-bar"
+                                                                        style={{
+                                                                            width: `${(admission.chronicLoadRatio || 0) * 100}%`,
+                                                                            background: (admission.chronicLoadRatio || 0) > 0.5
+                                                                                ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
+                                                                                : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                                <span className="progress-text">
+                                                                    {Math.round((admission.chronicLoadRatio || 0) * 100)}%
+                                                                </span>
+                                                            </div>
+                                                        </td>
 
 
-                                {openTable && (
-                                    <td>
-                                        <input
-                                            name="numberHoursWorked"
-                                            value={admission.numberOfHoursWorked || ""}
-                                            type="number"
-                                            placeholder="Enter number"
-                                            disabled={true}
-                                        />
-                                    </td>
-                                )}
-                            </tr>
-                        )
-                    );
-                }
-            })}
-    </tbody>
-</table>
+                                                        {openTable && (
+                                                            <td>
+                                                                <input
+                                                                    name="numberHoursWorked"
+                                                                    value={admission.numberOfHoursWorked || ""}
+                                                                    type="number"
+                                                                    placeholder="Enter number"
+                                                                    disabled={true}
+                                                                />
+                                                            </td>
+                                                        )}
+                                                    </tr>
+                                                )
+                                            );
+                                        }
+                                    })}
+                            </tbody>
+                        </table>
                         {/* highlighted order of admissions below table */}
                         <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${lastSaved.split(" ")[0] + " " + convertTo12HourFormatSimple(dropdown)}`}</p>
-                        {window.location.hostname === 'localhost' && compositeScoreAlgorithm ? 
+                        {window.location.hostname === 'localhost' && compositeScoreAlgorithm ?
                             <p className="endoutputcenter" id="orderofadmissions_output">
                                 {/* {
                                 allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
@@ -1255,18 +1255,18 @@ export function App() {
                                     }
                                 })
                             } */}
-                            {orderOfAdmissions && orderOfAdmissions}
+                                {orderOfAdmissions && orderOfAdmissions}
                             </p>
-                        : hasTwoOccurrences(orderOfAdmissions, "N1") ?
-                            <div>
-                                <p className="endoutputcenter" id="orderofadmissions_output">{array1 ? array1.join(">") + ">" : ""}<br></br>{array2 && array2.join(">")}</p>
-                            </div>
-                            : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
+                            : hasTwoOccurrences(orderOfAdmissions, "N1") ?
+                                <div>
+                                    <p className="endoutputcenter" id="orderofadmissions_output">{array1 ? array1.join(">") + ">" : ""}<br></br>{array2 && array2.join(">")}</p>
+                                </div>
+                                : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         }
                         <div className="lastsaved-yellowmessage">
-                                {"Generated " + lastSaved + " @ https://sadqueue.github.io/sad"}
+                            {"Generated " + lastSaved + " @ https://sadqueue.github.io/sad"}
 
-                            </div>
+                        </div>
                     </table>
 
                     <section>
@@ -1280,16 +1280,16 @@ export function App() {
                     <button className="seedetails" id="seedetails" onClick={() => {
                         setSeeDetails(!seeDetails);
                         // setShow1( false);
-                        setShow2(false); 
+                        setShow2(false);
                         setShow3(false);
-                        setShow4(false);                  
+                        setShow4(false);
                     }
                     }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
 
                     {seeDetails && <fieldset className="notes">
                         <p className="bold">Explanation</p>
 
-                        {/* Part 1: Order of Admits */ }
+                        {/* Part 1: Order of Admits */}
                         {/* <button className="explanation" onClick={() => {
                             setShow1(!show1);
                         }
@@ -1325,39 +1325,39 @@ export function App() {
                                 })
                             }
                         </div>} */}
-                        
-                        {/* Part 2: Explanation */ }
+
+                        {/* Part 2: Explanation */}
                         <button className="explanation" onClick={() => {
                             setShow2(!show2);
                         }
                         }>{!show2 ? "> Step by Step Details" : "< Step by Step Details"}</button><br></br>
-                        
+
                         {show2 && <div>
                             {explanation && explanation.map((line, lineIndex) => {
-                            if (line == "\n") {
-                                return <br></br>
-                            } else {
-                                return <p>{line}</p>
-                            }
-                        })}<br></br>
+                                if (line == "\n") {
+                                    return <br></br>
+                                } else {
+                                    return <p>{line}</p>
+                                }
+                            })}<br></br>
                         </div>}
-                        {/* Part 3: Copy Message */ }
+                        {/* Part 3: Copy Message */}
 
-                        <button className="explanation" 
-                        onClick={() => {
-                            setShow3(!show3);
-                        }}>{!show3 ? "> Copy Messages" : "< Copy Messages"}</button><br></br>
-                        
+                        <button className="explanation"
+                            onClick={() => {
+                                setShow3(!show3);
+                            }}>{!show3 ? "> Copy Messages" : "< Copy Messages"}</button><br></br>
+
                         {show3 && <CopyMessages />}
 
-                        
-                        {/* Part 4: Set Composite Score */ }
+
+                        {/* Part 4: Set Composite Score */}
                         <button className="explanation" onClick={() => {
                             setShow4(!show4);
                         }
                         }>{!show4 ? "> Set Composite Algorithm" : "< Set Composite Algorithm"}</button><br></br>
-                        
-                        { show4 &&<div className="flex">
+
+                        {show4 && <div className="flex">
                             <input
                                 id="compositeScoreCheckbox"
                                 placeholder="Composite Score Algorithm"
@@ -1372,7 +1372,7 @@ export function App() {
                             <p>Composite Score Algorithm</p>
 
                         </div>
-}                       { show4 && compositeScoreAlgorithm &&
+                        }                       {show4 && compositeScoreAlgorithm &&
                             <div>
                                 <div className="flex"><p className="weightwidth">ALR: </p><input
                                     id="alr"
@@ -1382,8 +1382,8 @@ export function App() {
                                     type="number"
                                     onChange={(e) => {
                                         setAlr(e.target.value);
-                                        if (Number(e.target.value)){
-                                            setClr((1-Number(e.target.value)).toFixed(2));
+                                        if (Number(e.target.value)) {
+                                            setClr((1 - Number(e.target.value)).toFixed(2));
 
                                         }
                                     }}
@@ -1397,19 +1397,19 @@ export function App() {
                                     type="number"
                                     onChange={(e) => {
                                         setClr(e.target.value);
-                                        if (Number(e.target.value)){
-                                            setAlr((1-Number(e.target.value)).toFixed(2));
+                                        if (Number(e.target.value)) {
+                                            setAlr((1 - Number(e.target.value)).toFixed(2));
                                         }
                                     }}
                                     value={clr}
                                 /></div>
                                 <p>Select the Generate Queue button above</p>
 
-   
+
                             </div>
-                            }
-                        
-                            
+                        }
+
+
                     </fieldset>}
                     <div className="footer">
                         <img
