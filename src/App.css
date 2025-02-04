@@ -683,12 +683,17 @@ input::-webkit-inner-spin-button {
   input,
   tr,
   th,
-  span,
-  button {
+  span{
     font-size: 16px;
     touch-action: manipulation;
     color: black;
   }
+
+  button {
+    font-size: 16px;
+    touch-action: manipulation;
+  }
+
 
   p[class=admissionsorderlastline] {
     font-size: 10px;
