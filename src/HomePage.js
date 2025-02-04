@@ -1148,11 +1148,11 @@ export function App() {
                                         {EXPAND_TABLE.map((each, eachIndex) => {
                                             if (each[0] == "name"){
                                                 return (
-                                                    <th style={{width: "10%"}} key={eachIndex}>{each[1]}</th>
+                                                    <th className="th_10percent" key={eachIndex}>{each[1]}</th>
                                                 );
                                             } else if (each[0] == "timestamp" || each[0] == "numberOfAdmissions"){
                                                 return (
-                                                    <th style={{width: "25%"}} key={eachIndex}>{each[1]}</th>
+                                                    <th className="th_25percent" key={eachIndex}>{each[1]}</th>
                                                 );
                                             }
                                             return (<th key={eachIndex}>{each[1]}</th>);
@@ -1163,11 +1163,11 @@ export function App() {
                                         {MINIMIZE_TABLE.map((each, eachIndex) => {
                                             if (each[0] == "name"){
                                                 return (
-                                                    <th style={{width: "10%"}} key={eachIndex}>{each[1]}</th>
+                                                    <th className="th_10percent" key={eachIndex}>{each[1]}</th>
                                                 );
                                             } else if (each[0] == "timestamp" || each[0] == "numberOfAdmissions"){
                                                 return (
-                                                    <th style={{width: "25%"}} key={eachIndex}>{each[1]}</th>
+                                                    <th className="th_25percent" key={eachIndex}>{each[1]}</th>
                                                 );
                                             }
                                             return (<th key={eachIndex}>{each[1]}</th>);

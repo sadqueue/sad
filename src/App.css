@@ -118,6 +118,16 @@ select {
   /* white-space: nowrap; */
 }
 
+.th_10percent{
+  width: 10%;
+  color: black;
+}
+
+.th_25percent{
+  width: 25%;
+  color: black;
+}
+
 tr td {
   border: 2px solid black;
   text-align: center;
