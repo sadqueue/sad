@@ -928,7 +928,7 @@ export function App() {
             try {
                 const clipboardItem = new ClipboardItem({ 'image/png': blob });
                 await navigator.clipboard.write([clipboardItem]);
-                alert('Screenshot copied to clipboard!');
+                alert('✅ Screenshot copied to clipboard!');
             } catch (err) {
                 console.error('Failed to copy the screenshot to the clipboard:', err);
                 alert('Failed to copy the screenshot. Check your browser permissions.');
@@ -1141,146 +1141,109 @@ export function App() {
 
                         }} />}
                     <table id="screenshotimg">
-                        <table id="reacttable">
-                            <thead>
-                                {openTable ? <tr>
-                                    {
-                                        EXPAND_TABLE.map((each, eachIndex) => {
-                                            return (
-                                                <th>
-                                                    {each[1]}
-                                                </th>
-                                            );
-                                        })
-                                    }
-                                </tr> :
-                                    <tr>
-                                        {
-                                            MINIMIZE_TABLE.map((each, eachIndex) => {
-                                                return (
-                                                    <th >
-                                                        {each[1]}
-                                                    </th>
-                                                    /*<th onClick={() => {
-                                                        handleSort(each[0]);
-                                                    }}>
-                                                        {each[1]} {sortConfig[each.name] ? (sortConfig[each.name] ? "↑" : "↓") : "↑"}
-                                                    </th>*/
-                                                );
-                                            })
-                                        }
-                                    </tr>}
-                            </thead>
-                            <tbody>
-                                {allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts && allAdmissionsDataShifts.shifts.length > 0 && allAdmissionsDataShifts.shifts.map((admission, indexx) => {
-                                    let index = 0;
-                                    if (SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name)) {
-                                        // index = Number(admission.admissionsId);
-                                        index = SHOW_ROWS_TABLE[dropdown].findIndex((user) => {
-                                            return user == admission.name
-                                        });
-                                        return (
-                                            !admission.isStatic &&
-                                            <tr
-                                                style={SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name) ? {} : { display: "none" }}
-                                                id={"admissionsDataRow_" + index}
-                                                className={"admissionsDataRow"}
-                                                key={admission.admissionsId}
+                    <table id="reacttable">
+    <thead>
+        {openTable ? (
+            <tr>
+                {EXPAND_TABLE.map((each, eachIndex) => (
+                    <th key={eachIndex}>{each[1]}</th>
+                ))}
+            </tr>
+        ) : (
+            <tr>
+                {MINIMIZE_TABLE.map((each, eachIndex) => (
+                    <th key={eachIndex}>{each[1]}</th>
+                ))}
+            </tr>
+        )}
+    </thead>
+    <tbody>
+        {allAdmissionsDataShifts.shifts &&
+            allAdmissionsDataShifts.shifts.length > 0 &&
+            allAdmissionsDataShifts.shifts.map((admission, indexx) => {
+                let index = 0;
+                if (SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name)) {
+                    index = SHOW_ROWS_TABLE[dropdown].findIndex((user) => user == admission.name);
+                    return (
+                        !admission.isStatic && (
+                            <tr
+                                style={SHOW_ROWS_TABLE[dropdown] && SHOW_ROWS_TABLE[dropdown].includes(admission.name) ? {} : { display: "none" }}
+                                id={"admissionsDataRow_" + index}
+                                className={"admissionsDataRow"}
+                                key={admission.admissionsId}
+                            >
+                                <td>
+                                    <input name={`name_${index}`} className="bold-fields" value={admission.name || ""} type="text" disabled={true} />
+                                </td>
+                                {openTable && (
+                                    <td>
+                                        <input name="shiftTimePeriod" value={admission.shiftTimePeriod} type="text" disabled={true} />
+                                    </td>
+                                )}
+                                <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
+                                    <input
+                                        id={`timestamp_${index}`}
+                                        name="timestamp"
+                                        className="timestamp"
+                                        value={admission.timestamp || ""}
+                                        type="time"
+                                        onChange={(e) => onChange(e, admission.admissionsId)}
+                                        disabled={admission.isStatic}
+                                    />
+                                </td>
+                                <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
+                                    <input
+                                        id={`numberOfAdmissions_${index}`}
+                                        name="numberOfAdmissions"
+                                        className="numberOfAdmissions"
+                                        value={admission.numberOfAdmissions || ""}
+                                        step="1"
+                                        type="number"
+                                        placeholder="---"
+                                        onChange={(e) => onChange(e, admission.admissionsId)}
+                                        disabled={admission.isStatic}
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
+                                    />
+                                </td>
+                                <td className="backgroundlightgray">
+                                    <div  className="progress-cell">
+    <div className="progress-container">
+        <div
+            className="progress-bar"
+            style={{
+                width: `${(admission.chronicLoadRatio || 0) * 100}%`,
+                background: (admission.chronicLoadRatio || 0) > 0.5 
+                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
+                    : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+            }}
+        />
+    </div>
+    <span className="progress-text">
+        {Math.round((admission.chronicLoadRatio || 0) * 100)}%
+    </span>
+    </div>
+</td>
 
-                                            >
-                                                <td>
-                                                    <input
-                                                        name={`name_${index}`}
-                                                        className="bold-fields"
-                                                        value={admission.name ? admission.name : ""}
-                                                        type="text"
-                                                        disabled={true}
-                                                    />
-                                                </td>
-                                                {openTable && <td>
-                                                    <input
-                                                        name="shiftTimePeriod"
-                                                        value={admission.shiftTimePeriod}
-                                                        type="text"
-                                                        disabled={true}
-                                                    />
-                                                </td>}
-                                                <td className="usercanedit"
-                                                    tabIndex={-1}
-                                                    onKeyDown={(e) => handleKeyDown(e, index)}
-                                                >
-                                                    <input
-                                                        id={`timestamp_${index}`}
-                                                        name="timestamp"
-                                                        className="timestamp"
-                                                        value={admission.timestamp ? admission.timestamp : ""}
-                                                        type="time"
-                                                        onChange={(e) => onChange(e, admission.admissionsId)}
-                                                        disabled={admission.isStatic}
-                                                    />
-                                                </td>
-                                                {/* <td className="usercanedit"
 
-                                                    tabIndex={-1}
-                                                    onKeyDown={(e) => handleKeyDown(e, index)}
-                                                >
-                                                    <input
-                                                        id={`isTwoAdmits_${index}`}
-                                                        name="isTwoAdmits"
-                                                        className="isTwoAdmits"
-                                                        value={admission.isTwoAdmits ? admission.isTwoAdmits : ""}
-                                                        step="1"
-                                                        type="checkbox"
-                                                        placeholder="---"
-                                                        onChange={(e) => onChange(e, admission.admissionsId)}
-                                                        // disabled={admission.isStatic}
-                                                        inputMode="numeric"
-                                                        pattern="[0-9]*"
-                                                    />
-                                                </td> */}
-                                                <td className="usercanedit"
-
-                                                    tabIndex={-1}
-                                                    onKeyDown={(e) => handleKeyDown(e, index)}
-                                                >
-                                                    <input
-                                                        id={`numberOfAdmissions_${index}`}
-                                                        name="numberOfAdmissions"
-                                                        className="numberOfAdmissions"
-                                                        value={admission.numberOfAdmissions ? admission.numberOfAdmissions : ""}
-                                                        step="1"
-                                                        type="number"
-                                                        placeholder="---"
-                                                        onChange={(e) => onChange(e, admission.admissionsId)}
-                                                        disabled={admission.isStatic}
-                                                        inputMode="numeric"
-                                                        pattern="[0-9]*"
-                                                    />
-                                                </td>
-                                                <td className="backgroundlightgray">
-                                                    <input
-                                                        className="fontcolorblack"
-                                                        name={`chronicLoadRatio_${index}`}
-                                                        type="text"
-                                                        value={admission.chronicLoadRatio ? admission.chronicLoadRatio : ""}
-                                                        disabled={true}
-                                                    />
-                                                </td>
-                                                {openTable && <td>
-                                                    <input
-                                                        name="numberHoursWorked"
-                                                        value={admission.numberOfHoursWorked ? admission.numberOfHoursWorked : ""}
-                                                        type="number"
-                                                        placeholder="Enter number"
-                                                        disabled={true}
-                                                    />
-                                                </td>}
-                                            </tr>);
-                                    }
-
-                                })}
-                            </tbody>
-                        </table>
+                                {openTable && (
+                                    <td>
+                                        <input
+                                            name="numberHoursWorked"
+                                            value={admission.numberOfHoursWorked || ""}
+                                            type="number"
+                                            placeholder="Enter number"
+                                            disabled={true}
+                                        />
+                                    </td>
+                                )}
+                            </tr>
+                        )
+                    );
+                }
+            })}
+    </tbody>
+</table>
                         {/* highlighted order of admissions below table */}
                         <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${lastSaved.split(" ")[0] + " " + convertTo12HourFormatSimple(dropdown)}`}</p>
                         {window.location.hostname === 'localhost' && compositeScoreAlgorithm ? 

@@ -26,7 +26,7 @@
 
 body {
   box-sizing: border-box;
-  color: #220f5f;
+  color: black;
   font-family: 'Poppins', sans-serif;
   margin-bottom: 20px;
   width: 100%;
@@ -476,7 +476,7 @@ input[class="timeperiodbyrole"] {
 }
 
 .backgroundlightgray {
-  background-color: lightgray;
+  background-color: rgb(211 211 211 / 29%)
 }
 
 .fontcolorblack {
@@ -614,6 +614,50 @@ input::-webkit-inner-spin-button {
 
 .weightwidth {
   width: 70px;
+}
+
+.progress-cell {
+  display: flex;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;      /* Center vertically */
+
+  /* height: 59px;   
+  width: 193px; */
+  /* border-top: none;
+  border-left: none; */
+}
+
+.progress-container {
+  width: 140px;        
+  height: 30px;        
+  background-color: #e0e0e0;
+  border-radius: 0; /* No rounded corners */
+  overflow: hidden;
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  margin-left: 15px;
+  /* border: 2px solid black; */
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 0; /* No rounded corners */
+  background: linear-gradient(to right, #5b56aedd, #1a0dabdd);
+  transition: width 0.4s ease-in-out;
+}
+
+.progress-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-left: 5px;  /* Small gap between bar and text */
+  min-width: 35px; /* Ensures space for text */
+  text-align: right;
+  white-space: nowrap;
+  margin-right: 5px;
 }
 
 @media (max-width: 1000px) {
