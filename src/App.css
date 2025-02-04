@@ -637,8 +637,8 @@ input::-webkit-inner-spin-button {
   position: relative;
   display: flex;
   align-items: center;
-  margin-right: 10px;
-  margin-left: 15px;
+  /* margin-right: 10px; */
+  margin-left: 6%;
   /* border: 2px solid black; */
 }
 
@@ -653,11 +653,10 @@ input::-webkit-inner-spin-button {
   font-size: 14px;
   font-weight: bold;
   color: #333;
-  margin-left: 5px;  /* Small gap between bar and text */
   min-width: 35px; /* Ensures space for text */
   text-align: right;
   white-space: nowrap;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 @media (max-width: 1000px) {

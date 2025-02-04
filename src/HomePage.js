@@ -1145,9 +1145,9 @@ export function App() {
                             <thead>
                                 {openTable ? (
                                     <tr>
-                                        {EXPAND_TABLE.map((each, eachIndex) => (
-                                            <th key={eachIndex}>{each[1]}</th>
-                                        ))}
+                                        {EXPAND_TABLE.map((each, eachIndex) => {
+                                            return (<th key={eachIndex}>{each[1]}</th>);
+                                        })}
                                     </tr>
                                 ) : (
                                     <tr>
