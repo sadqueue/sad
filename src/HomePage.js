@@ -1127,6 +1127,7 @@ export function App() {
             </div>
             {loading ? <div className="loading">
                 <div class="spinner">
+                    {/* Loading... */}
                     <div class="rect1"></div>
                     <div class="rect2"></div>
                     <div class="rect3"></div>
