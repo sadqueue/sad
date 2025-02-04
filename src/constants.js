@@ -47,7 +47,7 @@ export const EXPAND_TABLE = [
     ["shiftTimePeriod", "Shift Times"],
     ["timestamp", "Last Admit Time"],
     ["isTwoAdmits", "2 Admits in Last 2 hrs?"],
-    ["numberOfAdmissions", "Number of Admits"],
+    ["numberOfAdmissions", "# of Admits"],
     ["chronicLoadRatio", "Chronic Load"],
     ["numberOfHours", "# Hours Worked"],
     // ["score", "Composite Score"]
@@ -56,7 +56,7 @@ export const EXPAND_TABLE = [
 export const MINIMIZE_TABLE = [
     ["name", "Role"],
     ["timestamp", "Last Admit Time"],
-    ["numberOfAdmissions", "Number of Admits"],
+    ["numberOfAdmissions", "# of Admits"],
     ["chronicLoadRatio", "Chronic Load Ratio"]
 ];
 
