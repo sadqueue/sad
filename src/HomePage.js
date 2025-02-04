@@ -1150,7 +1150,7 @@ export function App() {
                                                 return (
                                                     <th className="th_10percent" key={eachIndex}>{each[1]}</th>
                                                 );
-                                            } else if (each[0] == "timestamp" || each[0] == "numberOfAdmissions"){
+                                            } else if (each[0] == "timestamp" || each[0] == "numberOfAdmissions" || each[0] == "chronicLoadRatio"){
                                                 return (
                                                     <th className="th_25percent" key={eachIndex}>{each[1]}</th>
                                                 );
@@ -1165,7 +1165,7 @@ export function App() {
                                                 return (
                                                     <th className="th_10percent" key={eachIndex}>{each[1]}</th>
                                                 );
-                                            } else if (each[0] == "timestamp" || each[0] == "numberOfAdmissions"){
+                                            } else if (each[0] == "timestamp" || each[0] == "numberOfAdmissions" || each[0] == "chronicLoadRatio"){
                                                 return (
                                                     <th className="th_25percent" key={eachIndex}>{each[1]}</th>
                                                 );
