@@ -1259,6 +1259,7 @@ export function App() {
                                                 </td>
                                                 <td className="backgroundlightgray">
                                                     <input
+                                                        className="fontcolorblack"
                                                         name={`chronicLoadRatio_${index}`}
                                                         type="text"
                                                         value={admission.chronicLoadRatio ? admission.chronicLoadRatio : ""}

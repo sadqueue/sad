@@ -366,6 +366,7 @@ p.boldCopy {
 
 .bold-fields {
   font-weight: bold;
+  color: black;
 }
 
 fieldset {
@@ -478,6 +479,13 @@ input[class="timeperiodbyrole"] {
   background-color: lightgray;
 }
 
+.fontcolorblack {
+  color: black;
+}
+
+.reacttable {
+  color: black;
+}
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
