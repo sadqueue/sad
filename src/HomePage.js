@@ -75,8 +75,8 @@ export function App() {
     const [show2, setShow2] = useState(false);
     const [show3, setShow3] = useState(false);
     const [show4, setShow4] = useState(false);
-
-
+    const [alrWeight, setAlrWeight] = useState("");
+    const [clrWeight, setClrWeight] = useState("");
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         let localDateTime = "";
@@ -419,7 +419,12 @@ export function App() {
         const differenceArr = [];
         const alrArr = [];
         const clrArr = [];
+        const clrExplanationArr = [];
+        const alrExplanationArr = [];
         const compositeArr = [];
+        const normalizedAlrExplanation = [];
+        const normalizedClrExplanation = [];
+        const compositeScore2Explanation = [];
 
         const getTimeDifference = (time1) => {
 
@@ -569,105 +574,307 @@ export function App() {
             }
         }
 
+        const getTimeDifferenceInMinutes = (date1, date2) => {
+            const diffInMilliseconds = Math.abs(moment(date2, "HH:mm") - moment(date1, "HH:mm"));
+            const diffInMinutes = Math.floor(diffInMilliseconds / 60000);
+            return diffInMinutes;
+          }
+        const getAlr2 = (each) => {
+            //alr = 1 - (Current Time - Last Admit Time, convert to minutes / P95)
+
+            let p95 = "";
+            let currentTimeMinusLastAdmitTime = "";
+            if (dropdown == "19:00"){
+                p95 = 180;
+                if (each.timestamp == ""){
+                    currentTimeMinusLastAdmitTime = 0;
+                } else {
+                    currentTimeMinusLastAdmitTime = getTimeDifferenceInMinutes("19:00", each.timestamp)
+                }
+                
+                if (currentTimeMinusLastAdmitTime > 180){
+                    currentTimeMinusLastAdmitTime = 180;
+                }
+            } else if (dropdown == "17:00"){
+                p95 = 135;
+                if (each.timestamp == ""){
+                    currentTimeMinusLastAdmitTime = 0;
+
+                } else {
+                    currentTimeMinusLastAdmitTime = getTimeDifferenceInMinutes("17:00", each.timestamp)
+
+                }
+
+                if (currentTimeMinusLastAdmitTime > 135){
+                    currentTimeMinusLastAdmitTime = 135;
+                }
+            }
+            const res = (Number(currentTimeMinusLastAdmitTime) / p95).toFixed(3);
+            explanationArr.push(`${each.name}: 1 - (${dropdown} - ${each.timestamp}) / ${p95} = ${res}`)
+
+            return Number(res);
+        }
+
+        const standardDeviation = (array) => {
+            const n = array.length;
+            const mean = array.reduce((a, b) => a + b) / n;
+            return Math.sqrt(
+              array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / (n - 1)
+            );
+          }
+
+          const getNormalizedAlr = (each) => {
+            // Norm_ALR = ALR/P95
+            // Norm_CLR = CLR/P95
+
+            // At 5:00PM
+            // P95 [ALR] at 5:00 PM = 1.00
+            // P95 [CLR] at 7:00 PM =0.70
+
+            // At 7:00PM
+            // P95 [ALR] at 5:00 PM = 1.00
+            // P95 [CLR] at 7:00 PM = 0.70
+                    
+            let p95_alr = "";
+            // let p95_clr = "";
+            if (dropdown == "17:00"){
+                p95_alr = 1.00;
+                // p95_clr = 0.70;
+            } else if (dropdown == "19:00"){
+                p95_alr = 1.00;
+                // p95_clr = 0.70;
+            }
+
+            const normalizedAlr = each.alr2 / p95_alr;
+            return normalizedAlr.toFixed(3);
+          }
+          const getNormalizedClr = (each) => {
+            // let p95_alr = "";
+            let p95_clr = "";
+            if (dropdown == "17:00"){
+                // p95_alr = 1.00;
+                p95_clr = 0.70;
+            } else if (dropdown == "19:00"){
+                // p95_alr = 1.00;
+                p95_clr = 0.70;
+            }
+
+            const normalizedAlr = each.clr / p95_clr;
+            return normalizedAlr.toFixed(3);
+          }
+
+          const getNormalizedAlrExplanation = (each) => {
+            let p95_alr = "";
+            // let p95_clr = "";
+            if (dropdown == "17:00"){
+                p95_alr = 1.00;
+                // p95_clr = 0.70;
+            } else if (dropdown == "19:00"){
+                p95_alr = 1.00;
+                // p95_clr = 0.70;
+            }
+
+            return `${each.name}: ${each.alr2} / ${p95_alr} = ${each.normalizedAlr}`
+
+          }
+          const getNormalizedClrExplanation = (each) => {
+            // let p95_alr = "";
+            let p95_clr = "";
+            if (dropdown == "17:00"){
+                // p95_alr = 1.00;
+                p95_clr = 0.70;
+            } else if (dropdown == "19:00"){
+                // p95_alr = 1.00;
+                p95_clr = 0.70;
+            }
+
+            return `${each.name}: ${each.clr} / ${p95_clr} = ${each.normalizedClr}`
+
+          }
+
+          const getCompositeScore2 = (each) => {
+            //Composite Score = W[ALR] X Norm_ALR + W[CLR] X Norm_CLR
+            // const alrWeight = (standardDeviation(alrArr)/(standardDeviation(alrArr)+standardDeviation(clrArr))).toFixed(3);
+            // const clrWeight = (standardDeviation(clrArr)/(standardDeviation(alrArr)+standardDeviation(alrArr))).toFixed(3);
+
+
+            const res = (alrWeight * each.normalizedAlr) + (clrWeight * each.normalizedClr);
+            return res.toFixed(3);;
+          }
+
+          const getCompositeScore2Explanation = (each) => {
+            //Composite Score = W[ALR] X Norm_ALR + W[CLR] X Norm_CLR
+            // const alrWeight = (standardDeviation(alrArr)/(standardDeviation(alrArr)+standardDeviation(clrArr))).toFixed(3);
+            // const clrWeight = (standardDeviation(clrArr)/(standardDeviation(alrArr)+standardDeviation(alrArr))).toFixed(3);
+
+
+            const res = (alrWeight * each.normalizedAlr) + (clrWeight * each.normalizedClr);
+            return `${each.name}: ${alrWeight} * ${each.normalizedAlr} + ${clrWeight} * ${each.normalizedClr} = ${res.toFixed(3)}`;
+          }
+        explanationArr.push(`Step 1: Calculate ALR.`)
+        explanationArr.push(`ALR = 1 - (Current Time - Last Admit Time, convert to minutes / P95)`)
+
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 const difference = getTimeDifference(each.timestamp);
                 const alr = getAlr(difference);
                 const clr = getClr(each)
                 const composite = getComposite(each, alr, clr);
+                const alr2 = getAlr2(each);
+                const normalizedAlr = getNormalizedAlr(each);
+                const normalizedClr = getNormalizedClr(each);
+                const compositeScore2 = getCompositeScore2(each);
+
+                alrArr.push(Number(alr2));
+                clrArr.push(Number(clr));
+
                 each["difference"] = difference;
                 each["alr"] = alr;
                 each["clr"] = clr;
                 each["composite"] = composite;
+                each["alr2"] = alr2;
+                each["normalizedAlr"] = normalizedAlr;
+                each["normalizedClr"] = normalizedClr;
+                each["compositeScore2"] = compositeScore2;
             }
 
-            // if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-            //     differenceArr.push(getTimeDifferenceExplanation(each));
-            //     alrArr.push(getAlrExplanation(each));
-            //     clrArr.push(getClrExplanation(each));
-            //     compositeArr.push(getCompositeExplanation(each))
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                differenceArr.push(getTimeDifferenceExplanation(each));
+                alrExplanationArr.push(getAlrExplanation(each));
+                clrExplanationArr.push(getClrExplanation(each));
+                compositeArr.push(getCompositeExplanation(each));
+                normalizedAlrExplanation.push(getNormalizedAlrExplanation(each));
+                normalizedClrExplanation.push(getNormalizedClrExplanation(each));
+                compositeScore2Explanation.push(getCompositeScore2Explanation(each))
 
-            // }
+            }
         });
 
-        explanationArr.push(`Sort by composite score with ALR ${alr} and CLR ${clr}.`);
-        explanationArr.push("\n");
+      
+        const alrWeight_ = (standardDeviation(alrArr)/(standardDeviation(alrArr)+standardDeviation(clrArr))).toFixed(3);
+        const clrWeight_ = (standardDeviation(clrArr)/(standardDeviation(alrArr)+standardDeviation(alrArr))).toFixed(3);
+        setAlrWeight(alrWeight_);
+        setClrWeight(clrWeight_);
 
+        explanationArr.push("\n");
+        explanationArr.push("Step 2: Calculate Chronic Load Ratio (CLR) for each Role.")
+        clrExplanationArr.forEach((each, eachIndex) => {
+            explanationArr.push(each);
+        });
+
+
+        explanationArr.push("\n");
+        explanationArr.push(`Step 3: Calculate weights of ALR and CLR, based on Standard Deviations.`);
+        explanationArr.push(`ALR Weight: ${alrWeight}`);
+        explanationArr.push(`CLR Weight: ${clrWeight}`);
+
+
+        explanationArr.push("\n");
+        explanationArr.push("Step 4: Calculate Normalized ALR and CLR for each Role");
+
+        normalizedAlrExplanation.forEach((each, eachIndex)=>{
+            explanationArr.push(each);
+        })
+
+        explanationArr.push("\n");
+        explanationArr.push("Step 5: Calculate Composite Score: a Weighted Sum of Acute and Chronic Load Scores.");
+
+
+
+        timeObj.shifts.sort((a, b)=>{
+            if (a.compositeScore2 > b.compositeScore2){
+                return 1;
+            } 
+            if (a.compositeScore2 < b.compositeScore2){
+                return -1;
+            } 
+            return 0;
+        });
+
+        timeObj.shifts.forEach((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                const getExplanation = getCompositeScore2Explanation(each);
+                explanationArr.push(getExplanation);
+            }
+        })
+        // compositeScore2Explanation.forEach((each, eachIndex) => {
+        //     explanationArr.push(each);
+        // })
         /*
         Step 1: Time Difference
         */
-        explanationArr.push("Step 1: Sort by the difference of the shift time with the timestamp.");
-        timeObj.shifts.sort((a, b) => {
-            if (a.difference > b.difference) {
-                return 1;
-            }
-            if (a.difference < b.difference) {
-                return -1;
-            }
-            return 0;
-        });
-        timeObj.shifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                explanationArr.push(getTimeDifferenceExplanation(each));
-                alrArr.push(getAlrExplanation(each));
-                clrArr.push(getClrExplanation(each));
-                compositeArr.push(getCompositeExplanation(each))
-            }
-        });
-        explanationArr.push("\n");
+        // explanationArr.push("Step 1: Sort by the difference of the shift time with the timestamp.");
+        // timeObj.shifts.sort((a, b) => {
+        //     if (a.difference > b.difference) {
+        //         return 1;
+        //     }
+        //     if (a.difference < b.difference) {
+        //         return -1;
+        //     }
+        //     return 0;
+        // });
+        // timeObj.shifts.forEach((each, eachIndex) => {
+        //     if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+        //         explanationArr.push(getTimeDifferenceExplanation(each));
+        //         alrArr.push(getAlrExplanation(each));
+        //         clrArr.push(getClrExplanation(each));
+        //         compositeArr.push(getCompositeExplanation(each))
+        //     }
+        // });
+        // explanationArr.push("\n");
 
-        timeObj.shifts.sort((a, b) => {
-            if (a.composite < b.composite) {
-                return -1;
-            }
-            if (b.composite > b.composite) {
-                return 1;
-            }
-            return 0;
-        });
+        // timeObj.shifts.sort((a, b) => {
+        //     if (a.composite < b.composite) {
+        //         return -1;
+        //     }
+        //     if (b.composite > b.composite) {
+        //         return 1;
+        //     }
+        //     return 0;
+        // });
 
-        explanationArr.push(`Step 2: Calculate Acute Load Ratio (ALR) for each Role.`);
+        // explanationArr.push(`Step 2: Calculate Acute Load Ratio (ALR) for each Role.`);
 
-        alrArr.map((each, eachIndex) => {
-            explanationArr.push(each);
-        });
-
-        explanationArr.push("\n")
-        explanationArr.push(`Step 3: Calculate Chronic Load Ratio (CLR) for each Role. CLR = Admits/Hours Worked`);
-
-        clrArr.map((each, eachIndex) => {
-            explanationArr.push(each);
-        });
-
-        timeObj.shifts.sort((a, b) => {
-            if (Number(a.composite) > Number(b.composite)) {
-                return 1;
-            }
-            if (Number(a.composite) < Number(b.composite)) {
-                return -1;
-            }
-            return 0;
-        });
-        explanationArr.push("\n")
-        explanationArr.push(`Step 4: Generate the Order based on Composite Score, with Roles having the Lowest Composite Score being Prioritized First.`);
-
-        // compositeArr.map((each, eachIndex) => {
+        // alrArr.map((each, eachIndex) => {
         //     explanationArr.push(each);
         // });
-        timeObj.shifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                explanationArr.push(getCompositeExplanation(each));
-            }
-        })
 
-        explanationArr.push("\n")
-        explanationArr.push(`Step 5: De-prioritize Roles with High Composite Scores.`);
+        // explanationArr.push("\n")
+        // explanationArr.push(`Step 3: Calculate Chronic Load Ratio (CLR) for each Role. CLR = Admits/Hours Worked`);
+
+        // clrArr.map((each, eachIndex) => {
+        //     explanationArr.push(each);
+        // });
+
+        // timeObj.shifts.sort((a, b) => {
+        //     if (Number(a.composite) > Number(b.composite)) {
+        //         return 1;
+        //     }
+        //     if (Number(a.composite) < Number(b.composite)) {
+        //         return -1;
+        //     }
+        //     return 0;
+        // });
+        // explanationArr.push("\n")
+        // explanationArr.push(`Step 4: Generate the Order based on Composite Score, with Roles having the Lowest Composite Score being Prioritized First.`);
+
+        // // compositeArr.map((each, eachIndex) => {
+        // //     explanationArr.push(each);
+        // // });
+        // timeObj.shifts.forEach((each, eachIndex) => {
+        //     if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+        //         explanationArr.push(getCompositeExplanation(each));
+        //     }
+        // })
+
+        // explanationArr.push("\n")
+        // explanationArr.push(`Step 5: De-prioritize Roles with High Composite Scores.`);
 
         timeObj.shifts.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
                     if (window.location.hostname === 'localhost') {
-                        orderOfAdmissions.push(`${each.name}(${each.alr},${each.clr},${each.composite})`);
+                        orderOfAdmissions.push(`${each.name}(${each.alr},${each.clr},${each.compositeScore2})`);
                     } else {
                         orderOfAdmissions.push(each.name);
                     }
