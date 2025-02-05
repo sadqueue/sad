@@ -6,6 +6,17 @@ export const CHRONIC_LOAD_RATIO_THRESHOLD_N5 = 0.87;
 export const NUMBER_OF_ADMISSIONS_CAP = 6;
 export const NUMBER_OF_ADMISSIONS_S4_CAP = 5;
 
+export const CONSTANT_COMPOSITE_5PM = {
+    "N5": 0.45
+};
+
+export const CONSTANT_COMPOSITE_7PM = {
+    "N1": 0.45,
+    "N2": 0.55,
+    "N3": 0.65,
+    "N4": 0.75
+};
+
 export const TIME_FORMAT = "h:mmA"; //hh:mm for non military
 
 export const ROLE_ORDER = ["DA", "S1", "S2", "S3", "S4", "N5", "N1", "N2", "N3", "N4"];

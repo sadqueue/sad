@@ -19,7 +19,9 @@ import {
     CHRONIC_LOAD_RATIO_THRESHOLD_N1_N2_N3_N4,
     NUMBER_OF_ADMISSIONS_CAP,
     NUMBER_OF_ADMISSIONS_S4_CAP,
-    ROLES_WITH_DEFAULT_TIMES
+    ROLES_WITH_DEFAULT_TIMES,
+    CONSTANT_COMPOSITE_5PM,
+    CONSTANT_COMPOSITE_7PM
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import snapshotImg from "./images/snapshot.png";
@@ -696,10 +698,25 @@ export function App() {
             //Composite Score = W[ALR] X Norm_ALR + W[CLR] X Norm_CLR
             // const alrWeight = (standardDeviation(alrArr)/(standardDeviation(alrArr)+standardDeviation(clrArr))).toFixed(3);
             // const clrWeight = (standardDeviation(clrArr)/(standardDeviation(alrArr)+standardDeviation(alrArr))).toFixed(3);
-
-
-            const res = (alrWeight * each.normalizedAlr) + (clrWeight * each.normalizedClr);
-            return res.toFixed(3);;
+            let res = (alrWeight * each.normalizedAlr) + (clrWeight * each.normalizedClr);
+            if (dropdown == "17:00"){
+                Object.entries(CONSTANT_COMPOSITE_5PM).forEach((innerEach, innerEachIndex) => {
+                    if (innerEach[0] == each.name){
+                        res = innerEach[1];
+                        return;
+                    }
+                });
+            }
+           
+            else if (dropdown == "19:00"){
+                Object.entries(CONSTANT_COMPOSITE_7PM).forEach((innerEach, innerEachIndex) => {
+                    if (innerEach[0] == each.name){
+                        res = innerEach[1];
+                        return;
+                    }
+                })
+            }
+            return Number(res).toFixed(3);
           }
 
           const getCompositeScore2Explanation = (each) => {
@@ -707,9 +724,14 @@ export function App() {
             // const alrWeight = (standardDeviation(alrArr)/(standardDeviation(alrArr)+standardDeviation(clrArr))).toFixed(3);
             // const clrWeight = (standardDeviation(clrArr)/(standardDeviation(alrArr)+standardDeviation(alrArr))).toFixed(3);
 
-
-            const res = (alrWeight * each.normalizedAlr) + (clrWeight * each.normalizedClr);
-            return `${each.name}: ${alrWeight} * ${each.normalizedAlr} + ${clrWeight} * ${each.normalizedClr} = ${res.toFixed(3)}`;
+            if (SHOW_ROWS_COPY[dropdown].includes(each.name)) {
+                if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
+                    return `${each.name}: ${alrWeight} * ${each.normalizedAlr} + ${clrWeight} * ${each.normalizedClr} = ${each.compositeScore2}`;
+            
+                } else {
+                    return `${each.name}: ${each.compositeScore2}`;
+                }
+            }
           }
         explanationArr.push(`Step 1: Calculate ALR.`)
         explanationArr.push(`ALR = 1 - (Current Time - Last Admit Time, convert to minutes / P95)`)
@@ -753,8 +775,8 @@ export function App() {
       
         const alrWeight_ = (standardDeviation(alrArr)/(standardDeviation(alrArr)+standardDeviation(clrArr))).toFixed(3);
         const clrWeight_ = (standardDeviation(clrArr)/(standardDeviation(alrArr)+standardDeviation(alrArr))).toFixed(3);
-        setAlrWeight(alrWeight_);
-        setClrWeight(clrWeight_);
+        setAlrWeight(Number(alrWeight_));
+        setClrWeight(Number(clrWeight_));
 
         explanationArr.push("\n");
         explanationArr.push("Step 2: Calculate Chronic Load Ratio (CLR) for each Role.")
@@ -874,7 +896,7 @@ export function App() {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
                     if (window.location.hostname === 'localhost') {
-                        orderOfAdmissions.push(`${each.name}(${each.alr},${each.clr},${each.compositeScore2})`);
+                        orderOfAdmissions.push(`${each.name}(${each.compositeScore2})`);
                     } else {
                         orderOfAdmissions.push(each.name);
                     }
@@ -1608,7 +1630,7 @@ export function App() {
                         </div>
                         }                       {show4 && compositeScoreAlgorithm &&
                             <div>
-                                <div className="flex"><p className="weightwidth">ALR: </p><input
+                                {/* <div className="flex"><p className="weightwidth">ALR: </p><input
                                     id="alr"
                                     placeholder="ALR"
                                     className="input-left"
@@ -1636,7 +1658,7 @@ export function App() {
                                         }
                                     }}
                                     value={clr}
-                                /></div>
+                                /></div> */}
                                 <p>Select the Generate Queue button above</p>
 
 
