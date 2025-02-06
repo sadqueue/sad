@@ -1,10 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import AnalyticsPage from "./AnalyticsPage";
 
 function App() {
   return (
-    <Router basename="/sad">
+    <Router basename="/">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/sad" element={<HomePage />} />
