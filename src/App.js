@@ -1,15 +1,14 @@
-import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './HomePage';
-import VisualizationPage from './VisualizationPage';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./HomePage";
+import AnalyticsPage from "./AnalyticsPage";
 
 function App() {
   return (
-    <Router>
+    <Router basename="/sad">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/sad" element={<HomePage />} />
-        <Route path="/visualization" element={<VisualizationPage />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
       </Routes>
     </Router>
   );
