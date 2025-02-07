@@ -195,9 +195,14 @@ export function App() {
             explanationArr.push("\n");
             explanationArr.push(`Step 4: Remove high-admission roles.`)
             shiftsCombined.forEach((each, eachIndex) => {
-                if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
+                if (dropdown == "17:00") {
                     explanationArr.push(getFormattedOutput(each) + " (DONE)")
+                } else if (dropdown == "19:00") {
+                    if (each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_CAP) {
+                        explanationArr.push(getFormattedOutput(each) + " (DONE)")
+                    }
                 }
+
             });
 
             /* Step 5: High chronic load scenarios */
@@ -249,12 +254,21 @@ export function App() {
                 });
 
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
-                        Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
+                    if (dropdown == "17:00") {
+                        if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6)) {
 
-                    } else {
-                        array2.push(innerEach);
+                        } else {
+                            array2.push(innerEach);
+                        }
+                    } else if (dropdown == "19:00") {
+                        if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
+                            Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
+
+                        } else {
+                            array2.push(innerEach);
+                        }
                     }
+
                 });
 
                 if (s4HasFiveAdmissions) {
@@ -268,15 +282,28 @@ export function App() {
                 }
 
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
-                        (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
-                        (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
-                        (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3) ||
-                        Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
-                        explanationArr.push(getFormattedOutput(innerEach));
-                    } else {
-                        array1.push(innerEach);
+                    if (dropdown == "17:00") {
+                        if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
+                            (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
+                            (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
+                            (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3)) {
+                            explanationArr.push(getFormattedOutput(innerEach));
+                        } else {
+                            array1.push(innerEach);
+                        }
+                    } else if (dropdown == "19:00") {
+                        if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
+                            (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
+                            (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
+                            (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3) ||
+                            Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
+                            explanationArr.push(getFormattedOutput(innerEach));
+                        } else {
+                            array1.push(innerEach);
+                        }
                     }
+
+
                 })
 
                 /* Step 2: Create Array 2 but copying over from Array 1*/
@@ -294,18 +321,34 @@ export function App() {
                 const array2 = [];
                 let getS4 = {};
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
-                    } else if (innerEach.name == "S4") {
-                        explanationArr.push(getFormattedOutput(innerEach))
-                        getS4 = innerEach;
-                    } else if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) {
-                        array1.push(innerEach);
-                    } else if (innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) {
-                        array2.push(innerEach);
-                    } else {
-                        array1.push(innerEach);
-                        array2.push(innerEach);
+                    if (dropdown == "17:00") {
+                        if (innerEach.name == "S4") {
+                            explanationArr.push(getFormattedOutput(innerEach))
+                            getS4 = innerEach;
+                        } else if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) {
+                            array1.push(innerEach);
+                        } else if (innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) {
+                            array2.push(innerEach);
+                        } else {
+                            array1.push(innerEach);
+                            array2.push(innerEach);
+                        }
+                    } else if (dropdown == "19:00") {
+                        if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
+                        } else if (innerEach.name == "S4") {
+                            explanationArr.push(getFormattedOutput(innerEach))
+                            getS4 = innerEach;
+                        } else if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) {
+                            array1.push(innerEach);
+                        } else if (innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) {
+                            array2.push(innerEach);
+                        } else {
+                            array1.push(innerEach);
+                            array2.push(innerEach);
+                        }
                     }
+
+
                 });
 
                 const newElement = getS4;
@@ -332,21 +375,38 @@ export function App() {
                 const array1 = [];
                 let getS3 = {};
                 shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
-                    } else if (innerEach.name == "S3") {
-                        getS3 = innerEach;
-                    } else {
-                        array1.push(innerEach);
+                    if (dropdown == "17:00") {
+                        if (innerEach.name == "S3") {
+                            getS3 = innerEach;
+                        } else {
+                            array1.push(innerEach);
+                        }
+                    } else if (dropdown == "19:00") {
+                        if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
+                        } else if (innerEach.name == "S3") {
+                            getS3 = innerEach;
+                        } else {
+                            array1.push(innerEach);
+                        }
                     }
+
                 });
                 const array2 = [];
                 const copyArray2 = [...array1];
                 copyArray2.forEach((innerEach, innerEachIndex) => {
-                    if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
-                        Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
-                    } else {
-                        array2.push(innerEach);
+                    if (dropdown == "17:00") {
+                        if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6)) {
+                        } else {
+                            array2.push(innerEach);
+                        }
+                    } else if (dropdown == "19:00") {
+                        if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
+                            Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
+                        } else {
+                            array2.push(innerEach);
+                        }
                     }
+
                 })
 
                 const newElement = getS3;
@@ -369,9 +429,14 @@ export function App() {
             }
             shiftsCombined.map((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                    if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                    if (dropdown == "17:00") {
                         orderOfAdmissions.push(each.name);
+                    } else if (dropdown == "19:00") {
+                        if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                            orderOfAdmissions.push(each.name);
+                        }
                     }
+
                 }
             })
 
@@ -897,74 +962,93 @@ export function App() {
                 shiftsCombined.push(each);
             }
         });
-            // explanationArr.push("\n");
-            let scenario1 = false;
-            let scenario2 = false;
-            let scenario3 = false
-            if (timeObj.startTime == "19:00") {
-                shiftsCombined.forEach((each, eachIndex) => {
-                    /* Scenario 1: 
-                    // If S3 has 6 admissions,
-                    // S4 has 6 admissions or
-                    // N5 has 3+ admissions */
-                    if ((each.name == "S3" && Number(each.numberOfAdmissions) == 6) ||
-                        (each.name == "S4" && Number(each.numberOfAdmissions) == 6) ||
-                        (each.name == "N5" && Number(each.numberOfAdmissions) >= 3 && each.name == "N5" && Number(each.numberOfAdmissions) <= 6)) {
-                        scenario1 = true;
-                        return;
-                        /* Scenario 2: If S4 has 5 admissions */
-                    } else if (each.name == "S4" && Number(each.numberOfAdmissions) == 5) {
-                        scenario1 = false;
-                        scenario2 = true;
+        // explanationArr.push("\n");
+        let scenario1 = false;
+        let scenario2 = false;
+        let scenario3 = false
+        if (timeObj.startTime == "19:00") {
+            shiftsCombined.forEach((each, eachIndex) => {
+                /* Scenario 1: 
+                // If S3 has 6 admissions,
+                // S4 has 6 admissions or
+                // N5 has 3+ admissions */
+                if ((each.name == "S3" && Number(each.numberOfAdmissions) == 6) ||
+                    (each.name == "S4" && Number(each.numberOfAdmissions) == 6) ||
+                    (each.name == "N5" && Number(each.numberOfAdmissions) >= 3 && each.name == "N5" && Number(each.numberOfAdmissions) <= 6)) {
+                    scenario1 = true;
+                    return;
+                    /* Scenario 2: If S4 has 5 admissions */
+                } else if (each.name == "S4" && Number(each.numberOfAdmissions) == 5) {
+                    scenario1 = false;
+                    scenario2 = true;
 
-                        return;
-                        //If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4 “Insert after N1 in Array2”
+                    return;
+                    //If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4 “Insert after N1 in Array2”
+                }
+                /*else if (each.name == "S3" && Number(each.numberOfAdmissions) == 5){
+                    explanationArr.push(`Step 5: If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4`);
+                    scenario3 = true;
+                    return;
+                }*/
+            });
+        }
+        if (scenario1) {
+            explanationArr.push("\n");
+            explanationArr.push("Step 5 (Scenario 1): 7PM High Chronic Load Scenario. If S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
+
+            /* Step 1: Remove from Array 1. This means that we have to copy Array 1 to Array 2.*/
+            const array1 = [];
+            const array2 = [];
+
+            let s4HasFiveAdmissions = false;
+            let s4HasFiveAdmissions_obj = {};
+            shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                if (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5
+                ) {
+                    s4HasFiveAdmissions = true;
+                    s4HasFiveAdmissions_obj = innerEach;
+                }
+            });
+
+            shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                if (dropdown == "17:00") {
+                    if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6)) {
+
+                    } else {
+                        array2.push(innerEach);
                     }
-                    /*else if (each.name == "S3" && Number(each.numberOfAdmissions) == 5){
-                        explanationArr.push(`Step 5: If S3 has number of admissions of 5, then (N1-N4), N1>S3>N2>N3>N4`);
-                        scenario3 = true;
-                        return;
-                    }*/
-                });
-            }
-            if (scenario1) {
-                explanationArr.push("\n");
-                explanationArr.push("Step 5 (Scenario 1): 7PM High Chronic Load Scenario. If S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
-
-                /* Step 1: Remove from Array 1. This means that we have to copy Array 1 to Array 2.*/
-                const array1 = [];
-                const array2 = [];
-
-                let s4HasFiveAdmissions = false;
-                let s4HasFiveAdmissions_obj = {};
-                shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                    if (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5
-                    ) {
-                        s4HasFiveAdmissions = true;
-                        s4HasFiveAdmissions_obj = innerEach;
-                    }
-                });
-
-                shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                } else if (dropdown == "19:00") {
                     if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
                         Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
 
                     } else {
                         array2.push(innerEach);
                     }
-                });
-
-                if (s4HasFiveAdmissions) {
-                    let index = array2.findIndex(obj => obj.name === "S4");
-
-                    if (index !== -1) {
-                        let [removed] = array2.splice(index, 1);
-
-                        array2.splice(2, 0, removed);
-                    }
                 }
 
-                shiftsCombined.forEach((innerEach, innerEachIndex) => {
+            });
+
+            if (s4HasFiveAdmissions) {
+                let index = array2.findIndex(obj => obj.name === "S4");
+
+                if (index !== -1) {
+                    let [removed] = array2.splice(index, 1);
+
+                    array2.splice(2, 0, removed);
+                }
+            }
+
+            shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                if (dropdown == "17:00") {
+                    if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
+                        (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
+                        (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
+                        (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3)) {
+                        explanationArr.push(getFormattedOutputCompositeScore2(innerEach));
+                    } else {
+                        array1.push(innerEach);
+                    }
+                } else if (dropdown == "19:00") {
                     if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
@@ -974,24 +1058,39 @@ export function App() {
                     } else {
                         array1.push(innerEach);
                     }
-                })
+                }
 
-                /* Step 2: Create Array 2 but copying over from Array 1*/
-                // shiftsCombined = array1.concat(array2);
+            })
 
-                setArray1(array1 && array1.map((each) => { return each.name }));
-                setArray2(array2 && array2.map((each) => { return each.name }));
-                const combinedArr = array1.concat(array2);
-                shiftsCombined = combinedArr;
-            } else if (scenario2) {
-                explanationArr.push("\n");
-                explanationArr.push("Step 5 (Scenario 2): 7PM High Chronic Load Scenario. If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
+            /* Step 2: Create Array 2 but copying over from Array 1*/
+            // shiftsCombined = array1.concat(array2);
 
-                /* If S4 has number of admissions of 5, then remove S4 from Array 1. This means that we have to copy Array 1 to Array 2. */
-                const array1 = [];
-                const array2 = [];
-                let getS4 = {};
-                shiftsCombined.forEach((innerEach, innerEachIndex) => {
+            setArray1(array1 && array1.map((each) => { return each.name }));
+            setArray2(array2 && array2.map((each) => { return each.name }));
+            const combinedArr = array1.concat(array2);
+            shiftsCombined = combinedArr;
+        } else if (scenario2) {
+            explanationArr.push("\n");
+            explanationArr.push("Step 5 (Scenario 2): 7PM High Chronic Load Scenario. If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
+
+            /* If S4 has number of admissions of 5, then remove S4 from Array 1. This means that we have to copy Array 1 to Array 2. */
+            const array1 = [];
+            const array2 = [];
+            let getS4 = {};
+            shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                if (dropdown == "17:00") {
+                    if (innerEach.name == "S4") {
+                        explanationArr.push(getFormattedOutputCompositeScore2(innerEach))
+                        getS4 = innerEach;
+                    } else if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) {
+                        array1.push(innerEach);
+                    } else if (innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) {
+                        array2.push(innerEach);
+                    } else {
+                        array1.push(innerEach);
+                        array2.push(innerEach);
+                    }
+                } else if (dropdown == "19:00") {
                     if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                     } else if (innerEach.name == "S4") {
                         explanationArr.push(getFormattedOutputCompositeScore2(innerEach))
@@ -1004,88 +1103,124 @@ export function App() {
                         array1.push(innerEach);
                         array2.push(innerEach);
                     }
-                });
+                }
 
-                const newElement = getS4;
+            });
 
-                let index = 0;
-                for (let i = 0; i < array2.length; i++) {
-                    if (array2[i].name == "N2") {
-                        index = i;
+            const newElement = getS4;
+
+            let index = 0;
+            for (let i = 0; i < array2.length; i++) {
+                if (array2[i].name == "N2") {
+                    index = i;
+                }
+            }
+
+            if (index !== -1) {
+                // Insert the new element after the found element
+                array2.splice(index + 1, 0, newElement);
+            }
+
+            // N5 is inserted after N4, if S4 qualifies then S4 inserted After N4, if S3 qualifies then S3 inserted after N4 
+
+            const combinedArr = array1.concat(array2);
+            shiftsCombined = combinedArr
+            setArray1(array1 && array1.map((each) => { return each.name }));
+            setArray2(array2 && array2.map((each) => { return each.name }));
+        } else if (scenario3) {
+            explanationArr.push("\n");
+            const array1 = [];
+            let getS3 = {};
+            shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                if (dropdown == "17:00") {
+                    if (innerEach.name == "S3") {
+                        getS3 = innerEach;
+                    } else {
+                        array1.push(innerEach);
                     }
-                }
-
-                if (index !== -1) {
-                    // Insert the new element after the found element
-                    array2.splice(index + 1, 0, newElement);
-                }
-
-                // N5 is inserted after N4, if S4 qualifies then S4 inserted After N4, if S3 qualifies then S3 inserted after N4 
-
-                const combinedArr = array1.concat(array2);
-                shiftsCombined = combinedArr
-                setArray1(array1 && array1.map((each) => { return each.name }));
-                setArray2(array2 && array2.map((each) => { return each.name }));
-            } else if (scenario3) {
-                explanationArr.push("\n");
-                const array1 = [];
-                let getS3 = {};
-                shiftsCombined.forEach((innerEach, innerEachIndex) => {
+                } else if (dropdown == "19:00") {
                     if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                     } else if (innerEach.name == "S3") {
                         getS3 = innerEach;
                     } else {
                         array1.push(innerEach);
                     }
-                });
-                const array2 = [];
-                const copyArray2 = [...array1];
-                copyArray2.forEach((innerEach, innerEachIndex) => {
+                }
+
+            });
+            const array2 = [];
+            const copyArray2 = [...array1];
+            copyArray2.forEach((innerEach, innerEachIndex) => {
+                if (dropdown == "17:00") {
+                    if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6)) {
+                    } else {
+                        array2.push(innerEach);
+                    }
+                } else if (dropdown == "19:00") {
                     if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
                         Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                     } else {
                         array2.push(innerEach);
                     }
-                })
-
-                const newElement = getS3;
-
-                let index = 0;
-                for (let i = 0; i < array2.length; i++) {
-                    if (array2[i].name == "N1") {
-                        index = i;
-                    }
                 }
 
-                if (index !== -1) {
-                    // Insert the new element after the found element
-                    array2.splice(index + 1, 0, newElement);
+            })
+
+            const newElement = getS3;
+
+            let index = 0;
+            for (let i = 0; i < array2.length; i++) {
+                if (array2[i].name == "N1") {
+                    index = i;
                 }
-                setArray1(array1 && array1.map((each) => { return each.name }));
-                setArray2(array2 && array2.map((each) => { return each.name }));
-                const combinedArr = array1.concat(array2);
-                shiftsCombined = combinedArr;
             }
-            shiftsCombined.map((each, eachIndex) => {
-                if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+
+            if (index !== -1) {
+                // Insert the new element after the found element
+                array2.splice(index + 1, 0, newElement);
+            }
+            setArray1(array1 && array1.map((each) => { return each.name }));
+            setArray2(array2 && array2.map((each) => { return each.name }));
+            const combinedArr = array1.concat(array2);
+            shiftsCombined = combinedArr;
+        }
+        shiftsCombined.map((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                if (dropdown == "17:00") {
+                    orderOfAdmissions.push(each.name);
+                } else if (dropdown == "19:00") {
                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
                         orderOfAdmissions.push(each.name);
                     }
                 }
-            })
+
+            }
+        })
 
 
-        timeObj.shifts.map((each, eachIndex) => {
+        if (shiftsCombined && shiftsCombined.length == 0) {
+            shiftsCombined = timeObj.shifts;
+        }
+        shiftsCombined.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                if (dropdown == "17:00") {
                     if (window.location.hostname === 'localhost') {
                         orderOfAdmissions.push(`${each.name}(${each.compositeScore2})`);
                     } else {
                         orderOfAdmissions.push(each.name);
                     }
-                    // return `${each.name}(${each.alr},${each.clr},${each.composite})>`;
+                } else if (dropdown == "19:00") {
+                    if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                        if (window.location.hostname === 'localhost') {
+                            orderOfAdmissions.push(`${each.name}(${each.compositeScore2})`);
+                        } else {
+                            orderOfAdmissions.push(each.name);
+                        }
+                        // return `${each.name}(${each.alr},${each.clr},${each.composite})>`;
 
+                    }
                 }
+
             }
         })
 
@@ -1376,23 +1511,31 @@ export function App() {
         // let sevenPmS4greaterThanCap = false;
         timeObjShifts && Array.isArray(timeObjShifts) && timeObjShifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                // if (admissionsDatax.startTime == "19:00" && each.name == "S4" && each.numberOfAdmissions > NUMBER_OF_ADMISSIONS_S4_CAP){
-                //     sevenPmS4greaterThanCap = true;
-                // }
-                if (each.numberOfHoursWorked + "" !== "0") {
-                    if (Number(each.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
-                        sortRoles.push(getFormattedOutput(each) + " (DONE)");
-                    } else {
+
+                if (dropdown == "17:00") {
+                    if (each.numberOfHoursWorked + "" !== "0") {
                         sortRoles.push(getFormattedOutput(each));
                     }
-                }
-                if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
-                    if (window.location.hostname === 'localhost') {
+                    if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
                         sortRolesNameOnly.push(`${each.name}(${each.chronicLoadRatio})`);
-                    } else {
-                        sortRolesNameOnly.push(each.name);
+                    }
+                } else if (dropdown == "19:00") {
+                    if (each.numberOfHoursWorked + "" !== "0") {
+                        if (Number(each.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
+                            sortRoles.push(getFormattedOutput(each) + " (DONE)");
+                        } else {
+                            sortRoles.push(getFormattedOutput(each));
+                        }
+                    }
+                    if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                        if (window.location.hostname === 'localhost') {
+                            sortRolesNameOnly.push(`${each.name}(${each.chronicLoadRatio})`);
+                        } else {
+                            sortRolesNameOnly.push(each.name);
+                        }
                     }
                 }
+
             }
         });
         // sortRoles.push("\n");
