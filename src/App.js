@@ -4,7 +4,7 @@ import AnalyticsPage from "./AnalyticsPage";
 
 function App() {
   return (
-    <Router basename="/">
+    <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/sad" element={<HomePage />} />
