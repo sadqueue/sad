@@ -70,7 +70,8 @@ export function App() {
     const [array2, setArray2] = useState("");
     const [inputManually, setInputManually] = useState("");
     const [clickedGenerateQueue, setClickedGenerateQueue] = useState(false);
-    const [compositeScoreAlgorithm, setCompositeScoreAlgorithm] = useState(false);
+    const [compositeScoreAlgorithmDynamic, setCompositeScoreAlgorithmDynamic] = useState(false);
+    const [compositeScoreAlgorithmStatic, setCompositeScoreAlgorithmStatic] = useState(false);
     const [alr, setAlr] = useState(0.5);
     const [clr, setClr] = useState(0.5);
     const [show1, setShow1] = useState(false);
@@ -452,13 +453,311 @@ export function App() {
     }
 
     const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
-        if (compositeScoreAlgorithm) {
-            return sortMainByCompositeScore(timeObj, dropdownSelected, lastSavedTime);
+        if (compositeScoreAlgorithmDynamic) {
+            return sortMainByCompositeScoreDynamic(timeObj, dropdownSelected, lastSavedTime);
+        } else if (compositeScoreAlgorithmStatic) {
+            return sortMainByCompositeScoreDynamic(timeObj, dropdownSelected, lastSavedTime);
         } else {
             return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
         }
     }
-    const sortMainByCompositeScore = (timeObj, dropdownSelected, lastSavedTime = "") => {
+    const sortMainByCompositeScoreStatic = (timeObj, dropdownSelected, lastSavedTime = "") => {
+        const orderOfAdmissions = [];
+        timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                return each;
+            } else {
+                each["timestamp"] = "";
+                each["numberOfAdmissions"] = "";
+            }
+            return each;
+        });
+
+        timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
+            each["startTime"] = timeObj.startTime ? timeObj.startTime : "";
+            each["minutesWorkedFromStartTime"] = getMinutesWorkedFromStartTime(each);
+            each["numberOfHoursWorked"] = getNumberOfHoursWorked(each);
+            each["chronicLoadRatio"] = getChronicLoadRatio(each);
+            // each["score"] = getCompositeScore(each);
+            each["numberOfAdmissions"] = each.numberOfAdmissions ? each.numberOfAdmissions : "";
+            each["timestamp"] = each.timestamp ? each.timestamp : ""
+            return each;
+        });
+
+        const explanationArr = [];
+        const differenceArr = [];
+        const alrArr = [];
+        const clrArr = [];
+        const compositeArr = [];
+
+        const getTimeDifference = (time1) => {
+
+            if (time1) {
+                const time2 = dropdownSelected;
+                // Convert times to minutes
+                const [hours1, minutes1] = time1.split(':').map(Number);
+                const [hours2, minutes2] = time2.split(':').map(Number);
+
+                const totalMinutes1 = hours1 * 60 + minutes1;
+                const totalMinutes2 = hours2 * 60 + minutes2;
+
+                // Calculate difference in minutes
+                let diffMinutes = totalMinutes2 - totalMinutes1;
+
+                // Convert back to HH:mm
+                const hours = Math.floor(diffMinutes / 60);
+                const minutes = diffMinutes % 60;
+
+                // Format with leading zeros
+                return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+            } else {
+                return "00:00";
+            }
+
+        }
+
+        const getTimeDifferenceExplanation = (each) => {
+            return `${each.name}: ${each.difference}`
+        }
+
+        const alr_f = alr;//0.50;
+        const clr_f = clr;//0.50;
+
+        const getAlr = (difference) => {
+            const split = difference.split(":");
+            const hours = Number(split[0]);
+            const minutes = Number(split[1]);
+            return (1 - ((hours * 60 + minutes) / 180)).toFixed(3);
+        }
+
+        const getAlrExplanation = (each) => {
+            const difference = each.difference;
+            const split = difference.split(":");
+            const hours = Number(split[0]);
+            const minutes = Number(split[1]);
+            const output = (1 - ((hours * 60 + minutes) / 180)).toFixed(3);
+            return `${each.name}: 1-((${hours} * 60 + ${minutes}) / 180)=${output}`;
+        }
+
+        const getClr = (each) => {
+            const admissions = Number(each.numberOfAdmissions);
+            let clr = 0;
+
+            if (dropdownSelected == "19:00") {
+                if (each.name == "S2") {
+                    clr = Number(admissions) / 8;
+                } else if (each.name == "S3") {
+                    clr = Number(admissions) / 6;
+                } else if (each.name == "S4") {
+                    clr = Number(admissions) / 5;
+                } else if (each.name == "N5") {
+                    clr = Number(admissions) / 2;
+                }
+                return clr.toFixed(3);
+            } else if (dropdownSelected == "17:00") {
+                if (each.name == "S1") {
+                    clr = Number(admissions) / 7;
+                } else if (each.name == "S2") {
+                    clr = Number(admissions) / 6;
+                } else if (each.name == "S3") {
+                    clr = Number(admissions) / 4;
+                } else if (each.name == "S4") {
+                    clr = Number(admissions) / 3;
+                }
+                return clr.toFixed(3);
+            }
+        }
+        const getClrExplanation = (each) => {
+            const admissions = Number(each.numberOfAdmissions);
+            let clr = 0;
+
+            let str = "";
+            if (dropdownSelected == "19:00") {
+                if (each.name == "S2") {
+                    clr = Number(admissions) / 8;
+                    str = `${each.name}: ${admissions} / 8 = ${clr.toFixed(3)}`;
+                } else if (each.name == "S3") {
+                    clr = Number(admissions) / 6;
+                    str = `${each.name}: ${admissions} / 6 = ${clr.toFixed(3)}`;
+
+                } else if (each.name == "S4") {
+                    clr = Number(admissions) / 5;
+                    str = `${each.name}: ${admissions} / 5 = ${clr.toFixed(3)}`;
+
+                } else if (each.name == "N5") {
+                    clr = Number(admissions) / 2;
+                    str = `${each.name}: ${admissions} / 2 = ${clr.toFixed(3)}`;
+
+                }
+                return str;
+            } else if (dropdownSelected == "17:00") {
+                if (each.name == "S1") {
+                    clr = Number(admissions) / 7;
+                    str = `${each.name}: ${admissions} / 7 = ${clr.toFixed(3)}`;
+
+                } else if (each.name == "S2") {
+                    clr = Number(admissions) / 6;
+                    str = `${each.name}: ${admissions} / 6 = ${clr.toFixed(3)}`;
+
+                } else if (each.name == "S3") {
+                    clr = Number(admissions) / 4;
+                    str = `${each.name}: ${admissions} / 4 = ${clr.toFixed(3)}`;
+
+                } else if (each.name == "S4") {
+                    clr = Number(admissions) / 3;
+                    str = `${each.name}: ${admissions} / 3 = ${clr.toFixed(3)}`;
+
+                }
+                return str;
+            }
+        }
+
+        const getComposite = (each, ratio, clr) => {
+            const comp = ((alr_f * ratio) + (clr_f * clr)).toFixed(3);
+
+            // explanationArr.push(`CS for ${each.name}: (${alr_f} * ${ratio}) + (${clr_f} * ${clr}) = ${comp}`);
+            if (!comp || comp == "NaN") {
+                return 0;
+            }
+            else {
+                return comp;
+            }
+        }
+
+        const getCompositeExplanation = (each) => {
+            const alr = each.alr;
+            const clr = each.clr;
+
+            const comp = ((alr_f * alr) + (clr_f * clr)).toFixed(3);
+
+            if (!comp || comp == "NaN") {
+                return "";
+            }
+            else {
+                return `${each.name}: (${alr_f} * ${alr}) + (${clr_f} * ${clr}) = ${comp}`;
+            }
+        }
+
+        timeObj.shifts.forEach((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                const difference = getTimeDifference(each.timestamp);
+                const alr = getAlr(difference);
+                const clr = getClr(each)
+                const composite = getComposite(each, alr, clr);
+                each["difference"] = difference;
+                each["alr"] = alr;
+                each["clr"] = clr;
+                each["composite"] = composite;
+            }
+
+            // if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+            //     differenceArr.push(getTimeDifferenceExplanation(each));
+            //     alrArr.push(getAlrExplanation(each));
+            //     clrArr.push(getClrExplanation(each));
+            //     compositeArr.push(getCompositeExplanation(each))
+
+            // }
+        });
+
+        explanationArr.push(`Sort by composite score with ALR ${alr} and CLR ${clr}.`);
+        explanationArr.push("\n");
+
+        /*
+        Step 1: Time Difference
+        */
+        explanationArr.push("Step 1: Sort by the difference of the shift time with the timestamp.");
+        timeObj.shifts.sort((a, b) => {
+            if (a.difference > b.difference) {
+                return 1;
+            }
+            if (a.difference < b.difference) {
+                return -1;
+            }
+            return 0;
+        });
+        timeObj.shifts.forEach((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                explanationArr.push(getTimeDifferenceExplanation(each));
+                alrArr.push(getAlrExplanation(each));
+                clrArr.push(getClrExplanation(each));
+                compositeArr.push(getCompositeExplanation(each))
+            }
+        });
+        explanationArr.push("\n");
+
+        timeObj.shifts.sort((a, b) => {
+            if (a.composite < b.composite) {
+                return -1;
+            }
+            if (b.composite > b.composite) {
+                return 1;
+            }
+            return 0;
+        });
+
+        explanationArr.push(`Step 2: Calculate Acute Load Ratio (ALR) for each Role.`);
+
+        alrArr.map((each, eachIndex) => {
+            explanationArr.push(each);
+        });
+
+        explanationArr.push("\n")
+        explanationArr.push(`Step 3: Calculate Chronic Load Ratio (CLR) for each Role. CLR = Admits/Hours Worked`);
+
+        clrArr.map((each, eachIndex) => {
+            explanationArr.push(each);
+        });
+
+        timeObj.shifts.sort((a, b) => {
+            if (Number(a.composite) > Number(b.composite)) {
+                return 1;
+            }
+            if (Number(a.composite) < Number(b.composite)) {
+                return -1;
+            }
+            return 0;
+        });
+        explanationArr.push("\n")
+        explanationArr.push(`Step 4: Generate the Order based on Composite Score, with Roles having the Lowest Composite Score being Prioritized First.`);
+
+        // compositeArr.map((each, eachIndex) => {
+        //     explanationArr.push(each);
+        // });
+        timeObj.shifts.forEach((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                explanationArr.push(getCompositeExplanation(each));
+            }
+        })
+
+        explanationArr.push("\n")
+        explanationArr.push(`Step 5: De-prioritize Roles with High Composite Scores.`);
+
+        timeObj.shifts.map((each, eachIndex) => {
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                    if (window.location.hostname === 'localhost') {
+                        orderOfAdmissions.push(`${each.name}(${each.alr},${each.clr},${each.composite})`);
+                    } else {
+                        orderOfAdmissions.push(each.name);
+                    }
+                    // return `${each.name}(${each.alr},${each.clr},${each.composite})>`;
+
+                }
+            }
+        })
+
+        setOrderOfAdmissions(orderOfAdmissions.join(">"));
+        setExplanation(explanationArr);
+
+        setSortRoles(timeObj, dropdownSelected, lastSavedTime);
+
+        setAllAdmissionsDataShifts(timeObj);
+        sortByAscendingName(timeObj);
+
+        return orderOfAdmissions.join(">");
+    }
+
+    const sortMainByCompositeScoreDynamic = (timeObj, dropdownSelected, lastSavedTime = "") => {
         const orderOfAdmissions = [];
         timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
@@ -534,9 +833,9 @@ export function App() {
 
         const getAlrExplanation = (each) => {
             let p95 = "";
-            if (dropdown == "19:00"){
+            if (dropdown == "19:00") {
                 p95 = 180;
-            } else if (dropdown == "17:00"){
+            } else if (dropdown == "17:00") {
                 p95 = 135;
             }
 
@@ -656,7 +955,7 @@ export function App() {
             }
             const diffInMilliseconds = Math.abs(moment(date2, "HH:mm") - moment(date1, "HH:mm"));
             const diffInMinutes = Math.floor(diffInMilliseconds / 60000);
-            
+
             return diffInMinutes;
         }
         const getAlr2 = (each) => {
@@ -690,7 +989,7 @@ export function App() {
                 }
             }
             const res = (1 - (Number(currentTimeMinusLastAdmitTime) / p95)).toFixed(3);
-            
+
 
             return Number(res);
         }
@@ -916,7 +1215,7 @@ export function App() {
                 explanationArr.push(getExplanation);
             }
         })
-        
+
         let shiftsCombined = [];
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
@@ -1158,7 +1457,7 @@ export function App() {
         // })
 
 
-        
+
         shiftsCombined.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 if (dropdown == "17:00") {
@@ -1793,7 +2092,7 @@ export function App() {
                         </table>
                         {/* highlighted order of admissions below table */}
                         <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${lastSaved.split(" ")[0] + " " + convertTo12HourFormatSimple(dropdown)}`}</p>
-                        {window.location.hostname === 'localhost' && compositeScoreAlgorithm ?
+                        {window.location.hostname === 'localhost' && (compositeScoreAlgorithmDynamic || compositeScoreAlgorithmStatic) ?
                             <p className="endoutputcenter" id="orderofadmissions_output">
                                 {/* {
                                 allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
@@ -1867,27 +2166,46 @@ export function App() {
                         }
                         }>{!show4 ? "> Set Composite Algorithm" : "< Set Composite Algorithm"}</button><br></br>
 
-                        {show4 && <div className="flex">
-                            <input
-                                id="compositeScoreCheckbox"
-                                placeholder="Composite Score Algorithm"
-                                className="input-left"
-                                label="Composite Score Algorithm"
-                                type="checkbox"
-                                onChange={(e) => {
-                                    // setAllAdmissionsDataShifts({startTime: dropdown, shifts: SHIFT_TYPES})
-                                    if (e.target.checked){
-                                        setShow2(true);
-                                    }
-                                    setCompositeScoreAlgorithm(e.target.checked);
-                                }}
-                            />
-                            <p>Composite Score Algorithm</p>
-
-                        </div>
-                        }                       {show4 && compositeScoreAlgorithm &&
+                        {show4 &&
                             <div>
-                                {/* <div className="flex"><p className="weightwidth">ALR: </p><input
+                                <div>
+                                    <input
+                                        id="compositeScoreCheckbox"
+                                        placeholder="Dynamic Composite Score Algorithm"
+                                        className="input-left"
+                                        label=""
+                                        type="checkbox"
+                                        onChange={(e) => {
+                                            // setAllAdmissionsDataShifts({startTime: dropdown, shifts: SHIFT_TYPES})
+                                            if (e.target.checked) {
+                                                setShow2(true);
+                                            }
+                                            setCompositeScoreAlgorithmDynamic(e.target.checked);
+                                        }}
+                                    />
+                                    <label for="compositeScoreCheckbox">Dynamic Composite Score Algorithm</label>
+
+                                </div>
+                                <div >
+                                    <input
+                                        id="compositeScoreCheckboxStatic"
+                                        placeholder="Static Composite Score Algorithm"
+                                        className="input-left"
+                                        label=""
+                                        type="checkbox"
+                                        onChange={(e) => {
+                                            // setAllAdmissionsDataShifts({startTime: dropdown, shifts: SHIFT_TYPES})
+                                            if (e.target.checked) {
+                                                setShow2(true);
+                                            }
+                                            setCompositeScoreAlgorithmStatic(e.target.checked);
+                                        }}
+                                    />
+                                    <label for="compositeScoreCheckboxStatic">Static Composite Score Algorithm</label>
+                                </div>
+                                {show4 && compositeScoreAlgorithmStatic &&
+                            <div>
+                                <div className="flex"><p className="weightwidth">ALR: </p><input
                                     id="alr"
                                     placeholder="ALR"
                                     className="input-left"
@@ -1915,12 +2233,20 @@ export function App() {
                                         }
                                     }}
                                     value={clr}
-                                /></div> */}
-                                <p>Select the Generate Queue button above</p>
-
+                                /></div>
 
                             </div>
                         }
+                        {(compositeScoreAlgorithmDynamic || compositeScoreAlgorithmStatic) && <section>
+                                <button id="generateQueue" onClick={(e) => {
+                                        handleGenerateQueue(e);
+                                    }}>
+                                        Generate Queue
+                                    </button>
+                                    </section>}
+                            </div>
+                        }
+                        
 
 
                     </fieldset>}
