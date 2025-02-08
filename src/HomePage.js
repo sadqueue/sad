@@ -456,7 +456,7 @@ export function App() {
         if (compositeScoreAlgorithmDynamic) {
             return sortMainByCompositeScoreDynamic(timeObj, dropdownSelected, lastSavedTime);
         } else if (compositeScoreAlgorithmStatic) {
-            return sortMainByCompositeScoreDynamic(timeObj, dropdownSelected, lastSavedTime);
+            return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
         } else {
             return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
         }
