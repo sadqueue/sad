@@ -17,6 +17,14 @@ describe('template spec', () => {
     // cy.get(`#alr`).clear().type(0.7);
     // cy.get(`#clr`).clear().type(0.3);
 
+    var currentdate = new Date(); 
+    var datetime = "Last Sync: " + currentdate.getDate() + "/"
+                    + (currentdate.getMonth()+1)  + "/" 
+                    + currentdate.getFullYear() + " @ "  
+                    + currentdate.getHours() + ":"  
+                    + currentdate.getMinutes();
+      cy.task('logToFile',`###### Order of Admissions by original algorithm ${datetime}`);
+
     if (testArr5pm) {
       /* test 5PM */
       cy.get("#timesdropdown").should('be.visible').select("17:00");
@@ -39,35 +47,23 @@ describe('template spec', () => {
 
           cy.get("#generateQueue").click();
 
-          // cy.get('#alr') // Replace 'yourElementId' with the actual ID of the element
-          // .then(($el) => {
-          //   console.log("ALR: ", $el.text())
-          // });
-          // cy.get('#clr') // Replace 'yourElementId' with the actual ID of the element
-          // .then(($el) => {
-          //   console.log("CLR: ", $el.text())
-          // });
           cy.get('#orderofadmissions_output') // Replace 'yourElementId' with the actual ID of the element
             .then(($el) => {
 
               const generatedFromAutomation = $el.text() && $el.text().replace(/\(.*?\)/g, "").trim();
 
               if (generatedFromAutomation && generatedFromAutomation == output.trim()) {
-                // console.log(testArr[i] + "::::::" + $el.text() + "----MATCHES");
-                // resArr.push(testArr[i] + "::::::" + $el.text() + "----MATCHES");
+                
               } else {
-                console.log("[" + count + "] 5PM " + testArr5pm[i][1] + " -- NO MATCH");
-                console.log("Data:        ", testArr5pm[i][0].split(";").slice(0, testArr5pm[i][0].split(";").length - 1).join(";"));
-                console.log("Manny:       ", output);
-                console.log("From UI:     ", $el.text());
+                cy.task('logToFile',`[${count}]   5PM ${testArr5pm[i][1]} -- NO MATCH`);
+                cy.task('logToFile',`Data:        ${testArr5pm[i][0].split(";").slice(0, testArr5pm[i][0].split(";").length - 1).join(";")}`);
+                cy.task('logToFile',`Manny:       ${output}`);
+                cy.task('logToFile',`From UI:     ${$el.text()}`);
                 count++;
-                // resArr.push(":::::: NO MATCH");
 
               }
-              // console.log("does this log work? ",$el.text()); // Logs the value of the element
             });
         } else {
-          console.log("---- incorrect input", testArr5pm[i]);
         }
 
       }
@@ -105,18 +101,15 @@ describe('template spec', () => {
                 // console.log(testArr[i] + "::::::" + $el.text() + "----MATCHES");
                 // resArr.push(testArr[i] + "::::::" + $el.text() + "----MATCHES");
               } else {
-                console.log("[" + count + "] 7PM ", testArr7pm[i][1] + " -- NO MATCH");
-                console.log("Data:        ", testArr7pm[i][0].split(";").slice(0, testArr7pm[i][0].split(";").length - 1).join(";"));
-                console.log("Manny:       ", output);
-                console.log("From UI:     ", $el.text());
+                cy.task('logToFile',`[${count}] 7PM ${testArr7pm[i][1]} -- NO MATCH"`);
+                cy.task('logToFile',`Data:      ${testArr7pm[i][0].split(";").slice(0, testArr7pm[i][0].split(";").length - 1).join(";")}`);
+                cy.task('logToFile',`Manny:     ${output}`);
+                cy.task('logToFile',`From UI:   ${$el.text()}`);
                 count++;
-                // resArr.push(":::::: NO MATCH");
-
               }
-              // console.log("does this log work? ",$el.text()); // Logs the value of the element
+              // cy.task('logToFile',`does this log work? ",$el.text()); // Logs the value of the element
             });
         } else {
-          console.log("---- incorrect input", testArr7pm[i]);
         }
       }
 

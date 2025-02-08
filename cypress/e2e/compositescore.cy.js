@@ -13,6 +13,9 @@ describe('template spec', () => {
     cy.contains("Set Composite Algorithm").click();
     let count = 1;
 
+    cy.task('logToFile',`###### Order of Admissions by composite algorithm ${datetime}`);
+
+
     if (testArr5pm) {
       /* test 5PM */
       cy.get("#timesdropdown").should('be.visible').select("17:00");
@@ -46,42 +49,26 @@ describe('template spec', () => {
               const generatedFromAutomation = $el.text() && $el.text().replace(/\(.*?\)/g, "").trim();
 
               if (generatedFromAutomation && generatedFromAutomation == output.trim()) {
-                // console.log(testArr[i] + "::::::" + $el.text() + "----MATCHES");
-                // resArr.push(testArr[i] + "::::::" + $el.text() + "----MATCHES");
               } else {
-                console.log("[" + count + "] 5PM " + testArr5pm[i][1] + " -- NO MATCH");
-                console.log("Data:        ", testArr5pm[i][0].split(";").slice(0, testArr5pm[i][0].split(";").length - 1).join(";"));
-                console.log("Manny:       ", output);
-                console.log("From UI:     ", $el.text());
+                cy.task('logToFile', `[ ${count} ] 5PM ${testArr5pm[i][1]} -- NO MATCH`);
+                cy.task('logToFile', `Data:       ${testArr5pm[i][0].split(";").slice(0, testArr5pm[i][0].split(";").length - 1).join(";")}`);
+                cy.task('logToFile', `Manny:      ${output}`);
+                cy.task('logToFile', `From UI:    ${$el.text()}`);
 
                 cy.get("#compositeScoreCheckbox").click();
 
-                cy.get(`#alr`).clear().type(0.7);
-                cy.get(`#clr`).clear().type(0.3);
                 cy.get("#generateQueue").click();
 
                 cy.get('#orderofadmissions_output')
                   .then(($el) => {
-                    console.log("CS_Algo(0.7):", $el.text());
-
-                    cy.get(`#alr`).clear().type(0.6);
-                    cy.get(`#clr`).clear().type(0.4);
-                    cy.get("#generateQueue").click();
-
-
-                    cy.get('#orderofadmissions_output')
-                      .then(($el) => {
-                        console.log("CS_Algo(0.6):", $el.text());
-
-                        cy.get("#compositeScoreCheckbox").click();
-                    });
+                    cy.task('logToFile', `CS_Algo:    ${$el.text()}`);
+                    cy.get("#compositeScoreCheckbox").click();
                   });
 
                 count++;
               }
             });
         } else {
-          console.log("---- incorrect input", testArr5pm[i]);
         }
 
       }
@@ -119,42 +106,28 @@ describe('template spec', () => {
               const generatedFromAutomation = $el.text() && $el.text().replace(/\(.*?\)/g, "").trim();
 
               if (generatedFromAutomation && generatedFromAutomation == output.trim()) {
-                // console.log(testArr[i] + "::::::" + $el.text() + "----MATCHES");
+                // cy.task('logToFile', testArr[i] + "::::::" + $el.text() + "----MATCHES");
                 // resArr.push(testArr[i] + "::::::" + $el.text() + "----MATCHES");
               } else {
-                console.log("[" + count + "] 7PM " + testArr7pm[i][1] + " -- NO MATCH");
-                console.log("Data:        ", testArr7pm[i][0].split(";").slice(0, testArr7pm[i][0].split(";").length - 1).join(";"));
-                console.log("Manny:       ", output);
-                console.log("From UI:     ", $el.text());
+                cy.task('logToFile', `[ ${count} ] 7PM ${testArr7pm[i][1]} -- NO MATCH"`);
+                cy.task('logToFile', `Data:        ${testArr7pm[i][0].split(";").slice(0, testArr7pm[i][0].split(";").length - 1).join(";")}`);
+                cy.task('logToFile', `Manny:       ${output}`);
+                cy.task('logToFile', `From UI:     ${$el.text()}`);
 
                 cy.get("#compositeScoreCheckbox").click();
 
-                cy.get(`#alr`).clear().type(0.7);
-                cy.get(`#clr`).clear().type(0.3);
                 cy.get("#generateQueue").click();
 
                 cy.get('#orderofadmissions_output')
                   .then(($el) => {
-                    console.log("CS_Algo(0.7):", $el.text());
-
-                    cy.get(`#alr`).clear().type(0.6);
-                    cy.get(`#clr`).clear().type(0.4);
-                    cy.get("#generateQueue").click();
-
-
-                    cy.get('#orderofadmissions_output')
-                      .then(($el) => {
-                        console.log("CS_Algo(0.6):", $el.text());
-
-                        cy.get("#compositeScoreCheckbox").click();
-                    });
+                    cy.task('logToFile', `CS_Algo:    ${$el.text()}`);
+                    cy.get("#compositeScoreCheckbox").click();
                   });
 
                 count++;
               }
             });
         } else {
-          console.log("---- incorrect input", testArr7pm[i]);
         }
 
       }

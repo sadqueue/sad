@@ -1,9 +1,15 @@
-const { defineConfig } = require("cypress");
+const fs = require('fs');
 
-module.exports = defineConfig({
+module.exports = {
   e2e: {
     setupNodeEvents(on, config) {
-      // implement node event listeners here
-    },
-  },
-});
+      on('task', {
+        logToFile(message) {
+          const logFilePath = 'cypress/logs/test-output.log';
+          fs.appendFileSync(logFilePath, message + '\n');
+          return null;
+        }
+      });
+    }
+  }
+};

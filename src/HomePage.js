@@ -916,86 +916,13 @@ export function App() {
                 explanationArr.push(getExplanation);
             }
         })
-        // compositeScore2Explanation.forEach((each, eachIndex) => {
-        //     explanationArr.push(each);
-        // })
-        /*
-        Step 1: Time Difference
-        */
-        // explanationArr.push("Step 1: Sort by the difference of the shift time with the timestamp.");
-        // timeObj.shifts.sort((a, b) => {
-        //     if (a.difference > b.difference) {
-        //         return 1;
-        //     }
-        //     if (a.difference < b.difference) {
-        //         return -1;
-        //     }
-        //     return 0;
-        // });
-        // timeObj.shifts.forEach((each, eachIndex) => {
-        //     if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-        //         explanationArr.push(getTimeDifferenceExplanation(each));
-        //         alrArr.push(getAlrExplanation(each));
-        //         clrArr.push(getClrExplanation(each));
-        //         compositeArr.push(getCompositeExplanation(each))
-        //     }
-        // });
-        // explanationArr.push("\n");
-
-        // timeObj.shifts.sort((a, b) => {
-        //     if (a.composite < b.composite) {
-        //         return -1;
-        //     }
-        //     if (b.composite > b.composite) {
-        //         return 1;
-        //     }
-        //     return 0;
-        // });
-
-        // explanationArr.push(`Step 2: Calculate Acute Load Ratio (ALR) for each Role.`);
-
-        // alrArr.map((each, eachIndex) => {
-        //     explanationArr.push(each);
-        // });
-
-        // explanationArr.push("\n")
-        // explanationArr.push(`Step 3: Calculate Chronic Load Ratio (CLR) for each Role. CLR = Admits/Hours Worked`);
-
-        // clrArr.map((each, eachIndex) => {
-        //     explanationArr.push(each);
-        // });
-
-        // timeObj.shifts.sort((a, b) => {
-        //     if (Number(a.composite) > Number(b.composite)) {
-        //         return 1;
-        //     }
-        //     if (Number(a.composite) < Number(b.composite)) {
-        //         return -1;
-        //     }
-        //     return 0;
-        // });
-        // explanationArr.push("\n")
-        // explanationArr.push(`Step 4: Generate the Order based on Composite Score, with Roles having the Lowest Composite Score being Prioritized First.`);
-
-        // // compositeArr.map((each, eachIndex) => {
-        // //     explanationArr.push(each);
-        // // });
-        // timeObj.shifts.forEach((each, eachIndex) => {
-        //     if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-        //         explanationArr.push(getCompositeExplanation(each));
-        //     }
-        // })
-
-        // explanationArr.push("\n")
-        // explanationArr.push(`Step 5: De-prioritize Roles with High Composite Scores.`);
-
+        
         let shiftsCombined = [];
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 shiftsCombined.push(each);
             }
         });
-        // explanationArr.push("\n");
         let scenario1 = false;
         let scenario2 = false;
         let scenario3 = false
@@ -1217,23 +1144,21 @@ export function App() {
             const combinedArr = array1.concat(array2);
             shiftsCombined = combinedArr;
         }
-        shiftsCombined.map((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                if (dropdown == "17:00") {
-                    orderOfAdmissions.push(each.name);
-                } else if (dropdown == "19:00") {
-                    if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
-                        orderOfAdmissions.push(each.name);
-                    }
-                }
+        // shiftsCombined.map((each, eachIndex) => {
+        //     if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+        //         if (dropdown == "17:00") {
+        //             orderOfAdmissions.push(each.name);
+        //         } else if (dropdown == "19:00") {
+        //             if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+        //                 orderOfAdmissions.push(each.name);
+        //             }
+        //         }
 
-            }
-        })
+        //     }
+        // })
 
 
-        if (shiftsCombined && shiftsCombined.length == 0) {
-            shiftsCombined = timeObj.shifts;
-        }
+        
         shiftsCombined.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 if (dropdown == "17:00") {
@@ -1249,13 +1174,15 @@ export function App() {
                         } else {
                             orderOfAdmissions.push(each.name);
                         }
-                        // return `${each.name}(${each.alr},${each.clr},${each.composite})>`;
 
                     }
                 }
 
             }
-        })
+        });
+        if (shiftsCombined && shiftsCombined.length == 0) {
+            shiftsCombined = timeObj.shifts;
+        }
 
         setOrderOfAdmissions(orderOfAdmissions.join(">"));
         setExplanation(explanationArr);
@@ -1909,43 +1836,6 @@ export function App() {
                     {seeDetails && <fieldset className="notes">
                         <p className="bold">Explanation</p>
 
-                        {/* Part 1: Order of Admits */}
-                        {/* <button className="explanation" onClick={() => {
-                            setShow1(!show1);
-                        }
-                        }>{!show1 ? "> Order of Admissions" : "< Order of Admissions"}</button><br></br>
-                        
-                        {show1 && <div id="fieldsettocopy_min">
-                            
-                            { compositeScoreAlgorithm && 
-                            <div>
-                                <p> Composite score algorithm is being used. </p>
-                                {
-                                    allAdmissionsDataShifts.shifts.map((each, eachIndex) => {
-                                        if (SHOW_ROWS_TABLE[dropdown].includes(each.name)){
-
-                                            return <p> {getFormattedOutputCompositeScore(each)} </p>
-                                        }
-                                    })
-                                }
-                            </div>
-                                
-                            }
-
-                            { !compositeScoreAlgorithm && 
-                                sorted && sorted.map((each, eachIndex) => {
-                                    if (each == "\n") {
-                                        return <br></br>
-                                    }
-                                    else if (eachIndex == sorted.length - 1) {
-                                    }
-                                    else {
-                                        return <p className="sorted">{each}</p>
-                                    }
-                                })
-                            }
-                        </div>} */}
-
                         {/* Part 2: Explanation */}
                         <button className="explanation" onClick={() => {
                             setShow2(!show2);
@@ -1986,6 +1876,9 @@ export function App() {
                                 type="checkbox"
                                 onChange={(e) => {
                                     // setAllAdmissionsDataShifts({startTime: dropdown, shifts: SHIFT_TYPES})
+                                    if (e.target.checked){
+                                        setShow2(true);
+                                    }
                                     setCompositeScoreAlgorithm(e.target.checked);
                                 }}
                             />
