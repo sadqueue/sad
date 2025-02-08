@@ -13,7 +13,13 @@ describe('template spec', () => {
     cy.contains("Set Composite Algorithm").click();
     let count = 1;
 
-    cy.task('logToFile',`###### Order of Admissions by composite algorithm ${datetime}`);
+    var currentdate = new Date(); 
+    var datetime = "Last Sync: " + currentdate.getDate() + "/"
+                    + (currentdate.getMonth()+1)  + "/" 
+                    + currentdate.getFullYear() + " @ "  
+                    + currentdate.getHours() + ":"  
+                    + currentdate.getMinutes();
+      cy.task('logToFile',`###### Order of Admissions by original algorithm ${datetime}`);
 
 
     if (testArr5pm) {

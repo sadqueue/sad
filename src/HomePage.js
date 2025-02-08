@@ -676,10 +676,12 @@ export function App() {
             return 0;
         });
         timeObj.shifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+            if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
                 explanationArr.push(getTimeDifferenceExplanation(each));
                 alrArr.push(getAlrExplanation(each));
                 clrArr.push(getClrExplanation(each));
+            }
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 compositeArr.push(getCompositeExplanation(each))
             }
         });
@@ -1139,15 +1141,16 @@ export function App() {
                 each["compositeScore2"] = compositeScore2;
             }
 
-            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+            if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
                 differenceArr.push(getTimeDifferenceExplanation(each));
                 alrExplanationArr.push(getAlrExplanation(each));
                 clrExplanationArr.push(getClrExplanation(each));
-                compositeArr.push(getCompositeExplanation(each));
                 normalizedAlrExplanation.push(getNormalizedAlrExplanation(each));
                 normalizedClrExplanation.push(getNormalizedClrExplanation(each));
+            }
+            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+                compositeArr.push(getCompositeExplanation(each));
                 compositeScore2Explanation.push(getCompositeScore2Explanation(each))
-
             }
         });
 
@@ -1176,8 +1179,8 @@ export function App() {
 
         explanationArr.push("\n");
         explanationArr.push(`Step 3: Calculate weights of ALR and CLR, based on Standard Deviations.`);
-        explanationArr.push(`ALR Weight: ${alrWeight}`);
-        explanationArr.push(`CLR Weight: ${clrWeight}`);
+        explanationArr.push(`W[ALR] = STDEV[ALRs…]/(STDEV[ALRs…]+STDEV[CLRs…] = ${alrWeight}`);
+        explanationArr.push(`W[CLR] = STDEV[CLRs…]/(STDEV[ALRs…]+SDTDEV[ALRs…]) = ${clrWeight}`);
 
 
         explanationArr.push("\n");
