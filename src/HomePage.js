@@ -519,7 +519,7 @@ export function App() {
         }
 
         const getTimeDifferenceExplanation = (each) => {
-            return `${each.name}: ${each.difference}`
+            return `${each.name}: ${dropdown} - ${each.timestamp} = ${each.difference2} minutes`
         }
 
         const alr_f = alr;//0.50;
@@ -533,12 +533,14 @@ export function App() {
         }
 
         const getAlrExplanation = (each) => {
-            const difference = each.difference;
-            const split = difference.split(":");
-            const hours = Number(split[0]);
-            const minutes = Number(split[1]);
-            const output = (1 - ((hours * 60 + minutes) / 180)).toFixed(3);
-            return `${each.name}: 1-((${hours} * 60 + ${minutes}) / 180)=${output}`;
+            let p95 = "";
+            if (dropdown == "19:00"){
+                p95 = 180;
+            } else if (dropdown == "17:00"){
+                p95 = 135;
+            }
+
+            return `${each.name}: 1-(${each.difference2} minutes / ${p95}) = ${each.alr2}`;
         }
 
         const getClr = (each) => {
@@ -645,6 +647,14 @@ export function App() {
             const diffInMinutes = Math.floor(diffInMilliseconds / 60000);
             return diffInMinutes;
         }
+
+        const getTimeDifferenceInMinutes2 = (each) => {
+            const date2 = dropdown;
+            const date1 = each.timestamp;
+            const diffInMilliseconds = Math.abs(moment(date2, "HH:mm") - moment(date1, "HH:mm"));
+            const diffInMinutes = Math.floor(diffInMilliseconds / 60000);
+            return diffInMinutes;
+        }
         const getAlr2 = (each) => {
             //alr = 1 - (Current Time - Last Admit Time, convert to minutes / P95)
 
@@ -675,8 +685,8 @@ export function App() {
                     currentTimeMinusLastAdmitTime = 135;
                 }
             }
-            const res = (Number(currentTimeMinusLastAdmitTime) / p95).toFixed(3);
-            explanationArr.push(`${each.name}: 1 - (${dropdown} - ${each.timestamp}) / ${p95} = ${res}`)
+            const res = (1 - (Number(currentTimeMinusLastAdmitTime) / p95)).toFixed(3);
+            
 
             return Number(res);
         }
@@ -797,12 +807,13 @@ export function App() {
                 }
             }
         }
-        explanationArr.push(`Step 1: Calculate ALR.`)
-        explanationArr.push(`ALR = 1 - (Current Time - Last Admit Time, convert to minutes / P95)`)
+        explanationArr.push(`Step 1: Calculate Acute Load Ratio (ALR) for each Role.`);
+        explanationArr.push("\n");
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 const difference = getTimeDifference(each.timestamp);
+                const difference2 = getTimeDifferenceInMinutes2(each);
                 const alr = getAlr(difference);
                 const clr = getClr(each)
                 const composite = getComposite(each, alr, clr);
@@ -815,6 +826,7 @@ export function App() {
                 clrArr.push(Number(clr));
 
                 each["difference"] = difference;
+                each["difference2"] = difference2;
                 each["alr"] = alr;
                 each["clr"] = clr;
                 each["composite"] = composite;
@@ -836,6 +848,16 @@ export function App() {
             }
         });
 
+        explanationArr.push(`Minutes Before The Hour:`)
+        differenceArr.forEach((each, eachIndex) => {
+            explanationArr.push(each);
+        })
+
+        explanationArr.push("\n");
+        explanationArr.push(`ALR = 1 - (Minutes Before The Hour/ P95)`);
+        alrExplanationArr.forEach((each, eachIndex) => {
+            explanationArr.push(each);
+        })
 
         const alrWeight_ = (standardDeviation(alrArr) / (standardDeviation(alrArr) + standardDeviation(clrArr))).toFixed(3);
         const clrWeight_ = (standardDeviation(clrArr) / (standardDeviation(alrArr) + standardDeviation(alrArr))).toFixed(3);
@@ -856,9 +878,16 @@ export function App() {
 
 
         explanationArr.push("\n");
-        explanationArr.push("Step 4: Calculate Normalized ALR and CLR for each Role");
+        explanationArr.push("Step 4: Calculate Normalized ALR.");
 
         normalizedAlrExplanation.forEach((each, eachIndex) => {
+            explanationArr.push(each);
+        })
+
+        explanationArr.push("\n");
+        explanationArr.push("Step 5: Calculate Normalized CLR.");
+
+        normalizedClrExplanation.forEach((each, eachIndex) => {
             explanationArr.push(each);
         })
 
