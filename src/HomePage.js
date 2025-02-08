@@ -519,7 +519,7 @@ export function App() {
         }
 
         const getTimeDifferenceExplanation = (each) => {
-            return `${each.name}: ${dropdown} - ${each.timestamp} = ${each.difference2} minutes`
+            return `${each.name}: ${dropdown} - ${each.timestamp ? each.timestamp : dropdown} = ${each.difference2} minutes`
         }
 
         const alr_f = alr;//0.50;
@@ -651,8 +651,12 @@ export function App() {
         const getTimeDifferenceInMinutes2 = (each) => {
             const date2 = dropdown;
             const date1 = each.timestamp;
+            if (date1 == "") {
+                return 0;
+            }
             const diffInMilliseconds = Math.abs(moment(date2, "HH:mm") - moment(date1, "HH:mm"));
             const diffInMinutes = Math.floor(diffInMilliseconds / 60000);
+            
             return diffInMinutes;
         }
         const getAlr2 = (each) => {
