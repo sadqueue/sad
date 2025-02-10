@@ -18,9 +18,9 @@ const Navbar = () => {
       <li>
         <a href="/sad#/analytics">Analytics</a>
       </li>
-      <li>
+      {/* <li>
         <a href="/contact">Contact</a>
-      </li>
+      </li> */}
     </ul>
   </div>
   {/* <div className="navbar-right">

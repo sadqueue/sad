@@ -19,3 +19,37 @@ From UI:     S4>N5>S2>S3>S1
 Data:      17:38,16:55,18:28,18:00;5,3,3,1
 Manny:     S3>N1>S2>N2>N5>S4>N3>N4
 From UI:   S3>N1>S2>N2>N5>N3>S4>N4
+[6] 7PM 12/11/2024 -- NO MATCH"
+Data:      15:30,15:50,15:50,18:45;4,3,3,1
+Manny:     S2>S3>S4>N1>N2>N3>N5>N4
+From UI:   S2>S3>S4>N1>N2>N3>N4>N5
+[7] 7PM 12/16/2024 Interesting case. Probably should take into account seconds in the final add in order to break ties. Or keep note of which was added first. -- NO MATCH"
+Data:      18:45,18:46,18:46,18:45;7,6,6,3
+Manny:     N1>N2>N3>N4>N1>N2>N3>N4>S3>S4>N5
+From UI:   N1>N2>N3>N4>N1>N2>N3>N4>N5>S3>S4
+[8] 7PM 12/21/2024 -- NO MATCH"
+Data:      18:47,17:55,17:58,17:00;6,4,3,1
+Manny:     N5>N1>S3>S4>N2>N3>N4>S2
+From UI:   N5>N1>N2>S3>S4>N3>N4>S2
+[9] 7PM 12/29/2024 break ties with CLR -- NO MATCH"
+Data:      17:58,18:55,17:58,18:36;5,5,3,2
+Manny:     N1>S4>S2>N2>N3>N4>N5>S3
+From UI:   N1>N2>S4>S2>N3>N4>N5>S3
+[10] 7PM 01/01/2025 0.63 cutoff changed to 0.67 cutoff -- NO MATCH"
+Data:      18:59,17:19,18:01,18:32;5,3,3,2
+Manny:     S3>N1>N2>S4>N3>S2>N4>N5
+From UI:   S3>N1>N2>S4>N3>N4>S2>N5
+[11] 7PM 01/02/2025 -- NO MATCH"
+Data:      18:55,17:54,18:36,18:49;4,3,3,2
+Manny:     N1>S3>N2>N3>S4>S2>N4>N5
+From UI:   N1>S3>N2>N3>S4>N4>S2>N5
+[12] 7PM 01/03/2025 cutoff 0.63 changed -- NO MATCH"
+Data:      18:41,18:46,18:32,18:33;5,4,4,2
+Manny:     N1>N2>N3>S2>S3>N4>S4>N5
+From UI:   N1>N2>N3>S2>N4>S3>S4>N5
+[13] 7PM 01/05/2025 -- NO MATCH"
+Data:      17:47,18:46,18:28,17:04;5,4,3,1
+Manny:     N5>N1>S2>N2>S4>N3>S3>N4
+From UI:   N5>N1>S2>N2>N3>S4>N4>S3
+[14] 7PM 01/12/2025 -- NO MATCH"
+Data:      16:55,18:45,17:41,18:17;3,3,2,1
