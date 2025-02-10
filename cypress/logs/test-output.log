@@ -185,3 +185,112 @@ From UI:   S2>N1>N2>N3>N4>S3>N5>S2>N1>N2>N3>N4>S3>N5>S4
 Data:      17:38,16:55,18:28,18:00;5,3,3,1
 Manny:     S3>N1>S2>N2>N5>S4>N3>N4
 From UI:   S3>N1>S2>N2>N5>N3>S4>N4
+[21] 7PM 1/24/2025 -- NO MATCH"
+Data:      17:07,17:03,18:00,18:05;4,4,3,1
+Manny:     S3>S2>N1>N2>S4>N5>N3>N4
+From UI:   S3>N1>S2>N2>S4>N5>N3>N4
+[22] 7PM 12/11/2024 -- NO MATCH"
+Data:      15:30,15:50,15:50,18:45;4,3,3,1
+Manny:     S2>S3>S4>N1>N2>N3>N5>N4
+From UI:   S2>S3>S4>N1>N2>N3>N4>N5
+[23] 7PM 12/16/2024 Interesting case. Probably should take into account seconds in the final add in order to break ties. Or keep note of which was added first. -- NO MATCH"
+Data:      18:45,18:46,18:46,18:45;7,6,6,3
+Manny:     N1>N2>N3>N4>N1>N2>N3>N4>S3>S4>N5
+From UI:   N1>N2>N3>N4>N1>N2>N3>N4>N5>S3>S4
+[24] 7PM 12/20/2024 -- NO MATCH"
+Data:      18:17,18:46,18:43,18:23;6,5,4,2
+Manny:     N1>N2>N3>N4>S2>N5>S4>S3
+From UI:   N1>N2>N3>N4>N5>S2>S4>S3
+[25] 7PM 12/21/2024 -- NO MATCH"
+Data:      18:47,17:55,17:58,17:00;6,4,3,1
+Manny:     N5>N1>S3>S4>N2>N3>N4>S2
+From UI:   N5>N1>N2>S3>S4>N3>N4>S2
+[26] 7PM 12/29/2024 break ties with CLR -- NO MATCH"
+Data:      17:58,18:55,17:58,18:36;5,5,3,2
+Manny:     N1>S4>S2>N2>N3>N4>N5>S3
+From UI:   N1>N2>S4>S2>N3>N4>N5>S3
+[27] 7PM 12/30/2024 -- NO MATCH"
+Data:      17:46,17:50,16:40,17:01;5,4,3,1
+Manny:     S4>N5>N1>S2>S3>N2>N3>N4
+From UI:   N5>S1>S4>S2>S3
+[28] 7PM 12/31/2024 -- NO MATCH"
+Data:      17:29,17:15,17:16,17:41;4,3,3,2
+Manny:     S3>S4>S2>N1>N2>N3>N4>N5
+From UI:   N5>S2>S1>S4>S3
+[29] 7PM 01/01/2025 0.63 cutoff changed to 0.67 cutoff -- NO MATCH"
+Data:      18:59,17:19,18:01,18:32;5,3,3,2
+Manny:     S3>N1>N2>S4>N3>S2>N4>N5
+From UI:   N5>S2>S4>S3>S1
+[30] 7PM 01/02/2025 -- NO MATCH"
+Data:      18:55,17:54,18:36,18:49;4,3,3,2
+Manny:     N1>S3>N2>N3>S4>S2>N4>N5
+From UI:   N5>S2>S4>S1>S3
+[31] 7PM 01/03/2025 cutoff 0.63 changed -- NO MATCH"
+Data:      18:41,18:46,18:32,18:33;5,4,4,2
+Manny:     N1>N2>N3>S2>S3>N4>S4>N5
+From UI:   N5>S4>S2>S3>S1
+[32] 7PM 01/04/2025 cutoff 0.63 -- NO MATCH"
+Data:      18:41,18:02,18:55,18:21;6,4,4,2
+Manny:     N1>N2>S3>N3>N4>N5>S2>S4
+From UI:   N5>S2>S4>S1>S3
+[33] 7PM 01/05/2025 -- NO MATCH"
+Data:      17:47,18:46,18:28,17:04;5,4,3,1
+Manny:     N5>N1>S2>N2>S4>N3>S3>N4
+From UI:   N5>S4>S2>S1>S3
+[34] 7PM 01/06/2025 -- NO MATCH"
+Data:      18:35,18:34,17:49,18:38;5,4,3,2
+Manny:     N1>S4>N2>N3>S3>S2>N4>N5
+From UI:   N5>S2>S4>S3>S1
+[35] 7PM 01/07/2025 -- NO MATCH"
+Data:      18:46,17:30,17:40,18:38;6,5,5,2
+Manny:     N1>N2>N3>N4>S3>N5>S2>N1>N2>S4>N3>N4>S3>N5
+From UI:   N5>S4>S2>S3>S1
+[36] 7PM 01/08/2025 -- NO MATCH"
+Data:      18:40,15:46,16:45,17:48;6,3,3,1
+Manny:     S3>S4>N1>N5>N2>N3>N4>S2
+From UI:   N5>S2>S4>S3>S1
+[37] 7PM 01/09/2025 -- NO MATCH"
+Data:      18:39,19:00,18:26,18:24;6,5,5,2
+Manny:     N1>N2>N3>N4>N5>S2>S3>N1>N2>S4>N3>N4>N5>S3
+From UI:   N5>S4>S3>S1>S2
+[38] 7PM 01/10/2025 -- NO MATCH"
+Data:      18:15,18:39,18:41,17:53;5,4,4,2
+Manny:     N1>N2>S2>N3>S3>N4>N5>S4
+From UI:   N5>S4>S2>S1>S3
+[39] 7PM 01/11/2025 -- NO MATCH"
+Data:      18:14,18:12,19:02,17:26;5,4,3,1
+Manny:     N5>N1>N2>S3>S2>N3>N4>S4
+From UI:   N5>S4>S2>S1>S3
+[40] 7PM 01/12/2025 -- NO MATCH"
+Data:      16:55,18:45,17:41,18:17;3,3,2,1
+Manny:     S2>N1>S4>N2>N5>N3>S3>N4
+From UI:   N5>S1>S3>S4>S2
+[41] 7PM 01/13/2025 -- NO MATCH"
+Data:      17:32,18:12,18:25,18:19;6,5,5,2
+Manny:     N1>N2>N3>N4>S2>S3>N5>N1>N2>S4>N3>N4>S3>N5
+From UI:   N5>S4>S1>S2>S3
+[42] 7PM 01/15/2025 -- NO MATCH"
+Data:      18:27,16:05,18:32,18:07;5,3,3,2
+Manny:     S3>N1>N2>S2>N3>S4>N4>N5
+From UI:   N5>S2>S4>S1>S3
+[43] 7PM 01/16/2025 -- NO MATCH"
+Data:      17:56,18:13,18:40,18:41;4,4,3,2
+Manny:     N1>S2>N2>S3>N3>S4>N4>N5
+From UI:   N5>S1>S2>S4>S3
+[44] 7PM 1/17/2025 -- NO MATCH"
+Data:      18:15,18:39,18:23,18:39;5,5,4,3
+Manny:      N1>N2>S2>N3>N4>S4>S3>N1>N2>S2>N3>N4>S4>S3>N5
+From UI:   N5>S1>S3>S2>S4
+[45] 7PM 1/18/2025 -- NO MATCH"
+Data:      18:15,18:05,18:23,18:57;4,3,3,2
+Manny:     N1>N2>S3>S2>S4>N3>N4>N5
+From UI:   N5>S2>S1>S4>S3
+[46] 7PM 1/19/2025 -- NO MATCH"
+Data:      18:57,18:42,18:53,18:56;4,3,3,2
+Manny:     N1>N2>N3>S3>S4>S2>N4>N5
+From UI:   N5>S2>S4>S1>S3
+[47] 7PM 1/20/2025 -- NO MATCH"
+Data:      18:40,18:45,18:50,18:50;4,4,4,2
+Manny:     N1>N2>N3>S2>S3>N4>S4>N5
+From UI:   N5>S2>S4>S1>S3
+[48] 7PM 1/21/2025 -- NO MATCH"

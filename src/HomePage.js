@@ -667,7 +667,7 @@ export function App() {
             return Number(res).toFixed(3);
         }
 
-        const getCompositeExplanation = (each, normalizedAlr, normalizedClr) => {
+        const getCompositeExplanation = (each, normalizedAlr, normalizedClr, isFinalExplanation) => {
                 let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
             if (dropdown == "17:00") {
                 Object.entries(CONSTANT_COMPOSITE_5PM).forEach((innerEach, innerEachIndex) => {
@@ -687,7 +687,16 @@ export function App() {
                 })
             }
 
-            return `${each.name}: (${alr_f} * ${normalizedAlr}) + (${clr_f} * ${normalizedClr}) = ${res}`;
+            if (isFinalExplanation){
+                return `${each.name}: ${res}`;
+
+            } else {
+                if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
+                    return `${each.name}: (${alr_f} * ${normalizedAlr}) + (${clr_f} * ${normalizedClr}) = ${res}`;
+
+                }
+
+            }
         
         }
         
@@ -838,10 +847,7 @@ export function App() {
             "\n");
 
         compositeArrExplanation.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
-
             explanationArr.push(each);
-            }
         })
 
         timeObj.shifts.sort((a, b) => {
@@ -859,12 +865,7 @@ export function App() {
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                if (ROLES_WITH_DEFAULT_TIMES[dropdown].includes(each.name)){
-                    explanationArr.push(`${each.name}: ${each.composite}`)
-                } else {
-                    explanationArr.push(getCompositeExplanation(each, each.normalizedAlr, each.normalizedClr));
-
-                }
+                explanationArr.push(`${each.name}: ${each.composite}`)
             }
         });
         
