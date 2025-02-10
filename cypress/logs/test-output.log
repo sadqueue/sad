@@ -15,3 +15,7 @@ From UI:     S3>N5>S4>S2>S1
 Data:        16:40,16:35,14:55,15:20;5,4,3,2
 Manny:       N5>S3>S4>S2>S1
 From UI:     S4>N5>S2>S3>S1
+[5] 7PM 1/26/2025 -- NO MATCH"
+Data:      17:38,16:55,18:28,18:00;5,3,3,1
+Manny:     S3>N1>S2>N2>N5>S4>N3>N4
+From UI:   S3>N1>S2>N2>N5>N3>S4>N4
