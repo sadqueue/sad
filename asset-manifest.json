@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/sad/static/css/main.228b13bc.css",
-    "main.js": "/sad/static/js/main.22530791.js",
+    "main.js": "/sad/static/js/main.a28a813a.js",
     "static/js/453.9718cc1d.chunk.js": "/sad/static/js/453.9718cc1d.chunk.js",
     "static/media/sadqueuelogo_bluebackground.png": "/sad/static/media/sadqueuelogo_bluebackground.3f9a9783050202a9daa7.png",
     "index.html": "/sad/index.html",
     "main.228b13bc.css.map": "/sad/static/css/main.228b13bc.css.map",
-    "main.22530791.js.map": "/sad/static/js/main.22530791.js.map",
+    "main.a28a813a.js.map": "/sad/static/js/main.a28a813a.js.map",
     "453.9718cc1d.chunk.js.map": "/sad/static/js/453.9718cc1d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.228b13bc.css",
-    "static/js/main.22530791.js"
+    "static/js/main.a28a813a.js"
   ]
 }
