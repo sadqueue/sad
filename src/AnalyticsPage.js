@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
 import { testArr7pm } from "./data/data"; // Import your dataset
+import './AnalyticsPage.css';
 
 const AnalyticsPage = () => {
   const data = useMemo(() => {
@@ -62,16 +63,16 @@ const AnalyticsPage = () => {
         <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
       </div>
 
-      {<div className="p-6">
+      {<div className="container">
         <h3>7PM Admissions Analytics</h3>
-        <table {...getTableProps()} className="table-auto w-full border-collapse border border-gray-300">
-          <thead>
+        <table {...getTableProps()} className="analyticstable">
+          <thead className="analyticsthead">
             {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()} className="bg-gray-100">
+              <tr {...headerGroup.getHeaderGroupProps()} className="analyticstr">
                 {headerGroup.headers.map((column) => (
                   <th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="border border-gray-300 px-4 py-2 cursor-pointer"
+                    className="analyticsth"
                   >
                     {column.render("Header")}
                     <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
@@ -84,9 +85,9 @@ const AnalyticsPage = () => {
             {rows.map((row) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} className="hover:bg-gray-50">
+                <tr {...row.getRowProps()} className="analyticsth">
                   {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()} className="border border-gray-300 px-4 py-2">
+                    <td {...cell.getCellProps()} className="analyticstd">
                       {cell.render("Cell")}
                     </td>
                   ))}
