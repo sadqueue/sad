@@ -77,7 +77,7 @@ export function App() {
     const [compositeScoreAlgorithmDynamic, setCompositeScoreAlgorithmDynamic] = useState(false);
     const [compositeScoreAlgorithmStatic, setCompositeScoreAlgorithmStatic] = useState(false);
     const [alr_f, setAlr_f] = useState(0.5);
-    const [clr_f, setClr_f] = useState(0.5); 
+    const [clr_f, setClr_f] = useState(0.5);
 
     const [show1, setShow1] = useState(false);
     const [show2, setShow2] = useState(false);
@@ -515,7 +515,7 @@ export function App() {
                 }
 
                 let fixedDiff = each.difference;
-                if (each.difference > p95){
+                if (each.difference > p95) {
                     fixedDiff = p95;
                 }
                 // const difference = each.difference;
@@ -527,58 +527,58 @@ export function App() {
             }
         }
 
-        
+
         const getClrExplanation = (each, clrx) => {
             if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
-                
-            const admissions = Number(each.numberOfAdmissions);
-            let clr = Number(clrx);
 
-            let str = "";
-            if (dropdownSelected == "19:00") {
-                if (each.name == "S2") {
-                    // clr = Number(admissions) / 8;
-                    str = `${each.name}: ${admissions} / 8 = ${clr.toFixed(3)}`;
-                } else if (each.name == "S3") {
-                    // clr = Number(admissions) / 6;
-                    str = `${each.name}: ${admissions} / 6 = ${clr.toFixed(3)}`;
+                const admissions = Number(each.numberOfAdmissions);
+                let clr = Number(clrx);
 
-                } else if (each.name == "S4") {
-                    // clr = Number(admissions) / 5;
-                    str = `${each.name}: ${admissions} / 5 = ${clr.toFixed(3)}`;
+                let str = "";
+                if (dropdownSelected == "19:00") {
+                    if (each.name == "S2") {
+                        // clr = Number(admissions) / 8;
+                        str = `${each.name}: ${admissions} / 8 = ${clr.toFixed(3)}`;
+                    } else if (each.name == "S3") {
+                        // clr = Number(admissions) / 6;
+                        str = `${each.name}: ${admissions} / 6 = ${clr.toFixed(3)}`;
 
-                } else if (each.name == "N5") {
-                    // clr = Number(admissions) / 2;
-                    str = `${each.name}: ${admissions} / 2 = ${clr.toFixed(3)}`;
+                    } else if (each.name == "S4") {
+                        // clr = Number(admissions) / 5;
+                        str = `${each.name}: ${admissions} / 5 = ${clr.toFixed(3)}`;
 
+                    } else if (each.name == "N5") {
+                        // clr = Number(admissions) / 2;
+                        str = `${each.name}: ${admissions} / 2 = ${clr.toFixed(3)}`;
+
+                    }
+                    return str;
+                } else if (dropdownSelected == "17:00") {
+                    if (each.name == "S1") {
+                        // clr = Number(admissions) / 7;
+                        str = `${each.name}: ${admissions} / 7 = ${clr.toFixed(3)}`;
+
+                    } else if (each.name == "S2") {
+                        // clr = Number(admissions) / 6;
+                        str = `${each.name}: ${admissions} / 6 = ${clr.toFixed(3)}`;
+
+                    } else if (each.name == "S3") {
+                        // clr = Number(admissions) / 4;
+                        str = `${each.name}: ${admissions} / 4 = ${clr.toFixed(3)}`;
+
+                    } else if (each.name == "S4") {
+                        // clr = Number(admissions) / 3;
+                        str = `${each.name}: ${admissions} / 3 = ${clr.toFixed(3)}`;
+
+                    }
+                    return str;
                 }
-                return str;
-            } else if (dropdownSelected == "17:00") {
-                if (each.name == "S1") {
-                    // clr = Number(admissions) / 7;
-                    str = `${each.name}: ${admissions} / 7 = ${clr.toFixed(3)}`;
-
-                } else if (each.name == "S2") {
-                    // clr = Number(admissions) / 6;
-                    str = `${each.name}: ${admissions} / 6 = ${clr.toFixed(3)}`;
-
-                } else if (each.name == "S3") {
-                    // clr = Number(admissions) / 4;
-                    str = `${each.name}: ${admissions} / 4 = ${clr.toFixed(3)}`;
-
-                } else if (each.name == "S4") {
-                    // clr = Number(admissions) / 3;
-                    str = `${each.name}: ${admissions} / 3 = ${clr.toFixed(3)}`;
-
-                }
-                return str;
             }
         }
-        }
 
-        
+
         const getCompositeExplanation = (each, normalizedAlr, normalizedClr, isFinalExplanation) => {
-                let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
+            let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
             if (dropdown == "17:00") {
                 Object.entries(CONSTANT_COMPOSITE_5PM).forEach((innerEach, innerEachIndex) => {
                     if (innerEach[0] == each.name) {
@@ -597,7 +597,7 @@ export function App() {
                 })
             }
 
-            if (isFinalExplanation){
+            if (isFinalExplanation) {
                 return `${each.name}: ${res}`;
 
             } else {
@@ -607,33 +607,33 @@ export function App() {
                 }
 
             }
-        
+
         }
-        
-        
+
+
         const getNormalizedAlrExplanation = (each) => {
             if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
-            let p95_alr = "";
-            if (dropdown == "17:00") {
-                p95_alr = 1.00;
-            } else if (dropdown == "19:00") {
-                p95_alr = 1.00;
-            }
+                let p95_alr = "";
+                if (dropdown == "17:00") {
+                    p95_alr = 1.00;
+                } else if (dropdown == "19:00") {
+                    p95_alr = 1.00;
+                }
 
-            return `${each.name}: ${each.alr} / ${p95_alr} = ${each.normalizedAlr}`
-        }
+                return `${each.name}: ${each.alr} / ${p95_alr} = ${each.normalizedAlr}`
+            }
         }
         const getNormalizedClrExplanation = (each) => {
             if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
-            let p95_clr = "";
-            if (dropdown == "17:00") {
-                p95_clr = 1.00;
-            } else if (dropdown == "19:00") {
-                p95_clr = 1.00;
-            }
+                let p95_clr = "";
+                if (dropdown == "17:00") {
+                    p95_clr = 1.00;
+                } else if (dropdown == "19:00") {
+                    p95_clr = 1.00;
+                }
 
-            return `${each.name}: ${each.clr} / ${p95_clr} = ${each.normalizedClr}`
-        }
+                return `${each.name}: ${each.clr} / ${p95_clr} = ${each.normalizedClr}`
+            }
         }
 
         explanationArr.push(`Sort by composite score with ALR ${alr_f} and CLR ${clr_f}.`);
@@ -650,7 +650,7 @@ export function App() {
                 const normalizedAlr = getNormalizedAlr(each, alrx);
                 const normalizedClr = getNormalizedClr(each, clrx);
                 const composite = getComposite(each, normalizedAlr, normalizedClr);
-                
+
                 each["difference"] = difference;
                 each["alr"] = alrx;
                 each["clr"] = clrx;
@@ -724,9 +724,9 @@ export function App() {
             explanationArr.push(each);
         });
 
-       
+
         explanationArr.push("\n")
-        explanationArr.push(`Step 5: Calculate Composite Score: a Weighted Sum of Acute and Chronic Load Scores.`, 
+        explanationArr.push(`Step 5: Calculate Composite Score: a Weighted Sum of Acute and Chronic Load Scores.`,
             "\n");
 
         compositeArrExplanation.forEach((each, eachIndex) => {
@@ -751,7 +751,7 @@ export function App() {
                 explanationArr.push(`${each.name}: ${each.composite}`)
             }
         });
-        
+
         let shiftsCombined = [];
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
@@ -982,10 +982,23 @@ export function App() {
         shiftsCombined.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 if (dropdown == "17:00") {
-                    orderOfAdmissions.push(each.name);
+                    if (window.location.hostname === 'localhost') {
+                        //                         CSAlgo(0.6/0.4):     S3>N1>S2>N2>N5>N3>S4>N4
+                        // Role(ALR,CLR,C_score)>Role(ALR,CLR,C_score)>Role(ALR,CLR,C_score)
+                        orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`)
+                    } else {
+                        orderOfAdmissions.push(each.name);
+
+                    }
                 } else if (dropdown == "19:00") {
                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
-                        orderOfAdmissions.push(each.name);
+                        if (window.location.hostname === 'localhost') {
+                            orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedAlr},${each.composite})`)
+
+                        } else {
+                            orderOfAdmissions.push(each.name);
+
+                        }
 
                     }
                 }
@@ -1819,7 +1832,7 @@ export function App() {
         }
 
         let fixedDiff = difference;
-        if (difference > p95){
+        if (difference > p95) {
             fixedDiff = p95;
         }
         return Number(1 - (fixedDiff) / p95).toFixed(3);
@@ -2329,7 +2342,7 @@ export function App() {
                                             return (<th key={eachIndex}>{each[1]}</th>);
                                         })}
                                     </tr>
-                                ) : isMobileDevice() ?  (
+                                ) : isMobileDevice() ? (
                                     <tr>
                                         {MINIMIZE_TABLE_STATIC_COMPOSITE_MOBILE.map((each, eachIndex) => {
                                             if (each[0] == "name") {
@@ -2344,7 +2357,7 @@ export function App() {
                                             return (<th key={eachIndex}>{each[1]}</th>);
                                         })}
                                     </tr>
-                                ):  (
+                                ) : (
                                     <tr>
                                         {MINIMIZE_TABLE_STATIC_COMPOSITE_WEB.map((each, eachIndex) => {
                                             if (each[0] == "name") {
@@ -2410,63 +2423,63 @@ export function App() {
                                                                 pattern="[0-9]*"
                                                             />
                                                         </td>
-                                                        {!isMobileDevice() && 
-                                                        <td className="backgroundlightgray">
-                                                        <div className="progress-cell">
-                                                            <div className="progress-container">
-                                                                <div
-                                                                    className="progress-bar"
-                                                                    style={{
-                                                                        width: `${(admission.alr || 0) * 100}%`,
-                                                                        background: (admission.alr || 0) > 0.5
-                                                                            ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
-                                                                            : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <span className="progress-text">
-                                                                {Number(admission.alr).toFixed(2)}
-                                                            </span>
-                                                        </div>
-                                                    </td>}
-                                                        {!isMobileDevice() && 
-                                                        <td className="backgroundlightgray">
-                                                        <div className="progress-cell">
-                                                            <div className="progress-container">
-                                                                <div
-                                                                    className="progress-bar"
-                                                                    style={{
-                                                                        width: `${(admission.clr || 0) * 100}%`,
-                                                                        background: (admission.clr || 0) > 0.5
-                                                                            ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
-                                                                            : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <span className="progress-text">
-                                                            {Number(admission.clr).toFixed(2)}
-                                                            </span>
-                                                        </div>
-                                                    </td>}
-                                                        {!isMobileDevice() && 
-                                                        <td className="backgroundlightgray">
-                                                        <div className="progress-cell">
-                                                            <div className="progress-container">
-                                                                <div
-                                                                    className="progress-bar"
-                                                                    style={{
-                                                                        width: `${(admission.composite || 0) * 100}%`,
-                                                                        background: (admission.composite || 0) > 0.5
-                                                                            ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
-                                                                            : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <span className="progress-text">
-                                                            {Number(admission.composite).toFixed(2)}
-                                                            </span>
-                                                        </div>
-                                                    </td>}
+                                                        {!isMobileDevice() &&
+                                                            <td className="backgroundlightgray">
+                                                                <div className="progress-cell">
+                                                                    <div className="progress-container">
+                                                                        <div
+                                                                            className="progress-bar"
+                                                                            style={{
+                                                                                width: `${(admission.alr || 0) * 100}%`,
+                                                                                background: (admission.alr || 0) > 0.5
+                                                                                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
+                                                                                    : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                    <span className="progress-text">
+                                                                        {Number(admission.alr).toFixed(2)}
+                                                                    </span>
+                                                                </div>
+                                                            </td>}
+                                                        {!isMobileDevice() &&
+                                                            <td className="backgroundlightgray">
+                                                                <div className="progress-cell">
+                                                                    <div className="progress-container">
+                                                                        <div
+                                                                            className="progress-bar"
+                                                                            style={{
+                                                                                width: `${(admission.clr || 0) * 100}%`,
+                                                                                background: (admission.clr || 0) > 0.5
+                                                                                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
+                                                                                    : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                    <span className="progress-text">
+                                                                        {Number(admission.clr).toFixed(2)}
+                                                                    </span>
+                                                                </div>
+                                                            </td>}
+                                                        {!isMobileDevice() &&
+                                                            <td className="backgroundlightgray">
+                                                                <div className="progress-cell">
+                                                                    <div className="progress-container">
+                                                                        <div
+                                                                            className="progress-bar"
+                                                                            style={{
+                                                                                width: `${(admission.composite || 0) * 100}%`,
+                                                                                background: (admission.composite || 0) > 0.5
+                                                                                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
+                                                                                    : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                    <span className="progress-text">
+                                                                        {Number(admission.composite).toFixed(2)}
+                                                                    </span>
+                                                                </div>
+                                                            </td>}
                                                         {isMobileDevice() && <td className="backgroundlightgray">
                                                             <div className="progress-cell">
                                                                 <div className="progress-container">
@@ -2590,9 +2603,9 @@ export function App() {
                                         type="checkbox"
                                         onChange={(e) => {
                                             // setAllAdmissionsDataShifts({startTime: dropdown, shifts: SHIFT_TYPES})
-                                            if (e.target.checked) {
-                                                setShow2(true);
-                                            }
+                                            // if (e.target.checked) {
+                                            //     setShow2(true);
+                                            // }
                                             setCompositeScoreAlgorithmDynamic(e.target.checked);
                                         }}
                                     />
@@ -2617,49 +2630,49 @@ export function App() {
                                     <label for="compositeScoreCheckboxStatic">Static Composite Score Algorithm</label>
                                 </div>
                                 {show4 && compositeScoreAlgorithmStatic &&
-                            <div>
-                                <div className="flex"><p className="weightwidth">ALR: </p><input
-                                    id="alr"
-                                    placeholder="ALR"
-                                    className="input-left"
-                                    label="ALR"
-                                    type="number"
-                                    onChange={(e) => {
-                                        setAlr_f(e.target.value);
-                                        if (Number(e.target.value)) {
-                                            setClr_f((1 - Number(e.target.value)).toFixed(2));
+                                    <div>
+                                        <div className="flex"><p className="weightwidth">ALR: </p><input
+                                            id="alr"
+                                            placeholder="ALR"
+                                            className="input-left"
+                                            label="ALR"
+                                            type="number"
+                                            onChange={(e) => {
+                                                setAlr_f(e.target.value);
+                                                if (Number(e.target.value)) {
+                                                    setClr_f((1 - Number(e.target.value)).toFixed(2));
 
-                                        }
-                                    }}
-                                    value={alr_f}
-                                /></div>
-                                <div className="flex"><p className="weightwidth">CLR: </p><input
-                                    id="clr"
-                                    placeholder="CLR"
-                                    className="input-left"
-                                    label="CLR"
-                                    type="number"
-                                    onChange={(e) => {
-                                        setClr_f(e.target.value);
-                                        if (Number(e.target.value)) {
-                                            setAlr_f((1 - Number(e.target.value)).toFixed(2));
-                                        }
-                                    }}
-                                    value={clr_f}
-                                /></div>
+                                                }
+                                            }}
+                                            value={alr_f}
+                                        /></div>
+                                        <div className="flex"><p className="weightwidth">CLR: </p><input
+                                            id="clr"
+                                            placeholder="CLR"
+                                            className="input-left"
+                                            label="CLR"
+                                            type="number"
+                                            onChange={(e) => {
+                                                setClr_f(e.target.value);
+                                                if (Number(e.target.value)) {
+                                                    setAlr_f((1 - Number(e.target.value)).toFixed(2));
+                                                }
+                                            }}
+                                            value={clr_f}
+                                        /></div>
 
-                            </div>
-                        }
-                        {(compositeScoreAlgorithmDynamic || compositeScoreAlgorithmStatic) && <section>
-                                <button id="generateQueue" onClick={(e) => {
+                                    </div>
+                                }
+                                {(compositeScoreAlgorithmDynamic || compositeScoreAlgorithmStatic) && <section>
+                                    <button id="generateQueue" onClick={(e) => {
                                         handleGenerateQueue(e);
                                     }}>
                                         Generate Queue
                                     </button>
-                                    </section>}
+                                </section>}
                             </div>
                         }
-                        
+
 
 
                     </fieldset>}

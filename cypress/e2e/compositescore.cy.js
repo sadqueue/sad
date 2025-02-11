@@ -1,6 +1,6 @@
-const url = "http://localhost:3001/";//"https://sadqueue.github.io/sad/";//
+const url = "http://localhost:3001/sad#/beta";//"https://sadqueue.github.io/sad/";//
 
-import { testArr5pm, testArr4pm, testArr7pm} from "./data";
+import { testArr5pm, testArr4pm, testArr7pm } from "./data";
 
 
 describe('template spec', () => {
@@ -13,13 +13,13 @@ describe('template spec', () => {
     cy.contains("Set Composite Algorithm").click();
     let count = 1;
 
-    var currentdate = new Date(); 
+    var currentdate = new Date();
     var datetime = "Last Sync: " + currentdate.getDate() + "/"
-                    + (currentdate.getMonth()+1)  + "/" 
-                    + currentdate.getFullYear() + " @ "  
-                    + currentdate.getHours() + ":"  
-                    + currentdate.getMinutes();
-      cy.task('logToFile',`###### Order of Admissions by original algorithm ${datetime}`);
+      + (currentdate.getMonth() + 1) + "/"
+      + currentdate.getFullYear() + " @ "
+      + currentdate.getHours() + ":"
+      + currentdate.getMinutes();
+    cy.task('logToFile', `###### Order of Admissions by original algorithm ${datetime}`);
 
 
     if (testArr5pm) {
@@ -58,21 +58,17 @@ describe('template spec', () => {
                 cy.task('logToFile', `Manny:      ${output}`);
                 cy.task('logToFile', `From UI:    ${$el.text()}`);
 
-                cy.get("#compositeScoreCheckbox").click();
-
+                cy.get("#compositeScoreCheckboxStatic").click();
+                cy.get(`#alr`).clear().type(0.6);
+                cy.get(`#clr`).clear().type(0.4)
+                
                 cy.get("#generateQueue").click();
 
                 cy.get('#orderofadmissions_output')
                   .then(($el) => {
                     cy.task('logToFile', `CS_Algo:    ${$el.text()}`);
+                    cy.get("#compositeScoreCheckboxStatic").click();
 
-                    cy.get('#stepbystepdetails')
-                      .invoke('html')
-                      .then((html) => {
-                        const textWithNewLines = html.replace(/<br\s*\/?>/gi, '\n');
-                        cy.task('logToFile', textWithNewLines);
-                      });
-                    cy.get("#compositeScoreCheckbox").click();
                   });
 
                 count++;
@@ -88,7 +84,7 @@ describe('template spec', () => {
       /* test 7PM */
       cy.get("#timesdropdown").should('be.visible').select("19:00");
       cy.wait(1200);
-      
+
 
       for (let i = 0; i < testArr7pm.length; i++) {
         const splitArr = testArr7pm[i][0].split(";");
@@ -98,7 +94,7 @@ describe('template spec', () => {
           const admissions = splitArr[1].split(",");
           const output = splitArr[2];
 
-          
+
 
           timestamps.forEach((time, timeIndexx) => {
             const timeIndex = timeIndexx;
@@ -118,24 +114,21 @@ describe('template spec', () => {
               if (generatedFromAutomation && generatedFromAutomation == output.trim()) {
               } else {
                 cy.task('logToFile', `[ ${count} ] 7PM ${testArr7pm[i][1]} -- NO MATCH`);
-                cy.task('logToFile', `Data:        ${testArr7pm[i][0].split(";").slice(0, testArr7pm[i][0].split(";").length - 1).join(";")}`);
-                cy.task('logToFile', `Manny:       ${output}`);
-                cy.task('logToFile', `From UI:     ${$el.text()}`);
+                cy.task('logToFile', `Data:       ${testArr7pm[i][0].split(";").slice(0, testArr7pm[i][0].split(";").length - 1).join(";")}`);
+                cy.task('logToFile', `Manny:      ${output}`);
+                cy.task('logToFile', `From UI:    ${$el.text()}`);
 
-                cy.get("#compositeScoreCheckbox").click();
-
+                cy.get("#compositeScoreCheckboxStatic").click();
+                cy.get(`#alr`).clear().type(0.6);
+                cy.get(`#clr`).clear().type(0.4)
+                
                 cy.get("#generateQueue").click();
 
                 cy.get('#orderofadmissions_output')
                   .then(($el) => {
                     cy.task('logToFile', `CS_Algo:    ${$el.text()}`);
-                    cy.get('#stepbystepdetails')
-                      .invoke('html')
-                      .then((html) => {
-                        const textWithNewLines = html.replace(/<br\s*\/?>/gi, '\n');
-                        cy.task('logToFile', textWithNewLines);
-                      });
-                    cy.get("#compositeScoreCheckbox").click();
+                    cy.get("#compositeScoreCheckboxStatic").click();
+
                   });
 
                 count++;

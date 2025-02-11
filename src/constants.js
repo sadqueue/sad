@@ -9,16 +9,15 @@ export const NUMBER_OF_ADMISSIONS_S4_CAP = 5;
 export const P95_7PM = 150;
 export const P95_5PM = 150;
 
-
 export const CONSTANT_COMPOSITE_5PM = {
-    "N5": 0.45
+    "N5": 0.40
 };
 
 export const CONSTANT_COMPOSITE_7PM = {
-    "N1": 0.45,
-    "N2": 0.55,
-    "N3": 0.65,
-    "N4": 0.75
+    "N1": 0.40,
+    "N2": 0.50,
+    "N3": 0.60,
+    "N4": 0.70
 };
 
 export const TIME_FORMAT = "h:mmA"; //hh:mm for non military
