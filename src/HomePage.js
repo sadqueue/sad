@@ -714,9 +714,9 @@ export function App() {
         const getNormalizedClr = (each, clrx) => {
             let p95_clr = "";
             if (dropdown == "17:00") {
-                p95_clr = 0.70;
+                p95_clr = 1.00;
             } else if (dropdown == "19:00") {
-                p95_clr = 0.70;
+                p95_clr = 1.00;
             }
 
             const normalizedAlr = clrx / p95_clr;
@@ -739,9 +739,9 @@ export function App() {
             if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
             let p95_clr = "";
             if (dropdown == "17:00") {
-                p95_clr = 0.70;
+                p95_clr = 1.00;
             } else if (dropdown == "19:00") {
-                p95_clr = 0.70;
+                p95_clr = 1.00;
             }
 
             return `${each.name}: ${each.clr} / ${p95_clr} = ${each.normalizedClr}`
@@ -1371,25 +1371,12 @@ export function App() {
         }
 
         const getNormalizedAlr = (each) => {
-            // Norm_ALR = ALR/P95
-            // Norm_CLR = CLR/P95
-
-            // At 5:00PM
-            // P95 [ALR] at 5:00 PM = 1.00
-            // P95 [CLR] at 7:00 PM =0.70
-
-            // At 7:00PM
-            // P95 [ALR] at 5:00 PM = 1.00
-            // P95 [CLR] at 7:00 PM = 0.70
 
             let p95_alr = "";
-            // let p95_clr = "";
             if (dropdown == "17:00") {
                 p95_alr = 1.00;
-                // p95_clr = 0.70;
             } else if (dropdown == "19:00") {
                 p95_alr = 1.00;
-                // p95_clr = 0.70;
             }
 
             const normalizedAlr = each.alr2 / p95_alr;
@@ -1400,10 +1387,10 @@ export function App() {
             let p95_clr = "";
             if (dropdown == "17:00") {
                 // p95_alr = 1.00;
-                p95_clr = 0.70;
+                p95_clr = 1.00;
             } else if (dropdown == "19:00") {
                 // p95_alr = 1.00;
-                p95_clr = 0.70;
+                p95_clr = 1.00;
             }
 
             const normalizedAlr = each.clr / p95_clr;
@@ -1424,9 +1411,9 @@ export function App() {
         const getNormalizedClrExplanation = (each) => {
             let p95_clr = "";
             if (dropdown == "17:00") {
-                p95_clr = 0.70;
+                p95_clr = 1.00;
             } else if (dropdown == "19:00") {
-                p95_clr = 0.70;
+                p95_clr = 1.00;
             }
 
             return `${each.name}: ${each.clr} / ${p95_clr} = ${each.normalizedClr}`
