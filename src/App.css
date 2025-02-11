@@ -111,7 +111,7 @@ td.grayinput {
 
 tr th,
 select {
-  font-size: 24px;
+  font-size: 20px;
   padding: 12px;
   border: 2px solid black;
   text-align: center;
@@ -120,12 +120,12 @@ select {
 }
 
 .th_10percent{
-  width: 10%;
+  width: 6%;
   color: black;
 }
 
 .th_25percent{
-  width: 25%;
+  width: 16%;
   color: black;
 }
 
@@ -709,7 +709,7 @@ input::-webkit-inner-spin-button {
 }
 
 .progress-text {
-  font-size: 24px;
+  font-size: 18px;
   /* font-weight: bold; */
   color: #333;
   min-width: 35px; /* Ensures space for text */

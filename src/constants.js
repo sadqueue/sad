@@ -75,6 +75,22 @@ export const MINIMIZE_TABLE = [
     ["chronicLoadRatio", "Chronic Load Ratio"]
 ];
 
+export const MINIMIZE_TABLE_STATIC_COMPOSITE_MOBILE = [
+    ["name", "Role"],
+    ["timestamp", "Last Admit Time"],
+    ["numberOfAdmissions", "# of Admits"],
+    ["chronicLoadRatio", "Chronic Load Ratio"],
+];
+
+export const MINIMIZE_TABLE_STATIC_COMPOSITE_WEB = [
+    ["name", "Role"],
+    ["timestamp", "Last Admit Time"],
+    ["numberOfAdmissions", "# of Admits"],
+    ["alr", "Acute Load Ratio"],
+    ["clr", "Chronic Load Ratio"],
+    ["composite", "Composite Score"]
+];
+
 export const SCORE_NEW_ROLE = {
     "16:00": [],
     "17:00": ["N5"],

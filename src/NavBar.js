@@ -18,6 +18,9 @@ const Navbar = () => {
       <li>
         <a href="/sad#/analytics">Analytics</a>
       </li>
+      <li>
+        <a href="/sad#/beta">Beta</a>
+      </li>
       {/* <li>
         <a href="/contact">Contact</a>
       </li> */}
