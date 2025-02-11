@@ -85,8 +85,8 @@ export const MINIMIZE_TABLE_STATIC_COMPOSITE_WEB = [
     ["name", "Role"],
     ["timestamp", "Last Admit Time"],
     ["numberOfAdmissions", "# of Admits"],
-    ["alr", "Acute Load Ratio"],
-    ["clr", "Chronic Load Ratio"],
+    ["alr", "Acute Load"],
+    ["clr", "Chronic Load"],
     ["composite", "Composite Score"]
 ];
 

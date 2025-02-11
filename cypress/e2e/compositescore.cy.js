@@ -26,8 +26,6 @@ describe('template spec', () => {
       /* test 5PM */
       cy.get("#timesdropdown").should('be.visible').select("17:00");
       cy.wait(1200);
-      // cy.get("#seedetails").click();
-      // cy.contains("Set Composite Algorithm").click();
 
       for (let i = 0; i < testArr5pm.length; i++) {
         const splitArr = testArr5pm[i][0].split(";");

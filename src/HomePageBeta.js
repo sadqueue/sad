@@ -636,12 +636,9 @@ export function App() {
             }
         }
 
-        explanationArr.push(`Sort by composite score with ALR ${alr_f} and CLR ${clr_f}.`);
-        explanationArr.push("\n");
-
         explanationArr.push("Step 1: Calculate Acute Load Ratio (ALR) for each Role.", "\n",);
 
-        explanationArr.push("Minutes Before The Hour:")
+        // explanationArr.push("Minutes Before The Hour:")
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 const difference = getTimeDifference(each.timestamp);
@@ -659,7 +656,7 @@ export function App() {
                 each["normalizedClr"] = normalizedClr;
 
                 compositeArrExplanation.push(getCompositeExplanation(each, normalizedAlr, normalizedClr));
-                explanationArr.push(getTimeDifferenceExplanation(each));
+                // explanationArr.push(getTimeDifferenceExplanation(each));
                 alrArr.push(getAlrExplanation(each, alrx));
                 clrArr.push(getClrExplanation(each, clrx));
                 normalizedAlrExplanation.push(getNormalizedAlrExplanation(each));
@@ -697,7 +694,7 @@ export function App() {
             return 0;
         });
 
-        explanationArr.push("\n", `ALR = 1 - (Minutes Before The Hour/ P95)`);
+        explanationArr.push(`ALR = 1 - (Minutes Before The Hour/ P95)`);
 
         alrArr.map((each, eachIndex) => {
             explanationArr.push(each);
@@ -788,8 +785,8 @@ export function App() {
             });
         }
         if (scenario1) {
-            explanationArr.push("\n");
-            explanationArr.push("7PM High Chronic Load Scenario. If S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
+            // explanationArr.push("\n");
+            // explanationArr.push("7PM High Chronic Load Scenario. If S3 or S4 has number of admission of 6 or N5 has number of admissions of 3+, then repeat (N1-N4)x2 and then insert at the end.");
 
             /* Step 1: Remove from Array 1. This means that we have to copy Array 1 to Array 2.*/
             const array1 = [];
@@ -839,7 +836,7 @@ export function App() {
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
                         (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3)) {
-                        explanationArr.push(getFormattedOutputCompositeScore2(innerEach));
+                        // explanationArr.push(getFormattedOutputCompositeScore2(innerEach));
                     } else {
                         array1.push(innerEach);
                     }
@@ -849,7 +846,7 @@ export function App() {
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
                         (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3) ||
                         Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
-                        explanationArr.push(getFormattedOutputCompositeScore2(innerEach));
+                        // explanationArr.push(getFormattedOutputCompositeScore2(innerEach));
                     } else {
                         array1.push(innerEach);
                     }
@@ -865,8 +862,8 @@ export function App() {
             const combinedArr = array1.concat(array2);
             shiftsCombined = combinedArr;
         } else if (scenario2) {
-            explanationArr.push("\n");
-            explanationArr.push("7PM High Chronic Load Scenario. If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
+            // explanationArr.push("\n");
+            // explanationArr.push("7PM High Chronic Load Scenario. If S4 has number of admissions of 5, then N1-N4, N1>N2>S4>N3>N4");
 
             /* If S4 has number of admissions of 5, then remove S4 from Array 1. This means that we have to copy Array 1 to Array 2. */
             const array1 = [];
@@ -875,7 +872,7 @@ export function App() {
             shiftsCombined.forEach((innerEach, innerEachIndex) => {
                 if (dropdown == "17:00") {
                     if (innerEach.name == "S4") {
-                        explanationArr.push(getFormattedOutputCompositeScore2(innerEach))
+                        // explanationArr.push(getFormattedOutputCompositeScore2(innerEach))
                         getS4 = innerEach;
                     } else if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) {
                         array1.push(innerEach);
@@ -888,7 +885,7 @@ export function App() {
                 } else if (dropdown == "19:00") {
                     if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                     } else if (innerEach.name == "S4") {
-                        explanationArr.push(getFormattedOutputCompositeScore2(innerEach))
+                        // explanationArr.push(getFormattedOutputCompositeScore2(innerEach))
                         getS4 = innerEach;
                     } else if (innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) {
                         array1.push(innerEach);
@@ -923,7 +920,7 @@ export function App() {
             setArray1(array1 && array1.map((each) => { return each.name }));
             setArray2(array2 && array2.map((each) => { return each.name }));
         } else if (scenario3) {
-            explanationArr.push("\n");
+            // explanationArr.push("\n");
             const array1 = [];
             let getS3 = {};
             shiftsCombined.forEach((innerEach, innerEachIndex) => {
@@ -985,6 +982,7 @@ export function App() {
                     if (window.location.hostname === 'localhost') {
                         //                         CSAlgo(0.6/0.4):     S3>N1>S2>N2>N5>N3>S4>N4
                         // Role(ALR,CLR,C_score)>Role(ALR,CLR,C_score)>Role(ALR,CLR,C_score)
+                        // orderOfAdmissions.push(each.name);
                         orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`)
                     } else {
                         orderOfAdmissions.push(each.name);
@@ -993,6 +991,7 @@ export function App() {
                 } else if (dropdown == "19:00") {
                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
                         if (window.location.hostname === 'localhost') {
+                            // orderOfAdmissions.push(each.name);
                             orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedAlr},${each.composite})`)
 
                         } else {
@@ -1832,9 +1831,9 @@ export function App() {
         }
 
         let fixedDiff = difference;
-        if (difference > p95) {
-            fixedDiff = p95;
-        }
+        // if (difference > p95) {
+        //     fixedDiff = p95;
+        // }
         return Number(1 - (fixedDiff) / p95).toFixed(3);
     }
     const getClr = (each) => {
@@ -2621,9 +2620,9 @@ export function App() {
                                         type="checkbox"
                                         onChange={(e) => {
                                             // setAllAdmissionsDataShifts({startTime: dropdown, shifts: SHIFT_TYPES})
-                                            if (e.target.checked) {
-                                                setShow2(true);
-                                            }
+                                            // if (e.target.checked) {
+                                            //     setShow2(true);
+                                            // }
                                             setCompositeScoreAlgorithmStatic(e.target.checked);
                                         }}
                                     />
