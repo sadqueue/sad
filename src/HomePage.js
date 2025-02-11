@@ -21,7 +21,9 @@ import {
     NUMBER_OF_ADMISSIONS_S4_CAP,
     ROLES_WITH_DEFAULT_TIMES,
     CONSTANT_COMPOSITE_5PM,
-    CONSTANT_COMPOSITE_7PM
+    CONSTANT_COMPOSITE_7PM,
+    P95_7PM,
+    P95_5PM
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import snapshotImg from "./images/snapshot.png";
@@ -123,7 +125,7 @@ export function App() {
         });
 
         const explanationArr = [];
-        explanationArr.push("Step 1: Rank Order Based on Acute Load (Time Since Last Admission). [ALR = 1 - (Current Time [17:00] - Last Admit Time)/180]");
+        explanationArr.push("Step 1: Rank Order Based on Acute Load (Time Since Last Admission). [ALR = 1 - (Current Time [17:00] - Last Admit Time)/P95_7PM]");
 
         /*
         Step 1: Step 1: Sort based on timestamp. If timestamp is the same, sort by chronic load ratio
@@ -531,9 +533,9 @@ export function App() {
         const getAlr = (difference) => {
             let p95 = "";
             if (dropdown == "19:00") {
-                p95 = 180;
+                p95 = P95_7PM;
             } else if (dropdown == "17:00") {
-                p95 = 135;
+                p95 = P95_5PM;
             }
 
             let fixedDiff = difference;
@@ -550,9 +552,9 @@ export function App() {
             if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
                 let p95 = "";
                 if (dropdown == "19:00") {
-                    p95 = 180;
+                    p95 = P95_7PM;
                 } else if (dropdown == "17:00") {
-                    p95 = 135;
+                    p95 = P95_5PM;
                 }
 
                 let fixedDiff = each.difference;
@@ -839,11 +841,6 @@ export function App() {
        
         explanationArr.push("\n")
         explanationArr.push(`Step 5: Calculate Composite Score: a Weighted Sum of Acute and Chronic Load Scores.`, 
-            'W[ALR] at 5pm = 0.7', 
-            'W[CLR] at 5pm = 0.3', 
-            "\n",
-            "W[ALR] at 7pm = 0.55",
-            "W[CLR] at 7pm = 0.45",
             "\n");
 
         compositeArrExplanation.forEach((each, eachIndex) => {
@@ -1196,15 +1193,15 @@ export function App() {
             const split = difference.split(":");
             const hours = Number(split[0]);
             const minutes = Number(split[1]);
-            return (1 - ((hours * 60 + minutes) / 180)).toFixed(3);
+            return (1 - ((hours * 60 + minutes) / P95_7PM)).toFixed(3);
         }
 
         const getAlrExplanation = (each) => {
             let p95 = "";
             if (dropdown == "19:00") {
-                p95 = 180;
+                p95 = P95_7PM;
             } else if (dropdown == "17:00") {
-                p95 = 135;
+                p95 = P95_5PM;
             }
 
             return `${each.name}: 1-(${each.difference2} minutes / ${p95}) = ${each.alr2}`;
@@ -1332,18 +1329,18 @@ export function App() {
             let p95 = "";
             let currentTimeMinusLastAdmitTime = "";
             if (dropdown == "19:00") {
-                p95 = 180;
+                p95 = P95_7PM;
                 if (each.timestamp == "") {
                     currentTimeMinusLastAdmitTime = 0;
                 } else {
                     currentTimeMinusLastAdmitTime = getTimeDifferenceInMinutes("19:00", each.timestamp)
                 }
 
-                if (currentTimeMinusLastAdmitTime > 180) {
-                    currentTimeMinusLastAdmitTime = 180;
+                if (currentTimeMinusLastAdmitTime > P95_7PM) {
+                    currentTimeMinusLastAdmitTime = P95_7PM;
                 }
             } else if (dropdown == "17:00") {
-                p95 = 135;
+                p95 = P95_5PM;
                 if (each.timestamp == "") {
                     currentTimeMinusLastAdmitTime = 0;
 
@@ -1352,8 +1349,8 @@ export function App() {
 
                 }
 
-                if (currentTimeMinusLastAdmitTime > 135) {
-                    currentTimeMinusLastAdmitTime = 135;
+                if (currentTimeMinusLastAdmitTime > P95_5PM) {
+                    currentTimeMinusLastAdmitTime = P95_5PM;
                 }
             }
             const res = (1 - (Number(currentTimeMinusLastAdmitTime) / p95)).toFixed(3);

@@ -6,6 +6,10 @@ export const CHRONIC_LOAD_RATIO_THRESHOLD_N5 = 0.87;
 export const NUMBER_OF_ADMISSIONS_CAP = 6;
 export const NUMBER_OF_ADMISSIONS_S4_CAP = 5;
 
+export const P95_7PM = 150;
+export const P95_5PM = 150;
+
+
 export const CONSTANT_COMPOSITE_5PM = {
     "N5": 0.45
 };
