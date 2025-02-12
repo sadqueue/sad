@@ -443,7 +443,7 @@ export function App() {
                 }
             })
 
-            setOrderOfAdmissions("N1>N2>N3>N4>S4>N5>S2>S3");
+            setOrderOfAdmissions(orderOfAdmissions.join(">"));
             setExplanation(explanationArr);
 
             setSortRoles(timeObj, dropdownSelected, lastSavedTime);
