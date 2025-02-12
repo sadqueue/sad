@@ -1,4 +1,4 @@
-const testArr5pm = [
+export const testArr5pm = [
 
   ["16:39,16:18,15:42,16:55;4,3,2,2;N5>S3>S2>S1>S4", "2/10/2025 COMP"],
   
@@ -94,7 +94,7 @@ const testArr5pm = [
   
     
   
-    const testArr7pm = [
+    export const testArr7pm = [
 
       ["18:52,17:10,17:35,19:02;4,3,2,2;S3>N1>S4>N2>N3>N4>S2>N5", "2/10/2025 COMP 0.6/0.4"],
       

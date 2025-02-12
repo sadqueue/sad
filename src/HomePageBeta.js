@@ -76,8 +76,11 @@ export function App() {
     const [clickedGenerateQueue, setClickedGenerateQueue] = useState(false);
     const [compositeScoreAlgorithmDynamic, setCompositeScoreAlgorithmDynamic] = useState(false);
     const [compositeScoreAlgorithmStatic, setCompositeScoreAlgorithmStatic] = useState(false);
-    const [alr_f, setAlr_f] = useState(0.5);
-    const [clr_f, setClr_f] = useState(0.5);
+    const [alr_f_5pm, setAlr_f_5pm] = useState(0.63);
+    const [clr_f_5pm, setClr_f_5pm] = useState(0.37);
+
+    const [alr_f_7pm, setAlr_f_7pm] = useState(0.61);
+    const [clr_f_7pm, setClr_f_7pm] = useState(0.39);
 
     const [show1, setShow1] = useState(false);
     const [show2, setShow2] = useState(false);
@@ -460,13 +463,14 @@ export function App() {
     }
 
     const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
-        if (compositeScoreAlgorithmDynamic) {
-            return sortMainByCompositeScoreDynamic(timeObj, dropdownSelected, lastSavedTime);
-        } else if (compositeScoreAlgorithmStatic) {
-            return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
-        } else {
-            return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
-        }
+        // if (compositeScoreAlgorithmDynamic) {
+        //     return sortMainByCompositeScoreDynamic(timeObj, dropdownSelected, lastSavedTime);
+        // } else if (compositeScoreAlgorithmStatic) {
+        //     return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
+        // } else {
+        //     return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
+        // }
+        return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
     }
     const sortMainByCompositeScoreStatic = (timeObj, dropdownSelected, lastSavedTime = "") => {
         const orderOfAdmissions = [];
@@ -578,37 +582,40 @@ export function App() {
 
 
         const getCompositeExplanation = (each, normalizedAlr, normalizedClr, isFinalExplanation) => {
-            let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
-            if (dropdown == "17:00") {
-                Object.entries(CONSTANT_COMPOSITE_5PM).forEach((innerEach, innerEachIndex) => {
-                    if (innerEach[0] == each.name) {
-                        res = innerEach[1];
-                        return `${each.name}: ${innerEach[1]}`
-
-                    }
-                });
-            }
-            else if (dropdown == "19:00") {
-                Object.entries(CONSTANT_COMPOSITE_7PM).forEach((innerEach, innerEachIndex) => {
-                    if (innerEach[0] == each.name) {
-                        res = innerEach[1];
-                        return `${each.name}: ${innerEach[1]}`
-                    }
-                })
-            }
-
-            if (isFinalExplanation) {
-                return `${each.name}: ${res}`;
-
-            } else {
-                if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
-                    return `${each.name}: (${alr_f} * ${normalizedAlr}) + (${clr_f} * ${normalizedClr}) = ${res}`;
-
+            const alr_f = dropdown == "17:00" ? alr_f_5pm : alr_f_7pm;
+            const clr_f = dropdown == "17:00" ? clr_f_5pm : clr_f_7pm;
+    
+                let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
+                if (dropdown == "17:00") {
+                    Object.entries(CONSTANT_COMPOSITE_5PM).forEach((innerEach, innerEachIndex) => {
+                        if (innerEach[0] == each.name) {
+                            res = innerEach[1];
+                            return `${each.name}: ${innerEach[1]}`
+    
+                        }
+                    });
                 }
-
+                else if (dropdown == "19:00") {
+                    Object.entries(CONSTANT_COMPOSITE_7PM).forEach((innerEach, innerEachIndex) => {
+                        if (innerEach[0] == each.name) {
+                            res = innerEach[1];
+                            return `${each.name}: ${innerEach[1]}`
+                        }
+                    })
+                }
+    
+                if (isFinalExplanation) {
+                    return `${each.name}: ${res}`;
+    
+                } else {
+                    if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
+                        return `${each.name}: (${alr_f} * ${normalizedAlr}) + (${clr_f} * ${normalizedClr}) = ${res}`;
+    
+                    }
+    
+                }
+    
             }
-
-        }
 
 
         const getNormalizedAlrExplanation = (each) => {
@@ -702,6 +709,8 @@ export function App() {
 
         explanationArr.push("\n")
         explanationArr.push(`Step 2: Calculate Chronic Load Ratio (CLR) for each Role.`);
+        explanationArr.push("CLR = Number of Admits / Hours Worked So Far")
+
 
         clrArr.map((each, eachIndex) => {
             explanationArr.push(each);
@@ -1177,9 +1186,11 @@ export function App() {
         }
 
         const getComposite = (each, ratio, clr) => {
+            const alr_f = dropdown == "17:00" ? alr_f_5pm : alr_f_7pm;
+            const clr_f = dropdown == "17:00" ? clr_f_5pm : clr_f_7pm;
+
             const comp = ((alr_f * ratio) + (clr_f * clr)).toFixed(3);
 
-            // explanationArr.push(`CS for ${each.name}: (${alr_f} * ${ratio}) + (${clr_f} * ${clr}) = ${comp}`);
             if (!comp || comp == "NaN") {
                 return 0;
             }
@@ -1189,6 +1200,9 @@ export function App() {
         }
 
         const getCompositeExplanation = (each) => {
+            const alr_f = dropdown == "17:00" ? alr_f_5pm : alr_f_7pm;
+            const clr_f = dropdown == "17:00" ? clr_f_5pm : clr_f_7pm;
+
             const alr = each.alr;
             const clr = each.clr;
 
@@ -1831,9 +1845,9 @@ export function App() {
         }
 
         let fixedDiff = difference;
-        // if (difference > p95) {
-        //     fixedDiff = p95;
-        // }
+        if (difference > p95) {
+            fixedDiff = p95;
+        }
         return Number(1 - (fixedDiff) / p95).toFixed(3);
     }
     const getClr = (each) => {
@@ -1866,6 +1880,9 @@ export function App() {
     }
 
     const getComposite = (each, normalizedAlr, normalizedClr) => {
+        const alr_f = dropdown == "17:00" ? alr_f_5pm : alr_f_7pm;
+        const clr_f = dropdown == "17:00" ? clr_f_5pm : clr_f_7pm;
+
         let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
         if (dropdown == "17:00") {
             Object.entries(CONSTANT_COMPOSITE_5PM).forEach((innerEach, innerEachIndex) => {
@@ -2593,7 +2610,7 @@ export function App() {
 
                         {show4 &&
                             <div>
-                                <div>
+                               {/*<div>
                                     <input
                                         id="compositeScoreCheckbox"
                                         placeholder="Dynamic Composite Score Algorithm"
@@ -2627,40 +2644,69 @@ export function App() {
                                         }}
                                     />
                                     <label for="compositeScoreCheckboxStatic">Static Composite Score Algorithm</label>
-                                </div>
+                                </div>*/}
                                 {show4 && compositeScoreAlgorithmStatic &&
                                     <div>
-                                        <div className="flex"><p className="weightwidth">ALR: </p><input
+                                        {dropdown == "17:00" && <div className="flex"><p className="weightwidth">5PM ALR: </p><input
                                             id="alr"
                                             placeholder="ALR"
                                             className="input-left"
-                                            label="ALR"
+                                            label="5PM ALR"
                                             type="number"
                                             onChange={(e) => {
-                                                setAlr_f(e.target.value);
+                                                setAlr_f_5pm(e.target.value);
                                                 if (Number(e.target.value)) {
-                                                    setClr_f((1 - Number(e.target.value)).toFixed(2));
+                                                    setClr_f_5pm((1 - Number(e.target.value)).toFixed(2));
 
                                                 }
                                             }}
-                                            value={alr_f}
-                                        /></div>
-                                        <div className="flex"><p className="weightwidth">CLR: </p><input
+                                            value={alr_f_5pm}
+                                        /></div>}
+                                        {dropdown == "17:00" && <div className="flex"><p className="weightwidth">5PM CLR: </p><input
                                             id="clr"
-                                            placeholder="CLR"
+                                            placeholder="7PM CLR"
+                                            className="input-left"
+                                            label="5PM CLR"
+                                            type="number"
+                                            onChange={(e) => {
+                                                setClr_f_5pm(e.target.value);
+                                                if (Number(e.target.value)) {
+                                                    setAlr_f_5pm((1 - Number(e.target.value)).toFixed(2));
+                                                }
+                                            }}
+                                            value={clr_f_5pm}
+                                        /></div>}
+                                        {dropdown == "19:00" && <div className="flex"><p className="weightwidth">7PM ALR: </p><input
+                                            id="alr"
+                                            placeholder="ALR"
+                                            className="input-left"
+                                            label="7PM ALR"
+                                            type="number"
+                                            onChange={(e) => {
+                                                setAlr_f_7pm(e.target.value);
+                                                if (Number(e.target.value)) {
+                                                    setClr_f_7pm((1 - Number(e.target.value)).toFixed(2));
+
+                                                }
+                                            }}
+                                            value={alr_f_7pm}
+                                        /></div>}
+                                        {dropdown == "19:00" && <div className="flex"><p className="weightwidth">7PM CLR: </p><input
+                                            id="clr"
+                                            placeholder="7PM CLR"
                                             className="input-left"
                                             label="CLR"
                                             type="number"
                                             onChange={(e) => {
-                                                setClr_f(e.target.value);
+                                                setClr_f_7pm(e.target.value);
                                                 if (Number(e.target.value)) {
-                                                    setAlr_f((1 - Number(e.target.value)).toFixed(2));
+                                                    setAlr_f_7pm((1 - Number(e.target.value)).toFixed(2));
                                                 }
                                             }}
-                                            value={clr_f}
-                                        /></div>
-
+                                            value={clr_f_7pm}
+                                        /></div>}
                                     </div>
+                                    
                                 }
                                 {(compositeScoreAlgorithmDynamic || compositeScoreAlgorithmStatic) && <section>
                                     <button id="generateQueue" onClick={(e) => {

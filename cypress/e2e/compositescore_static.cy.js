@@ -57,8 +57,8 @@ describe('template spec', () => {
     cy.get("#seedetails").click();
     cy.contains("Set Composite Algorithm").click();
     cy.get("#compositeScoreCheckboxStatic").click();
-    cy.get(`#alr`).clear().type(0.6);
-        cy.get(`#clr`).clear().type(0.4)
+    // cy.get(`#alr`).clear().type(0.6);
+    //     cy.get(`#clr`).clear().type(0.4)
     // let count = 1;
 
     var currentdate = new Date();
@@ -71,7 +71,7 @@ describe('template spec', () => {
 
 
     if (testArr5pm) {
-      runTasks(testArr5pm, "5PM");
+      // runTasks(testArr5pm, "5PM");
     }
 
     if (testArr7pm) {

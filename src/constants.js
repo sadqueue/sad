@@ -6,8 +6,8 @@ export const CHRONIC_LOAD_RATIO_THRESHOLD_N5 = 0.87;
 export const NUMBER_OF_ADMISSIONS_CAP = 6;
 export const NUMBER_OF_ADMISSIONS_S4_CAP = 5;
 
-export const P95_7PM = 150;
-export const P95_5PM = 150;
+export const P95_7PM = 135;
+export const P95_5PM = 135;
 
 export const CONSTANT_COMPOSITE_5PM = {
     "N5": 0.40
@@ -71,14 +71,14 @@ export const MINIMIZE_TABLE = [
     ["name", "Role"],
     ["timestamp", "Last Admit Time"],
     ["numberOfAdmissions", "# of Admits"],
-    ["chronicLoadRatio", "Chronic Load Ratio"]
+    ["chronicLoadRatio", "Chronic Load"]
 ];
 
 export const MINIMIZE_TABLE_STATIC_COMPOSITE_MOBILE = [
     ["name", "Role"],
     ["timestamp", "Last Admit Time"],
     ["numberOfAdmissions", "# of Admits"],
-    ["chronicLoadRatio", "Chronic Load Ratio"],
+    ["chronicLoadRatio", "Chronic Load"],
 ];
 
 export const MINIMIZE_TABLE_STATIC_COMPOSITE_WEB = [
