@@ -123,6 +123,24 @@ export function App() {
 
     }, [])
 
+
+    const isXIn2Hours = (each) => {
+        let isXIn2Hours = false;
+
+        if (dropdown == "19:00"){
+            lastSaved5Pm && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+                if (each.name == fivePm.name){
+                    if (fivePm.numberOfAdmissions !== "" && 
+                        (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
+                        isXIn2Hours = true;
+                        return true;
+                    }
+                }
+            });
+        }
+        return isXIn2Hours;
+    }
+
     const sortMainOriginal = (timeObj, dropdownSelected, lastSavedTime = "") => {
         const orderOfAdmissions = [];
         timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
@@ -181,23 +199,6 @@ export function App() {
             explanationArr.push("\n");
             explanationArr.push(`Step 2: De-prioritize Admitters with High Chronic Load (Admits/Hours Worked)`);
 
-            const isXIn2Hours = (each) => {
-                let isXIn2Hours = false;
-
-                if (dropdown == "19:00"){
-                    lastSaved5Pm && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
-                        if (each.name == fivePm.name){
-                            if (fivePm.numberOfAdmissions !== "" && 
-                                (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
-                                isXIn2Hours = true;
-                                return true;
-                            }
-                        }
-                    });
-                }
-                return isXIn2Hours;
-
-            }
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     if ((dropdownSelected == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
@@ -2410,7 +2411,9 @@ export function App() {
                                                                 disabled={admission.isStatic}
                                                             />
                                                         </td>
-                                                        <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
+                                                       
+                                                        <td className="usercanedit cell-with-number" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
+                                                            {/* <span className="small-number">{isXIn2Hours(admission) ? "2+" : ""}</span> */}
                                                             <input
                                                                 id={`numberOfAdmissions_${index}`}
                                                                 name="numberOfAdmissions"

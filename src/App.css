@@ -25,6 +25,25 @@
 }
 
 
+.cell-with-number {
+  position: relative;
+  padding-right: 30px; /* Adjust padding to make space for the small number */
+}
+
+.small-number {
+  position: absolute;
+  top: 5px; /* Adjust to place the small number at the top */
+  right: 5px; /* Adjust to position it in the upper right corner */
+  font-size: 12px; /* Adjust size of the small number */
+  border-radius: 50%; /* Make it round */
+  padding: 4px; /* Padding around the small number */
+}
+
+.main-number {
+  /* font-size: 18px; 
+  font-weight: bold;  */
+}
+
 body {
   box-sizing: border-box;
   color: black !important;
