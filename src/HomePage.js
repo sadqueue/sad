@@ -82,6 +82,8 @@ export function App() {
     const [show4, setShow4] = useState(false);
     const [alrWeight, setAlrWeight] = useState("");
     const [clrWeight, setClrWeight] = useState("");
+    const [lastSaved5Pm, setLastSaved5Pm] = useState({})
+    
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         let localDateTime = "";
@@ -109,6 +111,15 @@ export function App() {
             setLoading(false);
         };
         fetchRecentTransaction();
+
+        const fetchRecent5PMTransaction = async () => {
+            const result = await getMostRecentTransaction("17:00");
+
+            if (result.success) {
+                setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts)
+            }
+        }
+        fetchRecent5PMTransaction();
 
     }, [])
 
@@ -170,10 +181,28 @@ export function App() {
             explanationArr.push("\n");
             explanationArr.push(`Step 2: De-prioritize Admitters with High Chronic Load (Admits/Hours Worked)`);
 
+            const isXIn2Hours = (each) => {
+                let isXIn2Hours = false;
+
+                if (dropdown == "19:00"){
+                    lastSaved5Pm && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+                        if (each.name == fivePm.name){
+                            if (fivePm.numberOfAdmissions !== "" && 
+                                (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
+                                isXIn2Hours = true;
+                                return true;
+                            }
+                        }
+                    });
+                }
+                return isXIn2Hours;
+
+            }
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     if ((dropdownSelected == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
-                        (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
+                        (Number(each.chronicLoadRatio) > CHRONIC_LOAD_RATIO_THRESHOLD) ||
+                        (isXIn2Hours(each))) {
                         // explanationArr.push(getFormattedOutput(each));
                         explanationArr.push(`${each.name}: (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`)
 
@@ -2213,6 +2242,10 @@ export function App() {
                 setLastSaved(result.transaction.localDateTime);
                 setAllAdmissionsDataShifts(allAdmissionsDataShifts);
                 setDropdown(dropdown);
+
+                if (dropdown == "17:00"){
+                    setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts);
+                }
             } else {
                 //   setError(result.message || "Failed to fetch the most recent transaction.");
             }
