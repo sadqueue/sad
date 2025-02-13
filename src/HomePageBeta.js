@@ -140,6 +140,22 @@ export function App() {
         }
         return isXIn2Hours;
     }
+    const getXIn2Hours = (each) => {
+        let isXIn2Hours = "";
+
+        if (dropdown == "19:00"){
+            lastSaved5Pm && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+                if (each.name == fivePm.name){
+                    if (fivePm.numberOfAdmissions !== "" && 
+                        (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
+                        isXIn2Hours = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions);
+                        return true;
+                    }
+                }
+            });
+        }
+        return isXIn2Hours;
+    }
 
     const sortMainOriginal = (timeObj, dropdownSelected, lastSavedTime = "") => {
         const orderOfAdmissions = [];
@@ -2413,7 +2429,7 @@ export function App() {
                                                         </td>
                                                        
                                                         <td className="usercanedit cell-with-number" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
-                                                            <span className="small-number">{isXIn2Hours(admission) ? "2+" : ""}</span>
+                                                            <span className="small-number">{getXIn2Hours(admission)}</span>
                                                             <input
                                                                 id={`numberOfAdmissions_${index}`}
                                                                 name="numberOfAdmissions"
