@@ -42,7 +42,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "cy:open": "cypress open",
-    "run-cypress": "cypress run --headless --spec cypress/e2e/spec.cy.js"
+    "run-cypress": "cypress run --headless --spec cypress/e2e/spec.cy.js",
+    "run-cypress-composite": "cypress run --headless --spec cypress/e2e/compositescore_static.cy.js"
   },
   "eslintConfig": {
     "extends": [

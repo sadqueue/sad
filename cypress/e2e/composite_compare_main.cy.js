@@ -28,21 +28,39 @@ const runTasks = (testArr, time) => {
         cy.get("#generateQueue").click();
 
         cy.get('#orderofadmissions_output')
-          .then(($el) => {
-              const removeParanthesis = $el.text().replace(/ *\([^)]*\) */g, "");
+          .then(($el_main) => {
+            const originalMain = $el_main.text();
+            const removeParanthesis_main = $el_main.text().replace(/ *\([^)]*\) */g, "").trim();
+            cy.get("#compositeScoreCheckboxStatic").click();
 
-            const generatedFromAutomation = $el.text() && $el.text().replace(/\(.*?\)/g, "").trim();
+            cy.get("#generateQueue").click();
+            cy.get('#orderofadmissions_output')
+            .then(($el) => {
+                const removeParanthesis_composite = $el.text().replace(/ *\([^)]*\) */g, "").trim();
 
-            if (generatedFromAutomation && generatedFromAutomation == output.trim()) {
-            } else {
-              cy.task('logToFile', `[ ${count} ] ${time} ${testArr[i][1]} -- NO MATCH`);
-              cy.task('logToFile', `Data:       ${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}`);
-              cy.task('logToFile', `Manny:      ${output}`);
-              cy.task('logToFile', `CS_Algo:    ${removeParanthesis}`);
-              cy.task('logToFile', `Explained:  ${$el.text()}`);
-              cy.task('logToFile', `\n----------------------------------\n`);
-              count++;
-            }
+                // Data:			16:55,16:46,16:38,16:36;7,5,4,3
+                // Manny			N5>S2>S4>S3>S1
+                // Main Algo:		N5>S4>S3>S2>S1
+                // Comp Algo:		N5>S2>S4>S3>S1
+                // Main Algo Exp:	N5(0.00)>S4(1.00)>S3(1.00)>S2(0.83)>S1(1.00)
+                // Comp Algo Exp:	N5(0.333,0.000,0.350)>S2(0.896,0.833,0.873)>S4(0.822,1.000,0.888)>S3(0.837,1.000,0.897)>S1(0.963,1.000,0.977)
+                if (removeParanthesis_main !== removeParanthesis_composite){
+                    cy.task('logToFile', `[ ${count} ] ${time} ${testArr[i][1]} -- NO MATCH
+Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
+Manny:			${output}
+Main Algo:		${removeParanthesis_main}
+Comp Algo:		${removeParanthesis_composite}
+Main Algo Exp:	${originalMain}
+Comp Algo Exp:	${$el.text()}
+----------------------------------\n`);
+                   
+                    count++;
+                } else {
+                   
+                }
+                cy.get("#compositeScoreCheckboxStatic").click();
+            });
+            
           });
       } else {
       }
@@ -57,10 +75,6 @@ describe('template spec', () => {
     cy.visit(url);
     cy.get("#seedetails").click();
     cy.contains("Set Composite Algorithm").click();
-    // cy.get("#compositeScoreCheckboxStatic").click();
-    // cy.get(`#alr`).clear().type(0.6);
-    //     cy.get(`#clr`).clear().type(0.4)
-    // let count = 1;
 
     var currentdate = new Date();
     var datetime = "Last Sync: " + currentdate.getDate() + "/"
@@ -72,11 +86,11 @@ describe('template spec', () => {
 
 
     if (testArr5pm) {
-      runTasks(testArr5pm, "5PM");
+    //   runTasks(testArr5pm, "5PM");
     }
 
     if (testArr7pm) {
-      // runTasks(testArr7pm, "7PM")
+      runTasks(testArr7pm, "7PM")
     }
 
   });

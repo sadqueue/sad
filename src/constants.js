@@ -9,15 +9,21 @@ export const NUMBER_OF_ADMISSIONS_S4_CAP = 5;
 export const P95_7PM = 135;
 export const P95_5PM = 135;
 
+// 5pm: Change N5 insertion threshold from 0.4 to 0.35
+// 7pm: Change N1 insertion threshold from 0.4 to 0.35
+// change N2 insertion threshold from 0.50 to 0.416667
+// Change N3 insertion threshold from 0.6 to 0.483333 
+// change N4 insertion threshold from 0.70 to 0.5555
+
 export const CONSTANT_COMPOSITE_5PM = {
-    "N5": 0.40
+    "N5": 0.35
 };
 
 export const CONSTANT_COMPOSITE_7PM = {
-    "N1": 0.40,
-    "N2": 0.50,
-    "N3": 0.60,
-    "N4": 0.70
+    "N1": 0.35,
+    "N2": 0.416667,
+    "N3": 0.483333,
+    "N4": 0.5555
 };
 
 export const TIME_FORMAT = "h:mmA"; //hh:mm for non military
@@ -105,6 +111,11 @@ export const START_TIMES = [
     // { value: "CUSTOM", label: "Custom " }
 ];
 
+// N1 5:30
+// N2 5:55
+// N3 6:20
+// N4 6:45
+
 export const SHIFT_TYPES = [
     {
         admissionsId: "1",
@@ -172,6 +183,10 @@ export const SHIFT_TYPES = [
         shiftTimePeriod: "5PM-5AM",
         timestampDefault: "15:30"
     },
+    //1 5:30
+    // N2 5:55
+    // N3 6:20
+    // N4 6:45
     {
         admissionsId: "7",
         name: "N1",
@@ -192,7 +207,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        timestampDefault: "18:00"
+        timestampDefault: "17:55"
     },
     {
         admissionsId: "9",
@@ -203,7 +218,7 @@ export const SHIFT_TYPES = [
         startWithThreshold: "17:30",
         endWithThreshold: "05:30",
         shiftTimePeriod: "7PM-7AM",
-        timestampDefault: "18:30"
+        timestampDefault: "18:20"
     },
     {
         admissionsId: "10",

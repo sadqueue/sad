@@ -433,10 +433,18 @@ export function App() {
             shiftsCombined.map((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     if (dropdown == "17:00") {
-                        orderOfAdmissions.push(each.name);
+                        if (window.location.hostname === 'localhost') {
+                            orderOfAdmissions.push(`${each.name}(${each.chronicLoadRatio})`);
+                        } else {
+                            orderOfAdmissions.push(each.name);
+                        }
                     } else if (dropdown == "19:00") {
                         if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
-                            orderOfAdmissions.push(each.name);
+                            if (window.location.hostname === 'localhost') {
+                                orderOfAdmissions.push(`${each.name}(${each.chronicLoadRatio})`);
+                            } else {
+                                orderOfAdmissions.push(each.name);
+                            }
                         }
                     }
 

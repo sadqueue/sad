@@ -5,7 +5,7 @@ import './AnalyticsPage.css';
 
 const AnalyticsPage = () => {
   const data = useMemo(() => {
-    return testArr7pm.map((entry) => {
+    return testArr7pm && testArr7pm.map((entry) => {
       const split = entry[0].split(";");
       const timestamps = split[0].split(",");
       const admissions = split[1].split(",");
@@ -67,9 +67,9 @@ const AnalyticsPage = () => {
         <h3>7PM Admissions Analytics</h3>
         <table {...getTableProps()} className="analyticstable">
           <thead className="analyticsthead">
-            {headerGroups.map((headerGroup) => (
+            {headerGroups && headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()} className="analyticstr">
-                {headerGroup.headers.map((column) => (
+                {headerGroup.headers && headerGroup.headers.map((column) => (
                   <th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     className="analyticsth"
@@ -82,11 +82,11 @@ const AnalyticsPage = () => {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
+            {rows && rows.map((row) => {
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()} className="analyticsth">
-                  {row.cells.map((cell) => (
+                  {row.cells && row.cells.map((cell) => (
                     <td {...cell.getCellProps()} className="analyticstd">
                       {cell.render("Cell")}
                     </td>
