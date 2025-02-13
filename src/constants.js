@@ -6,24 +6,23 @@ export const CHRONIC_LOAD_RATIO_THRESHOLD_N5 = 0.87;
 export const NUMBER_OF_ADMISSIONS_CAP = 6;
 export const NUMBER_OF_ADMISSIONS_S4_CAP = 5;
 
-export const P95_7PM = 135;
-export const P95_5PM = 135;
+export const ALR_5PM = 0.7;
+export const CLR_5PM = 0.3;
+export const ALR_7PM = 0.7;
+export const CLR_7PM = 0.3;
 
-// 5pm: Change N5 insertion threshold from 0.4 to 0.35
-// 7pm: Change N1 insertion threshold from 0.4 to 0.35
-// change N2 insertion threshold from 0.50 to 0.416667
-// Change N3 insertion threshold from 0.6 to 0.483333 
-// change N4 insertion threshold from 0.70 to 0.5555
+export const P95_7PM = 180;
+export const P95_5PM = 180;
 
 export const CONSTANT_COMPOSITE_5PM = {
-    "N5": 0.35
+    "N5": 0.47
 };
 
 export const CONSTANT_COMPOSITE_7PM = {
-    "N1": 0.35,
-    "N2": 0.416667,
-    "N3": 0.483333,
-    "N4": 0.5555
+    "N1": 0.45,
+    "N2": 0.5,
+    "N3": 0.55,
+    "N4": 0.6
 };
 
 export const TIME_FORMAT = "h:mmA"; //hh:mm for non military

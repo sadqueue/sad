@@ -33,12 +33,12 @@ const runTasks = (testArr, time) => {
           if (generatedFromAutomation && generatedFromAutomation == output.trim()) {
             
           } else {
-            cy.task('logToFile',`[${count}]   ${time == "17:00" ? "5PM" : "7PM"} ${testArr[i][1]} -- NO MATCH`);
-            cy.task('logToFile',`Data:        ${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}`);
-            cy.task('logToFile',`Manny:       ${output}`);
-            cy.task('logToFile',`From UI:     ${removeParanthesis}`);
-            cy.task('logToFile',`Explained:   ${$el.text()}`);
-            cy.task('logToFile', `\n----------------------------------\n`);
+            cy.task('logToFile',`[${count}]   ${time == "17:00" ? "5PM" : "7PM"} ${testArr[i][1]} -- NO MATCH\n
+              Data:        ${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}\n
+              Manny:       ${output}\n
+              From UI:     ${removeParanthesis}\n
+              Explained:   ${$el.text()}\n
+              ----------------------------------\n`);
 
             count++;
 
