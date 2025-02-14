@@ -37,15 +37,18 @@ const runTasks = (testArr, time) => {
                     cy.get("#generateQueue").click();
                     cy.get('#orderofadmissions_output')
                         .then(($el_7and3) => {
-                            const removeParanthesis_composite_7and3 = $el_7and3.text().replace(/ *\([^)]*\) */g, "").trim();
+                            const composite_7and3 = $el_7and3.text();
 
+                            const removeParanthesis_composite_7and3 = $el_7and3.text().replace(/ *\([^)]*\) */g, "").trim();
                             cy.get(`#alr`).clear().type(0.6);
                             cy.get(`#clr`).clear().type(0.4)
                             cy.get("#generateQueue").click();
                             cy.get('#orderofadmissions_output')
                                 .then(($el_6and4) => {
-                                    const removeParanthesis_composite_6and4 = $el_6and4.text().replace(/ *\([^)]*\) */g, "").trim();
+                                    const composite_6and4 = $el_6and4.text();
 
+                                    const removeParanthesis_composite_6and4 = $el_6and4.text().replace(/ *\([^)]*\) */g, "").trim();
+                                    
                                     if (removeParanthesis_main !== removeParanthesis_composite_7and3) {
                                         cy.task('logToFile', `[ ${count} ] ${time} ${testArr[i][1]} -- !!!! NO MATCH !!!!!
 Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
@@ -54,8 +57,8 @@ Main Algo:		${removeParanthesis_main}
 Algo(0.7/0.3):  ${removeParanthesis_composite_7and3}
 Algo(0.6/0.4):  ${removeParanthesis_composite_6and4}
 Main Algo:  	${originalMain}
-Algo(0.7/0.3): 	${$el_7and3.text()}
-Algo(0.6/0.4): 	${$el_6and4.text()}
+Algo(0.7/0.3): 	${composite_7and3}
+Algo(0.6/0.4): 	${composite_6and4}
 ----------------------------------\n`);
 
                                         count++;
@@ -68,8 +71,8 @@ Main Algo:		${removeParanthesis_main}
 Algo(0.7/0.3):  ${removeParanthesis_composite_7and3}
 Algo(0.6/0.4):  ${removeParanthesis_composite_6and4}
 Main Algo:  	${originalMain}
-Algo(0.7/0.3): 	${$el_7and3.text()}
-Algo(0.6/0.4): 	${$el_6and4.text()}
+Algo(0.7/0.3): 	${composite_7and3}
+Algo(0.6/0.4): 	${composite_6and4}
 ----------------------------------\n`);
                                     }
                                 });
@@ -101,7 +104,7 @@ describe('template spec', () => {
 
 
         if (testArr5pm) {
-            //   runTasks(testArr5pm, "5PM");
+              runTasks(testArr5pm, "5PM");
         }
 
         if (testArr7pm) {

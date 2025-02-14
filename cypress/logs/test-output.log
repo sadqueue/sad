@@ -1,782 +1,1707 @@
- v###### Order of Admissions by original algorithm Last Sync: 2/13/2025 @ 13:7
-[1]   5PM 2/08/2025…weird ordering -- NO MATCH
-
-              Data:        16:51,16:25,15:45,15:50;5,4,3,3
-
-              Manny:       N5>S3>S4>S2>S1
-
-              From UI:     N5>S2>S3>S4>S1
-
-              Explained:   N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
-
-              ----------------------------------
-
-[2]   5PM 2/06/2025 COMP -- NO MATCH
-
-              Data:        16:55,16:46,16:38,16:36;7,5,4,3
-
-              Manny:       N5>S2>S4>S3>S1
-
-              From UI:     N5>S4>S3>S2>S1
-
-              Explained:   N5(0.00)>S4(1.00)>S3(1.00)>S2(0.83)>S1(1.00)
-
-              ----------------------------------
-
-[3]   5PM 2/05/2025 -- NO MATCH
-
-              Data:        16:52,16:19,16:54,16:45;4,3,3,2
-
-              Manny:       N5>S2>S1>S4>S3
-
-              From UI:     N5>S2>S4>S1>S3
-
-              Explained:   N5(0.00)>S2(0.50)>S4(0.67)>S1(0.57)>S3(0.75)
-
-              ----------------------------------
-
-[4]   5PM 2/04/2025 COMP  -- NO MATCH
-
-              Data:        15:54,16:45,16:00,16:42;5,5,2,3
-
-              Manny:       N5>S3>S1>S2>S4
-
-              From UI:     N5>S3>S1>S4>S2
-
-              Explained:   N5(0.00)>S3(0.50)>S1(0.71)>S4(1.00)>S2(0.83)
-
-              ----------------------------------
-
-[5]   5PM 2/02/2025 COMP 0.6/0.4 -- NO MATCH
-
-              Data:        16:20,16:25,15:25,14:40;4,4,2,1
-
-              Manny:       S4>S3>N5>S1>S2
-
-              From UI:     S4>S3>N5>S2>S1
-
-              Explained:   S4(0.33)>S3(0.50)>N5(0.00)>S2(0.67)>S1(0.57)
-
-              ----------------------------------
-
-[6]   5PM 1/31/2025 -- NO MATCH
-
-              Data:        16:10,16:26,16:28,16:25;5,5,4,3
-
-              Manny:       N5>S1>S2>S4>S3
-
-              From UI:     N5>S1>S4>S2>S3
-
-              Explained:   N5(0.00)>S1(0.71)>S4(1.00)>S2(0.83)>S3(1.00)
-
-              ----------------------------------
-
-[7]   5PM 1/30/2025 -- NO MATCH
-
-              Data:        16:35,15:50,16:00,16:25;5,4,3,3
-
-              Manny:       N5>S2>S3>S1>S4
-
-              From UI:     N5>S2>S3>S4>S1
-
-              Explained:   N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
-
-              ----------------------------------
-
-[8]   5PM 1/28/2025 -- NO MATCH
-
-              Data:        16:32,16:37,16:22,16:11;5,5,4,3
-
-              Manny:       N5>S1>S4>S2>S3
-
-              From UI:     N5>S4>S3>S1>S2
-
-              Explained:   N5(0.00)>S4(1.00)>S3(1.00)>S1(0.71)>S2(0.83)
-
-              ----------------------------------
-
-[9]   5PM 1/25/2025 COMP -- NO MATCH
-
-              Data:        16:35,16:55,16:15,16:50;3,3,2,2
-
-              Manny:       N5>S3>S1>S2>S4
-
-              From UI:     N5>S3>S1>S4>S2
-
-              Explained:   N5(0.00)>S3(0.50)>S1(0.43)>S4(0.67)>S2(0.50)
-
-              ----------------------------------
-
-###### Order of Admissions by original algorithm Last Sync: 2/13/2025 @ 13:11
-[1]   5PM 2/08/2025…weird ordering -- NO MATCH
-
-              Data:        16:51,16:25,15:45,15:50;5,4,3,3
-
-              Manny:       N5>S3>S4>S2>S1
-
-              From UI:     N5>S2>S3>S4>S1
-
-              Explained:   N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
-
-              ----------------------------------
-
-[2]   5PM 2/06/2025 COMP -- NO MATCH
-
-              Data:        16:55,16:46,16:38,16:36;7,5,4,3
-
-              Manny:       N5>S2>S4>S3>S1
-
-              From UI:     N5>S4>S3>S2>S1
-
-              Explained:   N5(0.00)>S4(1.00)>S3(1.00)>S2(0.83)>S1(1.00)
-
-              ----------------------------------
-
-[3]   5PM 2/05/2025 -- NO MATCH
-
-              Data:        16:52,16:19,16:54,16:45;4,3,3,2
-
-              Manny:       N5>S2>S1>S4>S3
-
-              From UI:     N5>S2>S4>S1>S3
-
-              Explained:   N5(0.00)>S2(0.50)>S4(0.67)>S1(0.57)>S3(0.75)
-
-              ----------------------------------
-
-[4]   5PM 2/04/2025 COMP  -- NO MATCH
-
-              Data:        15:54,16:45,16:00,16:42;5,5,2,3
-
-              Manny:       N5>S3>S1>S2>S4
-
-              From UI:     N5>S3>S1>S4>S2
-
-              Explained:   N5(0.00)>S3(0.50)>S1(0.71)>S4(1.00)>S2(0.83)
-
-              ----------------------------------
-
-[5]   5PM 1/31/2025 -- NO MATCH
-
-              Data:        16:10,16:26,16:28,16:25;5,5,4,3
-
-              Manny:       N5>S1>S2>S4>S3
-
-              From UI:     N5>S1>S4>S2>S3
-
-              Explained:   N5(0.00)>S1(0.71)>S4(1.00)>S2(0.83)>S3(1.00)
-
-              ----------------------------------
-
-[6]   5PM 1/30/2025 -- NO MATCH
-
-              Data:        16:35,15:50,16:00,16:25;5,4,3,3
-
-              Manny:       N5>S2>S3>S1>S4
-
-              From UI:     N5>S2>S3>S4>S1
-
-              Explained:   N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
-
-              ----------------------------------
-
-[7]   5PM 1/28/2025 -- NO MATCH
-
-              Data:        16:32,16:37,16:22,16:11;5,5,4,3
-
-              Manny:       N5>S1>S4>S2>S3
-
-              From UI:     N5>S4>S3>S1>S2
-
-              Explained:   N5(0.00)>S4(1.00)>S3(1.00)>S1(0.71)>S2(0.83)
-
-              ----------------------------------
-
-[8]   5PM 1/25/2025 COMP -- NO MATCH
-
-              Data:        16:35,16:55,16:15,16:50;3,3,2,2
-
-              Manny:       N5>S3>S1>S2>S4
-
-              From UI:     N5>S3>S1>S4>S2
-
-              Explained:   N5(0.00)>S3(0.50)>S1(0.43)>S4(0.67)>S2(0.50)
-
-              ----------------------------------
-
-[9]   5PM 12/09/2024 COMP -- NO MATCH
-
-              Data:        16:36,16:16,16:19,16:31;5,4,3,3
-
-              Manny:       N5>S2>S3>S1>S4
-
-              From UI:     N5>S2>S3>S4>S1
-
-              Explained:   N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
-
-              ----------------------------------
-
-[10]   5PM 12/16/2024 -- NO MATCH
-
-              Data:        17:18,16:45,16:07,17:17;5,5,3,3
-
-              Manny:       N5>S3>S2>S1>S4
-
-              From UI:     N5>S3>S2>S4>S1
-
-              Explained:   N5(0.00)>S3(0.75)>S2(0.83)>S4(1.00)>S1(0.71)
-
-              ----------------------------------
-
-[11]   5PM 12/22/2024 -- NO MATCH
-
-              Data:        14:40,15:30,16:30,16:45;4,3,3,2
-
-              Manny:       S1>N5>S2>S3>S4
-
-              From UI:     S1>N5>S2>S4>S3
-
-              Explained:   S1(0.57)>N5(0.00)>S2(0.50)>S4(0.67)>S3(0.75)
-
-              ----------------------------------
-
-[12]   5PM 12/23/2024 -- NO MATCH
-
-              Data:        16:30,16:40,16:45,15:55;5,4,3,2
-
-              Manny:       N5>S4>S1>S2>S3
-
-              From UI:     N5>S4>S2>S1>S3
-
-              Explained:   N5(0.00)>S4(0.67)>S2(0.67)>S1(0.71)>S3(0.75)
-
-              ----------------------------------
-
-[13]   5PM 12/24/2024 -- NO MATCH
-
-              Data:        16:00,15:15,16:08,16:33;5,4,4,4
-
-              Manny:       N5>S2>S1>S3>S4
-
-              From UI:     S2>N5>S1>S3>S4
-
-              Explained:   S2(0.67)>N5(0.00)>S1(0.71)>S3(1.00)>S4(1.33)
-
-              ----------------------------------
-
-[14]   5PM 12/28/2024 -- NO MATCH
-
-              Data:        16:16,15:30,15:45,16:20;4,3,2,2
-
-              Manny:       S2>N5>S3>S1>S4
-
-              From UI:     N5>S2>S3>S1>S4
-
-              Explained:   N5(0.00)>S2(0.50)>S3(0.50)>S1(0.57)>S4(0.67)
-
-              ----------------------------------
-
-[15]   5PM 12/29/2024 -- NO MATCH
-
-              Data:        14:30,15:24,15:55,16:27;4,3,3,2
-
-              Manny:       S1>S2>N5>S3>S4
-
-              From UI:     S1>S2>N5>S4>S3
-
-              Explained:   S1(0.57)>S2(0.50)>N5(0.00)>S4(0.67)>S3(0.75)
-
-              ----------------------------------
-
-[16]   5PM 1/2/2025 COMP -- NO MATCH
-
-              Data:        16:35,15:20,15:30,15:30;4,2,2,2
-
-              Manny:       S2>S3>N5>S4>S1
-
-              From UI:     S2>N5>S3>S4>S1
-
-              Explained:   S2(0.33)>N5(0.00)>S3(0.50)>S4(0.67)>S1(0.57)
-
-              ----------------------------------
-
-[17]   5PM 1/4/2025 -- NO MATCH
-
-              Data:        15:50,16:20,16:45,16:20;4,4,3,2
-
-              Manny:       N5>S1>S2>S4>S3
-
-              From UI:     N5>S1>S4>S2>S3
-
-              Explained:   N5(0.00)>S1(0.57)>S4(0.67)>S2(0.67)>S3(0.75)
-
-              ----------------------------------
-
-[18]   5PM 1/5/2025 -- NO MATCH
-
-              Data:        15:00,16:20,16:45,16:20;4,4,3,2
-
-              Manny:       S1>N5>S2>S4>S3
-
-              From UI:     S1>N5>S4>S2>S3
-
-              Explained:   S1(0.57)>N5(0.00)>S4(0.67)>S2(0.67)>S3(0.75)
-
-              ----------------------------------
-
-[19]   5PM 1/6/2025 COMP -- NO MATCH
-
-              Data:        16:05,16:45,14:40,15:30;5,4,2,2
-
-              Manny:       S3>N5>S4>S1>S2
-
-              From UI:     S3>N5>S4>S2>S1
-
-              Explained:   S3(0.50)>N5(0.00)>S4(0.67)>S2(0.67)>S1(0.71)
-
-              ----------------------------------
-
-[20]   5PM 1/7/2025 -- NO MATCH
-
-              Data:        14:42,15:09,16:29,16:00;5,3,4,3
-
-              Manny:       S1>S2>N5>S4>S3
-
-              From UI:     S2>N5>S1>S4>S3
-
-              Explained:   S2(0.50)>N5(0.00)>S1(0.71)>S4(1.00)>S3(1.00)
-
-              ----------------------------------
-
-[21]   5PM 1/8/2025 -- NO MATCH
-
-              Data:        16:57,16:00,15:46,16:45;5,5,3,3
-
-              Manny:       N5>S3>S2>S1>S4
-
-              From UI:     N5>S3>S2>S4>S1
-
-              Explained:   N5(0.00)>S3(0.75)>S2(0.83)>S4(1.00)>S1(0.71)
-
-              ----------------------------------
-
-[22]   5PM 1/9/2025 -- NO MATCH
-
-              Data:        16:05,16:10,16:35,16:45;5,4,3,3
-
-              Manny:       N5>S1>S2>S3>S4
-
-              From UI:     N5>S2>S1>S3>S4
-
-              Explained:   N5(0.00)>S2(0.67)>S1(0.71)>S3(0.75)>S4(1.00)
-
-              ----------------------------------
-
-[23]   5PM 1/10/2025 -- NO MATCH
-
-              Data:        16:35,16:05,16:10,16:30;4,3,2,2
-
-              Manny:       N5>S2>S3>S1>S4
-
-              From UI:     N5>S2>S3>S4>S1
-
-              Explained:   N5(0.00)>S2(0.50)>S3(0.50)>S4(0.67)>S1(0.57)
-
-              ----------------------------------
-
-[24]   5PM 1/11/2025 STRANGE ONE COMP -- NO MATCH
-
-              Data:        16:40,16:35,14:55,15:20;5,4,3,2
-
-              Manny:       S3>N5>S4>S2>S1
-
-              From UI:     S4>N5>S2>S3>S1
-
-              Explained:   S4(0.67)>N5(0.00)>S2(0.67)>S3(0.75)>S1(0.71)
-
-              ----------------------------------
-
-[25]   5PM 1/15/2025 need to fix ties -- NO MATCH
-
-              Data:        16:57,15:35,16:05,15:35;5,4,3,2
-
-              Manny:       N5>S2>S4>S3>S1
-
-              From UI:     N5>S4>S2>S3>S1
-
-              Explained:   N5(0.00)>S4(0.67)>S2(0.67)>S3(0.75)>S1(0.71)
-
-              ----------------------------------
-
-[26]   5PM 1/20/2025 -- NO MATCH
-
-              Data:        16:21,13:40,14:52,16:18;4,2,2,2
-
-              Manny:        S2>S3>N5>S1>S4
-
-              From UI:     S2>S3>N5>S4>S1
-
-              Explained:   S2(0.33)>S3(0.50)>N5(0.00)>S4(0.67)>S1(0.57)
-
-              ----------------------------------
-
-[27]   5PM 1/21/2025 -- NO MATCH
-
-              Data:        16:37,16:14,15:40,16:24;5,4,3,3
-
-              Manny:        N5>S3>S2>S1>S4
-
-              From UI:     N5>S2>S3>S4>S1
-
-              Explained:   N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
-
-              ----------------------------------
-
-[28]   5PM 1/22/2025 -- NO MATCH
-
-              Data:        14:41,15:40,16:32,16:42;2,2,2,2
-
-              Manny:       S1>S2>N5> S3>S4
-
-              From UI:     S1>N5>S2>S3>S4
-
-              Explained:   S1(0.29)>N5(0.00)>S2(0.33)>S3(0.50)>S4(0.67)
-
-              ----------------------------------
-
-[1]   7PM 2/10/2025 COMP 0.6/0.4 -- NO MATCH
-
-              Data:        18:52,17:10,17:35,19:02;4,3,2,2
-
-              Manny:        S3>S4>N1>N2>N3>N4>S2>N5
-
-              From UI:     S3>N1>S4>N2>N3>N4>S2>N5
-
-              Explained:   S3(0.50)>N1(0.00)>S4(0.40)>N2(0.00)>N3(0.00)>N4(0.00)>S2(0.50)>N5(1.00)
-
-              ----------------------------------
-
-[2]   7PM 2/9/2025 COMP 0.6/0.4 -- NO MATCH
-
-              Data:        18:14,18:40,18:20,18:14;5,4,3,1
-
-              Manny:       N1>N2>N5>N3>S2>S4>N4>S3
-
-              From UI:     N1>N2>N5>S2>N3>S4>S3>N4
-
-              Explained:   N1(0.00)>N2(0.00)>N5(0.50)>S2(0.63)>N3(0.00)>S4(0.60)>S3(0.67)>N4(0.00)
-
-              ----------------------------------
-
-[3]   7PM 2/8/2025 COMP -- NO MATCH
-
-              Data:        18:14,15:45,15:50,18:14;5,3,3,1
-
-              Manny:       S3>S4>N1>N2>N5>N3>S2>N4
-
-              From UI:     S3>S4>N1>N2>N5>S2>N3>N4
-
-              Explained:   S3(0.50)>S4(0.60)>N1(0.00)>N2(0.00)>N5(0.50)>S2(0.63)>N3(0.00)>N4(0.00)
-
-              ----------------------------------
-
-[4]   7PM 2/4/2025 COMP -- NO MATCH
-
-              Data:        15:54,18:25,16:42,17:00;5,3,3,1
-
-              Manny:       S4>S2>N5>N1>N2>N3>S3>N4
-
-              From UI:     S2>S4>N5>N1>N2>N3>S3>N4
-
-              Explained:   S2(0.63)>S4(0.60)>N5(0.50)>N1(0.00)>N2(0.00)>N3(0.00)>S3(0.50)>N4(0.00)
-
-              ----------------------------------
-
-[5]   7PM 2/3/2025 -- NO MATCH
-
-              Data:        18:02,18:46,18:06,17:55;5,5,4,2
-
-              Manny:       N1>N2>S2>N3>N4>S4>N5>S3
-
-              From UI:     N1>N2>S2>N3>N4>N5>S4>S3
-
-              Explained:   N1(0.00)>N2(0.00)>S2(0.63)>N3(0.00)>N4(0.00)>N5(1.00)>S4(0.80)>S3(0.83)
-
-              ----------------------------------
-
-[6]   7PM 2/2/2025 -- NO MATCH
-
-              Data:        18:23,17:11,18:50,17:30;4,3,3,1
-
-              Manny:       S3>N5>N1>N2>N3>S2>N4>S4
-
-              From UI:     S3>N1>N5>N2>N3>S2>N4>S4
-
-              Explained:   S3(0.50)>N1(0.00)>N5(0.50)>N2(0.00)>N3(0.00)>S2(0.50)>N4(0.00)>S4(0.60)
-
-              ----------------------------------
-
-[7]   7PM 1/31/2025 -- NO MATCH
-
-              Data:        17:30,18:30,18:06,17:00;6,5,4,1
-
-              Manny:       N5>N1>N2>S2>N3>S4>N4>S3
-
-              From UI:     N5>N1>N2>N3>N4>S2>S4>S3
-
-              Explained:   N5(0.50)>N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>S2(0.75)>S4(0.80)>S3(0.83)
-
-              ----------------------------------
-
-[8]   7PM 1/30/2025 -- NO MATCH
-
-              Data:        18:34,18:42,18:18,18:34;6,5,4,2
-
-              Manny:       N1>N2>N3>N4>S4>S2>S3>N5
-
-              From UI:     N1>N2>N3>N4>S4>S2>N5>S3
-
-              Explained:   N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>S4(0.80)>S2(0.75)>N5(1.00)>S3(0.83)
-
-              ----------------------------------
-
-[9]   7PM 1/28/2025 -- NO MATCH
-
-              Data:        18:26,18:41,18:33,18:37;7,7,6,3
-
-              Manny:       N1>N2>N3>N4> N1>N2>N3>N4>S4>N5
-
-              From UI:     N1>N2>N3>N4>N1>N2>N3>N4>S4>N5
-
-              Explained:   N1>N2>N3>N4>N1>N2>N3>N4>S4>N5
-
-              ----------------------------------
-
-[10]   7PM 1/27/2025 -- NO MATCH
-
-              Data:        17:38,16:34,18:47,18:24;4,4,4,2
-
-              Manny:       N1>S2>N2>N3>S3>N4>N5>S4
-
-              From UI:     S3>N1>S2>N2>N3>N4>N5>S4
-
-              Explained:   S3(0.67)>N1(0.00)>S2(0.50)>N2(0.00)>N3(0.00)>N4(0.00)>N5(1.00)>S4(0.80)
-
-              ----------------------------------
-
-[11]   7PM Test case S2=5 -- NO MATCH
-
-              Data:        17:38,16:55,18:28,18:00;5,5,6,2
-
-              Manny:       N1>S2>N2>N3>N4>S3>N5>N1>S2>N2>N3>N4>S4>S3>N5
-
-              From UI:     N1>S2>N2>N3>N4>S3>N5>N1>S2>N2>N3>N4>S3>N5>S4
-
-              Explained:   N1>S2>N2>N3>N4>S3>N5>N1>S2>N2>N3>N4>S3>N5>S4
-
-              ----------------------------------
-
-[12]   7PM 1/26/2025 COMP -- NO MATCH
-
-              Data:        17:38,16:55,18:28,18:00;5,3,3,1
-
-              Manny:       S3>N1>N2>S2>N5>N3>N4>S4
-
-              From UI:     S3>N1>S2>N2>N5>N3>S4>N4
-
-              Explained:   S3(0.50)>N1(0.00)>S2(0.63)>N2(0.00)>N5(0.50)>N3(0.00)>S4(0.60)>N4(0.00)
-
-              ----------------------------------
-
-[13]   7PM 12/16/2024 COMP -- NO MATCH
-
-              Data:        18:45,18:46,18:46,18:45;7,6,6,3
-
-              Manny:       N1>N2>N3>N4>N1>N2>N3>N4>S3>S4>N5
-
-              From UI:     N1>N2>N3>N4>N1>N2>N3>N4>N5>S3>S4
-
-              Explained:   N1>N2>N3>N4>N1>N2>N3>N4>N5>S3>S4
-
-              ----------------------------------
-
-[14]   7PM 12/21/2024 COMP -- NO MATCH
-
-              Data:        18:47,17:55,17:58,17:00;6,4,3,1
-
-              Manny:       N5>N1>N2>S4>N3>S3>N4>S2
-
-              From UI:     N5>N1>N2>S3>S4>N3>N4>S2
-
-              Explained:   N5(0.50)>N1(0.00)>N2(0.00)>S3(0.67)>S4(0.60)>N3(0.00)>N4(0.00)>S2(0.75)
-
-              ----------------------------------
-
-[15]   7PM 12/29/2024 COMP -- NO MATCH
-
-              Data:        17:58,18:55,17:58,18:36;5,5,3,2
-
-              Manny:       N1>N2>S4>N3>S2>N4>N5>S3
-
-              From UI:     N1>N2>S4>S2>N3>N4>N5>S3
-
-              Explained:   N1(0.00)>N2(0.00)>S4(0.60)>S2(0.63)>N3(0.00)>N4(0.00)>N5(1.00)>S3(0.83)
-
-              ----------------------------------
-
-[16]   7PM 01/01/2025 - COMP -- NO MATCH
-
-              Data:        18:59,17:19,18:01,18:32;5,3,3,2
-
-              Manny:       S3>N1>N2>N3>S4>N4>S2>N5
-
-              From UI:     S3>N1>N2>S4>N3>N4>S2>N5
-
-              Explained:   S3(0.50)>N1(0.00)>N2(0.00)>S4(0.60)>N3(0.00)>N4(0.00)>S2(0.63)>N5(1.00)
-
-              ----------------------------------
-
-[17]   7PM 01/02/2025, COMP -- NO MATCH
-
-              Data:        18:55,17:54,18:36,18:49;4,3,3,2
-
-              Manny:       N1>N2>S3> N3>N4>S4>S2>N5
-
-              From UI:     N1>S3>N2>N3>S4>N4>S2>N5
-
-              Explained:   N1(0.00)>S3(0.50)>N2(0.00)>N3(0.00)>S4(0.60)>N4(0.00)>S2(0.50)>N5(1.00)
-
-              ----------------------------------
-
-[18]   7PM 01/03/2025 COMP -- NO MATCH
-
-              Data:        18:41,18:46,18:32,18:33;5,4,4,2
-
-              Manny:       N1>N2>N3> N4>S2>S4>S3>N5
-
-              From UI:     N1>N2>N3>S2>N4>S3>S4>N5
-
-              Explained:   N1(0.00)>N2(0.00)>N3(0.00)>S2(0.63)>N4(0.00)>S3(0.67)>S4(0.80)>N5(1.00)
-
-              ----------------------------------
-
-[19]   7PM 01/05/2025. COMP -- NO MATCH
-
-              Data:        17:47,18:46,18:28,17:04;5,4,3,1
-
-              Manny:       N5>N1>N2> S2>N3>N4>S4>S3
-
-              From UI:     N5>N1>S2>N2>N3>S4>N4>S3
-
-              Explained:   N5(0.50)>N1(0.00)>S2(0.63)>N2(0.00)>N3(0.00)>S4(0.60)>N4(0.00)>S3(0.67)
-
-              ----------------------------------
-
-[20]   7PM 01/12/2025 COMP -- NO MATCH
-
-              Data:        16:55,18:45,17:41,18:17;3,3,2,1
-
-              Manny:       S2>N1>S4>N2>N3>N5>N4>S3
-
-              From UI:     S2>N1>S4>N2>N5>N3>N4>S3
-
-              Explained:   S2(0.38)>N1(0.00)>S4(0.40)>N2(0.00)>N5(0.50)>N3(0.00)>N4(0.00)>S3(0.50)
-
-              ----------------------------------
-
-[21]   7PM 01/15/2025 -- NO MATCH
-
-              Data:        18:27,16:05,18:32,18:07;5,3,3,2
-
-              Manny:       S3>N1>N2>N3>N4>S2>S4>N5
-
-              From UI:     S3>N1>N2>N3>S2>S4>N4>N5
-
-              Explained:   S3(0.50)>N1(0.00)>N2(0.00)>N3(0.00)>S2(0.63)>S4(0.60)>N4(0.00)>N5(1.00)
-
-              ----------------------------------
-
-[22]   7PM 01/16/2025 -- NO MATCH
-
-              Data:        17:56,18:13,18:40,18:41;4,4,3,2
-
-              Manny:       N1>N2>S2>N3>S3>N4>S4>N5
-
-              From UI:     N1>N2>S2>S3>N3>S4>N4>N5
-
-              Explained:   N1(0.00)>N2(0.00)>S2(0.50)>S3(0.67)>N3(0.00)>S4(0.60)>N4(0.00)>N5(1.00)
-
-              ----------------------------------
-
-[23]   7PM 1/17/2025 -- NO MATCH
-
-              Data:        18:15,18:39,18:23,18:39;5,5,4,3
-
-              Manny:        N1>N2>S2>N3>N4>S4>S3>N1>N2>S2>N3>N4>N5>S4>S3
-
-              From UI:     N1>N2>S2>N3>N4>S4>S3>N1>N2>S2>N3>N4>S4>S3>N5
-
-              Explained:   N1>N2>S2>N3>N4>S4>S3>N1>N2>S2>N3>N4>S4>S3>N5
-
-              ----------------------------------
-
-[24]   7PM 1/18/2025 COMP -- NO MATCH
-
-              Data:        18:15,18:05,18:23,18:57;4,3,3,2
-
-              Manny:       N1>N2>S3>N3>S2>S4>N4>N5
-
-              From UI:     N1>N2>S3>S2>N3>S4>N4>N5
-
-              Explained:   N1(0.00)>N2(0.00)>S3(0.50)>S2(0.50)>N3(0.00)>S4(0.60)>N4(0.00)>N5(1.00)
-
-              ----------------------------------
-
-[25]   7PM 1/19/2025 -- NO MATCH
-
-              Data:        18:57,18:42,18:53,18:56;4,3,3,2
-
-              Manny:       N1>N2>N3>N4>S3>S2>S4>N5
-
-              From UI:     N1>N2>N3>S3>N4>S4>S2>N5
-
-              Explained:   N1(0.00)>N2(0.00)>N3(0.00)>S3(0.50)>N4(0.00)>S4(0.60)>S2(0.50)>N5(1.00)
-
-              ----------------------------------
-
-[26]   7PM 1/20/2025 -- NO MATCH
-
-              Data:        18:40,18:45,18:50,18:50;4,4,4,2
-
-              Manny:       N1>N2>N3>N4>S2>S3>S4>N5
-
-              From UI:     N1>N2>N3>S2>N4>S3>S4>N5
-
-              Explained:   N1(0.00)>N2(0.00)>N3(0.00)>S2(0.50)>N4(0.00)>S3(0.67)>S4(0.80)>N5(1.00)
-
-              ----------------------------------
-
-[27]   7PM 1/22/2025 -- NO MATCH
-
-              Data:        18:56,17:51,18:16,18:37;4,3,3,2
-
-              Manny:       N1>N2>S3>N3>S4>N4>S2>N5
-
-              From UI:     N1>S3>N2>S4>N3>N4>S2>N5
-
-              Explained:   N1(0.00)>S3(0.50)>N2(0.00)>S4(0.60)>N3(0.00)>N4(0.00)>S2(0.50)>N5(1.00)
-
-              ----------------------------------
-
-[28]   7PM 1/23/2025 -- NO MATCH
-
-              Data:        18:25,18:35,17:42,18:41;5,4,3,2
-
-              Manny:        N1>N2>S4>N3>N4>S2>S3>N5
-
-              From UI:     N1>S4>N2>N3>S2>S3>N4>N5
-
-              Explained:   N1(0.00)>S4(0.60)>N2(0.00)>N3(0.00)>S2(0.63)>S3(0.67)>N4(0.00)>N5(1.00)
-
-              ----------------------------------
+###### Order of Admissions by original algorithm Last Sync: 13/2/2025 @ 15:23
+[ 1 ] 5PM 2/10/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			16:39,16:18,15:42,16:55;4,3,2,2
+Manny:			N5>S3>S2>S1>S4
+Main Algo:		N5>S3>S2>S1>S4
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S3(0.50)>S2(0.50)>S1(0.57)>S4(0.67)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.567,0.500,0.547)>each.name(0.767,0.500,0.687)>each.name(0.883,0.571,0.789)>each.name(0.972,0.667,0.880)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.567,0.500,0.540)>each.name(0.767,0.500,0.660)>each.name(0.883,0.571,0.758)>each.name(0.972,0.667,0.850)
+----------------------------------
+
+[ 2 ] 5PM 2/09/2025 -- !!!! NO MATCH !!!!!
+Data:			16:37,14:40,16:57,16:00;5,4,3,2
+Manny:			S2>N5>S4>S1>S3
+Main Algo:		S2>N5>S4>S1>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S2(0.67)>N5(0.00)>S4(0.67)>S1(0.71)>S3(0.75)
+Algo(0.7/0.3): 	each.name(0.222,0.667,0.355)>each.name(0.500,0.000,0.500)>each.name(0.667,0.667,0.667)>each.name(0.872,0.714,0.825)>each.name(0.983,0.750,0.913)
+Algo(0.6/0.4): 	each.name(0.222,0.667,0.400)>each.name(0.500,0.000,0.500)>each.name(0.667,0.667,0.667)>each.name(0.872,0.714,0.809)>each.name(0.983,0.750,0.890)
+----------------------------------
+
+[ 3 ] 5PM 2/08/2025…weird ordering -- !!!! NO MATCH !!!!!
+Data:			16:51,16:25,15:45,15:50;5,4,3,3
+Manny:			N5>S3>S4>S2>S1
+Main Algo:		N5>S2>S3>S4>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.583,0.750,0.633)>each.name(0.611,1.000,0.728)>each.name(0.806,0.667,0.764)>each.name(0.950,0.714,0.879)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.583,0.750,0.650)>each.name(0.806,0.667,0.750)>each.name(0.611,1.000,0.767)>each.name(0.950,0.714,0.856)
+----------------------------------
+
+[ 4 ] 5PM 2/07/2025 -- !!!! NO MATCH !!!!!
+Data:			16:21,16:05,15:35,16:06;4,3,2,2
+Manny:			N5>S3>S2>S4>S1
+Main Algo:		N5>S3>S2>S4>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S3(0.50)>S2(0.50)>S4(0.67)>S1(0.57)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.528,0.500,0.520)>each.name(0.694,0.500,0.636)>each.name(0.700,0.667,0.690)>each.name(0.783,0.571,0.719)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.528,0.500,0.517)>each.name(0.694,0.500,0.616)>each.name(0.700,0.667,0.687)>each.name(0.783,0.571,0.698)
+----------------------------------
+
+[ 5 ] 5PM 2/06/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			16:55,16:46,16:38,16:36;7,5,4,3
+Manny:			N5>S2>S4>S3>S1
+Main Algo:		N5>S4>S3>S2>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S4(1.00)>S3(1.00)>S2(0.83)>S1(1.00)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.922,0.833,0.895)>each.name(0.867,1.000,0.907)>each.name(0.878,1.000,0.915)>each.name(0.972,1.000,0.980)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.922,0.833,0.886)>each.name(0.867,1.000,0.920)>each.name(0.878,1.000,0.927)>each.name(0.972,1.000,0.983)
+----------------------------------
+
+[ 6 ] 5PM 2/05/2025 -- !!!! NO MATCH !!!!!
+Data:			16:52,16:19,16:54,16:45;4,3,3,2
+Manny:			N5>S2>S1>S4>S3
+Main Algo:		N5>S2>S4>S1>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S2(0.50)>S4(0.67)>S1(0.57)>S3(0.75)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.772,0.500,0.690)>each.name(0.956,0.571,0.840)>each.name(0.917,0.667,0.842)>each.name(0.967,0.750,0.902)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.772,0.500,0.663)>each.name(0.956,0.571,0.802)>each.name(0.917,0.667,0.817)>each.name(0.967,0.750,0.880)
+----------------------------------
+
+[ 7 ] 5PM 2/04/2025 COMP  -- !!!! NO MATCH !!!!!
+Data:			15:54,16:45,16:00,16:42;5,5,2,3
+Manny:			N5>S3>S1>S2>S4
+Main Algo:		N5>S3>S1>S4>S2
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S3(0.50)>S1(0.71)>S4(1.00)>S2(0.83)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.667,0.500,0.617)>each.name(0.633,0.714,0.657)>each.name(0.917,0.833,0.892)>each.name(0.900,1.000,0.930)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.667,0.500,0.600)>each.name(0.633,0.714,0.665)>each.name(0.917,0.833,0.883)>each.name(0.900,1.000,0.940)
+----------------------------------
+
+[ 8 ] 5PM 2/03/2025 COMP 0.6/0.4 -- !!!! NO MATCH !!!!!
+Data:			16:52,16:03,16:51,16:05;4,3,3,2
+Manny:			N5>S2>S4>S1>S3
+Main Algo:		N5>S2>S4>S1>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S2(0.50)>S4(0.67)>S1(0.57)>S3(0.75)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.683,0.500,0.628)>each.name(0.694,0.667,0.686)>each.name(0.956,0.571,0.840)>each.name(0.950,0.750,0.890)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.683,0.500,0.610)>each.name(0.694,0.667,0.683)>each.name(0.956,0.571,0.802)>each.name(0.950,0.750,0.870)
+----------------------------------
+
+[ 9 ] 5PM 2/02/2025 COMP 0.6/0.4 -- !!!! NO MATCH !!!!!
+Data:			16:20,16:25,15:25,14:40;4,4,2,1
+Manny:			S4>S3>N5>S1>S2
+Main Algo:		S4>S3>N5>S1>S2
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S4(0.33)>S3(0.50)>N5(0.00)>S1(0.57)>S2(0.67)
+Algo(0.7/0.3): 	each.name(0.222,0.333,0.255)>each.name(0.472,0.500,0.480)>each.name(0.500,0.000,0.500)>each.name(0.778,0.571,0.716)>each.name(0.806,0.667,0.764)
+Algo(0.6/0.4): 	each.name(0.222,0.333,0.266)>each.name(0.472,0.500,0.483)>each.name(0.500,0.000,0.500)>each.name(0.778,0.571,0.695)>each.name(0.806,0.667,0.750)
+----------------------------------
+
+[ 10 ] 5PM 2/01/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			14:55,14:30,15:40,16:35;4,3,2,2
+Manny:			S2>S1>N5>S3>S4
+Main Algo:		S2>S1>N5>S3>S4
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S2(0.50)>S1(0.57)>N5(0.00)>S3(0.50)>S4(0.67)
+Algo(0.7/0.3): 	each.name(0.167,0.500,0.267)>each.name(0.306,0.571,0.385)>each.name(0.500,0.000,0.500)>each.name(0.556,0.500,0.539)>each.name(0.861,0.667,0.803)
+Algo(0.6/0.4): 	each.name(0.167,0.500,0.300)>each.name(0.306,0.571,0.412)>each.name(0.500,0.000,0.500)>each.name(0.556,0.500,0.534)>each.name(0.861,0.667,0.783)
+----------------------------------
+
+[ 11 ] 5PM 1/31/2025 -- !!!! NO MATCH !!!!!
+Data:			16:10,16:26,16:28,16:25;5,5,4,3
+Manny:			N5>S1>S2>S4>S3
+Main Algo:		N5>S1>S4>S2>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S1(0.71)>S4(1.00)>S2(0.83)>S3(1.00)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.722,0.714,0.720)>each.name(0.811,0.833,0.818)>each.name(0.806,1.000,0.864)>each.name(0.822,1.000,0.875)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.722,0.714,0.719)>each.name(0.811,0.833,0.820)>each.name(0.806,1.000,0.884)>each.name(0.822,1.000,0.893)
+----------------------------------
+
+[ 12 ] 5PM 1/30/2025 -- !!!! NO MATCH !!!!!
+Data:			16:35,15:50,16:00,16:25;5,4,3,3
+Manny:			N5>S2>S3>S1>S4
+Main Algo:		N5>S2>S3>S4>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.611,0.667,0.628)>each.name(0.667,0.750,0.692)>each.name(0.861,0.714,0.817)>each.name(0.806,1.000,0.864)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.611,0.667,0.633)>each.name(0.667,0.750,0.700)>each.name(0.861,0.714,0.802)>each.name(0.806,1.000,0.884)
+----------------------------------
+
+[ 13 ] 5PM 1/29/2025 -- !!!! NO MATCH !!!!!
+Data:			16:31,16:20,16:25,16:55;5,4,3,3
+Manny:			N5>S2>S3>S1>S4
+Main Algo:		N5>S2>S3>S1>S4
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S1(0.71)>S4(1.00)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.778,0.667,0.745)>each.name(0.806,0.750,0.789)>each.name(0.839,0.714,0.801)>each.name(0.972,1.000,0.980)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.778,0.667,0.734)>each.name(0.806,0.750,0.784)>each.name(0.839,0.714,0.789)>each.name(0.972,1.000,0.983)
+----------------------------------
+
+[ 14 ] 5PM 1/28/2025 -- !!!! NO MATCH !!!!!
+Data:			16:32,16:37,16:22,16:11;5,5,4,3
+Manny:			N5>S1>S4>S2>S3
+Main Algo:		N5>S4>S3>S1>S2
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S4(1.00)>S3(1.00)>S1(0.71)>S2(0.83)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.844,0.714,0.805)>each.name(0.728,1.000,0.810)>each.name(0.789,1.000,0.852)>each.name(0.872,0.833,0.860)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.844,0.714,0.792)>each.name(0.728,1.000,0.837)>each.name(0.872,0.833,0.856)>each.name(0.789,1.000,0.873)
+----------------------------------
+
+[ 15 ] 5PM 1/27/2025 -- !!!! NO MATCH !!!!!
+Data:			15:24,16:17,15:35,15:51;3,3,2,2
+Manny:			S1>N5>S3>S4>S2
+Main Algo:		S1>N5>S3>S4>S2
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S1(0.43)>N5(0.00)>S3(0.50)>S4(0.67)>S2(0.50)
+Algo(0.7/0.3): 	each.name(0.467,0.429,0.456)>each.name(0.500,0.000,0.500)>each.name(0.528,0.500,0.520)>each.name(0.617,0.667,0.632)>each.name(0.761,0.500,0.683)
+Algo(0.6/0.4): 	each.name(0.467,0.429,0.452)>each.name(0.500,0.000,0.500)>each.name(0.528,0.500,0.517)>each.name(0.617,0.667,0.637)>each.name(0.761,0.500,0.657)
+----------------------------------
+
+[ 16 ] 5PM 1/26/2025 -- !!!! NO MATCH !!!!!
+Data:			14:40,14:45,16:55,15:44;4,4,3,2
+Manny:			S1>S2>N5>S4>S3
+Main Algo:		S1>S2>N5>S4>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S1(0.57)>S2(0.67)>N5(0.00)>S4(0.67)>S3(0.75)
+Algo(0.7/0.3): 	each.name(0.222,0.571,0.327)>each.name(0.250,0.667,0.375)>each.name(0.500,0.000,0.500)>each.name(0.578,0.667,0.605)>each.name(0.972,0.750,0.905)
+Algo(0.6/0.4): 	each.name(0.222,0.571,0.362)>each.name(0.250,0.667,0.417)>each.name(0.500,0.000,0.500)>each.name(0.578,0.667,0.614)>each.name(0.972,0.750,0.883)
+----------------------------------
+
+[ 17 ] 5PM 1/25/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			16:35,16:55,16:15,16:50;3,3,2,2
+Manny:			N5>S3>S1>S2>S4
+Main Algo:		N5>S3>S1>S4>S2
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S3(0.50)>S1(0.43)>S4(0.67)>S2(0.50)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.750,0.500,0.675)>each.name(0.861,0.429,0.731)>each.name(0.972,0.500,0.830)>each.name(0.944,0.667,0.861)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.750,0.500,0.650)>each.name(0.861,0.429,0.688)>each.name(0.972,0.500,0.783)>each.name(0.944,0.667,0.833)
+----------------------------------
+
+[ 18 ] 5PM 1/24/2025 -- !!!! NO MATCH !!!!!
+Data:			16:11,14:58,14:56,15:11;4,3,2,2
+Manny:			S3>S2>S4>N5>S1
+Main Algo:		S3>S2>S4>N5>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S3(0.50)>S2(0.50)>S4(0.67)>N5(0.00)>S1(0.57)
+Algo(0.7/0.3): 	each.name(0.311,0.500,0.368)>each.name(0.322,0.500,0.375)>each.name(0.394,0.667,0.476)>each.name(0.500,0.000,0.500)>each.name(0.728,0.571,0.681)
+Algo(0.6/0.4): 	each.name(0.311,0.500,0.387)>each.name(0.322,0.500,0.393)>each.name(0.500,0.000,0.500)>each.name(0.394,0.667,0.503)>each.name(0.728,0.571,0.665)
+----------------------------------
+
+[ 19 ] 5PM 12/09/2024 COMP -- !!!! NO MATCH !!!!!
+Data:			16:36,16:16,16:19,16:31;5,4,3,3
+Manny:			N5>S2>S3>S1>S4
+Main Algo:		N5>S2>S3>S4>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.756,0.667,0.729)>each.name(0.772,0.750,0.765)>each.name(0.867,0.714,0.821)>each.name(0.839,1.000,0.887)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.756,0.667,0.720)>each.name(0.772,0.750,0.763)>each.name(0.867,0.714,0.806)>each.name(0.839,1.000,0.903)
+----------------------------------
+
+[ 20 ] 5PM 12/10/2024 -- !!!! NO MATCH !!!!!
+Data:			16:31,16:48,16:48,15:17;5,5,4,2
+Manny:			S4>N5>S1>S2>S3
+Main Algo:		S4>N5>S1>S2>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S4(0.67)>N5(0.00)>S1(0.71)>S2(0.83)>S3(1.00)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.428,0.667,0.500)>each.name(0.839,0.714,0.801)>each.name(0.933,0.833,0.903)>each.name(0.933,1.000,0.953)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.428,0.667,0.524)>each.name(0.839,0.714,0.789)>each.name(0.933,0.833,0.893)>each.name(0.933,1.000,0.960)
+----------------------------------
+
+[ 21 ] 5PM 12/11/2024 -- !!!! NO MATCH !!!!!
+Data:			16:43,15:30,15:50,15:50;5,4,3,3
+Manny:			N5>S2>S3>S4>S1
+Main Algo:		N5>S2>S3>S4>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.500,0.667,0.550)>each.name(0.611,0.750,0.653)>each.name(0.611,1.000,0.728)>each.name(0.906,0.714,0.848)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.500,0.667,0.567)>each.name(0.611,0.750,0.667)>each.name(0.611,1.000,0.767)>each.name(0.906,0.714,0.829)
+----------------------------------
+
+[ 22 ] 5PM 12/14/2024? -- !!!! NO MATCH !!!!!
+Data:			16:00,15:15,16:08,16:33;5,5,4,4
+Manny:			N5>S2>S1>S3>S4
+Main Algo:		N5>S2>S1>S3>S4
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S2(0.83)>S1(0.71)>S3(1.00)>S4(1.33)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.417,0.833,0.542)>each.name(0.667,0.714,0.681)>each.name(0.711,1.000,0.798)>each.name(0.850,1.333,0.995)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.417,0.833,0.583)>each.name(0.667,0.714,0.686)>each.name(0.711,1.000,0.827)>each.name(0.850,1.333,1.043)
+----------------------------------
+
+[ 23 ] 5PM 12/14/2024 -- !!!! NO MATCH !!!!!
+Data:			15:45,16:25,16:26,14:46;4,4,3,2
+Manny:			S4>N5>S1>S2>S3
+Main Algo:		S4>N5>S1>S2>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S4(0.67)>N5(0.00)>S1(0.57)>S2(0.67)>S3(0.75)
+Algo(0.7/0.3): 	each.name(0.256,0.667,0.379)>each.name(0.500,0.000,0.500)>each.name(0.583,0.571,0.579)>each.name(0.806,0.667,0.764)>each.name(0.811,0.750,0.793)
+Algo(0.6/0.4): 	each.name(0.256,0.667,0.420)>each.name(0.500,0.000,0.500)>each.name(0.583,0.571,0.578)>each.name(0.806,0.667,0.750)>each.name(0.811,0.750,0.787)
+----------------------------------
+
+[ 24 ] 5PM 12/15/2024 -- !!!! NO MATCH !!!!!
+Data:			16:44,14:50,14:55,15:45;4,3,2,2
+Manny:			S2>S3>N5>S4>S1
+Main Algo:		S2>S3>N5>S4>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S2(0.50)>S3(0.50)>N5(0.00)>S4(0.67)>S1(0.57)
+Algo(0.7/0.3): 	each.name(0.278,0.500,0.345)>each.name(0.306,0.500,0.364)>each.name(0.500,0.000,0.500)>each.name(0.583,0.667,0.608)>each.name(0.911,0.571,0.809)
+Algo(0.6/0.4): 	each.name(0.278,0.500,0.367)>each.name(0.306,0.500,0.384)>each.name(0.500,0.000,0.500)>each.name(0.583,0.667,0.617)>each.name(0.911,0.571,0.775)
+----------------------------------
+
+[ 25 ] 5PM 12/16/2024 -- !!!! NO MATCH !!!!!
+Data:			17:18,16:45,16:07,17:17;5,5,3,3
+Manny:			N5>S3>S2>S1>S4
+Main Algo:		N5>S3>S2>S4>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S3(0.75)>S2(0.83)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.706,0.750,0.719)>each.name(0.917,0.833,0.892)>each.name(1.100,0.714,0.984)>each.name(1.094,1.000,1.066)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.706,0.750,0.724)>each.name(0.917,0.833,0.883)>each.name(1.100,0.714,0.946)>each.name(1.094,1.000,1.056)
+----------------------------------
+
+[ 26 ] 5PM 12/18/2024 -- !!!! NO MATCH !!!!!
+Data:			16:34,16:34,15:15,16:00;5,5,3,3
+Manny:			N5>S3>S4>S1>S2
+Main Algo:		N5>S3>S4>S1>S2
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S3(0.75)>S4(1.00)>S1(0.71)>S2(0.83)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.417,0.750,0.517)>each.name(0.667,1.000,0.767)>each.name(0.856,0.714,0.813)>each.name(0.856,0.833,0.849)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.417,0.750,0.550)>each.name(0.856,0.714,0.799)>each.name(0.667,1.000,0.800)>each.name(0.856,0.833,0.847)
+----------------------------------
+
+[ 27 ] 5PM 12/19/2024 -- !!!! NO MATCH !!!!!
+Data:			16:26,16:54,16:56,16:15;4,3,3,2
+Manny:			N5>S4>S1>S2>S3
+Main Algo:		N5>S4>S1>S2>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S4(0.67)>S1(0.57)>S2(0.50)>S3(0.75)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.750,0.667,0.725)>each.name(0.811,0.571,0.739)>each.name(0.967,0.500,0.827)>each.name(0.978,0.750,0.910)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.811,0.571,0.715)>each.name(0.750,0.667,0.717)>each.name(0.967,0.500,0.780)>each.name(0.978,0.750,0.887)
+----------------------------------
+
+[ 28 ] 5PM 12/20/2024 -- !!!! NO MATCH !!!!!
+Data:			16:30,17:00,15:50,15:35;5,5,3,2
+Manny:			N5>S4>S3>S1>S2
+Main Algo:		N5>S4>S3>S1>S2
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S4(0.67)>S3(0.75)>S1(0.71)>S2(0.83)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.528,0.667,0.570)>each.name(0.611,0.750,0.653)>each.name(0.833,0.714,0.797)>each.name(1.000,0.833,0.950)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.528,0.667,0.584)>each.name(0.611,0.750,0.667)>each.name(0.833,0.714,0.785)>each.name(1.000,0.833,0.933)
+----------------------------------
+
+[ 29 ] 5PM 12/21/2024 -- !!!! NO MATCH !!!!!
+Data:			16:30,16:55,16:15,16:15;6,5,3,2
+Manny:			N5>S4>S3>S1>S2
+Main Algo:		N5>S4>S3>S1>S2
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S4(0.67)>S3(0.75)>S1(0.86)>S2(0.83)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.750,0.667,0.725)>each.name(0.750,0.750,0.750)>each.name(0.833,0.857,0.840)>each.name(0.972,0.833,0.930)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.750,0.667,0.717)>each.name(0.750,0.750,0.750)>each.name(0.833,0.857,0.843)>each.name(0.972,0.833,0.916)
+----------------------------------
+
+[ 30 ] 5PM 12/22/2024 -- !!!! NO MATCH !!!!!
+Data:			14:40,15:30,16:30,16:45;4,3,3,2
+Manny:			S1>N5>S2>S3>S4
+Main Algo:		S1>N5>S2>S4>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S1(0.57)>N5(0.00)>S2(0.50)>S4(0.67)>S3(0.75)
+Algo(0.7/0.3): 	each.name(0.222,0.571,0.327)>each.name(0.500,0.500,0.500)>each.name(0.500,0.000,0.500)>each.name(0.833,0.750,0.808)>each.name(0.917,0.667,0.842)
+Algo(0.6/0.4): 	each.name(0.222,0.571,0.362)>each.name(0.500,0.500,0.500)>each.name(0.500,0.000,0.500)>each.name(0.833,0.750,0.800)>each.name(0.917,0.667,0.817)
+----------------------------------
+
+[ 31 ] 5PM 12/23/2024 -- !!!! NO MATCH !!!!!
+Data:			16:30,16:40,16:45,15:55;5,4,3,2
+Manny:			N5>S4>S1>S2>S3
+Main Algo:		N5>S4>S2>S1>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S4(0.67)>S2(0.67)>S1(0.71)>S3(0.75)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.639,0.667,0.647)>each.name(0.833,0.714,0.797)>each.name(0.889,0.667,0.822)>each.name(0.917,0.750,0.867)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.639,0.667,0.650)>each.name(0.833,0.714,0.785)>each.name(0.889,0.667,0.800)>each.name(0.917,0.750,0.850)
+----------------------------------
+
+[ 32 ] 5PM 12/24/2024 -- !!!! NO MATCH !!!!!
+Data:			16:00,15:15,16:08,16:33;5,4,4,4
+Manny:			N5>S2>S1>S3>S4
+Main Algo:		S2>N5>S1>S3>S4
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S2(0.67)>N5(0.00)>S1(0.71)>S3(1.00)>S4(1.33)
+Algo(0.7/0.3): 	each.name(0.417,0.667,0.492)>each.name(0.500,0.000,0.500)>each.name(0.667,0.714,0.681)>each.name(0.711,1.000,0.798)>each.name(0.850,1.333,0.995)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.417,0.667,0.517)>each.name(0.667,0.714,0.686)>each.name(0.711,1.000,0.827)>each.name(0.850,1.333,1.043)
+----------------------------------
+
+[ 33 ] 5PM 12/28/2024 -- !!!! NO MATCH !!!!!
+Data:			16:16,15:30,15:45,16:20;4,3,2,2
+Manny:			S2>N5>S3>S1>S4
+Main Algo:		N5>S2>S3>S1>S4
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S2(0.50)>S3(0.50)>S1(0.57)>S4(0.67)
+Algo(0.7/0.3): 	each.name(0.500,0.500,0.500)>each.name(0.500,0.000,0.500)>each.name(0.583,0.500,0.558)>each.name(0.756,0.571,0.701)>each.name(0.778,0.667,0.745)
+Algo(0.6/0.4): 	each.name(0.500,0.500,0.500)>each.name(0.500,0.000,0.500)>each.name(0.583,0.500,0.550)>each.name(0.756,0.571,0.682)>each.name(0.778,0.667,0.734)
+----------------------------------
+
+[ 34 ] 5PM 12/29/2024 -- !!!! NO MATCH !!!!!
+Data:			14:30,15:24,15:55,16:27;4,3,3,2
+Manny:			S1>S2>N5>S3>S4
+Main Algo:		S1>S2>N5>S4>S3
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S1(0.57)>S2(0.50)>N5(0.00)>S4(0.67)>S3(0.75)
+Algo(0.7/0.3): 	each.name(0.167,0.571,0.288)>each.name(0.467,0.500,0.477)>each.name(0.500,0.000,0.500)>each.name(0.639,0.750,0.672)>each.name(0.817,0.667,0.772)
+Algo(0.6/0.4): 	each.name(0.167,0.571,0.329)>each.name(0.467,0.500,0.480)>each.name(0.500,0.000,0.500)>each.name(0.639,0.750,0.683)>each.name(0.817,0.667,0.757)
+----------------------------------
+
+[ 35 ] 5PM 12/30/2024 -- !!!! NO MATCH !!!!!
+Data:			14:45,14:46,14:50,15:34;3,3,2,2
+Manny:			S1>S2>S3>N5>S4
+Main Algo:		S1>S2>S3>N5>S4
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S1(0.43)>S2(0.50)>S3(0.50)>N5(0.00)>S4(0.67)
+Algo(0.7/0.3): 	each.name(0.250,0.429,0.304)>each.name(0.256,0.500,0.329)>each.name(0.278,0.500,0.345)>each.name(0.500,0.000,0.500)>each.name(0.522,0.667,0.566)
+Algo(0.6/0.4): 	each.name(0.250,0.429,0.322)>each.name(0.256,0.500,0.354)>each.name(0.278,0.500,0.367)>each.name(0.500,0.000,0.500)>each.name(0.522,0.667,0.580)
+----------------------------------
+
+[ 36 ] 5PM 12/31/2024 or 1/1/2025 -- !!!! NO MATCH !!!!!
+Data:			16:44,15:50,15:50,15:55;4,3,2,2
+Manny:			N5>S3>S2>S4>S1
+Main Algo:		N5>S3>S2>S4>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	N5(0.00)>S3(0.50)>S2(0.50)>S4(0.67)>S1(0.57)
+Algo(0.7/0.3): 	each.name(0.500,0.000,0.500)>each.name(0.611,0.500,0.578)>each.name(0.611,0.500,0.578)>each.name(0.639,0.667,0.647)>each.name(0.911,0.571,0.809)
+Algo(0.6/0.4): 	each.name(0.500,0.000,0.500)>each.name(0.611,0.500,0.567)>each.name(0.611,0.500,0.567)>each.name(0.639,0.667,0.650)>each.name(0.911,0.571,0.775)
+----------------------------------
+
+[ 37 ] 5PM 1/2/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			16:35,15:20,15:30,15:30;4,2,2,2
+Manny:			S2>S3>N5>S4>S1
+Main Algo:		S2>N5>S3>S4>S1
+Algo(0.7/0.3):  each.name>each.name>each.name>each.name>each.name
+Algo(0.6/0.4):  each.name>each.name>each.name>each.name>each.name
+Main Algo:  	S2(0.33)>N5(0.00)>S3(0.50)>S4(0.67)>S1(0.57)
+Algo(0.7/0.3): 	each.name(0.444,0.333,0.411)>each.name(0.500,0.500,0.500)>each.name(0.500,0.000,0.500)>each.name(0.500,0.667,0.550)>each.name(0.861,0.571,0.774)
+Algo(0.6/0.4): 	each.name(0.444,0.333,0.400)>each.name(0.500,0.500,0.500)>each.name(0.500,0.000,0.500)>each.name(0.500,0.667,0.567)>each.name(0.861,0.571,0.745)
+----------------------------------
+
+###### Order of Admissions by original algorithm Last Sync: 13/2/2025 @ 15:27
+5PM 2/10/2025 COMP -- Match
+Data:			16:39,16:18,15:42,16:55;4,3,2,2
+Manny:			N5>S3>S2>S1>S4
+Main Algo:		N5>S3>S2>S1>S4
+Algo(0.7/0.3):  N5>S3>S2>S1>S4
+Algo(0.6/0.4):  N5>S3>S2>S1>S4
+Main Algo:  	N5(0.00)>S3(0.50)>S2(0.50)>S1(0.57)>S4(0.67)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S3(0.567,0.500,0.547)>S2(0.767,0.500,0.687)>S1(0.883,0.571,0.789)>S4(0.972,0.667,0.880)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S3(0.567,0.500,0.540)>S2(0.767,0.500,0.660)>S1(0.883,0.571,0.758)>S4(0.972,0.667,0.850)
+----------------------------------
+
+5PM 2/09/2025 -- Match
+Data:			16:37,14:40,16:57,16:00;5,4,3,2
+Manny:			S2>N5>S4>S1>S3
+Main Algo:		S2>N5>S4>S1>S3
+Algo(0.7/0.3):  S2>N5>S4>S1>S3
+Algo(0.6/0.4):  S2>N5>S4>S1>S3
+Main Algo:  	S2(0.67)>N5(0.00)>S4(0.67)>S1(0.71)>S3(0.75)
+Algo(0.7/0.3): 	S2(0.222,0.667,0.355)>N5(0.500,0.000,0.500)>S4(0.667,0.667,0.667)>S1(0.872,0.714,0.825)>S3(0.983,0.750,0.913)
+Algo(0.6/0.4): 	S2(0.222,0.667,0.400)>N5(0.500,0.000,0.500)>S4(0.667,0.667,0.667)>S1(0.872,0.714,0.809)>S3(0.983,0.750,0.890)
+----------------------------------
+
+[ 1 ] 5PM 2/08/2025…weird ordering -- !!!! NO MATCH !!!!!
+Data:			16:51,16:25,15:45,15:50;5,4,3,3
+Manny:			N5>S3>S4>S2>S1
+Main Algo:		N5>S2>S3>S4>S1
+Algo(0.7/0.3):  N5>S3>S4>S2>S1
+Algo(0.6/0.4):  N5>S3>S2>S4>S1
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S3(0.583,0.750,0.633)>S4(0.611,1.000,0.728)>S2(0.806,0.667,0.764)>S1(0.950,0.714,0.879)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S3(0.583,0.750,0.650)>S2(0.806,0.667,0.750)>S4(0.611,1.000,0.767)>S1(0.950,0.714,0.856)
+----------------------------------
+
+5PM 2/07/2025 -- Match
+Data:			16:21,16:05,15:35,16:06;4,3,2,2
+Manny:			N5>S3>S2>S4>S1
+Main Algo:		N5>S3>S2>S4>S1
+Algo(0.7/0.3):  N5>S3>S2>S4>S1
+Algo(0.6/0.4):  N5>S3>S2>S4>S1
+Main Algo:  	N5(0.00)>S3(0.50)>S2(0.50)>S4(0.67)>S1(0.57)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S3(0.528,0.500,0.520)>S2(0.694,0.500,0.636)>S4(0.700,0.667,0.690)>S1(0.783,0.571,0.719)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S3(0.528,0.500,0.517)>S2(0.694,0.500,0.616)>S4(0.700,0.667,0.687)>S1(0.783,0.571,0.698)
+----------------------------------
+
+[ 2 ] 5PM 2/06/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			16:55,16:46,16:38,16:36;7,5,4,3
+Manny:			N5>S2>S4>S3>S1
+Main Algo:		N5>S4>S3>S2>S1
+Algo(0.7/0.3):  N5>S2>S4>S3>S1
+Algo(0.6/0.4):  N5>S2>S4>S3>S1
+Main Algo:  	N5(0.00)>S4(1.00)>S3(1.00)>S2(0.83)>S1(1.00)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.922,0.833,0.895)>S4(0.867,1.000,0.907)>S3(0.878,1.000,0.915)>S1(0.972,1.000,0.980)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.922,0.833,0.886)>S4(0.867,1.000,0.920)>S3(0.878,1.000,0.927)>S1(0.972,1.000,0.983)
+----------------------------------
+
+[ 3 ] 5PM 2/05/2025 -- !!!! NO MATCH !!!!!
+Data:			16:52,16:19,16:54,16:45;4,3,3,2
+Manny:			N5>S2>S1>S4>S3
+Main Algo:		N5>S2>S4>S1>S3
+Algo(0.7/0.3):  N5>S2>S1>S4>S3
+Algo(0.6/0.4):  N5>S2>S1>S4>S3
+Main Algo:  	N5(0.00)>S2(0.50)>S4(0.67)>S1(0.57)>S3(0.75)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.772,0.500,0.690)>S1(0.956,0.571,0.840)>S4(0.917,0.667,0.842)>S3(0.967,0.750,0.902)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.772,0.500,0.663)>S1(0.956,0.571,0.802)>S4(0.917,0.667,0.817)>S3(0.967,0.750,0.880)
+----------------------------------
+
+[ 4 ] 5PM 2/04/2025 COMP  -- !!!! NO MATCH !!!!!
+Data:			15:54,16:45,16:00,16:42;5,5,2,3
+Manny:			N5>S3>S1>S2>S4
+Main Algo:		N5>S3>S1>S4>S2
+Algo(0.7/0.3):  N5>S3>S1>S2>S4
+Algo(0.6/0.4):  N5>S3>S1>S2>S4
+Main Algo:  	N5(0.00)>S3(0.50)>S1(0.71)>S4(1.00)>S2(0.83)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S3(0.667,0.500,0.617)>S1(0.633,0.714,0.657)>S2(0.917,0.833,0.892)>S4(0.900,1.000,0.930)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S3(0.667,0.500,0.600)>S1(0.633,0.714,0.665)>S2(0.917,0.833,0.883)>S4(0.900,1.000,0.940)
+----------------------------------
+
+5PM 2/03/2025 COMP 0.6/0.4 -- Match
+Data:			16:52,16:03,16:51,16:05;4,3,3,2
+Manny:			N5>S2>S4>S1>S3
+Main Algo:		N5>S2>S4>S1>S3
+Algo(0.7/0.3):  N5>S2>S4>S1>S3
+Algo(0.6/0.4):  N5>S2>S4>S1>S3
+Main Algo:  	N5(0.00)>S2(0.50)>S4(0.67)>S1(0.57)>S3(0.75)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.683,0.500,0.628)>S4(0.694,0.667,0.686)>S1(0.956,0.571,0.840)>S3(0.950,0.750,0.890)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.683,0.500,0.610)>S4(0.694,0.667,0.683)>S1(0.956,0.571,0.802)>S3(0.950,0.750,0.870)
+----------------------------------
+
+5PM 2/02/2025 COMP 0.6/0.4 -- Match
+Data:			16:20,16:25,15:25,14:40;4,4,2,1
+Manny:			S4>S3>N5>S1>S2
+Main Algo:		S4>S3>N5>S1>S2
+Algo(0.7/0.3):  S4>S3>N5>S1>S2
+Algo(0.6/0.4):  S4>S3>N5>S1>S2
+Main Algo:  	S4(0.33)>S3(0.50)>N5(0.00)>S1(0.57)>S2(0.67)
+Algo(0.7/0.3): 	S4(0.222,0.333,0.255)>S3(0.472,0.500,0.480)>N5(0.500,0.000,0.500)>S1(0.778,0.571,0.716)>S2(0.806,0.667,0.764)
+Algo(0.6/0.4): 	S4(0.222,0.333,0.266)>S3(0.472,0.500,0.483)>N5(0.500,0.000,0.500)>S1(0.778,0.571,0.695)>S2(0.806,0.667,0.750)
+----------------------------------
+
+5PM 2/01/2025 COMP -- Match
+Data:			14:55,14:30,15:40,16:35;4,3,2,2
+Manny:			S2>S1>N5>S3>S4
+Main Algo:		S2>S1>N5>S3>S4
+Algo(0.7/0.3):  S2>S1>N5>S3>S4
+Algo(0.6/0.4):  S2>S1>N5>S3>S4
+Main Algo:  	S2(0.50)>S1(0.57)>N5(0.00)>S3(0.50)>S4(0.67)
+Algo(0.7/0.3): 	S2(0.167,0.500,0.267)>S1(0.306,0.571,0.385)>N5(0.500,0.000,0.500)>S3(0.556,0.500,0.539)>S4(0.861,0.667,0.803)
+Algo(0.6/0.4): 	S2(0.167,0.500,0.300)>S1(0.306,0.571,0.412)>N5(0.500,0.000,0.500)>S3(0.556,0.500,0.534)>S4(0.861,0.667,0.783)
+----------------------------------
+
+[ 5 ] 5PM 1/31/2025 -- !!!! NO MATCH !!!!!
+Data:			16:10,16:26,16:28,16:25;5,5,4,3
+Manny:			N5>S1>S2>S4>S3
+Main Algo:		N5>S1>S4>S2>S3
+Algo(0.7/0.3):  N5>S1>S2>S4>S3
+Algo(0.6/0.4):  N5>S1>S2>S4>S3
+Main Algo:  	N5(0.00)>S1(0.71)>S4(1.00)>S2(0.83)>S3(1.00)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S1(0.722,0.714,0.720)>S2(0.811,0.833,0.818)>S4(0.806,1.000,0.864)>S3(0.822,1.000,0.875)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S1(0.722,0.714,0.719)>S2(0.811,0.833,0.820)>S4(0.806,1.000,0.884)>S3(0.822,1.000,0.893)
+----------------------------------
+
+[ 6 ] 5PM 1/30/2025 -- !!!! NO MATCH !!!!!
+Data:			16:35,15:50,16:00,16:25;5,4,3,3
+Manny:			N5>S2>S3>S1>S4
+Main Algo:		N5>S2>S3>S4>S1
+Algo(0.7/0.3):  N5>S2>S3>S1>S4
+Algo(0.6/0.4):  N5>S2>S3>S1>S4
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.611,0.667,0.628)>S3(0.667,0.750,0.692)>S1(0.861,0.714,0.817)>S4(0.806,1.000,0.864)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.611,0.667,0.633)>S3(0.667,0.750,0.700)>S1(0.861,0.714,0.802)>S4(0.806,1.000,0.884)
+----------------------------------
+
+5PM 1/29/2025 -- Match
+Data:			16:31,16:20,16:25,16:55;5,4,3,3
+Manny:			N5>S2>S3>S1>S4
+Main Algo:		N5>S2>S3>S1>S4
+Algo(0.7/0.3):  N5>S2>S3>S1>S4
+Algo(0.6/0.4):  N5>S2>S3>S1>S4
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S1(0.71)>S4(1.00)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.778,0.667,0.745)>S3(0.806,0.750,0.789)>S1(0.839,0.714,0.801)>S4(0.972,1.000,0.980)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.778,0.667,0.734)>S3(0.806,0.750,0.784)>S1(0.839,0.714,0.789)>S4(0.972,1.000,0.983)
+----------------------------------
+
+[ 7 ] 5PM 1/28/2025 -- !!!! NO MATCH !!!!!
+Data:			16:32,16:37,16:22,16:11;5,5,4,3
+Manny:			N5>S1>S4>S2>S3
+Main Algo:		N5>S4>S3>S1>S2
+Algo(0.7/0.3):  N5>S1>S4>S3>S2
+Algo(0.6/0.4):  N5>S1>S4>S2>S3
+Main Algo:  	N5(0.00)>S4(1.00)>S3(1.00)>S1(0.71)>S2(0.83)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S1(0.844,0.714,0.805)>S4(0.728,1.000,0.810)>S3(0.789,1.000,0.852)>S2(0.872,0.833,0.860)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S1(0.844,0.714,0.792)>S4(0.728,1.000,0.837)>S2(0.872,0.833,0.856)>S3(0.789,1.000,0.873)
+----------------------------------
+
+5PM 1/27/2025 -- Match
+Data:			15:24,16:17,15:35,15:51;3,3,2,2
+Manny:			S1>N5>S3>S4>S2
+Main Algo:		S1>N5>S3>S4>S2
+Algo(0.7/0.3):  S1>N5>S3>S4>S2
+Algo(0.6/0.4):  S1>N5>S3>S4>S2
+Main Algo:  	S1(0.43)>N5(0.00)>S3(0.50)>S4(0.67)>S2(0.50)
+Algo(0.7/0.3): 	S1(0.467,0.429,0.456)>N5(0.500,0.000,0.500)>S3(0.528,0.500,0.520)>S4(0.617,0.667,0.632)>S2(0.761,0.500,0.683)
+Algo(0.6/0.4): 	S1(0.467,0.429,0.452)>N5(0.500,0.000,0.500)>S3(0.528,0.500,0.517)>S4(0.617,0.667,0.637)>S2(0.761,0.500,0.657)
+----------------------------------
+
+5PM 1/26/2025 -- Match
+Data:			14:40,14:45,16:55,15:44;4,4,3,2
+Manny:			S1>S2>N5>S4>S3
+Main Algo:		S1>S2>N5>S4>S3
+Algo(0.7/0.3):  S1>S2>N5>S4>S3
+Algo(0.6/0.4):  S1>S2>N5>S4>S3
+Main Algo:  	S1(0.57)>S2(0.67)>N5(0.00)>S4(0.67)>S3(0.75)
+Algo(0.7/0.3): 	S1(0.222,0.571,0.327)>S2(0.250,0.667,0.375)>N5(0.500,0.000,0.500)>S4(0.578,0.667,0.605)>S3(0.972,0.750,0.905)
+Algo(0.6/0.4): 	S1(0.222,0.571,0.362)>S2(0.250,0.667,0.417)>N5(0.500,0.000,0.500)>S4(0.578,0.667,0.614)>S3(0.972,0.750,0.883)
+----------------------------------
+
+[ 8 ] 5PM 1/25/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			16:35,16:55,16:15,16:50;3,3,2,2
+Manny:			N5>S3>S1>S2>S4
+Main Algo:		N5>S3>S1>S4>S2
+Algo(0.7/0.3):  N5>S3>S1>S2>S4
+Algo(0.6/0.4):  N5>S3>S1>S2>S4
+Main Algo:  	N5(0.00)>S3(0.50)>S1(0.43)>S4(0.67)>S2(0.50)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S3(0.750,0.500,0.675)>S1(0.861,0.429,0.731)>S2(0.972,0.500,0.830)>S4(0.944,0.667,0.861)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S3(0.750,0.500,0.650)>S1(0.861,0.429,0.688)>S2(0.972,0.500,0.783)>S4(0.944,0.667,0.833)
+----------------------------------
+
+5PM 1/24/2025 -- Match
+Data:			16:11,14:58,14:56,15:11;4,3,2,2
+Manny:			S3>S2>S4>N5>S1
+Main Algo:		S3>S2>S4>N5>S1
+Algo(0.7/0.3):  S3>S2>S4>N5>S1
+Algo(0.6/0.4):  S3>S2>N5>S4>S1
+Main Algo:  	S3(0.50)>S2(0.50)>S4(0.67)>N5(0.00)>S1(0.57)
+Algo(0.7/0.3): 	S3(0.311,0.500,0.368)>S2(0.322,0.500,0.375)>S4(0.394,0.667,0.476)>N5(0.500,0.000,0.500)>S1(0.728,0.571,0.681)
+Algo(0.6/0.4): 	S3(0.311,0.500,0.387)>S2(0.322,0.500,0.393)>N5(0.500,0.000,0.500)>S4(0.394,0.667,0.503)>S1(0.728,0.571,0.665)
+----------------------------------
+
+[ 9 ] 5PM 12/09/2024 COMP -- !!!! NO MATCH !!!!!
+Data:			16:36,16:16,16:19,16:31;5,4,3,3
+Manny:			N5>S2>S3>S1>S4
+Main Algo:		N5>S2>S3>S4>S1
+Algo(0.7/0.3):  N5>S2>S3>S1>S4
+Algo(0.6/0.4):  N5>S2>S3>S1>S4
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.756,0.667,0.729)>S3(0.772,0.750,0.765)>S1(0.867,0.714,0.821)>S4(0.839,1.000,0.887)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.756,0.667,0.720)>S3(0.772,0.750,0.763)>S1(0.867,0.714,0.806)>S4(0.839,1.000,0.903)
+----------------------------------
+
+[ 10 ] 5PM 12/10/2024 -- !!!! NO MATCH !!!!!
+Data:			16:31,16:48,16:48,15:17;5,5,4,2
+Manny:			S4>N5>S1>S2>S3
+Main Algo:		S4>N5>S1>S2>S3
+Algo(0.7/0.3):  N5>S4>S1>S2>S3
+Algo(0.6/0.4):  N5>S4>S1>S2>S3
+Main Algo:  	S4(0.67)>N5(0.00)>S1(0.71)>S2(0.83)>S3(1.00)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S4(0.428,0.667,0.500)>S1(0.839,0.714,0.801)>S2(0.933,0.833,0.903)>S3(0.933,1.000,0.953)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S4(0.428,0.667,0.524)>S1(0.839,0.714,0.789)>S2(0.933,0.833,0.893)>S3(0.933,1.000,0.960)
+----------------------------------
+
+5PM 12/11/2024 -- Match
+Data:			16:43,15:30,15:50,15:50;5,4,3,3
+Manny:			N5>S2>S3>S4>S1
+Main Algo:		N5>S2>S3>S4>S1
+Algo(0.7/0.3):  N5>S2>S3>S4>S1
+Algo(0.6/0.4):  N5>S2>S3>S4>S1
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.500,0.667,0.550)>S3(0.611,0.750,0.653)>S4(0.611,1.000,0.728)>S1(0.906,0.714,0.848)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.500,0.667,0.567)>S3(0.611,0.750,0.667)>S4(0.611,1.000,0.767)>S1(0.906,0.714,0.829)
+----------------------------------
+
+5PM 12/14/2024? -- Match
+Data:			16:00,15:15,16:08,16:33;5,5,4,4
+Manny:			N5>S2>S1>S3>S4
+Main Algo:		N5>S2>S1>S3>S4
+Algo(0.7/0.3):  N5>S2>S1>S3>S4
+Algo(0.6/0.4):  N5>S2>S1>S3>S4
+Main Algo:  	N5(0.00)>S2(0.83)>S1(0.71)>S3(1.00)>S4(1.33)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.417,0.833,0.542)>S1(0.667,0.714,0.681)>S3(0.711,1.000,0.798)>S4(0.850,1.333,0.995)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.417,0.833,0.583)>S1(0.667,0.714,0.686)>S3(0.711,1.000,0.827)>S4(0.850,1.333,1.043)
+----------------------------------
+
+5PM 12/14/2024 -- Match
+Data:			15:45,16:25,16:26,14:46;4,4,3,2
+Manny:			S4>N5>S1>S2>S3
+Main Algo:		S4>N5>S1>S2>S3
+Algo(0.7/0.3):  S4>N5>S1>S2>S3
+Algo(0.6/0.4):  S4>N5>S1>S2>S3
+Main Algo:  	S4(0.67)>N5(0.00)>S1(0.57)>S2(0.67)>S3(0.75)
+Algo(0.7/0.3): 	S4(0.256,0.667,0.379)>N5(0.500,0.000,0.500)>S1(0.583,0.571,0.579)>S2(0.806,0.667,0.764)>S3(0.811,0.750,0.793)
+Algo(0.6/0.4): 	S4(0.256,0.667,0.420)>N5(0.500,0.000,0.500)>S1(0.583,0.571,0.578)>S2(0.806,0.667,0.750)>S3(0.811,0.750,0.787)
+----------------------------------
+
+5PM 12/15/2024 -- Match
+Data:			16:44,14:50,14:55,15:45;4,3,2,2
+Manny:			S2>S3>N5>S4>S1
+Main Algo:		S2>S3>N5>S4>S1
+Algo(0.7/0.3):  S2>S3>N5>S4>S1
+Algo(0.6/0.4):  S2>S3>N5>S4>S1
+Main Algo:  	S2(0.50)>S3(0.50)>N5(0.00)>S4(0.67)>S1(0.57)
+Algo(0.7/0.3): 	S2(0.278,0.500,0.345)>S3(0.306,0.500,0.364)>N5(0.500,0.000,0.500)>S4(0.583,0.667,0.608)>S1(0.911,0.571,0.809)
+Algo(0.6/0.4): 	S2(0.278,0.500,0.367)>S3(0.306,0.500,0.384)>N5(0.500,0.000,0.500)>S4(0.583,0.667,0.617)>S1(0.911,0.571,0.775)
+----------------------------------
+
+[ 11 ] 5PM 12/16/2024 -- !!!! NO MATCH !!!!!
+Data:			17:18,16:45,16:07,17:17;5,5,3,3
+Manny:			N5>S3>S2>S1>S4
+Main Algo:		N5>S3>S2>S4>S1
+Algo(0.7/0.3):  N5>S3>S2>S1>S4
+Algo(0.6/0.4):  N5>S3>S2>S1>S4
+Main Algo:  	N5(0.00)>S3(0.75)>S2(0.83)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S3(0.706,0.750,0.719)>S2(0.917,0.833,0.892)>S1(1.100,0.714,0.984)>S4(1.094,1.000,1.066)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S3(0.706,0.750,0.724)>S2(0.917,0.833,0.883)>S1(1.100,0.714,0.946)>S4(1.094,1.000,1.056)
+----------------------------------
+
+5PM 12/18/2024 -- Match
+Data:			16:34,16:34,15:15,16:00;5,5,3,3
+Manny:			N5>S3>S4>S1>S2
+Main Algo:		N5>S3>S4>S1>S2
+Algo(0.7/0.3):  N5>S3>S4>S1>S2
+Algo(0.6/0.4):  N5>S3>S1>S4>S2
+Main Algo:  	N5(0.00)>S3(0.75)>S4(1.00)>S1(0.71)>S2(0.83)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S3(0.417,0.750,0.517)>S4(0.667,1.000,0.767)>S1(0.856,0.714,0.813)>S2(0.856,0.833,0.849)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S3(0.417,0.750,0.550)>S1(0.856,0.714,0.799)>S4(0.667,1.000,0.800)>S2(0.856,0.833,0.847)
+----------------------------------
+
+5PM 12/19/2024 -- Match
+Data:			16:26,16:54,16:56,16:15;4,3,3,2
+Manny:			N5>S4>S1>S2>S3
+Main Algo:		N5>S4>S1>S2>S3
+Algo(0.7/0.3):  N5>S4>S1>S2>S3
+Algo(0.6/0.4):  N5>S1>S4>S2>S3
+Main Algo:  	N5(0.00)>S4(0.67)>S1(0.57)>S2(0.50)>S3(0.75)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S4(0.750,0.667,0.725)>S1(0.811,0.571,0.739)>S2(0.967,0.500,0.827)>S3(0.978,0.750,0.910)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S1(0.811,0.571,0.715)>S4(0.750,0.667,0.717)>S2(0.967,0.500,0.780)>S3(0.978,0.750,0.887)
+----------------------------------
+
+5PM 12/20/2024 -- Match
+Data:			16:30,17:00,15:50,15:35;5,5,3,2
+Manny:			N5>S4>S3>S1>S2
+Main Algo:		N5>S4>S3>S1>S2
+Algo(0.7/0.3):  N5>S4>S3>S1>S2
+Algo(0.6/0.4):  N5>S4>S3>S1>S2
+Main Algo:  	N5(0.00)>S4(0.67)>S3(0.75)>S1(0.71)>S2(0.83)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S4(0.528,0.667,0.570)>S3(0.611,0.750,0.653)>S1(0.833,0.714,0.797)>S2(1.000,0.833,0.950)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S4(0.528,0.667,0.584)>S3(0.611,0.750,0.667)>S1(0.833,0.714,0.785)>S2(1.000,0.833,0.933)
+----------------------------------
+
+5PM 12/21/2024 -- Match
+Data:			16:30,16:55,16:15,16:15;6,5,3,2
+Manny:			N5>S4>S3>S1>S2
+Main Algo:		N5>S4>S3>S1>S2
+Algo(0.7/0.3):  N5>S4>S3>S1>S2
+Algo(0.6/0.4):  N5>S4>S3>S1>S2
+Main Algo:  	N5(0.00)>S4(0.67)>S3(0.75)>S1(0.86)>S2(0.83)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S4(0.750,0.667,0.725)>S3(0.750,0.750,0.750)>S1(0.833,0.857,0.840)>S2(0.972,0.833,0.930)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S4(0.750,0.667,0.717)>S3(0.750,0.750,0.750)>S1(0.833,0.857,0.843)>S2(0.972,0.833,0.916)
+----------------------------------
+
+[ 12 ] 5PM 12/22/2024 -- !!!! NO MATCH !!!!!
+Data:			14:40,15:30,16:30,16:45;4,3,3,2
+Manny:			S1>N5>S2>S3>S4
+Main Algo:		S1>N5>S2>S4>S3
+Algo(0.7/0.3):  S1>S2>N5>S3>S4
+Algo(0.6/0.4):  S1>S2>N5>S3>S4
+Main Algo:  	S1(0.57)>N5(0.00)>S2(0.50)>S4(0.67)>S3(0.75)
+Algo(0.7/0.3): 	S1(0.222,0.571,0.327)>S2(0.500,0.500,0.500)>N5(0.500,0.000,0.500)>S3(0.833,0.750,0.808)>S4(0.917,0.667,0.842)
+Algo(0.6/0.4): 	S1(0.222,0.571,0.362)>S2(0.500,0.500,0.500)>N5(0.500,0.000,0.500)>S3(0.833,0.750,0.800)>S4(0.917,0.667,0.817)
+----------------------------------
+
+[ 13 ] 5PM 12/23/2024 -- !!!! NO MATCH !!!!!
+Data:			16:30,16:40,16:45,15:55;5,4,3,2
+Manny:			N5>S4>S1>S2>S3
+Main Algo:		N5>S4>S2>S1>S3
+Algo(0.7/0.3):  N5>S4>S1>S2>S3
+Algo(0.6/0.4):  N5>S4>S1>S2>S3
+Main Algo:  	N5(0.00)>S4(0.67)>S2(0.67)>S1(0.71)>S3(0.75)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S4(0.639,0.667,0.647)>S1(0.833,0.714,0.797)>S2(0.889,0.667,0.822)>S3(0.917,0.750,0.867)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S4(0.639,0.667,0.650)>S1(0.833,0.714,0.785)>S2(0.889,0.667,0.800)>S3(0.917,0.750,0.850)
+----------------------------------
+
+5PM 12/24/2024 -- Match
+Data:			16:00,15:15,16:08,16:33;5,4,4,4
+Manny:			N5>S2>S1>S3>S4
+Main Algo:		S2>N5>S1>S3>S4
+Algo(0.7/0.3):  S2>N5>S1>S3>S4
+Algo(0.6/0.4):  N5>S2>S1>S3>S4
+Main Algo:  	S2(0.67)>N5(0.00)>S1(0.71)>S3(1.00)>S4(1.33)
+Algo(0.7/0.3): 	S2(0.417,0.667,0.492)>N5(0.500,0.000,0.500)>S1(0.667,0.714,0.681)>S3(0.711,1.000,0.798)>S4(0.850,1.333,0.995)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.417,0.667,0.517)>S1(0.667,0.714,0.686)>S3(0.711,1.000,0.827)>S4(0.850,1.333,1.043)
+----------------------------------
+
+[ 14 ] 5PM 12/28/2024 -- !!!! NO MATCH !!!!!
+Data:			16:16,15:30,15:45,16:20;4,3,2,2
+Manny:			S2>N5>S3>S1>S4
+Main Algo:		N5>S2>S3>S1>S4
+Algo(0.7/0.3):  S2>N5>S3>S1>S4
+Algo(0.6/0.4):  S2>N5>S3>S1>S4
+Main Algo:  	N5(0.00)>S2(0.50)>S3(0.50)>S1(0.57)>S4(0.67)
+Algo(0.7/0.3): 	S2(0.500,0.500,0.500)>N5(0.500,0.000,0.500)>S3(0.583,0.500,0.558)>S1(0.756,0.571,0.701)>S4(0.778,0.667,0.745)
+Algo(0.6/0.4): 	S2(0.500,0.500,0.500)>N5(0.500,0.000,0.500)>S3(0.583,0.500,0.550)>S1(0.756,0.571,0.682)>S4(0.778,0.667,0.734)
+----------------------------------
+
+[ 15 ] 5PM 12/29/2024 -- !!!! NO MATCH !!!!!
+Data:			14:30,15:24,15:55,16:27;4,3,3,2
+Manny:			S1>S2>N5>S3>S4
+Main Algo:		S1>S2>N5>S4>S3
+Algo(0.7/0.3):  S1>S2>N5>S3>S4
+Algo(0.6/0.4):  S1>S2>N5>S3>S4
+Main Algo:  	S1(0.57)>S2(0.50)>N5(0.00)>S4(0.67)>S3(0.75)
+Algo(0.7/0.3): 	S1(0.167,0.571,0.288)>S2(0.467,0.500,0.477)>N5(0.500,0.000,0.500)>S3(0.639,0.750,0.672)>S4(0.817,0.667,0.772)
+Algo(0.6/0.4): 	S1(0.167,0.571,0.329)>S2(0.467,0.500,0.480)>N5(0.500,0.000,0.500)>S3(0.639,0.750,0.683)>S4(0.817,0.667,0.757)
+----------------------------------
+
+5PM 12/30/2024 -- Match
+Data:			14:45,14:46,14:50,15:34;3,3,2,2
+Manny:			S1>S2>S3>N5>S4
+Main Algo:		S1>S2>S3>N5>S4
+Algo(0.7/0.3):  S1>S2>S3>N5>S4
+Algo(0.6/0.4):  S1>S2>S3>N5>S4
+Main Algo:  	S1(0.43)>S2(0.50)>S3(0.50)>N5(0.00)>S4(0.67)
+Algo(0.7/0.3): 	S1(0.250,0.429,0.304)>S2(0.256,0.500,0.329)>S3(0.278,0.500,0.345)>N5(0.500,0.000,0.500)>S4(0.522,0.667,0.566)
+Algo(0.6/0.4): 	S1(0.250,0.429,0.322)>S2(0.256,0.500,0.354)>S3(0.278,0.500,0.367)>N5(0.500,0.000,0.500)>S4(0.522,0.667,0.580)
+----------------------------------
+
+[ 16 ] 5PM 12/31/2024 or 1/1/2025 -- !!!! NO MATCH !!!!!
+Data:			16:44,15:50,15:50,15:55;4,3,2,2
+Manny:			N5>S3>S2>S4>S1
+Main Algo:		N5>S3>S2>S4>S1
+Algo(0.7/0.3):  N5>S2>S3>S4>S1
+Algo(0.6/0.4):  N5>S2>S3>S4>S1
+Main Algo:  	N5(0.00)>S3(0.50)>S2(0.50)>S4(0.67)>S1(0.57)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.611,0.500,0.578)>S3(0.611,0.500,0.578)>S4(0.639,0.667,0.647)>S1(0.911,0.571,0.809)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.611,0.500,0.567)>S3(0.611,0.500,0.567)>S4(0.639,0.667,0.650)>S1(0.911,0.571,0.775)
+----------------------------------
+
+[ 17 ] 5PM 1/2/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			16:35,15:20,15:30,15:30;4,2,2,2
+Manny:			S2>S3>N5>S4>S1
+Main Algo:		S2>N5>S3>S4>S1
+Algo(0.7/0.3):  S2>S3>N5>S4>S1
+Algo(0.6/0.4):  S2>S3>N5>S4>S1
+Main Algo:  	S2(0.33)>N5(0.00)>S3(0.50)>S4(0.67)>S1(0.57)
+Algo(0.7/0.3): 	S2(0.444,0.333,0.411)>S3(0.500,0.500,0.500)>N5(0.500,0.000,0.500)>S4(0.500,0.667,0.550)>S1(0.861,0.571,0.774)
+Algo(0.6/0.4): 	S2(0.444,0.333,0.400)>S3(0.500,0.500,0.500)>N5(0.500,0.000,0.500)>S4(0.500,0.667,0.567)>S1(0.861,0.571,0.745)
+----------------------------------
+
+5PM 1/3/2025 -- Match
+Data:			15:20,16:20,16:30,16:45;4,4,3,3
+Manny:			S1>N5>S2>S3>S4
+Main Algo:		S1>N5>S2>S3>S4
+Algo(0.7/0.3):  S1>N5>S2>S3>S4
+Algo(0.6/0.4):  S1>N5>S2>S3>S4
+Main Algo:  	S1(0.57)>N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)
+Algo(0.7/0.3): 	S1(0.444,0.571,0.482)>N5(0.500,0.000,0.500)>S2(0.778,0.667,0.745)>S3(0.833,0.750,0.808)>S4(0.917,1.000,0.942)
+Algo(0.6/0.4): 	S1(0.444,0.571,0.495)>N5(0.500,0.000,0.500)>S2(0.778,0.667,0.734)>S3(0.833,0.750,0.800)>S4(0.917,1.000,0.950)
+----------------------------------
+
+[ 18 ] 5PM 1/4/2025 -- !!!! NO MATCH !!!!!
+Data:			15:50,16:20,16:45,16:20;4,4,3,2
+Manny:			N5>S1>S2>S4>S3
+Main Algo:		N5>S1>S4>S2>S3
+Algo(0.7/0.3):  N5>S1>S2>S4>S3
+Algo(0.6/0.4):  N5>S1>S2>S4>S3
+Main Algo:  	N5(0.00)>S1(0.57)>S4(0.67)>S2(0.67)>S3(0.75)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S1(0.611,0.571,0.599)>S2(0.778,0.667,0.745)>S4(0.778,0.667,0.745)>S3(0.917,0.750,0.867)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S1(0.611,0.571,0.595)>S2(0.778,0.667,0.734)>S4(0.778,0.667,0.734)>S3(0.917,0.750,0.850)
+----------------------------------
+
+[ 19 ] 5PM 1/5/2025 -- !!!! NO MATCH !!!!!
+Data:			15:00,16:20,16:45,16:20;4,4,3,2
+Manny:			S1>N5>S2>S4>S3
+Main Algo:		S1>N5>S4>S2>S3
+Algo(0.7/0.3):  S1>N5>S2>S4>S3
+Algo(0.6/0.4):  S1>N5>S2>S4>S3
+Main Algo:  	S1(0.57)>N5(0.00)>S4(0.67)>S2(0.67)>S3(0.75)
+Algo(0.7/0.3): 	S1(0.333,0.571,0.404)>N5(0.500,0.000,0.500)>S2(0.778,0.667,0.745)>S4(0.778,0.667,0.745)>S3(0.917,0.750,0.867)
+Algo(0.6/0.4): 	S1(0.333,0.571,0.428)>N5(0.500,0.000,0.500)>S2(0.778,0.667,0.734)>S4(0.778,0.667,0.734)>S3(0.917,0.750,0.850)
+----------------------------------
+
+[ 20 ] 5PM 1/6/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			16:05,16:45,14:40,15:30;5,4,2,2
+Manny:			S3>N5>S4>S1>S2
+Main Algo:		S3>N5>S4>S2>S1
+Algo(0.7/0.3):  S3>N5>S4>S1>S2
+Algo(0.6/0.4):  S3>N5>S4>S1>S2
+Main Algo:  	S3(0.50)>N5(0.00)>S4(0.67)>S2(0.67)>S1(0.71)
+Algo(0.7/0.3): 	S3(0.222,0.500,0.305)>N5(0.500,0.000,0.500)>S4(0.500,0.667,0.550)>S1(0.694,0.714,0.700)>S2(0.917,0.667,0.842)
+Algo(0.6/0.4): 	S3(0.222,0.500,0.333)>N5(0.500,0.000,0.500)>S4(0.500,0.667,0.567)>S1(0.694,0.714,0.702)>S2(0.917,0.667,0.817)
+----------------------------------
+
+[ 21 ] 5PM 1/7/2025 -- !!!! NO MATCH !!!!!
+Data:			14:42,15:09,16:29,16:00;5,3,4,3
+Manny:			S1>S2>N5>S4>S3
+Main Algo:		S2>N5>S1>S4>S3
+Algo(0.7/0.3):  S1>S2>N5>S4>S3
+Algo(0.6/0.4):  S1>S2>N5>S4>S3
+Main Algo:  	S2(0.50)>N5(0.00)>S1(0.71)>S4(1.00)>S3(1.00)
+Algo(0.7/0.3): 	S1(0.233,0.714,0.377)>S2(0.383,0.500,0.418)>N5(0.500,0.000,0.500)>S4(0.667,1.000,0.767)>S3(0.828,1.000,0.880)
+Algo(0.6/0.4): 	S1(0.233,0.714,0.425)>S2(0.383,0.500,0.430)>N5(0.500,0.000,0.500)>S4(0.667,1.000,0.800)>S3(0.828,1.000,0.897)
+----------------------------------
+
+[ 22 ] 5PM 1/8/2025 -- !!!! NO MATCH !!!!!
+Data:			16:57,16:00,15:46,16:45;5,5,3,3
+Manny:			N5>S3>S2>S1>S4
+Main Algo:		N5>S3>S2>S4>S1
+Algo(0.7/0.3):  N5>S3>S2>S1>S4
+Algo(0.6/0.4):  N5>S3>S2>S1>S4
+Main Algo:  	N5(0.00)>S3(0.75)>S2(0.83)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S3(0.589,0.750,0.637)>S2(0.667,0.833,0.717)>S1(0.983,0.714,0.902)>S4(0.917,1.000,0.942)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S3(0.589,0.750,0.653)>S2(0.667,0.833,0.733)>S1(0.983,0.714,0.875)>S4(0.917,1.000,0.950)
+----------------------------------
+
+[ 23 ] 5PM 1/9/2025 -- !!!! NO MATCH !!!!!
+Data:			16:05,16:10,16:35,16:45;5,4,3,3
+Manny:			N5>S1>S2>S3>S4
+Main Algo:		N5>S2>S1>S3>S4
+Algo(0.7/0.3):  N5>S1>S2>S3>S4
+Algo(0.6/0.4):  N5>S2>S1>S3>S4
+Main Algo:  	N5(0.00)>S2(0.67)>S1(0.71)>S3(0.75)>S4(1.00)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S1(0.694,0.714,0.700)>S2(0.722,0.667,0.706)>S3(0.861,0.750,0.828)>S4(0.917,1.000,0.942)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.722,0.667,0.700)>S1(0.694,0.714,0.702)>S3(0.861,0.750,0.817)>S4(0.917,1.000,0.950)
+----------------------------------
+
+[ 24 ] 5PM 1/10/2025 -- !!!! NO MATCH !!!!!
+Data:			16:35,16:05,16:10,16:30;4,3,2,2
+Manny:			N5>S2>S3>S1>S4
+Main Algo:		N5>S2>S3>S4>S1
+Algo(0.7/0.3):  N5>S2>S3>S1>S4
+Algo(0.6/0.4):  N5>S2>S3>S1>S4
+Main Algo:  	N5(0.00)>S2(0.50)>S3(0.50)>S4(0.67)>S1(0.57)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.694,0.500,0.636)>S3(0.722,0.500,0.655)>S1(0.861,0.571,0.774)>S4(0.833,0.667,0.783)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.694,0.500,0.616)>S3(0.722,0.500,0.633)>S1(0.861,0.571,0.745)>S4(0.833,0.667,0.767)
+----------------------------------
+
+[ 25 ] 5PM 1/11/2025 STRANGE ONE COMP -- !!!! NO MATCH !!!!!
+Data:			16:40,16:35,14:55,15:20;5,4,3,2
+Manny:			S3>N5>S4>S2>S1
+Main Algo:		S4>N5>S2>S3>S1
+Algo(0.7/0.3):  S3>N5>S4>S2>S1
+Algo(0.6/0.4):  S3>N5>S4>S2>S1
+Main Algo:  	S4(0.67)>N5(0.00)>S2(0.67)>S3(0.75)>S1(0.71)
+Algo(0.7/0.3): 	S3(0.306,0.750,0.439)>N5(0.500,0.000,0.500)>S4(0.444,0.667,0.511)>S2(0.861,0.667,0.803)>S1(0.889,0.714,0.836)
+Algo(0.6/0.4): 	S3(0.306,0.750,0.484)>N5(0.500,0.000,0.500)>S4(0.444,0.667,0.533)>S2(0.861,0.667,0.783)>S1(0.889,0.714,0.819)
+----------------------------------
+
+5PM 1/12/2025 -- Match
+Data:			15:15,16:55,15:55,14:55;3,3,2,1
+Manny:			S4>S1>N5>S3>S2
+Main Algo:		S4>S1>N5>S3>S2
+Algo(0.7/0.3):  S4>S1>N5>S3>S2
+Algo(0.6/0.4):  S4>S1>N5>S3>S2
+Main Algo:  	S4(0.33)>S1(0.43)>N5(0.00)>S3(0.50)>S2(0.50)
+Algo(0.7/0.3): 	S4(0.306,0.333,0.314)>S1(0.417,0.429,0.421)>N5(0.500,0.000,0.500)>S3(0.639,0.500,0.597)>S2(0.972,0.500,0.830)
+Algo(0.6/0.4): 	S4(0.306,0.333,0.317)>S1(0.417,0.429,0.422)>N5(0.500,0.000,0.500)>S3(0.639,0.500,0.583)>S2(0.972,0.500,0.783)
+----------------------------------
+
+5PM 1/13/2025 -- Match
+Data:			15:25,16:25,16:35,15:50;5,5,4,3
+Manny:			N5>S1>S4>S2>S3
+Main Algo:		N5>S1>S4>S2>S3
+Algo(0.7/0.3):  N5>S1>S4>S2>S3
+Algo(0.6/0.4):  N5>S1>S4>S2>S3
+Main Algo:  	N5(0.00)>S1(0.71)>S4(1.00)>S2(0.83)>S3(1.00)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S1(0.472,0.714,0.545)>S4(0.611,1.000,0.728)>S2(0.806,0.833,0.814)>S3(0.861,1.000,0.903)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S1(0.472,0.714,0.569)>S4(0.611,1.000,0.767)>S2(0.806,0.833,0.817)>S3(0.861,1.000,0.917)
+----------------------------------
+
+5PM 1/14/2025 -- Match
+Data:			15:15,15:47,16:42,16:36;4,4,3,2
+Manny:			S1>N5>S2>S4>S3
+Main Algo:		S1>N5>S2>S4>S3
+Algo(0.7/0.3):  S1>N5>S2>S4>S3
+Algo(0.6/0.4):  S1>N5>S2>S4>S3
+Main Algo:  	S1(0.57)>N5(0.00)>S2(0.67)>S4(0.67)>S3(0.75)
+Algo(0.7/0.3): 	S1(0.417,0.571,0.463)>N5(0.500,0.000,0.500)>S2(0.594,0.667,0.616)>S4(0.867,0.667,0.807)>S3(0.900,0.750,0.855)
+Algo(0.6/0.4): 	S1(0.417,0.571,0.479)>N5(0.500,0.000,0.500)>S2(0.594,0.667,0.623)>S4(0.867,0.667,0.787)>S3(0.900,0.750,0.840)
+----------------------------------
+
+[ 26 ] 5PM 1/15/2025 need to fix ties -- !!!! NO MATCH !!!!!
+Data:			16:57,15:35,16:05,15:35;5,4,3,2
+Manny:			N5>S2>S4>S3>S1
+Main Algo:		N5>S4>S2>S3>S1
+Algo(0.7/0.3):  N5>S2>S4>S3>S1
+Algo(0.6/0.4):  N5>S2>S4>S3>S1
+Main Algo:  	N5(0.00)>S4(0.67)>S2(0.67)>S3(0.75)>S1(0.71)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S2(0.528,0.667,0.570)>S4(0.528,0.667,0.570)>S3(0.694,0.750,0.711)>S1(0.983,0.714,0.902)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S2(0.528,0.667,0.584)>S4(0.528,0.667,0.584)>S3(0.694,0.750,0.716)>S1(0.983,0.714,0.875)
+----------------------------------
+
+5PM 1/16/2025 -- Match
+Data:			16:26,16:40,15:02,15:26;3,3,2,1
+Manny:			S3>S4>N5>S1>S2
+Main Algo:		S3>S4>N5>S1>S2
+Algo(0.7/0.3):  S3>S4>N5>S1>S2
+Algo(0.6/0.4):  S3>S4>N5>S1>S2
+Main Algo:  	S3(0.50)>S4(0.33)>N5(0.00)>S1(0.43)>S2(0.50)
+Algo(0.7/0.3): 	S3(0.344,0.500,0.391)>S4(0.478,0.333,0.434)>N5(0.500,0.000,0.500)>S1(0.811,0.429,0.696)>S2(0.889,0.500,0.772)
+Algo(0.6/0.4): 	S3(0.344,0.500,0.406)>S4(0.478,0.333,0.420)>N5(0.500,0.000,0.500)>S1(0.811,0.429,0.658)>S2(0.889,0.500,0.733)
+----------------------------------
+
+5PM 1/17/2025 -- Match
+Data:			15:45,16:54,16:00,16:07;3,3,2,2
+Manny:			N5>S1>S3>S4>S2
+Main Algo:		N5>S1>S3>S4>S2
+Algo(0.7/0.3):  N5>S1>S3>S4>S2
+Algo(0.6/0.4):  N5>S1>S3>S4>S2
+Main Algo:  	N5(0.00)>S1(0.43)>S3(0.50)>S4(0.67)>S2(0.50)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S1(0.583,0.429,0.537)>S3(0.667,0.500,0.617)>S4(0.706,0.667,0.694)>S2(0.967,0.500,0.827)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S1(0.583,0.429,0.521)>S3(0.667,0.500,0.600)>S4(0.706,0.667,0.690)>S2(0.967,0.500,0.780)
+----------------------------------
+
+5PM 1/18/2025 -- Match
+Data:			14:59,16:23,16:13,16:32;3,3,2,2
+Manny:			S1>N5>S3>S2>S4
+Main Algo:		S1>N5>S3>S2>S4
+Algo(0.7/0.3):  S1>N5>S3>S2>S4
+Algo(0.6/0.4):  S1>N5>S3>S2>S4
+Main Algo:  	S1(0.43)>N5(0.00)>S3(0.50)>S2(0.50)>S4(0.67)
+Algo(0.7/0.3): 	S1(0.328,0.429,0.358)>N5(0.500,0.000,0.500)>S3(0.739,0.500,0.667)>S2(0.794,0.500,0.706)>S4(0.844,0.667,0.791)
+Algo(0.6/0.4): 	S1(0.328,0.429,0.368)>N5(0.500,0.000,0.500)>S3(0.739,0.500,0.643)>S2(0.794,0.500,0.676)>S4(0.844,0.667,0.773)
+----------------------------------
+
+5PM 1/19/2025 -- Match
+Data:			16:30,16:32,16:33,15:20;2,2,2,1
+Manny:			S4>N5>S1>S2>S3
+Main Algo:		S4>N5>S1>S2>S3
+Algo(0.7/0.3):  S4>N5>S1>S2>S3
+Algo(0.6/0.4):  S4>N5>S1>S2>S3
+Main Algo:  	S4(0.33)>N5(0.00)>S1(0.29)>S2(0.33)>S3(0.50)
+Algo(0.7/0.3): 	S4(0.444,0.333,0.411)>N5(0.500,0.000,0.500)>S1(0.833,0.286,0.669)>S2(0.844,0.333,0.691)>S3(0.850,0.500,0.745)
+Algo(0.6/0.4): 	S4(0.444,0.333,0.400)>N5(0.500,0.000,0.500)>S1(0.833,0.286,0.614)>S2(0.844,0.333,0.640)>S3(0.850,0.500,0.710)
+----------------------------------
+
+[ 27 ] 5PM 1/20/2025 -- !!!! NO MATCH !!!!!
+Data:			16:21,13:40,14:52,16:18;4,2,2,2
+Manny:			 S2>S3>N5>S1>S4
+Main Algo:		S2>S3>N5>S4>S1
+Algo(0.7/0.3):  S2>S3>N5>S1>S4
+Algo(0.6/0.4):  S2>S3>N5>S1>S4
+Main Algo:  	S2(0.33)>S3(0.50)>N5(0.00)>S4(0.67)>S1(0.57)
+Algo(0.7/0.3): 	S2(0.000,0.333,0.100)>S3(0.289,0.500,0.352)>N5(0.500,0.000,0.500)>S1(0.783,0.571,0.719)>S4(0.767,0.667,0.737)
+Algo(0.6/0.4): 	S2(0.000,0.333,0.133)>S3(0.289,0.500,0.373)>N5(0.500,0.000,0.500)>S1(0.783,0.571,0.698)>S4(0.767,0.667,0.727)
+----------------------------------
+
+[ 28 ] 5PM 1/21/2025 -- !!!! NO MATCH !!!!!
+Data:			16:37,16:14,15:40,16:24;5,4,3,3
+Manny:			 N5>S3>S2>S1>S4
+Main Algo:		N5>S2>S3>S4>S1
+Algo(0.7/0.3):  N5>S3>S2>S1>S4
+Algo(0.6/0.4):  N5>S3>S2>S1>S4
+Main Algo:  	N5(0.00)>S2(0.67)>S3(0.75)>S4(1.00)>S1(0.71)
+Algo(0.7/0.3): 	N5(0.500,0.000,0.500)>S3(0.556,0.750,0.614)>S2(0.744,0.667,0.721)>S1(0.872,0.714,0.825)>S4(0.800,1.000,0.860)
+Algo(0.6/0.4): 	N5(0.500,0.000,0.500)>S3(0.556,0.750,0.634)>S2(0.744,0.667,0.713)>S1(0.872,0.714,0.809)>S4(0.800,1.000,0.880)
+----------------------------------
+
+[ 29 ] 5PM 1/22/2025 -- !!!! NO MATCH !!!!!
+Data:			14:41,15:40,16:32,16:42;2,2,2,2
+Manny:			S1>S2>N5> S3>S4
+Main Algo:		S1>N5>S2>S3>S4
+Algo(0.7/0.3):  S1>S2>N5>S3>S4
+Algo(0.6/0.4):  S1>S2>N5>S3>S4
+Main Algo:  	S1(0.29)>N5(0.00)>S2(0.33)>S3(0.50)>S4(0.67)
+Algo(0.7/0.3): 	S1(0.228,0.286,0.245)>S2(0.556,0.333,0.489)>N5(0.500,0.000,0.500)>S3(0.844,0.500,0.741)>S4(0.900,0.667,0.830)
+Algo(0.6/0.4): 	S1(0.228,0.286,0.251)>S2(0.556,0.333,0.467)>N5(0.500,0.000,0.500)>S3(0.844,0.500,0.706)>S4(0.900,0.667,0.807)
+----------------------------------
+
+5PM 1/23/2025 -- Match
+Data:			16:27,14:22,14:24,16:38;4,3,2,2
+Manny:			S2>S3>N5>S1>S4
+Main Algo:		S2>S3>N5>S1>S4
+Algo(0.7/0.3):  S2>S3>N5>S1>S4
+Algo(0.6/0.4):  S2>S3>N5>S1>S4
+Main Algo:  	S2(0.50)>S3(0.50)>N5(0.00)>S1(0.57)>S4(0.67)
+Algo(0.7/0.3): 	S2(0.122,0.500,0.235)>S3(0.133,0.500,0.243)>N5(0.500,0.000,0.500)>S1(0.817,0.571,0.743)>S4(0.878,0.667,0.815)
+Algo(0.6/0.4): 	S2(0.122,0.500,0.273)>S3(0.133,0.500,0.280)>N5(0.500,0.000,0.500)>S1(0.817,0.571,0.719)>S4(0.878,0.667,0.794)
+----------------------------------
+
+[ 1 ] 7PM 2/10/2025 COMP 0.6/0.4 -- !!!! NO MATCH !!!!!
+Data:			18:52,17:10,17:35,19:02;4,3,2,2
+Manny:			 S3>S4>N1>N2>N3>N4>S2>N5
+Main Algo:		S3>N1>S4>N2>N3>N4>S2>N5
+Algo(0.7/0.3):  S3>S4>N1>N2>N3>N4>S2>N5
+Algo(0.6/0.4):  S3>S4>N1>N2>N3>N4>S2>N5
+Main Algo:  	S3(0.50)>N1(0.00)>S4(0.40)>N2(0.00)>N3(0.00)>N4(0.00)>S2(0.50)>N5(1.00)
+Algo(0.7/0.3): 	S3(0.389,0.500,0.422)>S4(0.528,0.400,0.490)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.956,0.500,0.819)>N5(1.011,1.000,1.008)
+Algo(0.6/0.4): 	S3(0.389,0.500,0.433)>S4(0.528,0.400,0.477)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.956,0.500,0.774)>N5(1.011,1.000,1.007)
+----------------------------------
+
+[ 2 ] 7PM 2/9/2025 COMP 0.6/0.4 -- !!!! NO MATCH !!!!!
+Data:			18:14,18:40,18:20,18:14;5,4,3,1
+Manny:			N1>N2>N5>N3>S2>S4>N4>S3
+Main Algo:		N1>N2>N5>S2>N3>S4>S3>N4
+Algo(0.7/0.3):  N1>N2>N3>N5>S2>S4>N4>S3
+Algo(0.6/0.4):  N1>N2>N5>N3>S2>S4>N4>S3
+Main Algo:  	N1(0.00)>N2(0.00)>N5(0.50)>S2(0.63)>N3(0.00)>S4(0.60)>S3(0.67)>N4(0.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N5(0.744,0.500,0.671)>S2(0.744,0.625,0.708)>S4(0.778,0.600,0.725)>N4(1.000,0.000,0.750)>S3(0.889,0.667,0.822)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N5(0.744,0.500,0.646)>N3(1.000,0.000,0.660)>S2(0.744,0.625,0.696)>S4(0.778,0.600,0.707)>N4(1.000,0.000,0.750)>S3(0.889,0.667,0.800)
+----------------------------------
+
+[ 3 ] 7PM 2/8/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			18:14,15:45,15:50,18:14;5,3,3,1
+Manny:			S3>S4>N1>N2>N5>N3>S2>N4
+Main Algo:		S3>S4>N1>N2>N5>S2>N3>N4
+Algo(0.7/0.3):  S3>S4>N1>N2>N3>N5>S2>N4
+Algo(0.6/0.4):  S3>S4>N1>N2>N5>N3>S2>N4
+Main Algo:  	S3(0.50)>S4(0.60)>N1(0.00)>N2(0.00)>N5(0.50)>S2(0.63)>N3(0.00)>N4(0.00)
+Algo(0.7/0.3): 	S3(0.000,0.500,0.150)>S4(0.000,0.600,0.180)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N5(0.744,0.500,0.671)>S2(0.744,0.625,0.708)>N4(1.000,0.000,0.750)
+Algo(0.6/0.4): 	S3(0.000,0.500,0.200)>S4(0.000,0.600,0.240)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N5(0.744,0.500,0.646)>N3(1.000,0.000,0.660)>S2(0.744,0.625,0.696)>N4(1.000,0.000,0.750)
+----------------------------------
+
+7PM 2/7/2025 COMP -- Match
+Data:			18:01,17:56,18:32,18:38;4,3,2,2
+Manny:			 N1>N2>S3>S2>N3>S4>N4>N5
+Main Algo:		N1>N2>S3>S2>N3>S4>N4>N5
+Algo(0.7/0.3):  N1>N2>S3>S2>N3>S4>N4>N5
+Algo(0.6/0.4):  N1>N2>S3>S2>N3>S4>N4>N5
+Main Algo:  	N1(0.00)>N2(0.00)>S3(0.50)>S2(0.50)>N3(0.00)>S4(0.40)>N4(0.00)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S3(0.644,0.500,0.601)>S2(0.672,0.500,0.620)>N3(1.000,0.000,0.660)>S4(0.844,0.400,0.711)>N4(1.000,0.000,0.750)>N5(0.878,1.000,0.915)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S3(0.644,0.500,0.586)>S2(0.672,0.500,0.603)>N3(1.000,0.000,0.660)>S4(0.844,0.400,0.666)>N4(1.000,0.000,0.750)>N5(0.878,1.000,0.927)
+----------------------------------
+
+[ 4 ] 7PM 2/6/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			18:21,17:58,18:30,18:25;6,5,5,2
+Manny:			N1>N2>N3>N4>S3>S2>N5>N1>N2>S4>N3>N4>S3>N5
+Main Algo:		N1>N2>N3>N4>S3>S2>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3):  N1>N2>N3>S3>N4>S2>N5>N1>N2>S4>N3>S3>N4>N5
+Algo(0.6/0.4):  N1>N2>N3>S3>N4>S2>N5>N1>N2>S4>N3>S3>N4>N5
+Main Algo:  	N1>N2>N3>N4>S3>S2>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.656,0.833,0.709)>N4(1.000,0.000,0.750)>S2(0.783,0.750,0.773)>N5(0.806,1.000,0.864)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.833,1.000,0.883)>N3(1.000,0.000,0.660)>S3(0.656,0.833,0.709)>N4(1.000,0.000,0.750)>N5(0.806,1.000,0.864)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.656,0.833,0.727)>N4(1.000,0.000,0.750)>S2(0.783,0.750,0.770)>N5(0.806,1.000,0.884)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.833,1.000,0.900)>N3(1.000,0.000,0.660)>S3(0.656,0.833,0.727)>N4(1.000,0.000,0.750)>N5(0.806,1.000,0.884)
+----------------------------------
+
+7PM 2/5/2025 COMP -- Match
+Data:			17:35,16:54,17:37,17:16;4,3,3,1
+Manny:			S3>N5>N1>S2>S4>N2>N3>N4
+Main Algo:		S3>N5>N1>S2>S4>N2>N3>N4
+Algo(0.7/0.3):  S3>N5>N1>S2>S4>N2>N3>N4
+Algo(0.6/0.4):  S3>N5>N1>S2>S4>N2>N3>N4
+Main Algo:  	S3(0.50)>N5(0.50)>N1(0.00)>S2(0.50)>S4(0.60)>N2(0.00)>N3(0.00)>N4(0.00)
+Algo(0.7/0.3): 	S3(0.300,0.500,0.360)>N5(0.422,0.500,0.445)>N1(1.000,0.000,0.500)>S2(0.528,0.500,0.520)>S4(0.539,0.600,0.557)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)
+Algo(0.6/0.4): 	S3(0.300,0.500,0.380)>N5(0.422,0.500,0.453)>N1(1.000,0.000,0.500)>S2(0.528,0.500,0.517)>S4(0.539,0.600,0.563)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)
+----------------------------------
+
+7PM 2/4/2025 COMP -- Match
+Data:			15:54,18:25,16:42,17:00;5,3,3,1
+Manny:			S4>S2>N5>N1>N2>N3>S3>N4
+Main Algo:		S2>S4>N5>N1>N2>N3>S3>N4
+Algo(0.7/0.3):  S2>S4>N5>N1>N2>N3>S3>N4
+Algo(0.6/0.4):  S2>S4>N5>N1>N2>N3>S3>N4
+Main Algo:  	S2(0.63)>S4(0.60)>N5(0.50)>N1(0.00)>N2(0.00)>N3(0.00)>S3(0.50)>N4(0.00)
+Algo(0.7/0.3): 	S2(0.000,0.625,0.188)>S4(0.233,0.600,0.343)>N5(0.333,0.500,0.383)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.806,0.500,0.714)>N4(1.000,0.000,0.750)
+Algo(0.6/0.4): 	S2(0.000,0.625,0.250)>S4(0.233,0.600,0.380)>N5(0.333,0.500,0.400)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.806,0.500,0.684)>N4(1.000,0.000,0.750)
+----------------------------------
+
+[ 5 ] 7PM 2/3/2025 -- !!!! NO MATCH !!!!!
+Data:			18:02,18:46,18:06,17:55;5,5,4,2
+Manny:			N1>N2>S2>N3>N4>S4>N5>S3
+Main Algo:		N1>N2>S2>N3>N4>N5>S4>S3
+Algo(0.7/0.3):  N1>N2>N3>S2>S4>N5>N4>S3
+Algo(0.6/0.4):  N1>N2>S2>N3>S4>N4>N5>S3
+Main Algo:  	N1(0.00)>N2(0.00)>S2(0.63)>N3(0.00)>N4(0.00)>N5(1.00)>S4(0.80)>S3(0.83)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.678,0.625,0.662)>S4(0.700,0.800,0.730)>N5(0.639,1.000,0.747)>N4(1.000,0.000,0.750)>S3(0.922,0.833,0.895)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.678,0.625,0.657)>N3(1.000,0.000,0.660)>S4(0.700,0.800,0.740)>N4(1.000,0.000,0.750)>N5(0.639,1.000,0.783)>S3(0.922,0.833,0.886)
+----------------------------------
+
+7PM 2/2/2025 -- Match
+Data:			18:23,17:11,18:50,17:30;4,3,3,1
+Manny:			S3>N5>N1>N2>N3>S2>N4>S4
+Main Algo:		S3>N1>N5>N2>N3>S2>N4>S4
+Algo(0.7/0.3):  S3>N1>N5>N2>N3>S2>N4>S4
+Algo(0.6/0.4):  S3>N1>N5>N2>N3>S2>N4>S4
+Main Algo:  	S3(0.50)>N1(0.00)>N5(0.50)>N2(0.00)>N3(0.00)>S2(0.50)>N4(0.00)>S4(0.60)
+Algo(0.7/0.3): 	S3(0.394,0.500,0.426)>N1(1.000,0.000,0.500)>N5(0.500,0.500,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.794,0.500,0.706)>N4(1.000,0.000,0.750)>S4(0.944,0.600,0.841)
+Algo(0.6/0.4): 	S3(0.394,0.500,0.436)>N1(1.000,0.000,0.500)>N5(0.500,0.500,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.794,0.500,0.676)>N4(1.000,0.000,0.750)>S4(0.944,0.600,0.806)
+----------------------------------
+
+7PM 2/1/2025 -- Match
+Data:			17:57,18:52,16:35,18:34;5,3,2,1
+Manny:			S4>N1>N2>S2>N3>N5>N4>S3
+Main Algo:		S4>N1>N2>S2>N3>N5>N4>S3
+Algo(0.7/0.3):  S4>N1>N2>S2>N3>N5>N4>S3
+Algo(0.6/0.4):  S4>N1>N2>S2>N3>N5>N4>S3
+Main Algo:  	S4(0.40)>N1(0.00)>N2(0.00)>S2(0.63)>N3(0.00)>N5(0.50)>N4(0.00)>S3(0.50)
+Algo(0.7/0.3): 	S4(0.194,0.400,0.256)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.650,0.625,0.642)>N3(1.000,0.000,0.660)>N5(0.856,0.500,0.749)>N4(1.000,0.000,0.750)>S3(0.956,0.500,0.819)
+Algo(0.6/0.4): 	S4(0.194,0.400,0.276)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.650,0.625,0.640)>N3(1.000,0.000,0.660)>N5(0.856,0.500,0.714)>N4(1.000,0.000,0.750)>S3(0.956,0.500,0.774)
+----------------------------------
+
+[ 6 ] 7PM 1/31/2025 -- !!!! NO MATCH !!!!!
+Data:			17:30,18:30,18:06,17:00;6,5,4,1
+Manny:			N5>N1>N2>S2>N3>S4>N4>S3
+Main Algo:		N5>N1>N2>N3>N4>S2>S4>S3
+Algo(0.7/0.3):  N5>N1>S2>N2>N3>S4>N4>S3
+Algo(0.6/0.4):  N5>N1>N2>S2>N3>S4>N4>S3
+Main Algo:  	N5(0.50)>N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>S2(0.75)>S4(0.80)>S3(0.83)
+Algo(0.7/0.3): 	N5(0.333,0.500,0.383)>N1(1.000,0.000,0.500)>S2(0.500,0.750,0.575)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S4(0.700,0.800,0.730)>N4(1.000,0.000,0.750)>S3(0.833,0.833,0.833)
+Algo(0.6/0.4): 	N5(0.333,0.500,0.400)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.500,0.750,0.600)>N3(1.000,0.000,0.660)>S4(0.700,0.800,0.740)>N4(1.000,0.000,0.750)>S3(0.833,0.833,0.833)
+----------------------------------
+
+[ 7 ] 7PM 1/30/2025 -- !!!! NO MATCH !!!!!
+Data:			18:34,18:42,18:18,18:34;6,5,4,2
+Manny:			N1>N2>N3>N4>S4>S2>S3>N5
+Main Algo:		N1>N2>N3>N4>S4>S2>N5>S3
+Algo(0.7/0.3):  N1>N2>N3>N4>S4>S2>S3>N5
+Algo(0.6/0.4):  N1>N2>N3>N4>S4>S2>S3>N5
+Main Algo:  	N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>S4(0.80)>S2(0.75)>N5(1.00)>S3(0.83)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.767,0.800,0.777)>S2(0.856,0.750,0.824)>S3(0.900,0.833,0.880)>N5(0.856,1.000,0.899)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.767,0.800,0.780)>S2(0.856,0.750,0.814)>S3(0.900,0.833,0.873)>N5(0.856,1.000,0.914)
+----------------------------------
+
+[ 8 ] 7PM 1/29/2025 -- !!!! NO MATCH !!!!!
+Data:			18:12,18:13,17:44,18:06;6,5,4,2
+Manny:			N1>N2>N3>N4>S4>N5>S2>S3
+Main Algo:		N1>N2>N3>N4>S4>N5>S2>S3
+Algo(0.7/0.3):  N1>N2>S4>N3>S2>N4>S3>N5
+Algo(0.6/0.4):  N1>N2>N3>S4>S2>N4>S3>N5
+Main Algo:  	N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>S4(0.80)>N5(1.00)>S2(0.75)>S3(0.83)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.578,0.800,0.645)>N3(1.000,0.000,0.660)>S2(0.733,0.750,0.738)>N4(1.000,0.000,0.750)>S3(0.739,0.833,0.767)>N5(0.700,1.000,0.790)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S4(0.578,0.800,0.667)>S2(0.733,0.750,0.740)>N4(1.000,0.000,0.750)>S3(0.739,0.833,0.777)>N5(0.700,1.000,0.820)
+----------------------------------
+
+7PM 1/28/2025 -- Match
+Data:			18:26,18:41,18:33,18:37;7,7,6,3
+Manny:			N1>N2>N3>N4> N1>N2>N3>N4>S4>N5
+Main Algo:		N1>N2>N3>N4>N1>N2>N3>N4>S4>N5
+Algo(0.7/0.3):  N1>N2>N3>N4>N1>N2>N3>N4>S4>N5
+Algo(0.6/0.4):  N1>N2>N3>N4>N1>N2>N3>N4>S4>N5
+Main Algo:  	N1>N2>N3>N4>N1>N2>N3>N4>S4>N5
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.850,1.200,0.955)>N5(0.872,1.500,1.060)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.850,1.200,0.990)>N5(0.872,1.500,1.123)
+----------------------------------
+
+7PM 1/27/2025 -- Match
+Data:			17:38,16:34,18:47,18:24;4,4,4,2
+Manny:			N1>S2>N2>N3>S3>N4>N5>S4
+Main Algo:		S3>N1>S2>N2>N3>N4>N5>S4
+Algo(0.7/0.3):  S3>N1>S2>N2>N3>N4>N5>S4
+Algo(0.6/0.4):  S3>N1>S2>N2>N3>N4>S4>N5
+Main Algo:  	S3(0.67)>N1(0.00)>S2(0.50)>N2(0.00)>N3(0.00)>N4(0.00)>N5(1.00)>S4(0.80)
+Algo(0.7/0.3): 	S3(0.189,0.667,0.332)>N1(1.000,0.000,0.500)>S2(0.544,0.500,0.531)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.800,1.000,0.860)>S4(0.928,0.800,0.890)
+Algo(0.6/0.4): 	S3(0.189,0.667,0.380)>N1(1.000,0.000,0.500)>S2(0.544,0.500,0.526)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.928,0.800,0.877)>N5(0.800,1.000,0.880)
+----------------------------------
+
+[ 9 ] 7PM Test case high output S4=5 -- !!!! NO MATCH !!!!!
+Data:			14:45,16:55,15:44,18:00;6,6,5,3
+Manny:			N1>N2>N3>N4>S2>N1>N2>S4>N3>N4>S3>N5
+Main Algo:		N1>N2>N3>N4>S2>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3):  S2>N1>N2>N3>N4>N1>S3>S4>N2>N3>N4>N5
+Algo(0.6/0.4):  S2>N1>N2>N3>N4>N1>N2>S4>S3>N3>N4>N5
+Main Algo:  	N1>N2>N3>N4>S2>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3): 	S2(0.000,0.750,0.225)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N1(1.000,0.000,0.500)>S3(0.306,1.000,0.514)>S4(0.000,1.000,0.300)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.667,1.500,0.917)
+Algo(0.6/0.4): 	S2(0.000,0.750,0.300)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.000,1.000,0.400)>S3(0.306,1.000,0.584)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.667,1.500,1.000)
+----------------------------------
+
+[ 10 ] 7PM Test case S2=5 -- !!!! NO MATCH !!!!!
+Data:			17:38,16:55,18:28,18:00;5,5,6,2
+Manny:			N1>S2>N2>N3>N4>S3>N5>N1>S2>N2>N3>N4>S4>S3>N5
+Main Algo:		N1>S2>N2>N3>N4>S3>N5>N1>S2>N2>N3>N4>S3>N5>S4
+Algo(0.7/0.3):  S3>N1>S2>N2>N3>N4>N5>S3>N1>S2>N2>N3>N4>N5>S4
+Algo(0.6/0.4):  N1>S3>S2>N2>N3>N4>N5>N1>S3>S2>N2>N3>N4>N5>S4
+Main Algo:  	N1>S2>N2>N3>N4>S3>N5>N1>S2>N2>N3>N4>S3>N5>S4
+Algo(0.7/0.3): 	S3(0.306,0.833,0.464)>N1(1.000,0.000,0.500)>S2(0.544,0.625,0.568)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.667,1.000,0.767)>S3(0.306,0.833,0.464)>N1(1.000,0.000,0.500)>S2(0.544,0.625,0.568)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.667,1.000,0.767)>S4(0.822,1.200,0.935)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>S3(0.306,0.833,0.517)>S2(0.544,0.625,0.576)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.667,1.000,0.800)>N1(1.000,0.000,0.500)>S3(0.306,0.833,0.517)>S2(0.544,0.625,0.576)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.667,1.000,0.800)>S4(0.822,1.200,0.973)
+----------------------------------
+
+[ 11 ] 7PM 1/26/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			17:38,16:55,18:28,18:00;5,3,3,1
+Manny:			S3>N1>N2>S2>N5>N3>N4>S4
+Main Algo:		S3>N1>S2>N2>N5>N3>S4>N4
+Algo(0.7/0.3):  S3>N1>S2>N2>N5>N3>N4>S4
+Algo(0.6/0.4):  S3>N1>S2>N2>N5>N3>S4>N4
+Main Algo:  	S3(0.50)>N1(0.00)>S2(0.63)>N2(0.00)>N5(0.50)>N3(0.00)>S4(0.60)>N4(0.00)
+Algo(0.7/0.3): 	S3(0.306,0.500,0.364)>N1(1.000,0.000,0.500)>S2(0.544,0.625,0.568)>N2(1.000,0.000,0.580)>N5(0.667,0.500,0.617)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.822,0.600,0.755)
+Algo(0.6/0.4): 	S3(0.306,0.500,0.384)>N1(1.000,0.000,0.500)>S2(0.544,0.625,0.576)>N2(1.000,0.000,0.580)>N5(0.667,0.500,0.600)>N3(1.000,0.000,0.660)>S4(0.822,0.600,0.733)>N4(1.000,0.000,0.750)
+----------------------------------
+
+[ 12 ] 7PM 1/25/2025 -- !!!! NO MATCH !!!!!
+Data:			17:31,18:05,17:20,17:55;4,4,3,2
+Manny:			S4>N1>S2>N2>S3>N3>N4>N5
+Main Algo:		S4>N1>S2>N2>S3>N3>N4>N5
+Algo(0.7/0.3):  S4>N1>S2>N2>N3>S3>N5>N4
+Algo(0.6/0.4):  N1>S2>S4>N2>N3>S3>N4>N5
+Main Algo:  	S4(0.60)>N1(0.00)>S2(0.50)>N2(0.00)>S3(0.67)>N3(0.00)>N4(0.00)>N5(1.00)
+Algo(0.7/0.3): 	S4(0.444,0.600,0.491)>N1(1.000,0.000,0.500)>S2(0.506,0.500,0.504)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.694,0.667,0.686)>N5(0.639,1.000,0.747)>N4(1.000,0.000,0.750)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>S2(0.506,0.500,0.504)>S4(0.444,0.600,0.506)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.694,0.667,0.683)>N4(1.000,0.000,0.750)>N5(0.639,1.000,0.783)
+----------------------------------
+
+[ 13 ] 7PM Test Cases for High Output Scenario (S3 has 6 admissions)) -- !!!! NO MATCH !!!!!
+Data:			17:31,18:01,18:30,18:45;6,6,5,2
+Manny:			N1>N2>N3>N4>S2>N5>N1>N2>S4>N3>N4>S3>N5
+Main Algo:		N1>N2>N3>N4>S2>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3):  N1>S2>N2>N3>N4>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.6/0.4):  N1>N2>S2>N3>N4>N5>N1>N2>S4>N3>N4>S3>N5
+Main Algo:  	N1>N2>N3>N4>S2>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>S2(0.506,0.750,0.579)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.917,1.000,0.942)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.833,1.000,0.883)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.672,1.000,0.770)>N5(0.917,1.000,0.942)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.506,0.750,0.604)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.917,1.000,0.950)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.833,1.000,0.900)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.672,1.000,0.803)>N5(0.917,1.000,0.950)
+----------------------------------
+
+[ 14 ] 7PM Test Cases for High Output Scenario 1 (S4 has 6 admissions) -- !!!! NO MATCH !!!!!
+Data:			17:31,18:01,18:30,18:45;6,4,6,3
+Manny:			N1>N2>S3>N3>N4>S2>N1>N2>S3>N3>N4>S4>N5
+Main Algo:		N1>N2>S3>N3>N4>S2>N1>N2>S3>N3>N4>S4>N5
+Algo(0.7/0.3):  N1>S2>N2>N3>S3>N4>N1>N2>N3>S3>N4>S4>N5
+Algo(0.6/0.4):  N1>N2>S2>N3>S3>N4>N1>N2>N3>S3>N4>S4>N5
+Main Algo:  	N1>N2>S3>N3>N4>S2>N1>N2>S3>N3>N4>S4>N5
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>S2(0.506,0.750,0.579)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.672,0.667,0.670)>N4(1.000,0.000,0.750)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.672,0.667,0.670)>N4(1.000,0.000,0.750)>S4(0.833,1.200,0.943)>N5(0.917,1.500,1.092)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.506,0.750,0.604)>N3(1.000,0.000,0.660)>S3(0.672,0.667,0.670)>N4(1.000,0.000,0.750)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.672,0.667,0.670)>N4(1.000,0.000,0.750)>S4(0.833,1.200,0.980)>N5(0.917,1.500,1.150)
+----------------------------------
+
+[ 15 ] 7PM Test Cases for High Output Scenario 1 (S3 has 6 admissions), Scenario 2 (S5 has 5 admissions) -- !!!! NO MATCH !!!!!
+Data:			17:31,18:01,18:30,18:45;6,6,5,2
+Manny:			N1>N2>N3>N4>S2>N5>N1>N2>S4>N3>N4>S3>N5
+Main Algo:		N1>N2>N3>N4>S2>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3):  N1>S2>N2>N3>N4>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.6/0.4):  N1>N2>S2>N3>N4>N5>N1>N2>S4>N3>N4>S3>N5
+Main Algo:  	N1>N2>N3>N4>S2>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>S2(0.506,0.750,0.579)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.917,1.000,0.942)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.833,1.000,0.883)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.672,1.000,0.770)>N5(0.917,1.000,0.942)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.506,0.750,0.604)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.917,1.000,0.950)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.833,1.000,0.900)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.672,1.000,0.803)>N5(0.917,1.000,0.950)
+----------------------------------
+
+[ 16 ] 7PM Test Cases for High Output Scenario 3 (S3 has 5 admissions) -- !!!! NO MATCH !!!!!
+Data:			17:31,18:01,18:30,18:45;6,5,4,2
+Manny:			N1>N2>N3>N4>S2>S3>S4>N5
+Main Algo:		N1>N2>N3>N4>S2>S3>S4>N5
+Algo(0.7/0.3):  N1>S2>N2>N3>S3>N4>S4>N5
+Algo(0.6/0.4):  N1>N2>S2>N3>S3>N4>S4>N5
+Main Algo:  	N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>S2(0.75)>S3(0.83)>S4(0.80)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>S2(0.506,0.750,0.579)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.672,0.833,0.720)>N4(1.000,0.000,0.750)>S4(0.833,0.800,0.823)>N5(0.917,1.000,0.942)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.506,0.750,0.604)>N3(1.000,0.000,0.660)>S3(0.672,0.833,0.736)>N4(1.000,0.000,0.750)>S4(0.833,0.800,0.820)>N5(0.917,1.000,0.950)
+----------------------------------
+
+[ 17 ] 7PM 1/24/2025 -- !!!! NO MATCH !!!!!
+Data:			17:07,17:03,18:00,18:05;4,4,3,1
+Manny:			S3>S2>N1>N2>S4>N5>N3>N4
+Main Algo:		S3>S2>N1>N2>S4>N5>N3>N4
+Algo(0.7/0.3):  S2>S3>N1>N2>N5>S4>N3>N4
+Algo(0.6/0.4):  S2>S3>N1>N2>N5>S4>N3>N4
+Main Algo:  	S3(0.67)>S2(0.50)>N1(0.00)>N2(0.00)>S4(0.60)>N5(0.50)>N3(0.00)>N4(0.00)
+Algo(0.7/0.3): 	S2(0.372,0.500,0.410)>S3(0.350,0.667,0.445)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N5(0.694,0.500,0.636)>S4(0.667,0.600,0.647)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)
+Algo(0.6/0.4): 	S2(0.372,0.500,0.423)>S3(0.350,0.667,0.477)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N5(0.694,0.500,0.616)>S4(0.667,0.600,0.640)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)
+----------------------------------
+
+[ 18 ] 7PM 12/09/2024 -- !!!! NO MATCH !!!!!
+Data:			18:39,18:48,17:29,16:21;6,5,4,2
+Manny:			N1>N2>N3>N4>N5>S4>S2>S3
+Main Algo:		N1>N2>N3>N4>N5>S4>S2>S3
+Algo(0.7/0.3):  N5>N1>N2>S4>N3>N4>S2>S3
+Algo(0.6/0.4):  N5>N1>N2>S4>N3>N4>S2>S3
+Main Algo:  	N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>N5(1.00)>S4(0.80)>S2(0.75)>S3(0.83)
+Algo(0.7/0.3): 	N5(0.117,1.000,0.382)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.494,0.800,0.586)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.883,0.750,0.843)>S3(0.933,0.833,0.903)
+Algo(0.6/0.4): 	N5(0.117,1.000,0.470)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.494,0.800,0.616)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.883,0.750,0.830)>S3(0.933,0.833,0.893)
+----------------------------------
+
+[ 19 ] 7PM 12/10/2024 -- !!!! NO MATCH !!!!!
+Data:			17:37,18:17,17:11,18:28;6,4,3,2
+Manny:			S4>N1>N2>S3>N3>N4>S2>N5
+Main Algo:		S4>N1>N2>S3>N3>N4>S2>N5
+Algo(0.7/0.3):  S4>N1>N2>S2>N3>S3>N4>N5
+Algo(0.6/0.4):  S4>N1>N2>S2>N3>S3>N4>N5
+Main Algo:  	S4(0.60)>N1(0.00)>N2(0.00)>S3(0.67)>N3(0.00)>N4(0.00)>S2(0.75)>N5(1.00)
+Algo(0.7/0.3): 	S4(0.394,0.600,0.456)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.539,0.750,0.602)>N3(1.000,0.000,0.660)>S3(0.761,0.667,0.733)>N4(1.000,0.000,0.750)>N5(0.822,1.000,0.875)
+Algo(0.6/0.4): 	S4(0.394,0.600,0.476)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.539,0.750,0.623)>N3(1.000,0.000,0.660)>S3(0.761,0.667,0.723)>N4(1.000,0.000,0.750)>N5(0.822,1.000,0.893)
+----------------------------------
+
+[ 20 ] 7PM 12/11/2024…COMP Note: N5 18:45 -- !!!! NO MATCH !!!!!
+Data:			15:30,15:50,15:50,18:45;4,3,3,1
+Manny:			S2>S3>S4>N1>N2>N3>N4>N5
+Main Algo:		S2>S3>S4>N1>N2>N3>N4>N5
+Algo(0.7/0.3):  S3>S2>S4>N1>N2>N3>N4>N5
+Algo(0.6/0.4):  S3>S2>S4>N1>N2>N3>N4>N5
+Main Algo:  	S2(0.50)>S3(0.50)>S4(0.60)>N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>N5(0.50)
+Algo(0.7/0.3): 	S3(0.000,0.500,0.150)>S2(0.000,0.500,0.150)>S4(0.000,0.600,0.180)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.917,0.500,0.792)
+Algo(0.6/0.4): 	S3(0.000,0.500,0.200)>S2(0.000,0.500,0.200)>S4(0.000,0.600,0.240)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.917,0.500,0.750)
+----------------------------------
+
+[ 21 ] 7PM 12/14/2024 -- !!!! NO MATCH !!!!!
+Data:			17:31,18:40,18:43,18:49;6,5,5,2
+Manny:			N1>N2>N3>N4>S2>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Main Algo:		N1>N2>N3>N4>S2>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3):  N1>S2>N2>N3>N4>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.6/0.4):  N1>N2>S2>N3>N4>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Main Algo:  	N1>N2>N3>N4>S2>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>S2(0.506,0.750,0.579)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.889,0.833,0.872)>N5(0.939,1.000,0.957)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.906,1.000,0.934)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.889,0.833,0.872)>N5(0.939,1.000,0.957)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.506,0.750,0.604)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.889,0.833,0.867)>N5(0.939,1.000,0.963)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.906,1.000,0.944)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.889,0.833,0.867)>N5(0.939,1.000,0.963)
+----------------------------------
+
+[ 22 ] 7PM 12/16/2024 COMP -- !!!! NO MATCH !!!!!
+Data:			18:45,18:46,18:46,18:45;7,6,6,3
+Manny:			N1>N2>N3>N4>N1>N2>N3>N4>S3>S4>N5
+Main Algo:		N1>N2>N3>N4>N1>N2>N3>N4>N5>S3>S4
+Algo(0.7/0.3):  N1>N2>N3>N4>N1>N2>N3>N4>S3>S4>N5
+Algo(0.6/0.4):  N1>N2>N3>N4>N1>N2>N3>N4>S3>S4>N5
+Main Algo:  	N1>N2>N3>N4>N1>N2>N3>N4>N5>S3>S4
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.922,1.000,0.945)>S4(0.922,1.200,1.005)>N5(0.917,1.500,1.092)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.922,1.000,0.953)>S4(0.922,1.200,1.033)>N5(0.917,1.500,1.150)
+----------------------------------
+
+[ 23 ] 7PM 12/18/2024 -- !!!! NO MATCH !!!!!
+Data:			18:34,17:07,17:42,18:46;6,4,4,2
+Manny:			S3>N1>N2>N3>N4>S4>S2>N5
+Main Algo:		S3>N1>N2>N3>N4>S4>S2>N5
+Algo(0.7/0.3):  S3>N1>N2>S4>N3>N4>S2>N5
+Algo(0.6/0.4):  S3>N1>N2>N3>S4>N4>S2>N5
+Main Algo:  	S3(0.67)>N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>S4(0.80)>S2(0.75)>N5(1.00)
+Algo(0.7/0.3): 	S3(0.372,0.667,0.460)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.567,0.800,0.637)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.856,0.750,0.824)>N5(0.922,1.000,0.945)
+Algo(0.6/0.4): 	S3(0.372,0.667,0.490)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S4(0.567,0.800,0.660)>N4(1.000,0.000,0.750)>S2(0.856,0.750,0.814)>N5(0.922,1.000,0.953)
+----------------------------------
+
+7PM 12/20/2024 -- Match
+Data:			18:17,18:46,18:43,18:23;6,5,4,2
+Manny:			N1>N2>N3>N4>S2>N5>S4>S3
+Main Algo:		N1>N2>N3>N4>S2>N5>S4>S3
+Algo(0.7/0.3):  N1>N2>N3>N4>S2>N5>S4>S3
+Algo(0.6/0.4):  N1>N2>N3>N4>S2>S4>N5>S3
+Main Algo:  	N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>S2(0.75)>N5(1.00)>S4(0.80)>S3(0.83)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.761,0.750,0.758)>N5(0.794,1.000,0.856)>S4(0.906,0.800,0.874)>S3(0.922,0.833,0.895)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.761,0.750,0.757)>S4(0.906,0.800,0.864)>N5(0.794,1.000,0.876)>S3(0.922,0.833,0.886)
+----------------------------------
+
+[ 24 ] 7PM 12/21/2024 COMP -- !!!! NO MATCH !!!!!
+Data:			18:47,17:55,17:58,17:00;6,4,3,1
+Manny:			N5>N1>N2>S4>N3>S3>N4>S2
+Main Algo:		N5>N1>N2>S3>S4>N3>N4>S2
+Algo(0.7/0.3):  N5>N1>N2>S4>S3>N3>N4>S2
+Algo(0.6/0.4):  N5>N1>N2>S4>S3>N3>N4>S2
+Main Algo:  	N5(0.50)>N1(0.00)>N2(0.00)>S3(0.67)>S4(0.60)>N3(0.00)>N4(0.00)>S2(0.75)
+Algo(0.7/0.3): 	N5(0.333,0.500,0.383)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.656,0.600,0.639)>S3(0.639,0.667,0.647)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.928,0.750,0.875)
+Algo(0.6/0.4): 	N5(0.333,0.500,0.400)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.656,0.600,0.634)>S3(0.639,0.667,0.650)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.928,0.750,0.857)
+----------------------------------
+
+7PM 12/22/2024 -- Match
+Data:			18:03,19:53,16:45,17:13;4,4,2,1
+Manny:			S4>N5>N1>N2>S2>N3>N4>S3
+Main Algo:		S4>N5>N1>N2>S2>N3>N4>S3
+Algo(0.7/0.3):  S4>N5>N1>N2>S2>N3>N4>S3
+Algo(0.6/0.4):  S4>N5>N1>N2>S2>N3>N4>S3
+Main Algo:  	S4(0.40)>N5(0.50)>N1(0.00)>N2(0.00)>S2(0.50)>N3(0.00)>N4(0.00)>S3(0.67)
+Algo(0.7/0.3): 	S4(0.250,0.400,0.295)>N5(0.406,0.500,0.434)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.683,0.500,0.628)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(1.294,0.667,1.106)
+Algo(0.6/0.4): 	S4(0.250,0.400,0.310)>N5(0.406,0.500,0.444)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.683,0.500,0.610)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(1.294,0.667,1.043)
+----------------------------------
+
+[ 25 ] 7PM 12/23/2024 -- !!!! NO MATCH !!!!!
+Data:			18:13,16:45,18:19,17:18;4,3,3,1
+Manny:			S3>N5>N1>N2>S2>S4>N3>N4
+Main Algo:		S3>N5>N1>N2>S2>S4>N3>N4
+Algo(0.7/0.3):  S3>N5>N1>N2>N3>S2>S4>N4
+Algo(0.6/0.4):  S3>N5>N1>N2>S2>N3>S4>N4
+Main Algo:  	S3(0.50)>N5(0.50)>N1(0.00)>N2(0.00)>S2(0.50)>S4(0.60)>N3(0.00)>N4(0.00)
+Algo(0.7/0.3): 	S3(0.250,0.500,0.325)>N5(0.433,0.500,0.453)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.739,0.500,0.667)>S4(0.772,0.600,0.720)>N4(1.000,0.000,0.750)
+Algo(0.6/0.4): 	S3(0.250,0.500,0.350)>N5(0.433,0.500,0.460)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.739,0.500,0.643)>N3(1.000,0.000,0.660)>S4(0.772,0.600,0.703)>N4(1.000,0.000,0.750)
+----------------------------------
+
+[ 26 ] 7PM 12/28/2024 -- !!!! NO MATCH !!!!!
+Data:			18:44,18:06,18:37,17:45;5,3,3,1
+Manny:			N1>N5>N2>S3>N3>S4>S2>N4
+Main Algo:		N1>N5>N2>S3>N3>S4>S2>N4
+Algo(0.7/0.3):  N1>N5>N2>S3>N3>N4>S4>S2
+Algo(0.6/0.4):  N1>N5>N2>S3>N3>N4>S4>S2
+Main Algo:  	N1(0.00)>N5(0.50)>N2(0.00)>S3(0.50)>N3(0.00)>S4(0.60)>S2(0.63)>N4(0.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N5(0.583,0.500,0.558)>N2(1.000,0.000,0.580)>S3(0.700,0.500,0.640)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.872,0.600,0.790)>S2(0.911,0.625,0.825)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N5(0.583,0.500,0.550)>N2(1.000,0.000,0.580)>S3(0.700,0.500,0.620)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.872,0.600,0.763)>S2(0.911,0.625,0.797)
+----------------------------------
+
+7PM 12/29/2024 COMP -- Match
+Data:			17:58,18:55,17:58,18:36;5,5,3,2
+Manny:			N1>N2>S4>N3>S2>N4>N5>S3
+Main Algo:		N1>N2>S4>S2>N3>N4>N5>S3
+Algo(0.7/0.3):  N1>N2>S4>S2>N3>N4>N5>S3
+Algo(0.6/0.4):  N1>N2>S4>S2>N3>N4>S3>N5
+Main Algo:  	N1(0.00)>N2(0.00)>S4(0.60)>S2(0.63)>N3(0.00)>N4(0.00)>N5(1.00)>S3(0.83)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.656,0.600,0.639)>S2(0.656,0.625,0.647)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.867,1.000,0.907)>S3(0.972,0.833,0.930)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.656,0.600,0.634)>S2(0.656,0.625,0.644)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.972,0.833,0.916)>N5(0.867,1.000,0.920)
+----------------------------------
+
+[ 27 ] 7PM 12/30/2024 -- !!!! NO MATCH !!!!!
+Data:			17:46,17:50,16:40,17:01;5,4,3,1
+Manny:			S4>N5>N1>S2>S3>N2>N3>N4
+Main Algo:		S4>N5>N1>S2>S3>N2>N3>N4
+Algo(0.7/0.3):  S4>N5>N1>N2>S2>S3>N3>N4
+Algo(0.6/0.4):  S4>N5>N1>N2>S2>S3>N3>N4
+Main Algo:  	S4(0.60)>N5(0.50)>N1(0.00)>S2(0.63)>S3(0.67)>N2(0.00)>N3(0.00)>N4(0.00)
+Algo(0.7/0.3): 	S4(0.222,0.600,0.335)>N5(0.339,0.500,0.387)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.589,0.625,0.600)>S3(0.611,0.667,0.628)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)
+Algo(0.6/0.4): 	S4(0.222,0.600,0.373)>N5(0.339,0.500,0.403)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.589,0.625,0.603)>S3(0.611,0.667,0.633)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)
+----------------------------------
+
+[ 28 ] 7PM 12/31/2024 -- !!!! NO MATCH !!!!!
+Data:			17:29,17:15,17:16,17:41;4,3,3,2
+Manny:			S3>S4>S2>N1>N2>N3>N4>N5
+Main Algo:		S3>S4>S2>N1>N2>N3>N4>N5
+Algo(0.7/0.3):  S3>S4>S2>N1>N2>N3>N5>N4
+Algo(0.6/0.4):  S3>S4>S2>N1>N2>N3>N5>N4
+Main Algo:  	S3(0.50)>S4(0.60)>S2(0.50)>N1(0.00)>N2(0.00)>N3(0.00)>N4(0.00)>N5(1.00)
+Algo(0.7/0.3): 	S3(0.417,0.500,0.442)>S4(0.422,0.600,0.475)>S2(0.494,0.500,0.496)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N5(0.561,1.000,0.693)>N4(1.000,0.000,0.750)
+Algo(0.6/0.4): 	S3(0.417,0.500,0.450)>S4(0.422,0.600,0.493)>S2(0.494,0.500,0.496)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N5(0.561,1.000,0.737)>N4(1.000,0.000,0.750)
+----------------------------------
+
+7PM 01/01/2025 - COMP -- Match
+Data:			18:59,17:19,18:01,18:32;5,3,3,2
+Manny:			S3>N1>N2>N3>S4>N4>S2>N5
+Main Algo:		S3>N1>N2>S4>N3>N4>S2>N5
+Algo(0.7/0.3):  S3>N1>N2>S4>N3>N4>S2>N5
+Algo(0.6/0.4):  S3>N1>N2>S4>N3>N4>S2>N5
+Main Algo:  	S3(0.50)>N1(0.00)>N2(0.00)>S4(0.60)>N3(0.00)>N4(0.00)>S2(0.63)>N5(1.00)
+Algo(0.7/0.3): 	S3(0.439,0.500,0.457)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.672,0.600,0.650)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.994,0.625,0.883)>N5(0.844,1.000,0.891)
+Algo(0.6/0.4): 	S3(0.439,0.500,0.463)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.672,0.600,0.643)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.994,0.625,0.846)>N5(0.844,1.000,0.906)
+----------------------------------
+
+[ 29 ] 7PM 01/02/2025, COMP -- !!!! NO MATCH !!!!!
+Data:			18:55,17:54,18:36,18:49;4,3,3,2
+Manny:			N1>N2>S3> N3>N4>S4>S2>N5
+Main Algo:		N1>S3>N2>N3>S4>N4>S2>N5
+Algo(0.7/0.3):  N1>N2>S3>N3>N4>S4>S2>N5
+Algo(0.6/0.4):  N1>N2>S3>N3>N4>S4>S2>N5
+Main Algo:  	N1(0.00)>S3(0.50)>N2(0.00)>N3(0.00)>S4(0.60)>N4(0.00)>S2(0.50)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S3(0.633,0.500,0.593)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.867,0.600,0.787)>S2(0.972,0.500,0.830)>N5(0.939,1.000,0.957)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S3(0.633,0.500,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.867,0.600,0.760)>S2(0.972,0.500,0.783)>N5(0.939,1.000,0.963)
+----------------------------------
+
+[ 30 ] 7PM 01/03/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			18:41,18:46,18:32,18:33;5,4,4,2
+Manny:			N1>N2>N3> N4>S2>S4>S3>N5
+Main Algo:		N1>N2>N3>S2>N4>S3>S4>N5
+Algo(0.7/0.3):  N1>N2>N3>N4>S2>S4>S3>N5
+Algo(0.6/0.4):  N1>N2>N3>N4>S2>S3>S4>N5
+Main Algo:  	N1(0.00)>N2(0.00)>N3(0.00)>S2(0.63)>N4(0.00)>S3(0.67)>S4(0.80)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.894,0.625,0.813)>S4(0.844,0.800,0.831)>S3(0.922,0.667,0.845)>N5(0.850,1.000,0.895)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.894,0.625,0.786)>S3(0.922,0.667,0.820)>S4(0.844,0.800,0.826)>N5(0.850,1.000,0.910)
+----------------------------------
+
+[ 31 ] 7PM 01/04/2025 cutoff 0.63 -- !!!! NO MATCH !!!!!
+Data:			18:41,18:02,18:55,18:21;6,4,4,2
+Manny:			N1>N2>S3>N3>N4>N5>S2>S4
+Main Algo:		N1>N2>S3>N3>N4>N5>S2>S4
+Algo(0.7/0.3):  N1>N2>N3>S3>N4>N5>S2>S4
+Algo(0.6/0.4):  N1>N2>N3>S3>N4>S2>N5>S4
+Main Algo:  	N1(0.00)>N2(0.00)>S3(0.67)>N3(0.00)>N4(0.00)>N5(1.00)>S2(0.75)>S4(0.80)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.678,0.667,0.675)>N4(1.000,0.000,0.750)>N5(0.783,1.000,0.848)>S2(0.894,0.750,0.851)>S4(0.972,0.800,0.920)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.678,0.667,0.674)>N4(1.000,0.000,0.750)>S2(0.894,0.750,0.836)>N5(0.783,1.000,0.870)>S4(0.972,0.800,0.903)
+----------------------------------
+
+[ 32 ] 7PM 01/05/2025. COMP -- !!!! NO MATCH !!!!!
+Data:			17:47,18:46,18:28,17:04;5,4,3,1
+Manny:			N5>N1>N2> S2>N3>N4>S4>S3
+Main Algo:		N5>N1>S2>N2>N3>S4>N4>S3
+Algo(0.7/0.3):  N5>N1>N2>S2>N3>N4>S4>S3
+Algo(0.6/0.4):  N5>N1>N2>S2>N3>S4>N4>S3
+Main Algo:  	N5(0.50)>N1(0.00)>S2(0.63)>N2(0.00)>N3(0.00)>S4(0.60)>N4(0.00)>S3(0.67)
+Algo(0.7/0.3): 	N5(0.356,0.500,0.399)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.594,0.625,0.603)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S4(0.822,0.600,0.755)>S3(0.922,0.667,0.845)
+Algo(0.6/0.4): 	N5(0.356,0.500,0.414)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.594,0.625,0.606)>N3(1.000,0.000,0.660)>S4(0.822,0.600,0.733)>N4(1.000,0.000,0.750)>S3(0.922,0.667,0.820)
+----------------------------------
+
+[ 33 ] 7PM 01/06/2025 -- !!!! NO MATCH !!!!!
+Data:			18:35,18:34,17:49,18:38;5,4,3,2
+Manny:			N1>S4>N2>N3>S3>S2>N4>N5
+Main Algo:		N1>S4>N2>N3>S3>S2>N4>N5
+Algo(0.7/0.3):  N1>N2>S4>N3>N4>S2>S3>N5
+Algo(0.6/0.4):  N1>N2>S4>N3>N4>S2>S3>N5
+Main Algo:  	N1(0.00)>S4(0.60)>N2(0.00)>N3(0.00)>S3(0.67)>S2(0.63)>N4(0.00)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.606,0.600,0.604)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.861,0.625,0.790)>S3(0.856,0.667,0.799)>N5(0.878,1.000,0.915)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.606,0.600,0.604)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.861,0.625,0.767)>S3(0.856,0.667,0.780)>N5(0.878,1.000,0.927)
+----------------------------------
+
+[ 34 ] 7PM 01/07/2025 -- !!!! NO MATCH !!!!!
+Data:			18:46,17:30,17:40,18:38;6,5,5,2
+Manny:			N1>N2>N3>N4>S3>N5>S2>N1>N2>S4>N3>N4>S3>N5
+Main Algo:		N1>N2>N3>N4>S3>N5>S2>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3):  N1>N2>S3>N3>N4>S2>N5>N1>N2>S4>S3>N3>N4>N5
+Algo(0.6/0.4):  N1>N2>S3>N3>N4>S2>N5>N1>N2>S4>S3>N3>N4>N5
+Main Algo:  	N1>N2>N3>N4>S3>N5>S2>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S3(0.500,0.833,0.600)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.922,0.750,0.870)>N5(0.878,1.000,0.915)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.556,1.000,0.689)>S3(0.500,0.833,0.600)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.878,1.000,0.915)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S3(0.500,0.833,0.633)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.922,0.750,0.853)>N5(0.878,1.000,0.927)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.556,1.000,0.734)>S3(0.500,0.833,0.633)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.878,1.000,0.927)
+----------------------------------
+
+7PM 01/08/2025 -- Match
+Data:			18:40,15:46,16:45,17:48;6,3,3,1
+Manny:			S3>S4>N1>N5>N2>N3>N4>S2
+Main Algo:		S3>S4>N1>N5>N2>N3>N4>S2
+Algo(0.7/0.3):  S3>S4>N1>N5>N2>N3>N4>S2
+Algo(0.6/0.4):  S3>S4>N1>N5>N2>N3>N4>S2
+Main Algo:  	S3(0.50)>S4(0.60)>N1(0.00)>N5(0.50)>N2(0.00)>N3(0.00)>N4(0.00)>S2(0.75)
+Algo(0.7/0.3): 	S3(0.000,0.500,0.150)>S4(0.250,0.600,0.355)>N1(1.000,0.000,0.500)>N5(0.600,0.500,0.570)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.889,0.750,0.847)
+Algo(0.6/0.4): 	S3(0.000,0.500,0.200)>S4(0.250,0.600,0.390)>N1(1.000,0.000,0.500)>N5(0.600,0.500,0.560)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.889,0.750,0.833)
+----------------------------------
+
+[ 35 ] 7PM 01/09/2025 -- !!!! NO MATCH !!!!!
+Data:			18:39,19:00,18:26,18:24;6,5,5,2
+Manny:			N1>N2>N3>N4>N5>S2>S3>N1>N2>S4>N3>N4>N5>S3
+Main Algo:		N1>N2>N3>N4>N5>S2>S3>N1>N2>S4>N3>N4>N5>S3
+Algo(0.7/0.3):  N1>N2>N3>N4>S2>N5>S3>N1>N2>S4>N3>N4>N5>S3
+Algo(0.6/0.4):  N1>N2>N3>N4>S2>N5>S3>N1>N2>S4>N3>N4>N5>S3
+Main Algo:  	N1>N2>N3>N4>N5>S2>S3>N1>N2>S4>N3>N4>N5>S3
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.883,0.750,0.843)>N5(0.800,1.000,0.860)>S3(1.000,0.833,0.950)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.811,1.000,0.868)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.800,1.000,0.860)>S3(1.000,0.833,0.950)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.883,0.750,0.830)>N5(0.800,1.000,0.880)>S3(1.000,0.833,0.933)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.811,1.000,0.887)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>N5(0.800,1.000,0.880)>S3(1.000,0.833,0.933)
+----------------------------------
+
+[ 36 ] 7PM 01/10/2025 -- !!!! NO MATCH !!!!!
+Data:			18:15,18:39,18:41,17:53;5,4,4,2
+Manny:			N1>N2>S2>N3>S3>N4>N5>S4
+Main Algo:		N1>N2>S2>N3>S3>N4>N5>S4
+Algo(0.7/0.3):  N1>N2>N3>S2>N5>N4>S3>S4
+Algo(0.6/0.4):  N1>N2>N3>S2>N4>N5>S3>S4
+Main Algo:  	N1(0.00)>N2(0.00)>S2(0.63)>N3(0.00)>S3(0.67)>N4(0.00)>N5(1.00)>S4(0.80)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.750,0.625,0.712)>N5(0.628,1.000,0.740)>N4(1.000,0.000,0.750)>S3(0.883,0.667,0.818)>S4(0.894,0.800,0.866)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.750,0.625,0.700)>N4(1.000,0.000,0.750)>N5(0.628,1.000,0.777)>S3(0.883,0.667,0.797)>S4(0.894,0.800,0.856)
+----------------------------------
+
+[ 37 ] 7PM 01/11/2025 -- !!!! NO MATCH !!!!!
+Data:			18:14,18:12,19:02,17:26;5,4,3,1
+Manny:			N5>N1>N2>S3>S2>N3>N4>S4
+Main Algo:		N5>N1>N2>S3>S2>N3>N4>S4
+Algo(0.7/0.3):  N5>N1>N2>N3>S2>S3>N4>S4
+Algo(0.6/0.4):  N5>N1>N2>N3>S2>S3>N4>S4
+Main Algo:  	N5(0.50)>N1(0.00)>N2(0.00)>S3(0.67)>S2(0.63)>N3(0.00)>N4(0.00)>S4(0.60)
+Algo(0.7/0.3): 	N5(0.478,0.500,0.485)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.744,0.625,0.708)>S3(0.733,0.667,0.713)>N4(1.000,0.000,0.750)>S4(1.011,0.600,0.888)
+Algo(0.6/0.4): 	N5(0.478,0.500,0.487)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.744,0.625,0.696)>S3(0.733,0.667,0.707)>N4(1.000,0.000,0.750)>S4(1.011,0.600,0.847)
+----------------------------------
+
+[ 38 ] 7PM 01/12/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			16:55,18:45,17:41,18:17;3,3,2,1
+Manny:			S2>N1>S4>N2>N3>N5>N4>S3
+Main Algo:		S2>N1>S4>N2>N5>N3>N4>S3
+Algo(0.7/0.3):  S2>N1>S4>N2>N3>N5>N4>S3
+Algo(0.6/0.4):  S2>S4>N1>N2>N5>N3>N4>S3
+Main Algo:  	S2(0.38)>N1(0.00)>S4(0.40)>N2(0.00)>N5(0.50)>N3(0.00)>N4(0.00)>S3(0.50)
+Algo(0.7/0.3): 	S2(0.306,0.375,0.327)>N1(1.000,0.000,0.500)>S4(0.561,0.400,0.513)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N5(0.761,0.500,0.683)>N4(1.000,0.000,0.750)>S3(0.917,0.500,0.792)
+Algo(0.6/0.4): 	S2(0.306,0.375,0.334)>S4(0.561,0.400,0.497)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N5(0.761,0.500,0.657)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.917,0.500,0.750)
+----------------------------------
+
+[ 39 ] 7PM 01/13/2025 -- !!!! NO MATCH !!!!!
+Data:			17:32,18:12,18:25,18:19;6,5,5,2
+Manny:			N1>N2>N3>N4>S2>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Main Algo:		N1>N2>N3>N4>S2>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3):  N1>N2>S2>N3>N4>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.6/0.4):  N1>N2>S2>N3>N4>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Main Algo:  	N1>N2>N3>N4>S2>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.511,0.750,0.583)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.733,0.833,0.763)>N5(0.772,1.000,0.840)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.806,1.000,0.864)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.733,0.833,0.763)>N5(0.772,1.000,0.840)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.511,0.750,0.607)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.733,0.833,0.773)>N5(0.772,1.000,0.863)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.806,1.000,0.884)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.733,0.833,0.773)>N5(0.772,1.000,0.863)
+----------------------------------
+
+[ 40 ] 7PM 01/15/2025 -- !!!! NO MATCH !!!!!
+Data:			18:27,16:05,18:32,18:07;5,3,3,2
+Manny:			S3>N1>N2>N3>N4>S2>S4>N5
+Main Algo:		S3>N1>N2>N3>S2>S4>N4>N5
+Algo(0.7/0.3):  S3>N1>N2>N3>N4>S2>S4>N5
+Algo(0.6/0.4):  S3>N1>N2>N3>S2>S4>N4>N5
+Main Algo:  	S3(0.50)>N1(0.00)>N2(0.00)>N3(0.00)>S2(0.63)>S4(0.60)>N4(0.00)>N5(1.00)
+Algo(0.7/0.3): 	S3(0.028,0.500,0.170)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.817,0.625,0.759)>S4(0.844,0.600,0.771)>N5(0.706,1.000,0.794)
+Algo(0.6/0.4): 	S3(0.028,0.500,0.217)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.817,0.625,0.740)>S4(0.844,0.600,0.746)>N4(1.000,0.000,0.750)>N5(0.706,1.000,0.824)
+----------------------------------
+
+[ 41 ] 7PM 01/16/2025 -- !!!! NO MATCH !!!!!
+Data:			17:56,18:13,18:40,18:41;4,4,3,2
+Manny:			N1>N2>S2>N3>S3>N4>S4>N5
+Main Algo:		N1>N2>S2>S3>N3>S4>N4>N5
+Algo(0.7/0.3):  N1>N2>S2>N3>S3>N4>S4>N5
+Algo(0.6/0.4):  N1>N2>S2>N3>S3>N4>S4>N5
+Main Algo:  	N1(0.00)>N2(0.00)>S2(0.50)>S3(0.67)>N3(0.00)>S4(0.60)>N4(0.00)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.644,0.500,0.601)>N3(1.000,0.000,0.660)>S3(0.739,0.667,0.717)>N4(1.000,0.000,0.750)>S4(0.889,0.600,0.802)>N5(0.894,1.000,0.926)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S2(0.644,0.500,0.586)>N3(1.000,0.000,0.660)>S3(0.739,0.667,0.710)>N4(1.000,0.000,0.750)>S4(0.889,0.600,0.773)>N5(0.894,1.000,0.936)
+----------------------------------
+
+[ 42 ] 7PM 1/17/2025 -- !!!! NO MATCH !!!!!
+Data:			18:15,18:39,18:23,18:39;5,5,4,3
+Manny:			 N1>N2>S2>N3>N4>S4>S3>N1>N2>S2>N3>N4>N5>S4>S3
+Main Algo:		N1>N2>S2>N3>N4>S4>S3>N1>N2>S2>N3>N4>S4>S3>N5
+Algo(0.7/0.3):  N1>N2>N3>S2>N4>S4>S3>N1>N2>N3>S2>N4>S4>S3>N5
+Algo(0.6/0.4):  N1>N2>N3>S2>N4>S4>S3>N1>N2>N3>S2>N4>S4>S3>N5
+Main Algo:  	N1>N2>S2>N3>N4>S4>S3>N1>N2>S2>N3>N4>S4>S3>N5
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.750,0.625,0.712)>N4(1.000,0.000,0.750)>S4(0.794,0.800,0.796)>S3(0.883,0.833,0.868)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.750,0.625,0.712)>N4(1.000,0.000,0.750)>S4(0.794,0.800,0.796)>S3(0.883,0.833,0.868)>N5(0.883,1.500,1.068)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.750,0.625,0.700)>N4(1.000,0.000,0.750)>S4(0.794,0.800,0.796)>S3(0.883,0.833,0.863)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.750,0.625,0.700)>N4(1.000,0.000,0.750)>S4(0.794,0.800,0.796)>S3(0.883,0.833,0.863)>N5(0.883,1.500,1.130)
+----------------------------------
+
+[ 43 ] 7PM 1/18/2025 COMP -- !!!! NO MATCH !!!!!
+Data:			18:15,18:05,18:23,18:57;4,3,3,2
+Manny:			N1>N2>S3>N3>S2>S4>N4>N5
+Main Algo:		N1>N2>S3>S2>N3>S4>N4>N5
+Algo(0.7/0.3):  N1>N2>S3>N3>S2>S4>N4>N5
+Algo(0.6/0.4):  N1>N2>S3>S2>N3>S4>N4>N5
+Main Algo:  	N1(0.00)>N2(0.00)>S3(0.50)>S2(0.50)>N3(0.00)>S4(0.60)>N4(0.00)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S3(0.694,0.500,0.636)>N3(1.000,0.000,0.660)>S2(0.750,0.500,0.675)>S4(0.794,0.600,0.736)>N4(1.000,0.000,0.750)>N5(0.983,1.000,0.988)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S3(0.694,0.500,0.616)>S2(0.750,0.500,0.650)>N3(1.000,0.000,0.660)>S4(0.794,0.600,0.716)>N4(1.000,0.000,0.750)>N5(0.983,1.000,0.990)
+----------------------------------
+
+[ 44 ] 7PM 1/19/2025 -- !!!! NO MATCH !!!!!
+Data:			18:57,18:42,18:53,18:56;4,3,3,2
+Manny:			N1>N2>N3>N4>S3>S2>S4>N5
+Main Algo:		N1>N2>N3>S3>N4>S4>S2>N5
+Algo(0.7/0.3):  N1>N2>N3>N4>S3>S2>S4>N5
+Algo(0.6/0.4):  N1>N2>N3>S3>N4>S2>S4>N5
+Main Algo:  	N1(0.00)>N2(0.00)>N3(0.00)>S3(0.50)>N4(0.00)>S4(0.60)>S2(0.50)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.900,0.500,0.780)>S2(0.983,0.500,0.838)>S4(0.961,0.600,0.853)>N5(0.978,1.000,0.985)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S3(0.900,0.500,0.740)>N4(1.000,0.000,0.750)>S2(0.983,0.500,0.790)>S4(0.961,0.600,0.817)>N5(0.978,1.000,0.987)
+----------------------------------
+
+[ 45 ] 7PM 1/20/2025 -- !!!! NO MATCH !!!!!
+Data:			18:40,18:45,18:50,18:50;4,4,4,2
+Manny:			N1>N2>N3>N4>S2>S3>S4>N5
+Main Algo:		N1>N2>N3>S2>N4>S3>S4>N5
+Algo(0.7/0.3):  N1>N2>N3>N4>S2>S3>S4>N5
+Algo(0.6/0.4):  N1>N2>N3>S2>N4>S3>S4>N5
+Main Algo:  	N1(0.00)>N2(0.00)>N3(0.00)>S2(0.50)>N4(0.00)>S3(0.67)>S4(0.80)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.889,0.500,0.772)>S3(0.917,0.667,0.842)>S4(0.944,0.800,0.901)>N5(0.944,1.000,0.961)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.889,0.500,0.733)>N4(1.000,0.000,0.750)>S3(0.917,0.667,0.817)>S4(0.944,0.800,0.886)>N5(0.944,1.000,0.966)
+----------------------------------
+
+[ 46 ] 7PM 1/21/2025 -- !!!! NO MATCH !!!!!
+Data:			18:08,18:14,18:46,18:08;6,5,5,2
+Manny:			 N1>N2>N3>N4>S2>N5>S3>N1>N2>S4>N3>N4>N5>S3
+Main Algo:		N1>N2>N3>N4>S2>N5>S3>N1>N2>S4>N3>N4>N5>S3
+Algo(0.7/0.3):  N1>N2>N3>S2>N4>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Algo(0.6/0.4):  N1>N2>N3>S2>N4>S3>N5>N1>N2>S4>N3>N4>S3>N5
+Main Algo:  	N1>N2>N3>N4>S2>N5>S3>N1>N2>S4>N3>N4>N5>S3
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.711,0.750,0.723)>N4(1.000,0.000,0.750)>S3(0.744,0.833,0.771)>N5(0.711,1.000,0.798)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.922,1.000,0.945)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.744,0.833,0.771)>N5(0.711,1.000,0.798)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S2(0.711,0.750,0.727)>N4(1.000,0.000,0.750)>S3(0.744,0.833,0.780)>N5(0.711,1.000,0.827)>N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.922,1.000,0.953)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S3(0.744,0.833,0.780)>N5(0.711,1.000,0.827)
+----------------------------------
+
+[ 47 ] 7PM 1/22/2025 -- !!!! NO MATCH !!!!!
+Data:			18:56,17:51,18:16,18:37;4,3,3,2
+Manny:			N1>N2>S3>N3>S4>N4>S2>N5
+Main Algo:		N1>S3>N2>S4>N3>N4>S2>N5
+Algo(0.7/0.3):  N1>N2>S3>N3>S4>N4>S2>N5
+Algo(0.6/0.4):  N1>S3>N2>N3>S4>N4>S2>N5
+Main Algo:  	N1(0.00)>S3(0.50)>N2(0.00)>S4(0.60)>N3(0.00)>N4(0.00)>S2(0.50)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S3(0.617,0.500,0.582)>N3(1.000,0.000,0.660)>S4(0.756,0.600,0.709)>N4(1.000,0.000,0.750)>S2(0.978,0.500,0.835)>N5(0.872,1.000,0.910)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>S3(0.617,0.500,0.570)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>S4(0.756,0.600,0.694)>N4(1.000,0.000,0.750)>S2(0.978,0.500,0.787)>N5(0.872,1.000,0.923)
+----------------------------------
+
+[ 48 ] 7PM 1/23/2025 -- !!!! NO MATCH !!!!!
+Data:			18:25,18:35,17:42,18:41;5,4,3,2
+Manny:			 N1>N2>S4>N3>N4>S2>S3>N5
+Main Algo:		N1>S4>N2>N3>S2>S3>N4>N5
+Algo(0.7/0.3):  N1>S4>N2>N3>N4>S2>S3>N5
+Algo(0.6/0.4):  N1>N2>S4>N3>S2>N4>S3>N5
+Main Algo:  	N1(0.00)>S4(0.60)>N2(0.00)>N3(0.00)>S2(0.63)>S3(0.67)>N4(0.00)>N5(1.00)
+Algo(0.7/0.3): 	N1(1.000,0.000,0.500)>S4(0.567,0.600,0.577)>N2(1.000,0.000,0.580)>N3(1.000,0.000,0.660)>N4(1.000,0.000,0.750)>S2(0.806,0.625,0.752)>S3(0.861,0.667,0.803)>N5(0.894,1.000,0.926)
+Algo(0.6/0.4): 	N1(1.000,0.000,0.500)>N2(1.000,0.000,0.580)>S4(0.567,0.600,0.580)>N3(1.000,0.000,0.660)>S2(0.806,0.625,0.734)>N4(1.000,0.000,0.750)>S3(0.861,0.667,0.783)>N5(0.894,1.000,0.936)
+----------------------------------
 

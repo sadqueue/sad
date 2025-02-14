@@ -1150,11 +1150,22 @@ export function App() {
         shiftsCombined.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 if (dropdown == "17:00") {
-                    orderOfAdmissions.push(each.name);
-                } else if (dropdown == "19:00") {
-                    if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                    if (window.location.hostname === 'localhost') {
+                        orderOfAdmissions.push(`${each.name}(${each.alr},${each.clr},${each.composite})`);
+
+                    } else {
                         orderOfAdmissions.push(each.name);
 
+                    }
+                } else if (dropdown == "19:00") {
+                    if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
+                        if (window.location.hostname === 'localhost') {
+                            orderOfAdmissions.push(`${each.name}(${each.alr},${each.clr},${each.composite})`);
+
+                        } else {
+                            orderOfAdmissions.push(each.name);
+
+                        }
                     }
                 }
 
@@ -2588,7 +2599,7 @@ export function App() {
                                         onChange={(e) => {
                                             // setAllAdmissionsDataShifts({startTime: dropdown, shifts: SHIFT_TYPES})
                                             if (e.target.checked) {
-                                                setShow2(true);
+                                                // setShow2(true);
                                             }
                                             setCompositeScoreAlgorithmStatic(e.target.checked);
                                         }}
