@@ -131,7 +131,7 @@ export function App() {
         let isXIn2Hours = false;
 
         if (dropdown == "19:00"){
-            lastSaved5Pm && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+            lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
                 if (each.name == fivePm.name){
                     if (fivePm.numberOfAdmissions !== "" && 
                         (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
@@ -147,7 +147,7 @@ export function App() {
         let isXIn2Hours = "";
 
         if (dropdown == "19:00"){
-            lastSaved5Pm && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+            lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
                 if (each.name == fivePm.name){
                     if (fivePm.numberOfAdmissions !== "" && 
                         (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
@@ -923,12 +923,47 @@ export function App() {
             }
         });
         
-        let shiftsCombined = [];
+        const lessThan2Hours = [];
+        const greaterThan2Hours = [];
+
+        let hasAnyGreaterThan2Hours = false;
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                shiftsCombined.push(each);
+                if (dropdown == "19:00" && isXIn2Hours(each)){
+                    greaterThan2Hours.push(each);
+                    hasAnyGreaterThan2Hours = true;
+                } else {
+                    lessThan2Hours.push(each);
+                }
             }
         });
+        greaterThan2Hours.sort((a,b) => {
+            if (a.composite > b.composite){
+                return 1;
+            } else if (a.composite < b.composite){
+                return -1;
+            }
+            return 0;
+        });
+
+
+        if (hasAnyGreaterThan2Hours){
+            explanationArr.push("\n")
+            explanationArr.push("Step 7: Check if any roles have had 2 or more admissions in the last 2 hours. Then sort by composite score.");
+            greaterThan2Hours && greaterThan2Hours.forEach((each)=>{
+                explanationArr.push(`${each.name}: had ${getXIn2Hours(each)} admissions in the last 2 hours /  Composite Score: ${each.composite}`);
+            })
+        }
+
+        
+        let shiftsCombined = lessThan2Hours.concat(greaterThan2Hours);
+
+        // let shiftsCombined = [];
+        // timeObj.shifts.forEach((each, eachIndex) => {
+        //     if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+        //         shiftsCombined.push(each);
+        //     }
+        // });
         let scenario1 = false;
         let scenario2 = false;
         let scenario3 = false
@@ -1150,6 +1185,9 @@ export function App() {
             const combinedArr = array1.concat(array2);
             shiftsCombined = combinedArr;
         }
+
+        /* If X in 2 hours, then put to the back. Then sort in order of composite score */
+
         shiftsCombined.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 if (dropdown == "17:00") {
@@ -2486,7 +2524,8 @@ export function App() {
                                                                 disabled={admission.isStatic}
                                                             />
                                                         </td>
-                                                        <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
+                                                        <td className="usercanedit cell-with-number" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
+                                                            <span className="small-number">{getXIn2Hours(admission)}</span>
                                                             <input
                                                                 id={`numberOfAdmissions_${index}`}
                                                                 name="numberOfAdmissions"

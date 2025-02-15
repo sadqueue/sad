@@ -2,8 +2,11 @@ import React, { useMemo } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
 import { testArr7pm } from "./data/data"; // Import your dataset
 import './AnalyticsPage.css';
+import { useState } from "react";
+
 
 const AnalyticsPage = () => {
+  const [inputValue, setInputValue] = useState("");
   const data = useMemo(() => {
     return testArr7pm && testArr7pm.map((entry) => {
       const split = entry[0].split(";");
@@ -96,7 +99,22 @@ const AnalyticsPage = () => {
             })}
           </tbody>
         </table>
+        <div className="flex flex-col items-center p-4">
+        <input
+          type="text"
+          placeholder="Type here..."
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="border p-2 rounded-lg text-lg"
+        />
+        {inputValue.toLowerCase() === "manny" && (
+          <div className="mt-4 text-2xl">
+            ❤️🥰 I love you, Manny! Thanks for always being there for me. You are my forever and ever Valentines! Love love love you so much!🥰❤️
+          </div>
+        )}
+    </div>
       </div>}
+      
     </div>
   );
 };
