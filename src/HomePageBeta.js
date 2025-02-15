@@ -25,7 +25,9 @@ import {
     P95_7PM,
     P95_5PM,
     MINIMIZE_TABLE_STATIC_COMPOSITE_MOBILE,
-    MINIMIZE_TABLE_STATIC_COMPOSITE_WEB
+    MINIMIZE_TABLE_STATIC_COMPOSITE_WEB,
+    ALR_CONSTANT,
+    CLR_CONSTANT
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import snapshotImg from "./images/snapshot.png";
@@ -77,8 +79,8 @@ export function App() {
     const [clickedGenerateQueue, setClickedGenerateQueue] = useState(false);
     const [compositeScoreAlgorithmDynamic, setCompositeScoreAlgorithmDynamic] = useState(false);
     const [compositeScoreAlgorithmStatic, setCompositeScoreAlgorithmStatic] = useState(false);
-    const [alr, setAlr] = useState(0.5);
-    const [clr, setClr] = useState(0.5);
+    const [alr, setAlr] = useState(ALR_CONSTANT);
+    const [clr, setClr] = useState(CLR_CONSTANT);
     const [show1, setShow1] = useState(false);
     const [show2, setShow2] = useState(false);
     const [show3, setShow3] = useState(false);

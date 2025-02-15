@@ -13,10 +13,8 @@ export const NUMBER_OF_ADMISSIONS_S4_CAP = 5;
 // - change N4 insertion threshold from 0.70 to 0.5555 to 0.60 to 0.75
 // - Print out test cases vs current algo vs 0.7/0.3 vs 0.6/0.4
 
-export const ALR_5PM = 0.7;
-export const CLR_5PM = 0.3;
-export const ALR_7PM = 0.7;
-export const CLR_7PM = 0.3;
+export const ALR_CONSTANT = 0.6;
+export const CLR_CONSTANT = 0.4;
 
 export const P95_7PM = 180;
 export const P95_5PM = 180;
