@@ -230,8 +230,9 @@ export function App() {
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     if ((dropdownSelected == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
-                        (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) ||
-                        (isXIn2Hours(each))) {
+                        // (isXIn2Hours(each)) ||
+                         (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)
+                        ) {
                         // explanationArr.push(getFormattedOutput(each));
                         explanationArr.push(`${each.name}: (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`)
 
@@ -582,11 +583,6 @@ export function App() {
                 if (each.difference > p95) {
                     fixedDiff = p95;
                 }
-                // const difference = each.difference;
-                // const split = difference.split(":");
-                // const hours = Number(split[0]);
-                // const minutes = Number(split[1]);
-                // const output = (1 - ((hours * 60 + minutes) / p95)).toFixed(3);
                 return `${each.name}: 1-(${fixedDiff} minutes / ${p95})=${alrx}`;
             }
         }
@@ -815,7 +811,7 @@ export function App() {
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                if (dropdown == "19:00" && isXIn2Hours(each)){
+                if (dropdown == "19:00" && isXIn2Hours(each) || each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4){
                     greaterThan2Hours.push(each);
                     hasAnyGreaterThan2Hours = true;
                 } else {
@@ -1922,28 +1918,18 @@ export function App() {
         if (difference > p95) {
             fixedDiff = p95;
         }
-
+        let increaseAlr = 0;
+        console.log(lastSaved5Pm);        
+        lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+            if (each.name == fivePm.name){
+                if ((Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)){
+                    increaseAlr = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions);
+                }
+            }
+        })
         const originalAlr = Number(1 - (fixedDiff) / p95);
-        return Number(originalAlr.toFixed(3));
-
-        // let increaseAlr = 0;
-        // console.log(lastSaved5Pm);        
-        // lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
-        //     if (each.name == fivePm.name){
-        //         if (Number(fivePm.numberOfAdmissions)+2 == Number(each.numberOfAdmissions)){
-        //             increaseAlr = 1;
-        //         } else if (Number(fivePm.numberOfAdmissions)+3 == Number(each.numberOfAdmissions)){
-        //             increaseAlr = 2;
-        //         } else if (Number(fivePm.numberOfAdmissions)+4 == Number(each.numberOfAdmissions)){
-        //             increaseAlr = 3;
-        //         } else if (Number(fivePm.numberOfAdmissions)+5 == Number(each.numberOfAdmissions)){
-        //             increaseAlr = 4;
-        //         }
-        //     }
-        // })
-        // const originalAlr = Number(1 - (fixedDiff) / p95);
-        // const updatedAlr = originalAlr + increaseAlr;
-        // return updatedAlr.toFixed(3);
+        const updatedAlr = originalAlr + increaseAlr;
+        return updatedAlr.toFixed(3);
     }
     const getClr = (each) => {
         const admissions = Number(each.numberOfAdmissions);

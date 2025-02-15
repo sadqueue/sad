@@ -6,9 +6,39 @@ import {
   query,
   orderByKey,
   limitToLast,
-  orderByChild
+  orderByChild,
+  set
 } from "firebase/database";
 import database from "./firebaseConfig";
+
+export const fetchConfigValues = async () => {
+  try {
+    const dbRef = ref(database, "config/constants");
+    const snapshot = await get(dbRef);
+    if (snapshot.exists()) {
+      return snapshot.val();
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching config values:", error);
+    return null;
+  }
+};
+
+export const saveConfigValues = async (composite5PM, composite7PM) => {
+  try {
+    // const transactionsRef = getFirebaseRef(admissionsObj.startTime);
+    const dbRef = ref(database, "config/constants");
+    await set(dbRef, {
+      composite5PM,
+      composite7PM,
+    });
+    return { success: true, message: "Values saved!" };
+  } catch (error) {
+    console.error("Error saving config values:", error);
+    return { success: false, message: "Failed to save values." };
+  }
+};
 
 export const getFirebaseRef = (startTime) => {
   let transactionsRef = "";
