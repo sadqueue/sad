@@ -23,7 +23,9 @@ import {
     CONSTANT_COMPOSITE_5PM,
     CONSTANT_COMPOSITE_7PM,
     P95_7PM,
-    P95_5PM
+    P95_5PM,
+    MINIMIZE_TABLE_STATIC_COMPOSITE_MOBILE,
+    MINIMIZE_TABLE_STATIC_COMPOSITE_WEB
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import snapshotImg from "./images/snapshot.png";
@@ -37,6 +39,7 @@ import { getDatabase, ref, get, set } from "firebase/database";
 import { addTransaction, deleteAllTransactions, getMostRecentTransaction, getLast10Transactions } from "./transactionsApi";
 import html2canvas from "html2canvas";
 // import CypressTestRunner from "./CypressTestRunner";
+import { toPng } from 'html-to-image';
 
 const CONFIG = CONFIG1;
 
@@ -775,8 +778,8 @@ export function App() {
                 p95_clr = 1.00;
             }
 
-            const normalizedAlr = clrx / p95_clr;
-            return Number(normalizedAlr).toFixed(3);
+            const normalizedClr = clrx / p95_clr;
+            return Number(normalizedClr).toFixed(3);
         }
 
         const getNormalizedAlrExplanation = (each) => {
@@ -820,8 +823,8 @@ export function App() {
                 const composite = getComposite(each, normalizedAlr, normalizedClr);
                 
                 each["difference"] = difference;
-                each["alr"] = alrx;
-                each["clr"] = clrx;
+                each["alr"] = normalizedAlr;
+                each["clr"] = normalizedClr;
                 each["composite"] = composite;
                 each["normalizedAlr"] = normalizedAlr;
                 each["normalizedClr"] = normalizedClr;
@@ -2118,31 +2121,35 @@ export function App() {
     }
 
     const takeScreenshot = async () => {
-        // const fieldset = document.getElementById("fieldsettocopy_min");
-        const element = document.getElementById("screenshotimg");
+        const node = document.getElementById("screenshotimg");
+        
+        if (!node) {
+          console.error('Element not found!');
+          return;
+        }
+      
+        try {
+          const dataUrl = await toPng(node);
+          
+          // Create an image element to preview (optional)
+          const img = new Image();
+          img.src = dataUrl;
+          document.body.appendChild(img);
+      
+          // Copy to clipboard
+          const blob = await (await fetch(dataUrl)).blob();
+          await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]);
+      
+          console.log('Image copied to clipboard');
+          alert('✅ Screenshot copied to clipboard!');
+        } catch (error) {
+          console.error('Error generating image:', error);
+          alert('Failed to copy the screenshot. Check your browser permissions.');
+        }
+      };
 
-        // Capture the div as a canvas
-        const canvas = await html2canvas(element);
-
-        // Convert the canvas to a Blob
-        canvas.toBlob(async (blob) => {
-            if (!blob) {
-                alert('Failed to capture the screenshot.');
-                return;
-            }
-
-            // Copy the Blob to the clipboard
-            try {
-                const clipboardItem = new ClipboardItem({ 'image/png': blob });
-                await navigator.clipboard.write([clipboardItem]);
-                alert('✅ Screenshot copied to clipboard!');
-            } catch (err) {
-                console.error('Failed to copy the screenshot to the clipboard:', err);
-                alert('Failed to copy the screenshot. Check your browser permissions.');
-            }
-        });
-
-    }
 
     const setSortRoles = (admissionsDatax, dropdownSelected, lastSavedTime = "") => {
         const sortRoles = [];
@@ -2370,7 +2377,7 @@ export function App() {
 
                         }} />}
                     <table id="screenshotimg">
-                        <table id="reacttable">
+                    <table id="reacttable">
                             <thead>
                                 {openTable ? (
                                     <tr>
@@ -2387,9 +2394,24 @@ export function App() {
                                             return (<th key={eachIndex}>{each[1]}</th>);
                                         })}
                                     </tr>
-                                ) : (
+                                ) : isMobileDevice() ?  (
                                     <tr>
-                                        {MINIMIZE_TABLE.map((each, eachIndex) => {
+                                        {MINIMIZE_TABLE_STATIC_COMPOSITE_MOBILE.map((each, eachIndex) => {
+                                            if (each[0] == "name") {
+                                                return (
+                                                    <th className="th_10percent" key={eachIndex}>{each[1]}</th>
+                                                );
+                                            } else if (each[0] == "timestamp" || each[0] == "numberOfAdmissions" || each[0] == "chronicLoadRatio") {
+                                                return (
+                                                    <th className="th_25percent" key={eachIndex}>{each[1]}</th>
+                                                );
+                                            }
+                                            return (<th key={eachIndex}>{each[1]}</th>);
+                                        })}
+                                    </tr>
+                                ):  (
+                                    <tr>
+                                        {MINIMIZE_TABLE_STATIC_COMPOSITE_WEB.map((each, eachIndex) => {
                                             if (each[0] == "name") {
                                                 return (
                                                     <th className="th_10percent" key={eachIndex}>{each[1]}</th>
@@ -2438,9 +2460,7 @@ export function App() {
                                                                 disabled={admission.isStatic}
                                                             />
                                                         </td>
-                                                       
-                                                        <td className="usercanedit cell-with-number" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
-                                                            <span className="small-number">{getXIn2Hours(admission)}</span>
+                                                        <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
                                                             <input
                                                                 id={`numberOfAdmissions_${index}`}
                                                                 name="numberOfAdmissions"
@@ -2455,7 +2475,64 @@ export function App() {
                                                                 pattern="[0-9]*"
                                                             />
                                                         </td>
+                                                        {!isMobileDevice() && 
                                                         <td className="backgroundlightgray">
+                                                        <div className="progress-cell">
+                                                            <div className="progress-container">
+                                                                <div
+                                                                    className="progress-bar"
+                                                                    style={{
+                                                                        width: `${(admission.alr || 0) * 100}%`,
+                                                                        background: (admission.alr || 0) > 0.5
+                                                                            ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
+                                                                            : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            <span className="progress-text">
+                                                                {admission.alr ? Number(admission.alr).toFixed(2) : ""}
+                                                            </span>
+                                                        </div>
+                                                    </td>}
+                                                        {!isMobileDevice() && 
+                                                        <td className="backgroundlightgray">
+                                                        <div className="progress-cell">
+                                                            <div className="progress-container">
+                                                                <div
+                                                                    className="progress-bar"
+                                                                    style={{
+                                                                        width: `${(admission.clr || 0) * 100}%`,
+                                                                        background: (admission.clr || 0) > 0.5
+                                                                            ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
+                                                                            : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            <span className="progress-text">
+                                                            {admission.clr ? Number(admission.clr).toFixed(2) : ""}
+                                                            </span>
+                                                        </div>
+                                                    </td>}
+                                                        {!isMobileDevice() && 
+                                                        <td className="backgroundlightgray">
+                                                        <div className="progress-cell">
+                                                            <div className="progress-container">
+                                                                <div
+                                                                    className="progress-bar"
+                                                                    style={{
+                                                                        width: `${(admission.composite || 0) * 100}%`,
+                                                                        background: (admission.composite || 0) > 0.5
+                                                                            ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
+                                                                            : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            <span className="progress-text">
+                                                            {Number(admission.composite).toFixed(2)}
+                                                            </span>
+                                                        </div>
+                                                    </td>}
+                                                        {isMobileDevice() && <td className="backgroundlightgray">
                                                             <div className="progress-cell">
                                                                 <div className="progress-container">
                                                                     <div
@@ -2469,12 +2546,10 @@ export function App() {
                                                                     />
                                                                 </div>
                                                                 <span className="progress-text">
-                                                                    {Math.round((admission.chronicLoadRatio || 0) * 100)}%
+                                                                    {admission.composite ? Math.round((admission.composite || 0) * 100) : ""}%
                                                                 </span>
                                                             </div>
-                                                        </td>
-
-
+                                                        </td>}
                                                         {openTable && (
                                                             <td>
                                                                 <input

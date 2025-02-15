@@ -37,6 +37,7 @@ import { getDatabase, ref, get, set } from "firebase/database";
 import { addTransaction, deleteAllTransactions, getMostRecentTransaction, getLast10Transactions } from "./transactionsApi";
 import html2canvas from "html2canvas";
 // import CypressTestRunner from "./CypressTestRunner";
+import { toPng } from 'html-to-image';
 
 const CONFIG = CONFIG1;
 
@@ -2132,6 +2133,35 @@ export function App() {
         });
 
     }
+    // const takeScreenshot = async () => {
+    //     const node = document.getElementById("screenshotimg");
+        
+    //     if (!node) {
+    //       console.error('Element not found!');
+    //       return;
+    //     }
+      
+    //     try {
+    //       const dataUrl = await toPng(node);
+          
+    //       // Create an image element to preview (optional)
+    //       const img = new Image();
+    //       img.src = dataUrl;
+    //       document.body.appendChild(img);
+      
+    //       // Copy to clipboard
+    //       const blob = await (await fetch(dataUrl)).blob();
+    //       await navigator.clipboard.write([
+    //         new ClipboardItem({ 'image/png': blob })
+    //       ]);
+      
+    //       console.log('Image copied to clipboard');
+    //       alert('✅ Screenshot copied to clipboard!');
+    //     } catch (error) {
+    //       console.error('Error generating image:', error);
+    //       alert('Failed to copy the screenshot. Check your browser permissions.');
+    //     }
+    //   };
 
     const setSortRoles = (admissionsDatax, dropdownSelected, lastSavedTime = "") => {
         const sortRoles = [];

@@ -20,6 +20,7 @@
     "fastify": "^5.2.1",
     "firebase": "^11.0.2",
     "fs-extra": "^11.3.0",
+    "html-to-image": "^1.11.13",
     "html2canvas": "^1.4.1",
     "install": "^0.13.0",
     "moment": "^2.30.1",
