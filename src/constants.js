@@ -22,11 +22,11 @@ export const P95_7PM = 180;
 export const P95_5PM = 180;
 
 export const CONSTANT_COMPOSITE_5PM = {
-    "N5": 0.5
+    "N5": 0.4999
 };
 
 export const CONSTANT_COMPOSITE_7PM = {
-    "N1": 0.5,
+    "N1": 0.4999,
     "N2": 0.58,
     "N3": 0.66,
     "N4": 0.75

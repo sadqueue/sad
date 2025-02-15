@@ -515,7 +515,14 @@ export function App() {
         } else if (compositeScoreAlgorithmStatic) {
             return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
         } else {
-            return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
+            if (dropdown == "17:00"){
+                return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
+
+            } else {
+                return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
+
+            }
+            // return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
         }
     }
     const sortMainByCompositeScoreStatic = (timeObj, dropdownSelected, lastSavedTime = "") => {
