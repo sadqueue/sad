@@ -42,6 +42,8 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, set } from "firebase/database";
 import { addTransaction, deleteAllTransactions, getMostRecentTransaction, getLast10Transactions } from "./transactionsApi";
 import html2canvas from "html2canvas";
+import { toPng } from 'html-to-image';
+
 // import CypressTestRunner from "./CypressTestRunner";
 
 const CONFIG = CONFIG1;
@@ -133,6 +135,40 @@ export function App() {
 
     }, [])
 
+    const isXIn2Hours = (each) => {
+        let isXIn2Hours = false;
+
+        if (dropdown == "19:00"){
+            lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+                if (each.name == fivePm.name){
+                    if (fivePm.numberOfAdmissions !== "" && 
+                        (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
+                        isXIn2Hours = true;
+                        return true;
+                    }
+                }
+            });
+        }
+        return isXIn2Hours;
+    }
+
+    const getXIn2Hours = (each) => {
+        let isXIn2Hours = "";
+
+        if (dropdown == "19:00"){
+            lastSaved5Pm && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+                if (each.name == fivePm.name){
+                    if (fivePm.numberOfAdmissions !== "" && 
+                        (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
+                        isXIn2Hours = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions);
+                        return true;
+                    }
+                }
+            });
+        }
+        return isXIn2Hours;
+    }
+
     const sortMainOriginal = (timeObj, dropdownSelected, lastSavedTime = "") => {
         const orderOfAdmissions = [];
         timeObj && timeObj.shifts && timeObj.shifts && timeObj.shifts.forEach((each, eachIndex) => {
@@ -194,7 +230,8 @@ export function App() {
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     if ((dropdownSelected == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
-                        (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)) {
+                        (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD) ||
+                        (isXIn2Hours(each))) {
                         // explanationArr.push(getFormattedOutput(each));
                         explanationArr.push(`${each.name}: (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`)
 
@@ -771,12 +808,43 @@ export function App() {
             }
         });
 
-        let shiftsCombined = [];
+        const lessThan2Hours = [];
+        const greaterThan2Hours = [];
+
+        let hasAnyGreaterThan2Hours = false;
+
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                shiftsCombined.push(each);
+                if (dropdown == "19:00" && isXIn2Hours(each)){
+                    greaterThan2Hours.push(each);
+                    hasAnyGreaterThan2Hours = true;
+                } else {
+                    lessThan2Hours.push(each);
+                }
             }
         });
+        greaterThan2Hours.sort((a,b) => {
+            if (a.composite > b.composite){
+                return 1;
+            } else if (a.composite < b.composite){
+                return -1;
+            }
+            return 0;
+        });
+
+
+        if (hasAnyGreaterThan2Hours){
+            explanationArr.push("\n")
+            explanationArr.push("Step 7: Check if any roles have had 2 or more admissions in the last 2 hours. Then sort by composite score.");
+            greaterThan2Hours && greaterThan2Hours.forEach((each)=>{
+                explanationArr.push(`${each.name}: had ${getXIn2Hours(each)} admissions in the last 2 hours /  Composite Score: ${each.composite}`);
+            })
+        }
+
+
+        let shiftsCombined = lessThan2Hours.concat(greaterThan2Hours);
+
+        
         let scenario1 = false;
         let scenario2 = false;
         let scenario3 = false
@@ -2119,29 +2187,57 @@ export function App() {
     }
 
     const takeScreenshot = async () => {
-        // const fieldset = document.getElementById("fieldsettocopy_min");
-        const element = document.getElementById("screenshotimg");
+        const node = document.getElementById("screenshotimg");
 
-        // Capture the div as a canvas
-        const canvas = await html2canvas(element);
+        if (!node) {
+          console.error('Element not found!');
+          return;
+        }
 
-        // Convert the canvas to a Blob
-        canvas.toBlob(async (blob) => {
-            if (!blob) {
-                alert('Failed to capture the screenshot.');
-                return;
-            }
+        try {
+          const dataUrl = await toPng(node);
 
-            // Copy the Blob to the clipboard
-            try {
-                const clipboardItem = new ClipboardItem({ 'image/png': blob });
-                await navigator.clipboard.write([clipboardItem]);
-                alert('✅ Screenshot copied to clipboard!');
-            } catch (err) {
-                console.error('Failed to copy the screenshot to the clipboard:', err);
-                alert('Failed to copy the screenshot. Check your browser permissions.');
-            }
-        });
+          // Create an image element to preview (optional)
+          const img = new Image();
+          img.src = dataUrl;
+          document.body.appendChild(img);
+
+          // Copy to clipboard
+          const blob = await (await fetch(dataUrl)).blob();
+          await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]);
+
+          console.log('Image copied to clipboard');
+          alert('✅ Screenshot copied to clipboard!');
+        } catch (error) {
+          console.error('Error generating image:', error);
+          alert('Failed to copy the screenshot. Check your browser permissions.');
+        }
+      
+        // // const fieldset = document.getElementById("fieldsettocopy_min");
+        // const element = document.getElementById("screenshotimg");
+
+        // // Capture the div as a canvas
+        // const canvas = await html2canvas(element);
+
+        // // Convert the canvas to a Blob
+        // canvas.toBlob(async (blob) => {
+        //     if (!blob) {
+        //         alert('Failed to capture the screenshot.');
+        //         return;
+        //     }
+
+        //     // Copy the Blob to the clipboard
+        //     try {
+        //         const clipboardItem = new ClipboardItem({ 'image/png': blob });
+        //         await navigator.clipboard.write([clipboardItem]);
+        //         alert('✅ Screenshot copied to clipboard!');
+        //     } catch (err) {
+        //         console.error('Failed to copy the screenshot to the clipboard:', err);
+        //         alert('Failed to copy the screenshot. Check your browser permissions.');
+        //     }
+        // });
 
     }
 
@@ -2451,7 +2547,8 @@ export function App() {
                                                                 disabled={admission.isStatic}
                                                             />
                                                         </td>
-                                                        <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
+                                                        <td className="usercanedit cell-with-number" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
+                                                            <span className="small-number">{getXIn2Hours(admission)}</span>
                                                             <input
                                                                 id={`numberOfAdmissions_${index}`}
                                                                 name="numberOfAdmissions"
@@ -2473,15 +2570,15 @@ export function App() {
                                                                         <div
                                                                             className="progress-bar"
                                                                             style={{
-                                                                                width: `${(admission.alr || 0) * 100}%`,
-                                                                                background: (admission.alr || 0) > 0.5
+                                                                                width: `${(admission.normalizedAlr || 0) * 100}%`,
+                                                                                background: (admission.normalizedAlr || 0) > 0.5
                                                                                     ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
                                                                                     : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
                                                                             }}
                                                                         />
                                                                     </div>
                                                                     <span className="progress-text">
-                                                                        {Number(admission.alr).toFixed(2)}
+                                                                        {admission.normalizedAlr ? Number(admission.normalizedAlr).toFixed(2) : ""}
                                                                     </span>
                                                                 </div>
                                                             </td>}
@@ -2492,15 +2589,15 @@ export function App() {
                                                                         <div
                                                                             className="progress-bar"
                                                                             style={{
-                                                                                width: `${(admission.clr || 0) * 100}%`,
-                                                                                background: (admission.clr || 0) > 0.5
+                                                                                width: `${(admission.normalizedClr || 0) * 100}%`,
+                                                                                background: (admission.normalizedClr || 0) > 0.5
                                                                                     ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
                                                                                     : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
                                                                             }}
                                                                         />
                                                                     </div>
                                                                     <span className="progress-text">
-                                                                        {Number(admission.clr).toFixed(2)}
+                                                                        {admission.normalizedClr ? Number(admission.normalizedClr).toFixed(2) : ""}
                                                                     </span>
                                                                 </div>
                                                             </td>}
@@ -2519,7 +2616,7 @@ export function App() {
                                                                         />
                                                                     </div>
                                                                     <span className="progress-text">
-                                                                        {Number(admission.composite).toFixed(2)}
+                                                                        {admission.composite ? Number(admission.composite).toFixed(2) : ""}
                                                                     </span>
                                                                 </div>
                                                             </td>}
