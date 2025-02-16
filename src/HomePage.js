@@ -1917,7 +1917,7 @@ export function App() {
             fixedDiff = p95;
         }
         let increaseAlr = 0;
-        if (!window.Cypress){
+        if (!window.Cypress && dropdown == "19:00"){
             lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
                 if (each.name == fivePm.name){
                     if ((Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)){
