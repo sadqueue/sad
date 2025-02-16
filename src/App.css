@@ -697,7 +697,10 @@ input::-webkit-inner-spin-button {
   align-items: center;
 }
 
-#compositeScoreCheckbox {
+#compositeScoreCheckbox,
+#compositeScoreCheckboxStatic,
+#originalAlgorithmCheckbox
+ {
   width: 24px;
   margin-left: 10px;
 }
