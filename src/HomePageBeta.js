@@ -156,19 +156,6 @@ export function App() {
         let isXIn2Hours = "";
 
         if (dropdown == "19:00"){
-            // if (each.name == "N5" && Number(each.numberOfAdmissions) > 2){
-            //     return each.numberOfAdmissions;
-            // } else {
-            //     lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
-            //         if (each.name == fivePm.name){
-            //             if (fivePm.numberOfAdmissions !== "" && 
-            //                 (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
-            //                 isXIn2Hours = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions);
-            //                 return true;
-            //             }
-            //         }
-            //     });
-            // }
             lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
                 if (each.name == fivePm.name){
                     if (fivePm.numberOfAdmissions !== "" && 
@@ -1932,7 +1919,7 @@ export function App() {
         let increaseAlr = 0;
         if (!window.Cypress && dropdown == "19:00"){
             lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
-                if (each.name == fivePm.name){
+                if (SHOW_ROWS_TABLE["17:00"].includes(each.name) && each.name == fivePm.name){
                     if ((Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)){
                         increaseAlr = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions)-1;
                     }
@@ -2434,7 +2421,7 @@ export function App() {
     return (
         <div>
             <div className="header">
-                <h1 className="title">S.A.D.Q. Beta</h1>
+                <h1 className="title">S.A.D.Q Beta</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
             </div>
 

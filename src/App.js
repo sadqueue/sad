@@ -5,6 +5,7 @@ import HomePageBeta from "./HomePageBeta";
 import AnalyticsPage from "./AnalyticsPage";
 import Navbar from "./NavBar";
 import ConfigPage from "./ConfigPage";
+import HomePage_backup from "./HomePage_backup";
 // import AboutPage from "./AboutPage"; // Create an AboutPage component
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
         <Route path="/sad" element={<HomePage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/beta" element={<HomePageBeta />} />
-        {/* <Route path="/beta2" element={<HomePageBeta2 />} /> */}
+        <Route path="/sad_v1.0" element={<HomePage_backup />} />
         <Route path="/config" element={<ConfigPage />} />
       </Routes>
     </Router>
