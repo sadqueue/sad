@@ -19,6 +19,9 @@ const Navbar = () => {
         <a href="/sad#/sad_v1.0">v1.0</a>
       </li>
       <li>
+        <a href="/sad#/beta">Beta</a>
+      </li>
+      <li>
         <a href="/sad#/analytics">Analytics</a>
       </li>
       {/* <li>

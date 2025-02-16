@@ -1755,7 +1755,7 @@ export function App() {
                             <thead>
                                 {openTable ? (
                                     <tr>
-                                        {EXPAND_TABLE.map((each, eachIndex) => {
+                                        {MINIMIZE_TABLE_STATIC_COMPOSITE_WEB.map((each, eachIndex) => {
                                             if (each[0] == "name") {
                                                 return (
                                                     <th className="th_10percent" key={eachIndex}>{each[1]}</th>
@@ -1913,15 +1913,15 @@ export function App() {
                                                                     <div
                                                                         className="progress-bar"
                                                                         style={{
-                                                                            width: `${(admission.chronicLoadRatio || 0) * 100}%`,
-                                                                            background: (admission.chronicLoadRatio || 0) > 0.5
+                                                                            width: `${(admission.clr || 0) * 100}%`,
+                                                                            background: (admission.clr || 0) > 0.5
                                                                                 ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
                                                                                 : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
                                                                         }}
                                                                     />
                                                                 </div>
                                                                 <span className="progress-text">
-                                                                    {Math.round((admission.composite || 0) * 100)}%
+                                                                    {Math.round((admission.clr || 0) * 100)}%
                                                                 </span>
                                                             </div>
                                                         </td>}
