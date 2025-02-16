@@ -1850,7 +1850,7 @@ export function App() {
                                                                 pattern="[0-9]*"
                                                             />
                                                         </td>
-                                                        {!isMobileDevice() &&
+                                                        {false && !isMobileDevice() &&
                                                             <td className="backgroundlightgray">
                                                                 <div className="progress-cell">
                                                                     <div className="progress-container">
@@ -1869,7 +1869,7 @@ export function App() {
                                                                     </span>
                                                                 </div>
                                                             </td>}
-                                                        {!isMobileDevice() &&
+                                                        {false && !isMobileDevice() &&
                                                             <td className="backgroundlightgray">
                                                                 <div className="progress-cell">
                                                                     <div className="progress-container">
@@ -1888,7 +1888,7 @@ export function App() {
                                                                     </span>
                                                                 </div>
                                                             </td>}
-                                                        {!isMobileDevice() &&
+                                                        {false && !isMobileDevice() &&
                                                             <td className="backgroundlightgray">
                                                                 <div className="progress-cell">
                                                                     <div className="progress-container">
@@ -1907,7 +1907,7 @@ export function App() {
                                                                     </span>
                                                                 </div>
                                                             </td>}
-                                                        {isMobileDevice() && <td className="backgroundlightgray">
+                                                        {<td className="backgroundlightgray">
                                                             <div className="progress-cell">
                                                                 <div className="progress-container">
                                                                     <div
