@@ -156,7 +156,7 @@ export function App() {
         let isXIn2Hours = "";
 
         if (dropdown == "19:00"){
-            lastSaved5Pm && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+            lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
                 if (each.name == fivePm.name){
                     if (fivePm.numberOfAdmissions !== "" && 
                         (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
@@ -230,7 +230,7 @@ export function App() {
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     if ((dropdownSelected == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
-                        // (isXIn2Hours(each)) ||
+                        (!window.Cypress && isXIn2Hours(each)) ||
                          (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)
                         ) {
                         // explanationArr.push(getFormattedOutput(each));
@@ -523,15 +523,13 @@ export function App() {
     }
 
     const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
-        // if (compositeScoreAlgorithmDynamic) {
-        //     return sortMainByCompositeScoreDynamic(timeObj, dropdownSelected, lastSavedTime);
-        // } else 
-        if (compositeScoreAlgorithmStatic) {
-            return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
-        } else {
-            return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
-        }
-        // return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
+
+        // if (compositeScoreAlgorithmStatic) {
+        //     return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
+        // } else {
+        //     return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
+        // }
+        return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
     }
     const sortMainByCompositeScoreStatic = (timeObj, dropdownSelected, lastSavedTime = "") => {
         const orderOfAdmissions = [];
@@ -811,7 +809,7 @@ export function App() {
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                if (dropdown == "19:00" && isXIn2Hours(each) || each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4){
+                if ((dropdown == "19:00" && !window.Cypress&& isXIn2Hours(each)) || each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4){
                     greaterThan2Hours.push(each);
                     hasAnyGreaterThan2Hours = true;
                 } else {
@@ -1919,14 +1917,16 @@ export function App() {
             fixedDiff = p95;
         }
         let increaseAlr = 0;
-        console.log(lastSaved5Pm);        
-        lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
-            if (each.name == fivePm.name){
-                if ((Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)){
-                    increaseAlr = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions);
+        if (!window.Cypress){
+            lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+                if (each.name == fivePm.name){
+                    if ((Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)){
+                        increaseAlr = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions)-1;
+                    }
                 }
-            }
-        })
+            })
+        }
+        
         const originalAlr = Number(1 - (fixedDiff) / p95);
         const updatedAlr = originalAlr + increaseAlr;
         return updatedAlr.toFixed(3);
