@@ -156,6 +156,19 @@ export function App() {
         let isXIn2Hours = "";
 
         if (dropdown == "19:00"){
+            // if (each.name == "N5" && Number(each.numberOfAdmissions) > 2){
+            //     return each.numberOfAdmissions;
+            // } else {
+            //     lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
+            //         if (each.name == fivePm.name){
+            //             if (fivePm.numberOfAdmissions !== "" && 
+            //                 (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
+            //                 isXIn2Hours = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions);
+            //                 return true;
+            //             }
+            //         }
+            //     });
+            // }
             lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
                 if (each.name == fivePm.name){
                     if (fivePm.numberOfAdmissions !== "" && 

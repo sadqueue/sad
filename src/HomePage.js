@@ -2421,7 +2421,7 @@ export function App() {
     return (
         <div>
             <div className="header">
-                <h1 className="title">S.A.D.Q. Beta</h1>
+                <h1 className="title">S.A.D.Q.</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
             </div>
 
