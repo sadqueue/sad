@@ -98,7 +98,8 @@ export const MINIMIZE_TABLE_STATIC_COMPOSITE_WEB = [
     ["numberOfAdmissions", "# of Admits"],
     ["alr", "Acute Load"],
     ["clr", "Chronic Load"],
-    ["composite", "Composite Score"]
+    ["composite", "Composite Score"],
+    ["chronicLoadRatio", "Chronic Load"]
 ];
 
 export const SCORE_NEW_ROLE = {

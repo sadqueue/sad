@@ -131,7 +131,7 @@ td.grayinput {
 tr th,
 select {
   font-size: 20px;
-  padding: 12px;
+  padding: 12px 5px 12px 5px;
   border: 2px solid black;
   text-align: center;
   background-color: rgba(217, 221, 146, 0.2);
@@ -144,7 +144,7 @@ select {
 }
 
 .th_25percent{
-  width: 16%;
+  width: 14%;
   color: black;
 }
 
@@ -242,10 +242,30 @@ button.clearall:hover {
   font-size: 12px;
 }
 
+button.expand {
+  all: unset;
+  float: left;
+  opacity: 0.5;
+  margin: 3px;
+  font-size: 16px;
+  margin-top:16px;
+
+}
+
+button.expand:hover {
+  all: unset;
+  float: left;
+  opacity: 1;
+  margin: 3px;
+  font-size: 16px;
+  margin-top:16px;
+
+}
+
 
 button.seedetails {
   all: unset;
-  /* float: right; */
+  float: right;
   opacity: 0.5;
   margin: 3px;
   font-size: 16px;
@@ -253,7 +273,7 @@ button.seedetails {
 
 button.seedetails:hover {
   all: unset;
-  /* float: right; */
+  float: right;
   opacity: 1;
   margin: 3px;
   font-size: 16px;

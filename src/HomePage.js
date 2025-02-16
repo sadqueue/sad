@@ -1750,7 +1750,14 @@ export function App() {
                             takeScreenshot();
 
                         }} />}
+                        <button
+                        onClick={() => setOpenTable(!openTable)}
+                        className="expand"
+                    >
+                        {openTable ? "Minimize Table ⬆️" : "Expand Table ⬇️"}
+                    </button>
                     <table id="screenshotimg">
+                    
                         <table id="reacttable">
                             <thead>
                                 {openTable ? (
@@ -1758,7 +1765,7 @@ export function App() {
                                         {MINIMIZE_TABLE_STATIC_COMPOSITE_WEB.map((each, eachIndex) => {
                                             if (each[0] == "name") {
                                                 return (
-                                                    <th className="th_10percent" key={eachIndex}>{each[1]}</th>
+                                                    <th className={"th_10percent"} key={eachIndex}>{each[1]}</th>
                                                 );
                                             } else if (each[0] == "timestamp" || each[0] == "numberOfAdmissions" || each[0] == "chronicLoadRatio") {
                                                 return (
@@ -1818,11 +1825,11 @@ export function App() {
                                                         <td>
                                                             <input name={`name_${index}`} className="bold-fields" value={admission.name || ""} type="text" disabled={true} />
                                                         </td>
-                                                        {openTable && (
+                                                        {/* {openTable && (
                                                             <td>
                                                                 <input name="shiftTimePeriod" value={admission.shiftTimePeriod} type="text" disabled={true} />
                                                             </td>
-                                                        )}
+                                                        )} */}
                                                         <td className="usercanedit" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
                                                             <input
                                                                 id={`timestamp_${index}`}
@@ -1850,7 +1857,7 @@ export function App() {
                                                                 pattern="[0-9]*"
                                                             />
                                                         </td>
-                                                        {false && !isMobileDevice() &&
+                                                        {openTable &&
                                                             <td className="backgroundlightgray">
                                                                 <div className="progress-cell">
                                                                     <div className="progress-container">
@@ -1869,7 +1876,7 @@ export function App() {
                                                                     </span>
                                                                 </div>
                                                             </td>}
-                                                        {false && !isMobileDevice() &&
+                                                        {openTable &&
                                                             <td className="backgroundlightgray">
                                                                 <div className="progress-cell">
                                                                     <div className="progress-container">
@@ -1888,7 +1895,7 @@ export function App() {
                                                                     </span>
                                                                 </div>
                                                             </td>}
-                                                        {false && !isMobileDevice() &&
+                                                        {openTable &&
                                                             <td className="backgroundlightgray">
                                                                 <div className="progress-cell">
                                                                     <div className="progress-container">
@@ -1925,7 +1932,7 @@ export function App() {
                                                                 </span>
                                                             </div>
                                                         </td>}
-                                                        {openTable && (
+                                                        {false && openTable && (
                                                             <td>
                                                                 <input
                                                                     name="numberHoursWorked"
