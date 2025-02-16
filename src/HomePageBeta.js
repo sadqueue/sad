@@ -2173,57 +2173,57 @@ export function App() {
     }
 
     const takeScreenshot = async () => {
-        const node = document.getElementById("screenshotimg");
+        // const node = document.getElementById("screenshotimg");
 
-        if (!node) {
-          console.error('Element not found!');
-          return;
-        }
+        // if (!node) {
+        //   console.error('Element not found!');
+        //   return;
+        // }
 
-        try {
-          const dataUrl = await toPng(node);
+        // try {
+        //   const dataUrl = await toPng(node);
 
-          // Create an image element to preview (optional)
-          const img = new Image();
-          img.src = dataUrl;
-          document.body.appendChild(img);
+        //   // Create an image element to preview (optional)
+        //   const img = new Image();
+        //   img.src = dataUrl;
+        //   document.body.appendChild(img);
 
-          // Copy to clipboard
-          const blob = await (await fetch(dataUrl)).blob();
-          await navigator.clipboard.write([
-            new ClipboardItem({ 'image/png': blob })
-          ]);
+        //   // Copy to clipboard
+        //   const blob = await (await fetch(dataUrl)).blob();
+        //   await navigator.clipboard.write([
+        //     new ClipboardItem({ 'image/png': blob })
+        //   ]);
 
-          console.log('Image copied to clipboard');
-          alert('✅ Screenshot copied to clipboard!');
-        } catch (error) {
-          console.error('Error generating image:', error);
-          alert('Failed to copy the screenshot. Check your browser permissions.');
-        }
+        //   console.log('Image copied to clipboard');
+        //   alert('✅ Screenshot copied to clipboard!');
+        // } catch (error) {
+        //   console.error('Error generating image:', error);
+        //   alert('Failed to copy the screenshot. Check your browser permissions.');
+        // }
       
-        // // const fieldset = document.getElementById("fieldsettocopy_min");
-        // const element = document.getElementById("screenshotimg");
+        // const fieldset = document.getElementById("fieldsettocopy_min");
+        const element = document.getElementById("screenshotimg");
 
-        // // Capture the div as a canvas
-        // const canvas = await html2canvas(element);
+        // Capture the div as a canvas
+        const canvas = await html2canvas(element);
 
-        // // Convert the canvas to a Blob
-        // canvas.toBlob(async (blob) => {
-        //     if (!blob) {
-        //         alert('Failed to capture the screenshot.');
-        //         return;
-        //     }
+        // Convert the canvas to a Blob
+        canvas.toBlob(async (blob) => {
+            if (!blob) {
+                alert('Failed to capture the screenshot.');
+                return;
+            }
 
-        //     // Copy the Blob to the clipboard
-        //     try {
-        //         const clipboardItem = new ClipboardItem({ 'image/png': blob });
-        //         await navigator.clipboard.write([clipboardItem]);
-        //         alert('✅ Screenshot copied to clipboard!');
-        //     } catch (err) {
-        //         console.error('Failed to copy the screenshot to the clipboard:', err);
-        //         alert('Failed to copy the screenshot. Check your browser permissions.');
-        //     }
-        // });
+            // Copy the Blob to the clipboard
+            try {
+                const clipboardItem = new ClipboardItem({ 'image/png': blob });
+                await navigator.clipboard.write([clipboardItem]);
+                alert('✅ Screenshot copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy the screenshot to the clipboard:', err);
+                alert('Failed to copy the screenshot. Check your browser permissions.');
+            }
+        });
 
     }
 
