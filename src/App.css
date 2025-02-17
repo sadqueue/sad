@@ -265,7 +265,7 @@ button.expand:hover {
 
 button.seedetails {
   all: unset;
-  float: right;
+  /* float: right; */
   opacity: 0.5;
   margin: 3px;
   font-size: 16px;
@@ -273,7 +273,7 @@ button.seedetails {
 
 button.seedetails:hover {
   all: unset;
-  float: right;
+  /* float: right; */
   opacity: 1;
   margin: 3px;
   font-size: 16px;
