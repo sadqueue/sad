@@ -20,14 +20,14 @@ export const P95_7PM = 180;
 export const P95_5PM = 180;
 
 export const CONSTANT_COMPOSITE_5PM = {
-    "N5": 0.4999
+    "N5": 0.49
 };
 
 export const CONSTANT_COMPOSITE_7PM = {
-    "N1": 0.499,
-    "N2": 0.599,
-    "N3": 0.699,
-    "N4": 0.799
+    "N1": 0.49,
+    "N2": 0.59,
+    "N3": 0.69,
+    "N4": 0.79
 };
 
 export const TIME_FORMAT = "h:mmA"; //hh:mm for non military
