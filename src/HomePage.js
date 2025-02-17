@@ -1219,8 +1219,8 @@ export function App() {
         }
         let increaseAlr = 0;
         if (!window.Cypress && dropdown == "19:00"){
-            if (each.name == "N5"){
-                increaseAlr = Number(each.numberOfAdmissions);
+            if (each.name == "N5" && each.numberOfAdmissions > 1){
+                increaseAlr = Number(each.numberOfAdmissions)-1;
             } else {
                 lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
                     if (each.name == fivePm.name){
