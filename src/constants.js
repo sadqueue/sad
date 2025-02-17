@@ -99,7 +99,7 @@ export const MINIMIZE_TABLE_STATIC_COMPOSITE_WEB = [
     ["alr", "Acute Load"],
     ["clr", "Chronic Load"],
     ["composite", "Composite Score"],
-    ["chronicLoadRatio", "Chronic Load"]
+    // ["chronicLoadRatio", "Chronic Load"]
 ];
 
 export const SCORE_NEW_ROLE = {

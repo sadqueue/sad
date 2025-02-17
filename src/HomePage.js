@@ -1220,11 +1220,11 @@ export function App() {
         let increaseAlr = 0;
         if (!window.Cypress && dropdown == "19:00"){
             lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
-                if (SHOW_ROWS_TABLE["17:00"].includes(each.name) && each.name == fivePm.name){
+                // if (SHOW_ROWS_TABLE["17:00"].includes(each.name) && each.name == fivePm.name){
                     if ((Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)){
                         increaseAlr = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions)-1;
                     }
-                }
+                // }
             })
         }
         
@@ -1876,7 +1876,7 @@ export function App() {
                                                                     </span>
                                                                 </div>
                                                             </td>}
-                                                        {openTable &&
+                                                        {/* {openTable &&
                                                             <td className="backgroundlightgray">
                                                                 <div className="progress-cell">
                                                                     <div className="progress-container">
@@ -1885,8 +1885,8 @@ export function App() {
                                                                             style={{
                                                                                 width: `${(admission.normalizedClr || 0) * 100}%`,
                                                                                 background: (admission.normalizedClr || 0) > 0.5
-                                                                                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
-                                                                                    : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+                                                                                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" 
+                                                                                    : "linear-gradient(to right,  #1a0dab, #1a0dab)"
                                                                             }}
                                                                         />
                                                                     </div>
@@ -1894,7 +1894,7 @@ export function App() {
                                                                         {admission.normalizedClr ? Number(admission.normalizedClr).toFixed(2) : ""}
                                                                     </span>
                                                                 </div>
-                                                            </td>}
+                                                            </td>} */}
                                                         {openTable &&
                                                             <td className="backgroundlightgray">
                                                                 <div className="progress-cell">
