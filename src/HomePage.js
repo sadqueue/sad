@@ -1220,11 +1220,11 @@ export function App() {
         let increaseAlr = 0;
         if (!window.Cypress && dropdown == "19:00"){
             lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
-                // if (SHOW_ROWS_TABLE["17:00"].includes(each.name) && each.name == fivePm.name){
-                    if ((Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)){
+                if (each.name == fivePm.name){
+                    if (fivePm.numberOfAdmissions !== "" && (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)){
                         increaseAlr = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions)-1;
                     }
-                // }
+                }
             })
         }
         
