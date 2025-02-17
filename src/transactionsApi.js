@@ -7,37 +7,71 @@ import {
   orderByKey,
   limitToLast,
   orderByChild,
-  set
+  set,
+  getDatabase,
+  update
 } from "firebase/database";
 import database from "./firebaseConfig";
 
+// Fetch all config values from Firebase
 export const fetchConfigValues = async () => {
-  try {
-    const dbRef = ref(database, "config/constants");
-    const snapshot = await get(dbRef);
-    if (snapshot.exists()) {
-      return snapshot.val();
+    const db = getDatabase();
+    const configRef = ref(db, "config");
+
+    try {
+        const snapshot = await get(configRef);
+        if (snapshot.exists()) {
+            return snapshot.val();
+        } else {
+            console.warn("No configuration found.");
+            return {};
+        }
+    } catch (error) {
+        console.error("Error fetching config:", error);
+        return {};
     }
-    return null;
-  } catch (error) {
-    console.error("Error fetching config values:", error);
-    return null;
-  }
 };
 
-export const saveConfigValues = async (composite5PM, composite7PM) => {
-  try {
-    // const transactionsRef = getFirebaseRef(admissionsObj.startTime);
-    const dbRef = ref(database, "config/constants");
-    await set(dbRef, {
-      composite5PM,
-      composite7PM,
-    });
-    return { success: true, message: "Values saved!" };
-  } catch (error) {
-    console.error("Error saving config values:", error);
-    return { success: false, message: "Failed to save values." };
-  }
+// Update a single config value in Firebase
+export const updateConfigValue = async (key, value) => {
+    const db = getDatabase();
+    const configRef = ref(db, `config/${key}`);
+
+    try {
+        await set(configRef, value);
+        console.log(`${key} updated successfully.`);
+    } catch (error) {
+        console.error(`Error updating ${key}:`, error);
+    }
+};
+
+// Initialize default values if config is empty
+export const initializeConfigValues = async () => {
+    const db = getDatabase();
+    const configRef = ref(db, "config");
+
+    try {
+        const snapshot = await get(configRef);
+        if (!snapshot.exists()) {
+            const defaultConfig = {
+                ALR_5PM: 0.6,
+                CLR_5PM: 0.4,
+                ALR_7PM: 0.7,
+                CLR_7PM: 0.3,
+                P95_7PM: 180,
+                P95_5PM: 180,
+                CONSTANT_COMPOSITE_5PM_N5: 0.49,
+                CONSTANT_COMPOSITE_7PM_N1: 0.49,
+                CONSTANT_COMPOSITE_7PM_N2: 0.59,
+                CONSTANT_COMPOSITE_7PM_N3: 0.69,
+                CONSTANT_COMPOSITE_7PM_N4: 0.79
+            };
+            await set(configRef, defaultConfig);
+            console.log("Initialized default config values.");
+        }
+    } catch (error) {
+        console.error("Error initializing config:", error);
+    }
 };
 
 export const getFirebaseRef = (startTime) => {

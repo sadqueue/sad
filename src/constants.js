@@ -11,8 +11,8 @@ export const NUMBER_OF_ADMISSIONS_S4_CAP = 5;
 // - Change N3 insertion threshold from 0.6 to 0.483333 to 0.55 to 0.66 to 0.699
 // - change N4 insertion threshold from 0.70 to 0.5555 to 0.60 to 0.799
 
-export const ALR_5PM = 0.6;
-export const CLR_5PM = 0.4;
+export const ALR_5PM = 0.7;
+export const CLR_5PM = 0.3;
 export const ALR_7PM = 0.7;
 export const CLR_7PM = 0.3;
 
@@ -29,6 +29,12 @@ export const CONSTANT_COMPOSITE_7PM = {
     "N3": 0.69,
     "N4": 0.79
 };
+
+// export const CONSTANT_COMPOSITE_5PM_N5 = 0.49;
+// export const CONSTANT_COMPOSITE_7PM_N1 = 0.49;
+// export const CONSTANT_COMPOSITE_7PM_N2 = 0.59;
+// export const CONSTANT_COMPOSITE_7PM_N3 = 0.69;
+// export const CONSTANT_COMPOSITE_7PM_N4 = 0.79;
 
 export const TIME_FORMAT = "h:mmA"; //hh:mm for non military
 

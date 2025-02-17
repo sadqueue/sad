@@ -1,34 +1,51 @@
-// import { useEffect, useState } from "react";
-// import { fetchConfigValues, saveConfigValues } from "./transactionsApi";
+import React, { useEffect, useState } from "react";
+import { fetchConfigValues, updateConfigValue } from "./transactionsApi";
 
-// const ConfigPage = () => {
-//   const [composite5PM, setComposite5PM] = useState({});
-//   const [composite7PM, setComposite7PM] = useState({});
+const ConfigPage = () => {
+    const [config, setConfig] = useState({});
+    const [loading, setLoading] = useState(true);
 
-//   useEffect(() => {
-//     const loadConfig = async () => {
-//       const config = await fetchConfigValues();
-//       if (config) {
-//         setComposite5PM(config.composite5PM || {});
-//         setComposite7PM(config.composite7PM || {});
-//       }
-//     };
-//     loadConfig();
-//   }, []);
+    useEffect(() => {
+        const getConfig = async () => {
+            const configData = await fetchConfigValues();
+            setConfig(configData);
+            setLoading(false);
+        };
+        getConfig();
+    }, []);
 
-//   const handleSave = async () => {
-//     await saveConfigValues(composite5PM, composite7PM);
-//     alert("Config saved!");
-//   };
+    const handleChange = (key, value) => {
+        setConfig((prevConfig) => ({
+            ...prevConfig,
+            [key]: value
+        }));
+    };
 
-//   return (
-//     <div>
-//       <h1>Config Settings</h1>
-//       <pre>{JSON.stringify(composite5PM, null, 2)}</pre>
-//       <pre>{JSON.stringify(composite7PM, null, 2)}</pre>
-//       <button onClick={handleSave}>Save Config</button>
-//     </div>
-//   );
-// };
+    const handleSave = async (key) => {
+        if (config[key] !== undefined) {
+            await updateConfigValue(key, parseFloat(config[key]));
+            alert(`${key} updated successfully!`);
+        }
+    };
 
-// export default ConfigPage;
+    if (loading) return <div>Loading configuration...</div>;
+
+    return (
+        <div>
+            <h1>Configuration Settings</h1>
+            {Object.keys(config).map((key) => (
+                <div key={key} style={{ marginBottom: "10px" }}>
+                    <label>{key}: </label>
+                    <input
+                        type="text"
+                        value={config[key]}
+                        onChange={(e) => handleChange(key, e.target.value)}
+                    />
+                    <button onClick={() => handleSave(key)}>Save</button>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+export default ConfigPage;

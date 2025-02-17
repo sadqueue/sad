@@ -79,6 +79,17 @@ div[class="header"] {
   margin-top: 20px;
   text-align: center;
 }
+.containerconfig {
+  font-family: 'Poppins', sans-serif;
+  /* width: 92%; */
+  width: 96%;
+  max-width: 500px;
+  padding: 0 40px;
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: center;
+}
+
 
 .loading {
   margin-top: 30px;

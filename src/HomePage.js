@@ -33,14 +33,15 @@ import {
 } from "./constants";
 import copybuttonImg from "./images/copy.png";
 import snapshotImg from "./images/snapshot.png";
-import sadqueuelogo_bluebackgroundImg from "./images/sadqueuelogo_bluebackground.png";
 import githublogo from "./images/github-mark.png"
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
 import CopyMessages from "./CopyMessages";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, set } from "firebase/database";
-import { addTransaction, deleteAllTransactions, getMostRecentTransaction, getLast10Transactions } from "./transactionsApi";
+import { addTransaction, deleteAllTransactions, getMostRecentTransaction, getLast10Transactions,
+    fetchConfigValues
+ } from "./transactionsApi";
 import html2canvas from "html2canvas";
 import { toPng } from 'html-to-image';
 
@@ -94,6 +95,7 @@ export function App() {
     const [show4, setShow4] = useState(false);
     const [alrWeight, setAlrWeight] = useState("");
     const [clrWeight, setClrWeight] = useState("");
+    const [config, setConfig] = useState(null);
 
     const [lastSaved5Pm, setLastSaved5Pm] = useState({})
 
@@ -134,6 +136,12 @@ export function App() {
         }
         fetchRecent5PMTransaction();
 
+        const getConfig = async () => {
+            const configData = await fetchConfigValues();
+            setConfig(configData);
+        };
+
+        getConfig();
     }, [])
 
     const isXIn2Hours = (each) => {
@@ -235,9 +243,9 @@ export function App() {
 
             newObject.shifts && newObject.shifts.forEach((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                    if ((dropdownSelected == "17:00" && each.name === "S4" && each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4) ||
+                    if ((dropdownSelected == "17:00" && each.name === "S4" && (dropdown == "19:00" && (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4))) ||
                         (!window.Cypress && isXIn2Hours(each)) ||
-                         (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD)
+                         (dropdown == "19:00" && (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD))
                         ) {
                         // explanationArr.push(getFormattedOutput(each));
                         explanationArr.push(`${each.name}: (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`)
@@ -806,7 +814,7 @@ export function App() {
         explanationArr.push("Step 6: Generate the Order based on Composite Score, with Roles having the Lowest Composite Score being Prioritized First.");
 
         timeObj.shifts.forEach((each, eachIndex) => {
-            if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
+            if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
                 explanationArr.push(`${each.name}: ${each.composite}`)
             }
         });
@@ -818,7 +826,7 @@ export function App() {
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                if ((dropdown == "19:00" && !window.Cypress&& isXIn2Hours(each)) || each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4){
+                if ((dropdown == "19:00" && !window.Cypress&& isXIn2Hours(each)) || (dropdown == "19:00" && (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4))){
                     greaterThan2Hours.push(each);
                     hasAnyGreaterThan2Hours = true;
                 } else {
@@ -1073,9 +1081,6 @@ export function App() {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 if (dropdown == "17:00") {
                     if (window.location.hostname === 'localhost') {
-                        //                         CSAlgo(0.6/0.4):     S3>N1>S2>N2>N5>N3>S4>N4
-                        // Role(ALR,CLR,C_score)>Role(ALR,CLR,C_score)>Role(ALR,CLR,C_score)
-                        // orderOfAdmissions.push(each.name);
                         orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`)
                     } else {
                         orderOfAdmissions.push(each.name);
@@ -1084,7 +1089,6 @@ export function App() {
                 } else if (dropdown == "19:00") {
                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
                         if (window.location.hostname === 'localhost') {
-                            // orderOfAdmissions.push(each.name);
                             orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`)
 
                         } else {
