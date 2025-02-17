@@ -1928,7 +1928,7 @@ export function App() {
                                                                     />
                                                                 </div>
                                                                 <span className="progress-text">
-                                                                    {Math.round((admission.clr || 0) * 100)}%
+                                                                    {openTable ? Number(admission.clr).toFixed(2) : `${Math.round((admission.clr || 0) * 100)}%`}
                                                                 </span>
                                                             </div>
                                                         </td>}
