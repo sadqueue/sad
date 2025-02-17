@@ -43,10 +43,10 @@ const runTasks = (testArr, time) => {
                                         cy.task('logToFile', `[ ${count} ] ${time} ${testArr[i][1]} -- !!!! NO MATCH !!!!!
 Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
 Manny:			${output}
-Main Algo:		${removeParanthesis_main}
-Algo(0.6/0.4):  ${removeParanthesis_composite_6and4}
-Main Algo:  	${originalMain}
-Algo(0.6/0.4): 	${composite_6and4}
+Comp:		    ${removeParanthesis_main}
+No Comp:        ${removeParanthesis_composite_6and4}
+Comp:  	        ${originalMain}
+No Comp: 	    ${composite_6and4}
 ----------------------------------\n`);
 
                                         count++;
@@ -55,10 +55,10 @@ Algo(0.6/0.4): 	${composite_6and4}
                                         cy.task('logToFile', `${time} ${testArr[i][1]} -- Match
 Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
 Manny:			${output}
-Main Algo:		${removeParanthesis_main}
-Algo(0.6/0.4):  ${removeParanthesis_composite_6and4}
-Main Algo:  	${originalMain}
-Algo(0.6/0.4): 	${composite_6and4}
+Comp:		    ${removeParanthesis_main}
+No Comp:        ${removeParanthesis_composite_6and4}
+Comp:  	        ${originalMain}
+No Comp: 	    ${composite_6and4}
 ----------------------------------\n`);
                                     }
                                 });

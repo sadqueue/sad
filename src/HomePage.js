@@ -1895,25 +1895,7 @@ export function App() {
                                                                     </span>
                                                                 </div>
                                                             </td>} */}
-                                                        {openTable &&
-                                                            <td className="backgroundlightgray">
-                                                                <div className="progress-cell">
-                                                                    <div className="progress-container">
-                                                                        <div
-                                                                            className="progress-bar"
-                                                                            style={{
-                                                                                width: `${(admission.composite || 0) * 100}%`,
-                                                                                background: (admission.composite || 0) > 0.5
-                                                                                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
-                                                                                    : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
-                                                                            }}
-                                                                        />
-                                                                    </div>
-                                                                    <span className="progress-text">
-                                                                        {admission.composite ? Number(admission.composite).toFixed(2) : ""}
-                                                                    </span>
-                                                                </div>
-                                                            </td>}
+                                                       
                                                         {<td className="backgroundlightgray">
                                                             <div className="progress-cell">
                                                                 <div className="progress-container">
@@ -1943,6 +1925,25 @@ export function App() {
                                                                 />
                                                             </td>
                                                         )}
+                                                         {openTable &&
+                                                            <td className="backgroundlightgray">
+                                                                <div className="progress-cell">
+                                                                    <div className="progress-container">
+                                                                        <div
+                                                                            className="progress-bar"
+                                                                            style={{
+                                                                                width: `${(admission.composite || 0) * 100}%`,
+                                                                                background: (admission.composite || 0) > 0.5
+                                                                                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
+                                                                                    : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                    <span className="progress-text">
+                                                                        {admission.composite ? Number(admission.composite).toFixed(2) : ""}
+                                                                    </span>
+                                                                </div>
+                                                            </td>}
                                                     </tr>
                                                 )
                                             );
