@@ -12,10 +12,10 @@ export const NUMBER_OF_ADMISSIONS_S4_CAP = 5;
 // - Change N3 insertion threshold from 0.6 to 0.483333 to 0.55 to 0.66 to 0.699
 // - change N4 insertion threshold from 0.70 to 0.5555 to 0.60 to 0.799
 
-export const ALR_5PM = 0.6;
-export const CLR_5PM = 0.4;
-export const ALR_7PM = 0.6;
-export const CLR_7PM = 0.4;
+export const ALR_5PM = 0.7;
+export const CLR_5PM = 0.3;
+export const ALR_7PM = 0.7;
+export const CLR_7PM = 0.3;
 
 export const P95_7PM = 180;
 export const P95_5PM = 180;
