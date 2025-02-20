@@ -1,6 +1,6 @@
 const url = "http://localhost:3001/sad";//"https://sadqueue.github.io/sad/";//
 
-import { testArr5pm, testArr4pm, testArr7pm } from "/Users/m0l01bz/Desktop/workspace/sadq.github.io/src/data/data";
+import { testArr5pm, testArr4pm, testArr7pm } from "/Users/m0l01bz/Desktop/workspace/sq/src/data/data";
 
 let count = 1;
 const runTasks = (testArr, time) => {
