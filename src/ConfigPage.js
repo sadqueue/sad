@@ -28,11 +28,11 @@ const ConfigPage = () => {
         }
     };
 
-    if (loading) return <div>Loading configuration...</div>;
+    // if (loading) return <div>Loading configuration...</div>;
 
     return (
-        <div>
-            <h1>Configuration Settings</h1>
+        <div className="container">
+            <h3>Configuration Settings</h3>
             {Object.keys(config).map((key) => (
                 <div key={key} style={{ marginBottom: "10px" }}>
                     <label>{key}: </label>

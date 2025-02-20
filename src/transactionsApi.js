@@ -15,63 +15,74 @@ import database from "./firebaseConfig";
 
 // Fetch all config values from Firebase
 export const fetchConfigValues = async () => {
-    const db = getDatabase();
-    const configRef = ref(db, "config");
-
-    try {
-        const snapshot = await get(configRef);
-        if (snapshot.exists()) {
-            return snapshot.val();
-        } else {
-            console.warn("No configuration found.");
-            return {};
-        }
-    } catch (error) {
-        console.error("Error fetching config:", error);
-        return {};
+  const db = getDatabase();
+  const configRef = ref(db, "config");
+  if (navigator.online){
+    console.log("Please check connection.")
+    return {
+      CONSTANT_COMPOSITE_5PM_N5: 0.49,
+      CONSTANT_COMPOSITE_7PM_N1: 0.49,
+      CONSTANT_COMPOSITE_7PM_N2: 0.59,
+      CONSTANT_COMPOSITE_7PM_N3: 0.69,
+      CONSTANT_COMPOSITE_7PM_N4: 0.79
     }
+  }
+
+  try {
+    const snapshot = await get(configRef);
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.warn("No configuration found.");
+      return {};
+    }
+  } catch (error) {
+    console.error("Error fetching config:", error);
+    return {};
+  }
+
 };
 
 // Update a single config value in Firebase
 export const updateConfigValue = async (key, value) => {
-    const db = getDatabase();
-    const configRef = ref(db, `config/${key}`);
+  const db = getDatabase();
+  const configRef = ref(db, `config/${key}`);
 
-    try {
-        await set(configRef, value);
-        console.log(`${key} updated successfully.`);
-    } catch (error) {
-        console.error(`Error updating ${key}:`, error);
-    }
+  try {
+    await set(configRef, value);
+    console.log(`${key} updated successfully.`);
+  } catch (error) {
+    console.error(`Error updating ${key}:`, error);
+  }
 };
 
 // Initialize default values if config is empty
 export const initializeConfigValues = async () => {
-    const db = getDatabase();
-    const configRef = ref(db, "config");
+  const db = getDatabase();
+  const configRef = ref(db, "config");
 
-    try {
-        const snapshot = await get(configRef);
-        if (!snapshot.exists()) {
-            const defaultConfig = {
-                ALR_5PM: 0.6,
-                CLR_5PM: 0.4,
-                ALR_7PM: 0.7,
-                CLR_7PM: 0.3,
-                P95_7PM: 180,
-                P95_5PM: 180,
-                CONSTANT_COMPOSITE_5PM_N5: 0.49,
-                CONSTANT_COMPOSITE_7PM_N1: 0.49,
-                CONSTANT_COMPOSITE_7PM_N2: 0.59,
-                CONSTANT_COMPOSITE_7PM_N3: 0.69,
-                CONSTANT_COMPOSITE_7PM_N4: 0.79
-            };
-            await set(configRef, defaultConfig);
-            console.log("Initialized default config values.");
-        }
-    } catch (error) {
-        console.error("Error initializing config:", error);
+  try {
+    const snapshot = await get(configRef);
+    if (!snapshot.exists()) {
+      const defaultConfig = {
+        ALR_5PM: 0.6,
+        CLR_5PM: 0.4,
+        ALR_7PM: 0.7,
+        CLR_7PM: 0.3,
+        P95_7PM: 180,
+        P95_5PM: 180,
+        CONSTANT_COMPOSITE_5PM_N5: 0.49,
+        CONSTANT_COMPOSITE_7PM_N1: 0.49,
+        CONSTANT_COMPOSITE_7PM_N2: 0.59,
+        CONSTANT_COMPOSITE_7PM_N3: 0.69,
+        CONSTANT_COMPOSITE_7PM_N4: 0.79
+      };
+      await set(configRef, defaultConfig);
+      console.log("Initialized default config values.");
     }
+  } catch (error) {
+    console.error("Error initializing config:", error);
+  }
 };
 
 export const getFirebaseRef = (startTime) => {
@@ -109,13 +120,6 @@ export const getLast10Transactions = async (admissionsObj) => {
 export const addTransaction = async (admissionsObj, order, copyBox) => {
   const transactionsRef = getFirebaseRef(admissionsObj.startTime);
 
-  // const splitArr = copyBox.split("\n\n")
-  // const newCopyBox = splitArr.slice(4, splitArr.length-2)
-  // newCopyBox.push(order);
-
-  // console.log(newCopyBox);
-
-
   try {
     const getUserDeviceDetails = () => {
       return {
@@ -135,7 +139,7 @@ export const addTransaction = async (admissionsObj, order, copyBox) => {
     hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
 
     const localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
-    
+
     const newTransaction = {
       timestamp: timestamp,
       localDateTime: localDateTime,
@@ -189,7 +193,12 @@ export const getMostRecentTransaction = async (startTime) => {
     const transactionsRef = getFirebaseRef(startTime);
     const recentQuery = query(transactionsRef, orderByChild("timestamp"), limitToLast(1));
 
+    if (navigator.online){
+      return { success: false, error: "Please check connection." };
+
+    }
     const snapshot = await get(recentQuery);
+
 
     if (snapshot && snapshot.exists()) {
       const data = snapshot.val();
