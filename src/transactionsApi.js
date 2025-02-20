@@ -14,34 +14,24 @@ import {
 import database from "./firebaseConfig";
 
 // Fetch all config values from Firebase
-// export const fetchConfigValues = async () => {
-//   const db = getDatabase();
-//   const configRef = ref(db, "config");
-//   if (navigator.online){
-//     console.log("Please check connection.")
-//     return {
-//       CONSTANT_COMPOSITE_5PM_N5: 0.49,
-//       CONSTANT_COMPOSITE_7PM_N1: 0.49,
-//       CONSTANT_COMPOSITE_7PM_N2: 0.59,
-//       CONSTANT_COMPOSITE_7PM_N3: 0.69,
-//       CONSTANT_COMPOSITE_7PM_N4: 0.79
-//     }
-//   }
+export const fetchConfigValues = async () => {
+  const db = getDatabase();
+  const configRef = ref(db, "config");
 
-//   try {
-//     const snapshot = await get(configRef);
-//     if (snapshot.exists()) {
-//       return snapshot.val();
-//     } else {
-//       console.warn("No configuration found.");
-//       return {};
-//     }
-//   } catch (error) {
-//     console.error("Error fetching config:", error);
-//     return {};
-//   }
-
-// };
+  try {
+    const snapshot = await get(configRef);
+    if (snapshot.exists()) {
+      console.log("Config data fetched:", snapshot.val()); // Debug log
+      return snapshot.val();
+    } else {
+      console.warn("No configuration found in Firebase.");
+      return {};
+    }
+  } catch (error) {
+    console.error("Error fetching config from Firebase:", error);
+    return {};
+  }
+};
 
 // Update a single config value in Firebase
 export const updateConfigValue = async (key, value) => {
@@ -193,10 +183,7 @@ export const getMostRecentTransaction = async (startTime) => {
     const transactionsRef = getFirebaseRef(startTime);
     const recentQuery = query(transactionsRef, orderByChild("timestamp"), limitToLast(1));
 
-    if (navigator.online){
-      return { success: false, error: "Please check connection." };
 
-    }
     const snapshot = await get(recentQuery);
 
 

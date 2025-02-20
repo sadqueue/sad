@@ -12,8 +12,8 @@ import {
     CHRONIC_LOAD_RATIO_THRESHOLD_S4,
     NUMBER_OF_ADMISSIONS_CAP,
     ROLES_WITH_DEFAULT_TIMES,
-    // CONSTANT_COMPOSITE_5PM,
-    // CONSTANT_COMPOSITE_7PM,
+    CONSTANT_COMPOSITE_5PM,
+    CONSTANT_COMPOSITE_7PM,
     CONSTANT_COMPOSITE_5PM_N5,
     CONSTANT_COMPOSITE_7PM_N1,
     CONSTANT_COMPOSITE_7PM_N2,
@@ -33,9 +33,10 @@ import githublogo from "./images/github-mark.png"
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
 import CopyMessages from "./CopyMessages";
-import { addTransaction, deleteAllTransactions, getMostRecentTransaction,
-    // fetchConfigValues
- } from "./transactionsApi";
+import {
+    addTransaction, deleteAllTransactions, getMostRecentTransaction,
+    fetchConfigValues
+} from "./transactionsApi";
 import html2canvas from "html2canvas";
 
 const CONFIG = CONFIG1;
@@ -60,12 +61,51 @@ export function App() {
     const [show2, setShow2] = useState(false);
     const [show3, setShow3] = useState(false);
     const [show4, setShow4] = useState(false);
-    const [config, setConfig] = useState(null);
+    const [config, setConfig] = useState({
+        // ALR_5PM: ALR_5PM,
+        // CLR_5PM: CLR_5PM,
+        // ALR_7PM: ALR_7PM,
+        // CLR_7PM: CLR_7PM,
+
+        // P95_7PM: P95_7PM,
+        // P95_5PM: P95_5PM,
+        // CONSTANT_COMPOSITE_5PM_N5: CONSTANT_COMPOSITE_5PM_N5,
+        // CONSTANT_COMPOSITE_7PM_N1: CONSTANT_COMPOSITE_7PM_N1,
+        // CONSTANT_COMPOSITE_7PM_N2: CONSTANT_COMPOSITE_7PM_N2,
+        // CONSTANT_COMPOSITE_7PM_N3: CONSTANT_COMPOSITE_7PM_N3,
+        // CONSTANT_COMPOSITE_7PM_N4: CONSTANT_COMPOSITE_7PM_N4
+        ALR_5PM: ALR_5PM,
+        CLR_5PM: CLR_5PM,
+        ALR_7PM: ALR_7PM,
+        CLR_7PM: CLR_7PM,
+
+        P95_7PM: P95_7PM,
+        P95_5PM: P95_5PM,
+        CONSTANT_COMPOSITE_5PM_N5: CONSTANT_COMPOSITE_5PM_N5,
+        CONSTANT_COMPOSITE_7PM_N1: CONSTANT_COMPOSITE_7PM_N1,
+        CONSTANT_COMPOSITE_7PM_N2: CONSTANT_COMPOSITE_7PM_N2,
+        CONSTANT_COMPOSITE_7PM_N3: CONSTANT_COMPOSITE_7PM_N3,
+        CONSTANT_COMPOSITE_7PM_N4: CONSTANT_COMPOSITE_7PM_N4
+    });
     const [lastSaved5Pm, setLastSaved5Pm] = useState({})
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
         let localDateTime = "";
+
+        const loadConfig = async () => {
+            try {
+                const data = await fetchConfigValues();
+                setConfig(data);
+            } catch (err) {
+                console.log("Failed to load configuration.");
+            } finally {
+                setLoading(false);
+
+            }
+        };
+
+        loadConfig();
 
         const fetchRecentTransaction = async () => {
             function default5PMIfBetween7AMAnd6PM() {
@@ -86,7 +126,7 @@ export function App() {
             } else {
                 sortMain(allAdmissionsDataShifts, default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00", localDateTime);
             }
-            setLoading(false);
+            // setLoading(false);
         };
         fetchRecentTransaction();
 
@@ -99,22 +139,18 @@ export function App() {
         }
         fetchRecent5PMTransaction();
 
-        // const getConfig = async () => {
-        //     const configData = await fetchConfigValues();
-        //     setConfig(configData);
-        // };
-        // getConfig();
+
 
     }, [])
 
     const isXIn2Hours = (each) => {
         let isXIn2Hours = false;
 
-        if (dropdown == "19:00"){
-            lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
-                if (each.name == fivePm.name){
-                    if (fivePm.numberOfAdmissions !== "" && 
-                        (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
+        if (dropdown == "19:00") {
+            lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex) => {
+                if (each.name == fivePm.name) {
+                    if (fivePm.numberOfAdmissions !== "" &&
+                        (Number(fivePm.numberOfAdmissions)) + 2 <= Number(each.numberOfAdmissions)) {
                         isXIn2Hours = true;
                         return true;
                     }
@@ -127,21 +163,21 @@ export function App() {
     const getXIn2Hours = (each) => {
         let isXIn2Hours = "";
 
-        if (dropdown == "19:00"){
-            if (each.name == "N5" && each.numberOfAdmissions >= 2){
+        if (dropdown == "19:00") {
+            if (each.name == "N5" && each.numberOfAdmissions >= 2) {
                 return each.numberOfAdmissions;
             } else {
-                lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
-                    if (each.name == fivePm.name){
-                        if (fivePm.numberOfAdmissions !== "" && 
-                            (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)) {
+                lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex) => {
+                    if (each.name == fivePm.name) {
+                        if (fivePm.numberOfAdmissions !== "" &&
+                            (Number(fivePm.numberOfAdmissions)) + 2 <= Number(each.numberOfAdmissions)) {
                             isXIn2Hours = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions);
                             return true;
                         }
                     }
                 });
             }
-            
+
         }
         return isXIn2Hours;
     }
@@ -208,8 +244,8 @@ export function App() {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     if ((dropdownSelected == "17:00" && each.name === "S4" && (dropdown == "19:00" && (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4))) ||
                         (!window.Cypress && isXIn2Hours(each)) ||
-                         (dropdown == "19:00" && (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD))
-                        ) {
+                        (dropdown == "19:00" && (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD))
+                    ) {
                         // explanationArr.push(getFormattedOutput(each));
                         explanationArr.push(`${each.name}: (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`)
 
@@ -501,7 +537,7 @@ export function App() {
 
     const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
 
-        if (originalAlgorithm){
+        if (originalAlgorithm) {
             return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
         }
         return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
@@ -614,25 +650,24 @@ export function App() {
         const getCompositeExplanation = (each, normalizedAlr, normalizedClr, isFinalExplanation) => {
             const alr_f = dropdownSelected == "17:00" ? ALR_5PM : ALR_7PM;
             const clr_f = dropdownSelected == "17:00" ? CLR_5PM : CLR_7PM;
-
             let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
             if (dropdownSelected == "17:00") {
-                if (each.name == "N5"){
+                if (each.name == "N5") {
                     res = CONSTANT_COMPOSITE_5PM_N5;
                     return `${each.name}: ${CONSTANT_COMPOSITE_5PM_N5}`;
                 }
             }
             else if (dropdownSelected == "19:00") {
-                if (each.name == "N1"){
+                if (each.name == "N1") {
                     res = CONSTANT_COMPOSITE_7PM_N1;
                     return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N1}`;
-                } else if (each.name == "N2"){
+                } else if (each.name == "N2") {
                     res = CONSTANT_COMPOSITE_7PM_N2;
                     return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N2}`;
-                } else if (each.name == "N3"){
+                } else if (each.name == "N3") {
                     res = CONSTANT_COMPOSITE_7PM_N3;
                     return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N3}`;
-                } else if (each.name == "N4"){
+                } else if (each.name == "N4") {
                     res = CONSTANT_COMPOSITE_7PM_N4;
                     return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N4}`;
                 }
@@ -788,7 +823,7 @@ export function App() {
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                if ((dropdownSelected == "19:00" && !window.Cypress&& isXIn2Hours(each)) || (dropdownSelected == "19:00" && (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4))){
+                if ((dropdownSelected == "19:00" && !window.Cypress && isXIn2Hours(each)) || (dropdownSelected == "19:00" && (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4))) {
                     greaterThan2Hours.push(each);
                     hasAnyGreaterThan2Hours = true;
                 } else {
@@ -796,20 +831,20 @@ export function App() {
                 }
             }
         });
-        greaterThan2Hours.sort((a,b) => {
-            if (a.composite > b.composite){
+        greaterThan2Hours.sort((a, b) => {
+            if (a.composite > b.composite) {
                 return 1;
-            } else if (a.composite < b.composite){
+            } else if (a.composite < b.composite) {
                 return -1;
             }
             return 0;
         });
 
 
-        if (hasAnyGreaterThan2Hours){
+        if (hasAnyGreaterThan2Hours) {
             explanationArr.push("\n")
             explanationArr.push("Step 7: Check if any roles have had 2 or more admissions in the last 2 hours. Then sort by composite score.");
-            greaterThan2Hours && greaterThan2Hours.forEach((each)=>{
+            greaterThan2Hours && greaterThan2Hours.forEach((each) => {
                 explanationArr.push(`${each.name}: had ${getXIn2Hours(each)} admissions in the last 2 hours /  Composite Score: ${each.composite}`);
             })
         }
@@ -817,7 +852,7 @@ export function App() {
 
         let shiftsCombined = lessThan2Hours.concat(greaterThan2Hours);
 
-        
+
         let scenario1 = false;
         let scenario2 = false;
         let scenario3 = false
@@ -1176,21 +1211,21 @@ export function App() {
             fixedDiff = p95;
         }
         let increaseAlr = 0;
-        if (!window.Cypress && dropdownSelected == "19:00"){
-            if (each.name == "N5" && each.numberOfAdmissions > 1){
-                increaseAlr = Number(each.numberOfAdmissions)-1;
+        if (!window.Cypress && dropdownSelected == "19:00") {
+            if (each.name == "N5" && each.numberOfAdmissions > 1) {
+                increaseAlr = Number(each.numberOfAdmissions) - 1;
             } else {
-                lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex)=>{
-                    if (each.name == fivePm.name){
-                        if (fivePm.numberOfAdmissions !== "" && (Number(fivePm.numberOfAdmissions))+2 <= Number(each.numberOfAdmissions)){
-                            increaseAlr = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions)-1;
+                lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex) => {
+                    if (each.name == fivePm.name) {
+                        if (fivePm.numberOfAdmissions !== "" && (Number(fivePm.numberOfAdmissions)) + 2 <= Number(each.numberOfAdmissions)) {
+                            increaseAlr = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions) - 1;
                         }
                     }
                 })
             }
-            
+
         }
-        
+
         const originalAlr = Number(1 - (fixedDiff) / p95);
         const updatedAlr = originalAlr + increaseAlr;
         return updatedAlr.toFixed(3);
@@ -1230,23 +1265,23 @@ export function App() {
 
         let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
         if (dropdownSelected == "17:00") {
-            if (each.name == "N5"){
+            if (each.name == "N5") {
                 res = CONSTANT_COMPOSITE_5PM_N5;
                 return CONSTANT_COMPOSITE_5PM_N5;
             }
         }
 
         else if (dropdownSelected == "19:00") {
-            if (each.name == "N1"){
+            if (each.name == "N1") {
                 res = CONSTANT_COMPOSITE_7PM_N1;
                 return CONSTANT_COMPOSITE_7PM_N1;
-            } else if (each.name == "N2"){
+            } else if (each.name == "N2") {
                 res = CONSTANT_COMPOSITE_7PM_N2;
                 return CONSTANT_COMPOSITE_7PM_N2;
-            } else if (each.name == "N3"){
+            } else if (each.name == "N3") {
                 res = CONSTANT_COMPOSITE_7PM_N3;
                 return CONSTANT_COMPOSITE_7PM_N3;
-            } else if (each.name == "N34"){
+            } else if (each.name == "N4") {
                 res = CONSTANT_COMPOSITE_7PM_N4;
                 return CONSTANT_COMPOSITE_7PM_N4;
             }
@@ -1439,7 +1474,7 @@ export function App() {
     }
 
     const takeScreenshot = async () => {
-        
+
         const element = document.getElementById("screenshotimg");
 
         // Capture the div as a canvas
@@ -1537,7 +1572,7 @@ export function App() {
                 setAllAdmissionsDataShifts(allAdmissionsDataShifts);
                 setDropdown(dropdown);
 
-                if (dropdown == "17:00"){
+                if (dropdown == "17:00") {
                     setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts);
                 }
             }
@@ -1630,14 +1665,14 @@ export function App() {
                             takeScreenshot();
 
                         }} />}
-                        <button
+                    <button
                         onClick={() => setOpenTable(!openTable)}
                         className="expand"
                     >
                         {openTable ? "Minimize Table ⬆️" : "Expand Table ⬇️"}
                     </button>
                     <table id="screenshotimg">
-                    
+
                         <table id="reacttable">
                             <thead>
                                 {openTable ? (
@@ -1786,7 +1821,7 @@ export function App() {
                                                                 />
                                                             </td>
                                                         )}
-                                                         {openTable &&
+                                                        {openTable &&
                                                             <td className="backgroundlightgray">
                                                                 <div className="progress-cell">
                                                                     <div className="progress-container">
@@ -1882,7 +1917,7 @@ export function App() {
 
                         {show4 &&
                             <div>
-                              
+
                                 <div>
                                     <input
                                         id="originalAlgorithmCheckbox"
@@ -1896,7 +1931,7 @@ export function App() {
                                     />
                                     <label for="originalAlgorithm">Original Algorithm v1.0</label>
                                 </div>
-                                
+
                             </div>
                         }
 
