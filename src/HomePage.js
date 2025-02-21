@@ -4,24 +4,21 @@ import moment from "moment";
 import {
     SHIFT_TYPES,
     START_TIMES,
-    SCORE_NEW_ROLE,
-    DATA_TYPE_INT,
-    DATA_TYPE_TIME,
     CHRONIC_LOAD_RATIO_THRESHOLD,
-    ADMISSIONS_FORMAT,
     TIME_FORMAT,
-    MINIMIZE_TABLE,
-    EXPAND_TABLE,
     ROLE_ORDER,
     SHOW_ROWS_TABLE,
     SHOW_ROWS_COPY,
     CHRONIC_LOAD_RATIO_THRESHOLD_S4,
-    CHRONIC_LOAD_RATIO_THRESHOLD_N1_N2_N3_N4,
     NUMBER_OF_ADMISSIONS_CAP,
-    NUMBER_OF_ADMISSIONS_S4_CAP,
     ROLES_WITH_DEFAULT_TIMES,
     CONSTANT_COMPOSITE_5PM,
     CONSTANT_COMPOSITE_7PM,
+    CONSTANT_COMPOSITE_5PM_N5,
+    CONSTANT_COMPOSITE_7PM_N1,
+    CONSTANT_COMPOSITE_7PM_N2,
+    CONSTANT_COMPOSITE_7PM_N3,
+    CONSTANT_COMPOSITE_7PM_N4,
     P95_7PM,
     P95_5PM,
     MINIMIZE_TABLE_STATIC_COMPOSITE_WEB,
@@ -31,22 +28,16 @@ import {
     ALR_7PM,
     CLR_7PM
 } from "./constants";
-import copybuttonImg from "./images/copy.png";
 import snapshotImg from "./images/snapshot.png";
 import githublogo from "./images/github-mark.png"
 import emailjs from "@emailjs/browser";
 import CONFIG1 from "./config";
 import CopyMessages from "./CopyMessages";
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, get, set } from "firebase/database";
 import {
-    addTransaction, deleteAllTransactions, getMostRecentTransaction, getLast10Transactions,
+    addTransaction, deleteAllTransactions, getMostRecentTransaction,
     fetchConfigValues
 } from "./transactionsApi";
 import html2canvas from "html2canvas";
-import { toPng } from 'html-to-image';
-
-// import CypressTestRunner from "./CypressTestRunner";
 
 const CONFIG = CONFIG1;
 
@@ -56,94 +47,102 @@ export function App() {
     // deleteAllTransactions("19:00")
     const [allAdmissionsDataShifts, setAllAdmissionsDataShifts] = useState({ startTime: "17:00", shifts: SHIFT_TYPES })
 
-    const [sorted, setSorted] = useState("");
     const [seeDetails, setSeeDetails] = useState(false);
     const [explanation, setExplanation] = useState("");
-    const [openTable, setOpenTable] = useState(false);
-    const [weight, setWeight] = useState(0.3);
-    const [isCopied, setIsCopied] = useState(false);
-    const [sortConfig, setSortConfig] = useState(
-        {
-            "name": true,
-            "numberOfAdmissions": true,
-            "timestamp": true,
-            "chronicLoadRatio": true,
-            "numberOfHours": true,
-            "score": true
-        }
-    );
+    const [openTable, setOpenTable] = useState(false);   
     const [dropdown, setDropdown] = useState("17:00");
-    const [admissionsOutput, setAdmissionsOutput] = useState("");
-    const [transactions, setTransactions] = useState([]);
     const [lastSaved, setLastSaved] = useState("");
     const [loading, setLoading] = useState(true);
     const [orderOfAdmissions, setOrderOfAdmissions] = useState("");
     const [array1, setArray1] = useState("");
     const [array2, setArray2] = useState("");
-    const [inputManually, setInputManually] = useState("");
     const [clickedGenerateQueue, setClickedGenerateQueue] = useState(false);
-    const [compositeScoreAlgorithmDynamic, setCompositeScoreAlgorithmDynamic] = useState(false);
-    const [compositeScoreAlgorithmStatic, setCompositeScoreAlgorithmStatic] = useState(false);
     const [originalAlgorithm, setOriginalAlgorithm] = useState(false);
     const [alr_f_5pm, setAlr_f_5pm] = useState(ALR_5PM);
     const [clr_f_5pm, setClr_f_5pm] = useState(CLR_5PM);
     const [alr_f_7pm, setAlr_f_7pm] = useState(ALR_7PM);
     const [clr_f_7pm, setClr_f_7pm] = useState(CLR_7PM);
 
-    const [show1, setShow1] = useState(false);
     const [show2, setShow2] = useState(false);
     const [show3, setShow3] = useState(false);
     const [show4, setShow4] = useState(false);
-    const [alrWeight, setAlrWeight] = useState("");
-    const [clrWeight, setClrWeight] = useState("");
-    const [config, setConfig] = useState(null);
-
+    const [config, setConfig] = useState({});
     const [lastSaved5Pm, setLastSaved5Pm] = useState({})
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
+
+
+        const loadConfig = async () => {
+            try {
+                const data = await fetchConfigValues();
+                console.log("Config values fetched:", data); // Debugging
+                setConfig(data);
+            } catch (err) {
+                console.log("Failed to load configuration.", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadConfig();
+    }, []);
+
+    useEffect(() => {
         let localDateTime = "";
+
+        if (Object.keys(config).length === 0) {
+            console.log("Config not yet loaded, waiting...");
+            return;
+        }
 
         const fetchRecentTransaction = async () => {
             function default5PMIfBetween7AMAnd6PM() {
                 const now = new Date();
                 const currentHour = now.getHours();
-
                 return currentHour >= 7 && currentHour < 18;
             }
-            const result = await getMostRecentTransaction(default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00");
+
+            const result = await getMostRecentTransaction(
+                default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00"
+            );
 
             if (result.success) {
                 setLastSaved(result.transaction.localDateTime);
-                if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
+                if (
+                    result.transaction.admissionsObj.allAdmissionsDataShifts &&
+                    result.transaction.admissionsObj.allAdmissionsDataShifts.shifts
+                ) {
                     setDropdown(result.transaction.admissionsObj.startTime);
-                    sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, result.transaction.admissionsObj.startTime ? result.transaction.admissionsObj.startTime : "17:00", localDateTime);
-
+                    sortMain(
+                        result.transaction.admissionsObj.allAdmissionsDataShifts,
+                        result.transaction.admissionsObj.startTime
+                            ? result.transaction.admissionsObj.startTime
+                            : "17:00",
+                        localDateTime
+                    );
                 }
-
             } else {
-                sortMain(allAdmissionsDataShifts, "17:00", localDateTime);
+                sortMain(
+                    allAdmissionsDataShifts,
+                    default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00",
+                    localDateTime
+                );
             }
-            setLoading(false);
         };
+
         fetchRecentTransaction();
 
         const fetchRecent5PMTransaction = async () => {
             const result = await getMostRecentTransaction("17:00");
 
             if (result.success) {
-                setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts)
+                setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts);
             }
-        }
-        fetchRecent5PMTransaction();
-
-        const getConfig = async () => {
-            const configData = await fetchConfigValues();
-            setConfig(configData);
         };
 
-        getConfig();
-    }, [])
+        fetchRecent5PMTransaction();
+    }, [config]);
 
     const isXIn2Hours = (each) => {
         let isXIn2Hours = false;
@@ -538,12 +537,6 @@ export function App() {
     }
 
     const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
-
-        // if (compositeScoreAlgorithmStatic) {
-        //     return sortMainByCompositeScoreStatic(timeObj, dropdownSelected, lastSavedTime);
-        // } else {
-        //     return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
-        // }
         if (originalAlgorithm) {
             return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
         }
@@ -599,7 +592,7 @@ export function App() {
                 if (each.difference > p95) {
                     fixedDiff = p95;
                 }
-                return `${each.name}: 1-(${fixedDiff} minutes / ${p95})=${alrx}`;
+                return `${each.name}: 1-(${fixedDiff} minutes / ${p95}) = ${alrx}`;
             }
         }
 
@@ -659,21 +652,25 @@ export function App() {
 
             let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
             if (dropdown == "17:00") {
-                Object.entries(CONSTANT_COMPOSITE_5PM).forEach((innerEach, innerEachIndex) => {
-                    if (innerEach[0] == each.name) {
-                        res = innerEach[1];
-                        return `${each.name}: ${innerEach[1]}`
-
-                    }
-                });
+                if (each.name == "N5") {
+                    res = CONSTANT_COMPOSITE_5PM_N5;
+                    return `${each.name}: ${CONSTANT_COMPOSITE_5PM_N5}`;
+                }
             }
             else if (dropdown == "19:00") {
-                Object.entries(CONSTANT_COMPOSITE_7PM).forEach((innerEach, innerEachIndex) => {
-                    if (innerEach[0] == each.name) {
-                        res = innerEach[1];
-                        return `${each.name}: ${innerEach[1]}`
+                if (each.name == "N1") {
+                    res = CONSTANT_COMPOSITE_7PM_N1;
+                    return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N1}`;
+                } else if (each.name == "N2") {
+                    res = CONSTANT_COMPOSITE_7PM_N2;
+                    return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N2}`;
+                } else if (each.name == "N3") {
+                    res = CONSTANT_COMPOSITE_7PM_N3;
+                    return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N3}`;
+                } else if (each.name == "N4") {
+                    res = CONSTANT_COMPOSITE_7PM_N4;
+                    return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N4}`;
                     }
-                })
             }
 
             if (isFinalExplanation) {
@@ -715,7 +712,7 @@ export function App() {
             }
         }
 
-        explanationArr.push("Step 1: Calculate Acute Load Ratio (ALR) for each Role.", "\n",);
+        explanationArr.push("Step 1: Calculate Acute Load Ratio (ALR) for each Role.");
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
@@ -794,8 +791,7 @@ export function App() {
         });
 
         explanationArr.push("\n")
-        explanationArr.push(`Step 5: Calculate Composite Score: a Weighted Sum of Acute and Chronic Load Scores.`,
-            "\n");
+        explanationArr.push(`Step 5: Calculate composite score: a weighted sum of acute and chronic load scores.`);
 
         compositeArrExplanation.forEach((each, eachIndex) => {
             explanationArr.push(each);
@@ -812,7 +808,7 @@ export function App() {
         });
 
         explanationArr.push("\n")
-        explanationArr.push("Step 6: Generate the Order based on Composite Score, with Roles having the Lowest Composite Score being Prioritized First.");
+        explanationArr.push("Step 6: Generate the order based on composite score, with roles having the lowest composite score being prioritized first.");
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
@@ -1121,14 +1117,6 @@ export function App() {
         return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.chronicLoadRatio}`;
     }
 
-    const getFormattedOutputCompositeScore = (each) => {
-        return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions ? each.numberOfAdmissions : " "}/${each.numberOfHoursWorked})=${each.composite}`;
-    }
-
-    const getFormattedOutputCompositeScore2 = (each) => {
-        return `${each.name} [ ${each.timestamp ? moment(each.timestamp, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"} ] (${each.numberOfAdmissions ? each.numberOfAdmissions : " "} / ${each.numberOfHoursWorked}) = ${each.composite}`;
-    }
-
     const getMomentTimeWithoutUndefined = (time) => {
         return time ? moment(time, TIME_FORMAT).format(TIME_FORMAT) : "--:-- --"
     }
@@ -1272,26 +1260,31 @@ export function App() {
     }
 
     const getComposite = (each, normalizedAlr, normalizedClr) => {
-        const alr_f = dropdown == "17:00" ? alr_f_5pm : alr_f_7pm;
-        const clr_f = dropdown == "17:00" ? clr_f_5pm : clr_f_7pm;
+        const alr_f = dropdown == "17:00" ? ALR_5PM : ALR_7PM;
+        const clr_f = dropdown == "17:00" ? CLR_5PM : CLR_7PM;
 
         let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
         if (dropdown == "17:00") {
-            Object.entries(CONSTANT_COMPOSITE_5PM).forEach((innerEach, innerEachIndex) => {
-                if (innerEach[0] == each.name) {
-                    res = innerEach[1];
-                    return innerEach[1]
-                }
-            });
+            if (each.name == "N5") {
+                res = CONSTANT_COMPOSITE_5PM_N5;
+                return CONSTANT_COMPOSITE_5PM_N5;
+            }
         }
 
         else if (dropdown == "19:00") {
-            Object.entries(CONSTANT_COMPOSITE_7PM).forEach((innerEach, innerEachIndex) => {
-                if (innerEach[0] == each.name) {
-                    res = innerEach[1];
-                    return innerEach[1];
+            if (each.name == "N1") {
+                res = CONSTANT_COMPOSITE_7PM_N1;
+                return CONSTANT_COMPOSITE_7PM_N1;
+            } else if (each.name == "N2") {
+                res = CONSTANT_COMPOSITE_7PM_N2;
+                return CONSTANT_COMPOSITE_7PM_N2;
+            } else if (each.name == "N3") {
+                res = CONSTANT_COMPOSITE_7PM_N3;
+                return CONSTANT_COMPOSITE_7PM_N3;
+            } else if (each.name == "N4") {
+                res = CONSTANT_COMPOSITE_7PM_N4;
+                return CONSTANT_COMPOSITE_7PM_N4;
                 }
-            })
         }
         return Number(res).toFixed(3);
     }
@@ -1349,7 +1342,6 @@ export function App() {
                 id="timesdropdown"
                 onChange={e => {
                     const startTime = e.target.value;
-                    // console.log("clickedGenerateQueue", clickedGenerateQueue);
                     if (startTime == "19:00" && clickedGenerateQueue) {
                         const getMostRecentTransactionx = async (startTime) => {
                             const res = await getMostRecentTransaction(startTime);
@@ -1401,10 +1393,10 @@ export function App() {
 
                             if (res && res.transaction) {
                                 const order = res.transaction.order;
-                                const allAdmissionsDataShifts = res.transaction.admissionsObj.allAdmissionsDataShifts;
+                                const allAdmissionsDataShiftsx = res.transaction.admissionsObj.allAdmissionsDataShifts;
                                 const lastSavedTime = res.transaction.localDateTime;
-                                if (allAdmissionsDataShifts) {
-                                    setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+                                if (allAdmissionsDataShiftsx) {
+                                    setAllAdmissionsDataShifts(allAdmissionsDataShiftsx);
                                 }
 
                                 if (order.split(">").length > 10) {
@@ -1444,10 +1436,11 @@ export function App() {
                                 if (lastSavedTime) {
                                     setLastSaved(lastSavedTime);
                                 }
-                                setSortRoles(allAdmissionsDataShifts, startTime, lastSavedTime);
+                                setSortRoles(allAdmissionsDataShiftsx, startTime, lastSavedTime);
                             }
                         }
                         getMostRecentTransactionx(startTime);
+
                     }
                 }
                 }>
@@ -1484,35 +1477,7 @@ export function App() {
     }
 
     const takeScreenshot = async () => {
-        // const node = document.getElementById("screenshotimg");
 
-        // if (!node) {
-        //   console.error('Element not found!');
-        //   return;
-        // }
-
-        // try {
-        //   const dataUrl = await toPng(node);
-
-        //   // Create an image element to preview (optional)
-        //   const img = new Image();
-        //   img.src = dataUrl;
-        //   document.body.appendChild(img);
-
-        //   // Copy to clipboard
-        //   const blob = await (await fetch(dataUrl)).blob();
-        //   await navigator.clipboard.write([
-        //     new ClipboardItem({ 'image/png': blob })
-        //   ]);
-
-        //   console.log('Image copied to clipboard');
-        //   alert('✅ Screenshot copied to clipboard!');
-        // } catch (error) {
-        //   console.error('Error generating image:', error);
-        //   alert('Failed to copy the screenshot. Check your browser permissions.');
-        // }
-
-        // const fieldset = document.getElementById("fieldsettocopy_min");
         const element = document.getElementById("screenshotimg");
 
         // Capture the div as a canvas
@@ -1541,7 +1506,6 @@ export function App() {
     const setSortRoles = (admissionsDatax, dropdownSelected, lastSavedTime = "") => {
         const sortRoles = [];
         let sortRolesNameOnly = [];
-        // sortRoles.push("\n");
 
         let timeObjShifts = admissionsDatax.shifts;
 
@@ -1588,73 +1552,19 @@ export function App() {
 
             }
         });
-        // sortRoles.push("\n");
 
         sortRoles.push(`${sortRolesNameOnly.join(">")}`);
-        // console.log("sort roles", sorted);
-        setSorted(sortRoles);
 
         return timeObjShifts;
     }
-
-    const handleSort = (key) => {
-
-        sortConfig[key] = !sortConfig[key];
-
-        setSortConfig(sortConfig);
-
-        const updatedShifts = allAdmissionsDataShifts && allAdmissionsDataShifts.shifts.sort((a, b) => {
-            if (DATA_TYPE_TIME.includes(key)) {
-                if (moment(a[key], TIME_FORMAT).isBefore(moment(b[key], TIME_FORMAT))) {
-                    return sortConfig[key] ? -1 : 1;
-                } else {
-                    return sortConfig[key] ? 1 : -1;
-                }
-            } else if (DATA_TYPE_INT.includes(key)) {
-                if (Number(a[key]) < Number(b[key])) {
-                    return sortConfig[key] ? -1 : 1;
-                } else {
-                    return sortConfig[key] ? 1 : -1;
-                }
-            } else {
-                if (a[key] < b[key]) {
-                    return sortConfig[key] ? -1 : 1;
-                } else {
-                    return sortConfig[key] ? 1 : -1;
-                }
-            }
-
-        });
-        let returnObj = {};
-        returnObj.startTime = dropdown;
-        returnObj.shifts = updatedShifts;
-
-        setAllAdmissionsDataShifts(returnObj);
-    };
-
-
-    const sendEmail = (e, copiedContent, title) => {
-        e.preventDefault();
-
-        emailjs.send(CONFIG.REACT_APP_EMAILJS_SERVICE_ID, CONFIG.REACT_APP_EMAILJS_TEMPLATE_ID, { message: "lll", title: title }, CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY).then(
-            (response) => {
-                console.log("SUCCESS!", response.status, response.text);
-            },
-            (error) => {
-                console.log("FAILED...", error);
-            },
-        );
-
-    };
 
     const handleGenerateQueue = (e) => {
         setClickedGenerateQueue(true);
         const orderOfAdmissions_ = sortMain(allAdmissionsDataShifts, dropdown);
 
         addTransaction(
-            { allAdmissionsDataShifts, admissionsOutput: admissionsOutput, startTime: dropdown },
+            { allAdmissionsDataShifts, startTime: dropdown },
             orderOfAdmissions_
-            // sorted
         );
 
         const fetchRecentTransaction = async () => {
@@ -1668,7 +1578,6 @@ export function App() {
                 if (dropdown == "17:00") {
                     setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts);
                 }
-            } else {
             }
         };
         fetchRecentTransaction();
@@ -1737,17 +1646,16 @@ export function App() {
             </div>
 
             {loading ? <div className="loading">
-                <div class="spinner">
+                <div className="spinner">
                     {/* Loading... */}
-                    <div class="rect1"></div>
-                    <div class="rect2"></div>
-                    <div class="rect3"></div>
-                    <div class="rect4"></div>
-                    <div class="rect5"></div>
+                    <div className="rect1"></div>
+                    <div className="rect2"></div>
+                    <div className="rect3"></div>
+                    <div className="rect4"></div>
+                    <div className="rect5"></div>
                 </div>
             </div> :
                 <div className="container">
-                    {/* <CypressTestRunner /> */}
                     <div className="flex-container-just1item">
                         {timesDropdown()}
                     </div>
@@ -1886,25 +1794,6 @@ export function App() {
                                                                     </span>
                                                                 </div>
                                                             </td>}
-                                                        {/* {openTable &&
-                                                            <td className="backgroundlightgray">
-                                                                <div className="progress-cell">
-                                                                    <div className="progress-container">
-                                                                        <div
-                                                                            className="progress-bar"
-                                                                            style={{
-                                                                                width: `${(admission.normalizedClr || 0) * 100}%`,
-                                                                                background: (admission.normalizedClr || 0) > 0.5
-                                                                                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" 
-                                                                                    : "linear-gradient(to right,  #1a0dab, #1a0dab)"
-                                                                            }}
-                                                                        />
-                                                                    </div>
-                                                                    <span className="progress-text">
-                                                                        {admission.normalizedClr ? Number(admission.normalizedClr).toFixed(2) : ""}
-                                                                    </span>
-                                                                </div>
-                                                            </td>} */}
 
                                                         {<td className="backgroundlightgray">
                                                             <div className="progress-cell">
@@ -1962,7 +1851,7 @@ export function App() {
                             </tbody>
                         </table>
                         <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${lastSaved.split(" ")[0] + " " + convertTo12HourFormatSimple(dropdown)}`}</p>
-                        {window.location.hostname === 'localhost' && (compositeScoreAlgorithmDynamic || compositeScoreAlgorithmStatic || originalAlgorithm) ?
+                        {window.location.hostname === 'localhost' && (originalAlgorithm) ?
                             <p className="endoutputcenter" id="orderofadmissions_output">
                                 {orderOfAdmissions && orderOfAdmissions}
                             </p>
@@ -2031,19 +1920,7 @@ export function App() {
 
                         {show4 &&
                             <div>
-                                {/* <div>
-                                    <input
-                                        id="compositeScoreCheckboxStatic"
-                                        placeholder="Static Composite Score Algorithm"
-                                        className="input-left"
-                                        label=""
-                                        type="checkbox"
-                                        onChange={(e) => {
-                                            setCompositeScoreAlgorithmStatic(e.target.checked);
-                                        }}
-                                    />
-                                    <label for="compositeScoreCheckboxStatic">Static Composite Score Algorithm</label>
-                                </div> */}
+
                                 <div>
                                     <input
                                         id="originalAlgorithmCheckbox"
@@ -2057,76 +1934,7 @@ export function App() {
                                     />
                                     <label for="originalAlgorithm">Original Algorithm v1.0</label>
                                 </div>
-                                {/* {show4 && compositeScoreAlgorithmStatic &&
-                                    <div>
-                                        {dropdown == "17:00" && <div className="flex"><p className="weightwidth">5PM ALR: </p><input
-                                            id="alr"
-                                            placeholder="ALR"
-                                            className="input-left"
-                                            label="5PM ALR"
-                                            type="number"
-                                            onChange={(e) => {
-                                                setAlr_f_5pm(e.target.value);
-                                                if (Number(e.target.value)) {
-                                                    setClr_f_5pm((1 - Number(e.target.value)).toFixed(2));
 
-                                                }
-                                            }}
-                                            value={alr_f_5pm}
-                                        /></div>}
-                                        {dropdown == "17:00" && <div className="flex"><p className="weightwidth">5PM CLR: </p><input
-                                            id="clr"
-                                            placeholder="7PM CLR"
-                                            className="input-left"
-                                            label="5PM CLR"
-                                            type="number"
-                                            onChange={(e) => {
-                                                setClr_f_5pm(e.target.value);
-                                                if (Number(e.target.value)) {
-                                                    setAlr_f_5pm((1 - Number(e.target.value)).toFixed(2));
-                                                }
-                                            }}
-                                            value={clr_f_5pm}
-                                        /></div>}
-                                        {dropdown == "19:00" && <div className="flex"><p className="weightwidth">7PM ALR: </p><input
-                                            id="alr"
-                                            placeholder="ALR"
-                                            className="input-left"
-                                            label="7PM ALR"
-                                            type="number"
-                                            onChange={(e) => {
-                                                setAlr_f_7pm(e.target.value);
-                                                if (Number(e.target.value)) {
-                                                    setClr_f_7pm((1 - Number(e.target.value)).toFixed(2));
-
-                                                }
-                                            }}
-                                            value={alr_f_7pm}
-                                        /></div>}
-                                        {dropdown == "19:00" && <div className="flex"><p className="weightwidth">7PM CLR: </p><input
-                                            id="clr"
-                                            placeholder="7PM CLR"
-                                            className="input-left"
-                                            label="CLR"
-                                            type="number"
-                                            onChange={(e) => {
-                                                setClr_f_7pm(e.target.value);
-                                                if (Number(e.target.value)) {
-                                                    setAlr_f_7pm((1 - Number(e.target.value)).toFixed(2));
-                                                }
-                                            }}
-                                            value={clr_f_7pm}
-                                        /></div>}
-                                    </div>
-
-                                } */}
-                                {/* {(compositeScoreAlgorithmDynamic || compositeScoreAlgorithmStatic) && <section>
-                                    <button id="generateQueue" onClick={(e) => {
-                                        handleGenerateQueue(e);
-                                    }}>
-                                        Generate Queue
-                                    </button>
-                                </section>} */}
                             </div>
                         }
 

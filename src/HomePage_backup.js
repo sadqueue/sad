@@ -61,32 +61,7 @@ export function App() {
     const [show2, setShow2] = useState(false);
     const [show3, setShow3] = useState(false);
     const [show4, setShow4] = useState(false);
-    const [config, setConfig] = useState({
-        // ALR_5PM: ALR_5PM,
-        // CLR_5PM: CLR_5PM,
-        // ALR_7PM: ALR_7PM,
-        // CLR_7PM: CLR_7PM,
-
-        // P95_7PM: P95_7PM,
-        // P95_5PM: P95_5PM,
-        // CONSTANT_COMPOSITE_5PM_N5: CONSTANT_COMPOSITE_5PM_N5,
-        // CONSTANT_COMPOSITE_7PM_N1: CONSTANT_COMPOSITE_7PM_N1,
-        // CONSTANT_COMPOSITE_7PM_N2: CONSTANT_COMPOSITE_7PM_N2,
-        // CONSTANT_COMPOSITE_7PM_N3: CONSTANT_COMPOSITE_7PM_N3,
-        // CONSTANT_COMPOSITE_7PM_N4: CONSTANT_COMPOSITE_7PM_N4
-        // ALR_5PM: ALR_5PM,
-        // CLR_5PM: CLR_5PM,
-        // ALR_7PM: ALR_7PM,
-        // CLR_7PM: CLR_7PM,
-
-        // P95_7PM: P95_7PM,
-        // P95_5PM: P95_5PM,
-        // CONSTANT_COMPOSITE_5PM_N5: CONSTANT_COMPOSITE_5PM_N5,
-        // CONSTANT_COMPOSITE_7PM_N1: CONSTANT_COMPOSITE_7PM_N1,
-        // CONSTANT_COMPOSITE_7PM_N2: CONSTANT_COMPOSITE_7PM_N2,
-        // CONSTANT_COMPOSITE_7PM_N3: CONSTANT_COMPOSITE_7PM_N3,
-        // CONSTANT_COMPOSITE_7PM_N4: CONSTANT_COMPOSITE_7PM_N4
-    });
+    const [config, setConfig] = useState({});
     const [lastSaved5Pm, setLastSaved5Pm] = useState({})
 
     useEffect(() => {
@@ -557,7 +532,6 @@ export function App() {
     }
 
     const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
-        console.log("config...", config);
         if (originalAlgorithm) {
             return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
         }
@@ -1412,9 +1386,9 @@ export function App() {
                                 const order = res.transaction.order;
                                 const allAdmissionsDataShiftsx = res.transaction.admissionsObj.allAdmissionsDataShifts;
                                 const lastSavedTime = res.transaction.localDateTime;
-                                // if (allAdmissionsDataShiftsx) {
-                                //     setAllAdmissionsDataShifts(allAdmissionsDataShiftsx);
-                                // }
+                                if (allAdmissionsDataShiftsx) {
+                                    setAllAdmissionsDataShifts(allAdmissionsDataShiftsx);
+                                }
 
                                 if (order.split(">").length > 10) {
                                     const splitArr = order.split(">");

@@ -98,7 +98,7 @@ describe('template spec', () => {
         }
 
         if (testArr7pm) {
-            // runTasks(testArr7pm, "7PM")
+            runTasks(testArr7pm, "7PM")
         }
 
     });
