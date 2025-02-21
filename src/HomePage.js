@@ -191,7 +191,7 @@ export function App() {
         });
 
         const explanationArr = [];
-        explanationArr.push("Step 1: Rank Order Based on Acute Load (Time Since Last Admission). [ALR = 1 - (Current Time [17:00] - Last Admit Time)/P95_7PM]");
+        explanationArr.push("Step 1: Rank Order Based on Acute Load (Time Since Last Admission). [ALR = 1 - (Current Time [17:00] - Last Admit Time)/config.P95_7PM]");
 
         /*
         Step 1: Step 1: Sort based on timestamp. If timestamp is the same, sort by chronic load ratio
@@ -578,9 +578,9 @@ export function App() {
             if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
                 let p95 = "";
                 if (dropdown == "19:00") {
-                    p95 = P95_7PM;
+                    p95 = config.P95_7PM;
                 } else if (dropdown == "17:00") {
-                    p95 = P95_5PM;
+                    p95 = config.P95_5PM;
                 }
 
                 let fixedDiff = each.difference;
@@ -642,28 +642,28 @@ export function App() {
 
 
         const getCompositeExplanation = (each, normalizedAlr, normalizedClr, isFinalExplanation) => {
-            const alr_f = dropdownSelected == "17:00" ? ALR_5PM : ALR_7PM;
-            const clr_f = dropdownSelected == "17:00" ? CLR_5PM : CLR_7PM;
+            const alr_f = dropdownSelected == "17:00" ? config.ALR_5PM : config.ALR_7PM;
+            const clr_f = dropdownSelected == "17:00" ? config.CLR_5PM : config.CLR_7PM;
             let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
             if (dropdown == "17:00") {
                 if (each.name == "N5") {
-                    res = CONSTANT_COMPOSITE_5PM_N5;
-                    return `${each.name}: ${CONSTANT_COMPOSITE_5PM_N5}`;
+                    res = config.CONSTANT_COMPOSITE_5PM_N5;
+                    return `${each.name}: ${config.CONSTANT_COMPOSITE_5PM_N5}`;
                 }
             }
             else if (dropdown == "19:00") {
                 if (each.name == "N1") {
-                    res = CONSTANT_COMPOSITE_7PM_N1;
-                    return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N1}`;
+                    res = config.CONSTANT_COMPOSITE_7PM_N1;
+                    return `${each.name}: ${config.CONSTANT_COMPOSITE_7PM_N1}`;
                 } else if (each.name == "N2") {
-                    res = CONSTANT_COMPOSITE_7PM_N2;
-                    return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N2}`;
+                    res = config.CONSTANT_COMPOSITE_7PM_N2;
+                    return `${each.name}: ${config.CONSTANT_COMPOSITE_7PM_N2}`;
                 } else if (each.name == "N3") {
-                    res = CONSTANT_COMPOSITE_7PM_N3;
-                    return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N3}`;
+                    res = config.CONSTANT_COMPOSITE_7PM_N3;
+                    return `${each.name}: ${config.CONSTANT_COMPOSITE_7PM_N3}`;
                 } else if (each.name == "N4") {
-                    res = CONSTANT_COMPOSITE_7PM_N4;
-                    return `${each.name}: ${CONSTANT_COMPOSITE_7PM_N4}`;
+                    res = config.CONSTANT_COMPOSITE_7PM_N4;
+                    return `${each.name}: ${config.CONSTANT_COMPOSITE_7PM_N4}`;
                     }
             }
 
@@ -1195,9 +1195,9 @@ export function App() {
     const getAlr = (each, difference) => {
         let p95 = "";
         if (dropdown == "19:00") {
-            p95 = P95_7PM;
+            p95 = config.P95_7PM;
         } else if (dropdown == "17:00") {
-            p95 = P95_5PM;
+            p95 = config.P95_5PM;
         }
 
         let fixedDiff = difference;
@@ -1254,30 +1254,30 @@ export function App() {
     }
 
     const getComposite = (each, normalizedAlr, normalizedClr, dropdownSelected) => {
-        const alr_f = dropdownSelected == "17:00" ? ALR_5PM : ALR_7PM;
-        const clr_f = dropdownSelected == "17:00" ? CLR_5PM : CLR_7PM;
+        const alr_f = dropdownSelected == "17:00" ? config.ALR_5PM : config.ALR_7PM;
+        const clr_f = dropdownSelected == "17:00" ? config.CLR_5PM : config.CLR_7PM;
 
         let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
         if (dropdown == "17:00") {
             if (each.name == "N5") {
-                res = CONSTANT_COMPOSITE_5PM_N5;
-                return CONSTANT_COMPOSITE_5PM_N5;
+                res = config.CONSTANT_COMPOSITE_5PM_N5;
+                return config.CONSTANT_COMPOSITE_5PM_N5;
             }
         }
 
         else if (dropdown == "19:00") {
             if (each.name == "N1") {
-                res = CONSTANT_COMPOSITE_7PM_N1;
-                return CONSTANT_COMPOSITE_7PM_N1;
+                res = config.CONSTANT_COMPOSITE_7PM_N1;
+                return config.CONSTANT_COMPOSITE_7PM_N1;
             } else if (each.name == "N2") {
-                res = CONSTANT_COMPOSITE_7PM_N2;
-                return CONSTANT_COMPOSITE_7PM_N2;
+                res = config.CONSTANT_COMPOSITE_7PM_N2;
+                return config.CONSTANT_COMPOSITE_7PM_N2;
             } else if (each.name == "N3") {
-                res = CONSTANT_COMPOSITE_7PM_N3;
-                return CONSTANT_COMPOSITE_7PM_N3;
+                res = config.CONSTANT_COMPOSITE_7PM_N3;
+                return config.CONSTANT_COMPOSITE_7PM_N3;
             } else if (each.name == "N4") {
-                res = CONSTANT_COMPOSITE_7PM_N4;
-                return CONSTANT_COMPOSITE_7PM_N4;
+                res = config.CONSTANT_COMPOSITE_7PM_N4;
+                return config.CONSTANT_COMPOSITE_7PM_N4;
                 }
         }
         return Number(res).toFixed(3);
