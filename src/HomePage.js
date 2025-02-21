@@ -74,74 +74,95 @@ export function App() {
         // CONSTANT_COMPOSITE_7PM_N2: CONSTANT_COMPOSITE_7PM_N2,
         // CONSTANT_COMPOSITE_7PM_N3: CONSTANT_COMPOSITE_7PM_N3,
         // CONSTANT_COMPOSITE_7PM_N4: CONSTANT_COMPOSITE_7PM_N4
-        ALR_5PM: ALR_5PM,
-        CLR_5PM: CLR_5PM,
-        ALR_7PM: ALR_7PM,
-        CLR_7PM: CLR_7PM,
+        // ALR_5PM: ALR_5PM,
+        // CLR_5PM: CLR_5PM,
+        // ALR_7PM: ALR_7PM,
+        // CLR_7PM: CLR_7PM,
 
-        P95_7PM: P95_7PM,
-        P95_5PM: P95_5PM,
-        CONSTANT_COMPOSITE_5PM_N5: CONSTANT_COMPOSITE_5PM_N5,
-        CONSTANT_COMPOSITE_7PM_N1: CONSTANT_COMPOSITE_7PM_N1,
-        CONSTANT_COMPOSITE_7PM_N2: CONSTANT_COMPOSITE_7PM_N2,
-        CONSTANT_COMPOSITE_7PM_N3: CONSTANT_COMPOSITE_7PM_N3,
-        CONSTANT_COMPOSITE_7PM_N4: CONSTANT_COMPOSITE_7PM_N4
+        // P95_7PM: P95_7PM,
+        // P95_5PM: P95_5PM,
+        // CONSTANT_COMPOSITE_5PM_N5: CONSTANT_COMPOSITE_5PM_N5,
+        // CONSTANT_COMPOSITE_7PM_N1: CONSTANT_COMPOSITE_7PM_N1,
+        // CONSTANT_COMPOSITE_7PM_N2: CONSTANT_COMPOSITE_7PM_N2,
+        // CONSTANT_COMPOSITE_7PM_N3: CONSTANT_COMPOSITE_7PM_N3,
+        // CONSTANT_COMPOSITE_7PM_N4: CONSTANT_COMPOSITE_7PM_N4
     });
     const [lastSaved5Pm, setLastSaved5Pm] = useState({})
 
     useEffect(() => {
-        emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
-        let localDateTime = "";
+    emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
 
-        const loadConfig = async () => {
-            try {
-                const data = await fetchConfigValues();
-                setConfig(data);
-            } catch (err) {
-                console.log("Failed to load configuration.");
-            } finally {
-                setLoading(false);
 
-            }
-        };
-
-        loadConfig();
-
-        const fetchRecentTransaction = async () => {
-            function default5PMIfBetween7AMAnd6PM() {
-                const now = new Date();
-                const currentHour = now.getHours();
-
-                return currentHour >= 7 && currentHour < 18;
-            }
-            const result = await getMostRecentTransaction(default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00");
-
-            if (result.success) {
-                setLastSaved(result.transaction.localDateTime);
-                if (result.transaction.admissionsObj.allAdmissionsDataShifts && result.transaction.admissionsObj.allAdmissionsDataShifts.shifts) {
-                    setDropdown(result.transaction.admissionsObj.startTime);
-                    sortMain(result.transaction.admissionsObj.allAdmissionsDataShifts, result.transaction.admissionsObj.startTime ? result.transaction.admissionsObj.startTime : "17:00", localDateTime);
-                }
-
-            } else {
-                sortMain(allAdmissionsDataShifts, default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00", localDateTime);
-            }
-            // setLoading(false);
-        };
-        fetchRecentTransaction();
-
-        const fetchRecent5PMTransaction = async () => {
-            const result = await getMostRecentTransaction("17:00");
-
-            if (result.success) {
-                setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts)
-            }
+    const loadConfig = async () => {
+        try {
+            const data = await fetchConfigValues();
+            console.log("Config values fetched:", data); // Debugging
+            setConfig(data);
+        } catch (err) {
+            console.log("Failed to load configuration.", err);
+        } finally {
+            setLoading(false);
         }
-        fetchRecent5PMTransaction();
+    };
 
+    loadConfig();
+}, []);
 
+useEffect(() => {
+    let localDateTime = "";
 
-    }, [])
+    if (Object.keys(config).length === 0) {
+        console.log("Config not yet loaded, waiting...");
+        return;
+    }
+
+    const fetchRecentTransaction = async () => {
+        function default5PMIfBetween7AMAnd6PM() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            return currentHour >= 7 && currentHour < 18;
+        }
+
+        const result = await getMostRecentTransaction(
+            default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00"
+        );
+
+        if (result.success) {
+            setLastSaved(result.transaction.localDateTime);
+            if (
+                result.transaction.admissionsObj.allAdmissionsDataShifts &&
+                result.transaction.admissionsObj.allAdmissionsDataShifts.shifts
+            ) {
+                setDropdown(result.transaction.admissionsObj.startTime);
+                sortMain(
+                    result.transaction.admissionsObj.allAdmissionsDataShifts,
+                    result.transaction.admissionsObj.startTime
+                        ? result.transaction.admissionsObj.startTime
+                        : "17:00",
+                    localDateTime
+                );
+            }
+        } else {
+            sortMain(
+                allAdmissionsDataShifts,
+                default5PMIfBetween7AMAnd6PM() ? "17:00" : "19:00",
+                localDateTime
+            );
+        }
+    };
+
+    fetchRecentTransaction();
+
+    const fetchRecent5PMTransaction = async () => {
+        const result = await getMostRecentTransaction("17:00");
+
+        if (result.success) {
+            setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts);
+        }
+    };
+
+    fetchRecent5PMTransaction();
+}, [config]);
 
     const isXIn2Hours = (each) => {
         let isXIn2Hours = false;
@@ -536,7 +557,7 @@ export function App() {
     }
 
     const sortMain = (timeObj, dropdownSelected, lastSavedTime = "") => {
-
+        console.log("config...", config);
         if (originalAlgorithm) {
             return sortMainOriginal(timeObj, dropdownSelected, lastSavedTime);
         }
@@ -1391,9 +1412,9 @@ export function App() {
                                 const order = res.transaction.order;
                                 const allAdmissionsDataShiftsx = res.transaction.admissionsObj.allAdmissionsDataShifts;
                                 const lastSavedTime = res.transaction.localDateTime;
-                                if (allAdmissionsDataShiftsx) {
-                                    setAllAdmissionsDataShifts(allAdmissionsDataShiftsx);
-                                }
+                                // if (allAdmissionsDataShiftsx) {
+                                //     setAllAdmissionsDataShifts(allAdmissionsDataShiftsx);
+                                // }
 
                                 if (order.split(">").length > 10) {
                                     const splitArr = order.split(">");

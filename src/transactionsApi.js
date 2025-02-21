@@ -78,7 +78,9 @@ export const initializeConfigValues = async () => {
 export const getFirebaseRef = (startTime) => {
   let transactionsRef = "";
 
-  if (window.location.hostname === 'localhost') {
+  if (window.location.href.includes("/beta")){
+    transactionsRef = ref(database, `transactions_beta_${startTime}`);
+  } else if (window.location.hostname === 'localhost') {
     transactionsRef = ref(database, `transactions_local_${startTime}`);
   } else {
     transactionsRef = ref(database, `transactions_${startTime}`);
