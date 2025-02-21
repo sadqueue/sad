@@ -93,6 +93,21 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+let testLogs = []; // Store logs in memory (or Firebase)
+
+// Endpoint to receive logs from Cypress
+app.post("/log", (req, res) => {
+    const { message } = req.body;
+    testLogs.push(message);
+    console.log("Received Log:", message);
+    res.sendStatus(200);
+});
+
+// Endpoint to fetch logs for display on the website
+app.get("/logs", (req, res) => {
+    res.json(testLogs);
+});
+
 // Start the server
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

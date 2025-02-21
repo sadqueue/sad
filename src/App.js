@@ -5,6 +5,7 @@ import HomePageBeta from "./HomePageBeta";
 import AnalyticsPage from "./AnalyticsPage";
 import Navbar from "./NavBar";
 import ConfigPage from "./ConfigPage";
+import CypressPage from "./CypressPage";
 import HomePage_backup from "./HomePage_backup";
 // import AboutPage from "./AboutPage"; // Create an AboutPage component
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/beta" element={<HomePageBeta />} />
         <Route path="/sad_v1.0" element={<HomePage_backup />} />
         <Route path="/config" element={<ConfigPage />} />
+        <Route path="/cypress" element={<CypressPage />} />
       </Routes>
     </Router>
   );

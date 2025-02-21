@@ -1,8 +1,18 @@
 const url = "http://localhost:3001/sad";//"https://sadqueue.github.io/sad/";//
+import { getDatabase, ref, set } from "firebase/database";
+import { initializeApp } from "firebase/app";
+import db from "../../src/firebaseConfig"; // Import Firebase config
 
 import { testArr5pm, testArr4pm, testArr7pm } from "/Users/m0l01bz/Desktop/workspace/sq/src/data/data";
 
+// const app = initializeApp(firebaseConfig);
+// const db = getDatabase(app);
+
 let count = 1;
+// Cypress.Commands.add("logToServer", (message) => {
+//     cy.task("logToServer", message);
+// });
+
 const runTasks = (testArr, time) => {
     let count = 1;
     let selecttime = time == "5PM" ? "17:00" : "19:00";
@@ -34,38 +44,35 @@ const runTasks = (testArr, time) => {
                     cy.get("#originalAlgorithmCheckbox").click();
                     cy.get("#generateQueue").click();
                     cy.get('#orderofadmissions_output')
-                                .then(($el_6and4) => {
-                                    const composite_6and4 = $el_6and4.text();
+                        .then(($el_6and4) => {
+                            const composite_6and4 = $el_6and4.text();
 
-                                    const removeParanthesis_composite_6and4 = $el_6and4.text().replace(/ *\([^)]*\) */g, "").trim();
-                                    
-                                    if (removeParanthesis_main !== removeParanthesis_composite_6and4) {
-                                        cy.task('logToFile', `[ ${count} ] ${time} ${testArr[i][1]} -- !!!! NO MATCH !!!!!
+                            const removeParanthesis_composite_6and4 = $el_6and4.text().replace(/ *\([^)]*\) */g, "").trim();
+
+                            if (removeParanthesis_main !== removeParanthesis_composite_6and4) {
+                                //cy.task('logToFile', { filename: 'log.txt', message: 'Test log entry' });
+
+                                cy.task('logToFile', {
+                                    filename: `${time}.txt`,
+                                    message: `[ ${count} ] ${time} ${testArr[i][1]} -- !!!! NO MATCH !!!!!
 Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
 Manny:			${output}
 Comp:		    ${removeParanthesis_main}
 No Comp:        ${removeParanthesis_composite_6and4}
 Comp:  	        ${originalMain}
 No Comp: 	    ${composite_6and4}
-----------------------------------\n`);
-
-                                        count++;
-                                    } else {
-
-                                        cy.task('logToFile', `${time} ${testArr[i][1]} -- Match
-Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
-Manny:			${output}
-Comp:		    ${removeParanthesis_main}
-No Comp:        ${removeParanthesis_composite_6and4}
-Comp:  	        ${originalMain}
-No Comp: 	    ${composite_6and4}
-----------------------------------\n`);
-                                    }
+----------------------------------\n`
                                 });
-                            cy.get("#originalAlgorithmCheckbox").click();
-                        });
+                                count++;
+                            } else {
 
-              
+
+                            }
+                        });
+                    cy.get("#originalAlgorithmCheckbox").click();
+                });
+
+
         } else {
         }
 
@@ -86,16 +93,26 @@ describe('template spec', () => {
             + currentdate.getFullYear() + " @ "
             + currentdate.getHours() + ":"
             + currentdate.getMinutes();
-        cy.task('logToFile', `###### Order of Admissions by original algorithm ${datetime}`);
-
-
         if (testArr5pm) {
-            // runTasks(testArr5pm, "5PM");
+            runTasks(testArr5pm, "5PM");
         }
 
         if (testArr7pm) {
-            runTasks(testArr7pm, "7PM")
+            // runTasks(testArr7pm, "7PM")
         }
 
     });
 })
+
+
+// Cypress.on("test:after:run", (test) => {
+//     const testResult = {
+//         title: test.title,
+//         state: test.state, // 'passed' or 'failed'
+//         duration: test.duration,
+//         timestamp: new Date().toISOString(),
+//     };
+
+//     const resultRef = ref(db, "cypressResults/" + test.title.replace(/\s+/g, "_"));
+//     set(resultRef, testResult);
+// });
