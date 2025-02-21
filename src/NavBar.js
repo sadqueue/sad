@@ -24,6 +24,9 @@ const Navbar = () => {
       <li>
         <a href="/sad#/analytics">Analytics</a>
       </li>
+      <li>
+        <a href="/sad#/config">Config</a>
+      </li>
       {/* <li>
         <a href="/contact">Contact</a>
       </li> */}

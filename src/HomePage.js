@@ -58,11 +58,6 @@ export function App() {
     const [array2, setArray2] = useState("");
     const [clickedGenerateQueue, setClickedGenerateQueue] = useState(false);
     const [originalAlgorithm, setOriginalAlgorithm] = useState(false);
-    const [alr_f_5pm, setAlr_f_5pm] = useState(ALR_5PM);
-    const [clr_f_5pm, setClr_f_5pm] = useState(CLR_5PM);
-    const [alr_f_7pm, setAlr_f_7pm] = useState(ALR_7PM);
-    const [clr_f_7pm, setClr_f_7pm] = useState(CLR_7PM);
-
     const [show2, setShow2] = useState(false);
     const [show3, setShow3] = useState(false);
     const [show4, setShow4] = useState(false);
@@ -647,9 +642,8 @@ export function App() {
 
 
         const getCompositeExplanation = (each, normalizedAlr, normalizedClr, isFinalExplanation) => {
-            const alr_f = dropdown == "17:00" ? alr_f_5pm : alr_f_7pm;
-            const clr_f = dropdown == "17:00" ? clr_f_5pm : clr_f_7pm;
-
+            const alr_f = dropdownSelected == "17:00" ? ALR_5PM : ALR_7PM;
+            const clr_f = dropdownSelected == "17:00" ? CLR_5PM : CLR_7PM;
             let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
             if (dropdown == "17:00") {
                 if (each.name == "N5") {
@@ -1259,9 +1253,9 @@ export function App() {
         }
     }
 
-    const getComposite = (each, normalizedAlr, normalizedClr) => {
-        const alr_f = dropdown == "17:00" ? ALR_5PM : ALR_7PM;
-        const clr_f = dropdown == "17:00" ? CLR_5PM : CLR_7PM;
+    const getComposite = (each, normalizedAlr, normalizedClr, dropdownSelected) => {
+        const alr_f = dropdownSelected == "17:00" ? ALR_5PM : ALR_7PM;
+        const clr_f = dropdownSelected == "17:00" ? CLR_5PM : CLR_7PM;
 
         let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
         if (dropdown == "17:00") {

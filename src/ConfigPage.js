@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { fetchConfigValues, updateConfigValue } from "./transactionsApi";
 
+const CORRECT_PASSWORD = "manny"; // Change this to your actual password
+
 const ConfigPage = () => {
     const [config, setConfig] = useState({});
     const [loading, setLoading] = useState(true);
+    const [password, setPassword] = useState("");
+    const [authenticated, setAuthenticated] = useState(false);
 
     useEffect(() => {
-        const getConfig = async () => {
-            const configData = await fetchConfigValues();
-            setConfig(configData);
-            setLoading(false);
-        };
-        getConfig();
-    }, []);
+        if (authenticated) {
+            const getConfig = async () => {
+                const configData = await fetchConfigValues();
+                setConfig(configData);
+                setLoading(false);
+            };
+            getConfig();
+        }
+    }, [authenticated]);
 
     const handleChange = (key, value) => {
         setConfig((prevConfig) => ({
@@ -27,6 +33,32 @@ const ConfigPage = () => {
             alert(`${key} updated successfully!`);
         }
     };
+
+    const handleLogin = () => {
+        if (password.toLowerCase() === CORRECT_PASSWORD.toLowerCase()) {
+            setAuthenticated(true);
+        } else {
+            alert("Incorrect password. Try again.");
+            setPassword("");
+        }
+    };
+
+    if (!authenticated) {
+        return (
+            <div className="container">
+                <h3>Configurations</h3>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={{ padding: "5px", marginBottom: "10px" }}
+                />
+                <button onClick={handleLogin} style={{ marginLeft: "10px", padding: "5px 10px" }}>
+                    Submit
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="container">
