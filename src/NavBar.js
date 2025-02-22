@@ -15,18 +15,21 @@ const Navbar = () => {
       <li>
         <a href="/sad">v2.0</a>
       </li>
-      <li>
+      {/* <li>
         <a href="/sad#/sad_v1.0">v1.0</a>
-      </li>
-      <li>
+      </li> */}
+      {/* <li>
         <a href="/sad#/beta">Beta</a>
-      </li>
-      <li>
+      </li> */}
+      {/* {window.location.href.includes("/config") && <li>
         <a href="/sad#/analytics">Analytics</a>
-      </li>
+      </li>} */}
       <li>
         <a href="/sad#/config">Config</a>
       </li>
+      {/* {window.location.href.includes("/config") && <li>
+        <a href="/sad#/charts">Charts</a>
+      </li>}  */}
       {/* <li>
         <a href="/contact">Contact</a>
       </li> */}

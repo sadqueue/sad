@@ -7,6 +7,7 @@ import Navbar from "./NavBar";
 import ConfigPage from "./ConfigPage";
 import CypressPage from "./CypressPage";
 import HomePage_backup from "./HomePage_backup";
+import Charts from "./Charts";
 // import AboutPage from "./AboutPage"; // Create an AboutPage component
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/sad_v1.0" element={<HomePage_backup />} />
         <Route path="/config" element={<ConfigPage />} />
         <Route path="/cypress" element={<CypressPage />} />
+        <Route path="/charts" element={<Charts/>} />
       </Routes>
     </Router>
   );

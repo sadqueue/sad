@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { fetchConfigValues, updateConfigValue } from "./transactionsApi";
+import "./ConfigPage.css";
 
 const CORRECT_PASSWORD = "manny"; // Change this to your actual password
 
 const ConfigPage = () => {
-    const [config, setConfig] = useState({});
-    const [loading, setLoading] = useState(true);
+    const [config, setConfig] = useState({
+        ALR_5PM: 0.7,
+        CLR_5PM: 0.3,
+        ALR_7PM: 0.7,
+        CLR_7PM: 0.3,
+        P95_7PM: 180,
+        P95_5PM: 180,
+        CONSTANT_COMPOSITE_5PM_N5: 0.49,
+        CONSTANT_COMPOSITE_7PM_N1: 0.49,
+        CONSTANT_COMPOSITE_7PM_N2: 0.59,
+        CONSTANT_COMPOSITE_7PM_N3: 0.69,
+        CONSTANT_COMPOSITE_7PM_N4: 0.79,
+    });
+
     const [password, setPassword] = useState("");
     const [authenticated, setAuthenticated] = useState(false);
 
@@ -14,7 +27,6 @@ const ConfigPage = () => {
             const getConfig = async () => {
                 const configData = await fetchConfigValues();
                 setConfig(configData);
-                setLoading(false);
             };
             getConfig();
         }
@@ -23,7 +35,7 @@ const ConfigPage = () => {
     const handleChange = (key, value) => {
         setConfig((prevConfig) => ({
             ...prevConfig,
-            [key]: value
+            [key]: value,
         }));
     };
 
@@ -51,50 +63,74 @@ const ConfigPage = () => {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    style={{ padding: "5px", marginBottom: "10px" }}
                 />
-                <button onClick={handleLogin} style={{ marginLeft: "10px", padding: "5px 10px" }}>
-                    Submit
-                </button>
+                <button onClick={handleLogin}>Submit</button>
             </div>
         );
     }
 
     return (
-        <div className="container">
+        <div className="config-container">
             <h3>Configuration Settings</h3>
-            {Object.keys(config).map((key) => (
-                <div key={key} style={{
-                    border: "1px solid #ccc",
-                    padding: "10px",
-                    borderRadius: "5px",
-                    marginBottom: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px"
-                }}>
-                    <label style={{ flex: 1, fontWeight: "bold" }}>{key.replaceAll("_", " ")}:</label>
-                    <input
-                        type="text"
-                        value={config[key]}
-                        onChange={(e) => handleChange(key, e.target.value)}
-                        style={{ flex: 2, padding: "5px" }}
-                    />
-                    <button 
-                        onClick={() => handleSave(key)}
-                        style={{
-                            padding: "5px 10px",
-                            cursor: "pointer",
-                            backgroundColor: "#007bff",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "3px"
-                        }}
-                    >
-                        Save
-                    </button>
+
+            <ul>
+                <li>
+                    <a href="/sad#/analytics">Analytics</a>
+                </li>
+                <li>
+                    <a href="/sad#/sad_v1.0">v1.0</a>
+                </li>
+                <li>
+                    <a href="/sad#/charts">Charts</a>
+                </li>
+            </ul>
+            <div className="config-section">
+                <div className="config-section">
+                    <h4>Constant Composite</h4>
+                    {[
+                        { label: "5PM - N5", key: "CONSTANT_COMPOSITE_5PM_N5" },
+                        { label: "7PM - N1", key: "CONSTANT_COMPOSITE_7PM_N1" },
+                        { label: "7PM - N2", key: "CONSTANT_COMPOSITE_7PM_N2" },
+                        { label: "7PM - N3", key: "CONSTANT_COMPOSITE_7PM_N3" },
+                        { label: "7PM - N4", key: "CONSTANT_COMPOSITE_7PM_N4" },
+                    ].map(({ label, key }) => (
+                        <ConfigItem key={key} label={label} configKey={key} value={config[key]} onChange={handleChange} onSave={handleSave} />
+                    ))}
                 </div>
-            ))}
+                <h4>ALR & CLR</h4>
+                {[
+                    { label: "ALR (5PM)", key: "ALR_5PM" },
+                    { label: "CLR (5PM)", key: "CLR_5PM" },
+                    { label: "ALR (7PM)", key: "ALR_7PM" },
+                    { label: "CLR (7PM)", key: "CLR_7PM" },
+                ].map(({ label, key }) => (
+                    <ConfigItem key={key} label={label} configKey={key} value={config[key]} onChange={handleChange} onSave={handleSave} />
+                ))}
+            </div>
+
+            <div className="config-section">
+                <h4>P95</h4>
+                {[
+                    { label: "P95 (5PM)", key: "P95_5PM" },
+                    { label: "P95 (7PM)", key: "P95_7PM" },
+                ].map(({ label, key }) => (
+                    <ConfigItem key={key} label={label} configKey={key} value={config[key]} onChange={handleChange} onSave={handleSave} />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const ConfigItem = ({ label, configKey, value, onChange, onSave }) => {
+    return (
+        <div className="config-item">
+            <label>{label}:</label>
+            <input
+                type="text"
+                value={value}
+                onChange={(e) => onChange(configKey, e.target.value)}
+            />
+            <button onClick={() => onSave(configKey)}>Save</button>
         </div>
     );
 };

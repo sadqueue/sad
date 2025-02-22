@@ -568,18 +568,13 @@ export function App() {
         const normalizedClrExplanation = [];
         const compositeArrExplanation = [];
 
-        const getTimeDifferenceExplanation = (each) => {
-            if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
-                return `${each.name}: ${dropdown} - ${each.timestamp} = ${each.difference}`;
-            }
-        }
 
         const getAlrExplanation = (each, alrx) => {
-            if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
+            if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
                 let p95 = "";
-                if (dropdown == "19:00") {
+                if (dropdownSelected == "19:00") {
                     p95 = config.P95_7PM;
-                } else if (dropdown == "17:00") {
+                } else if (dropdownSelected == "17:00") {
                     p95 = config.P95_5PM;
                 }
 
@@ -593,7 +588,7 @@ export function App() {
 
 
         const getClrExplanation = (each, clrx) => {
-            if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
+            if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
 
                 const admissions = Number(each.numberOfAdmissions);
                 let clr = Number(clrx);
@@ -601,37 +596,29 @@ export function App() {
                 let str = "";
                 if (dropdownSelected == "19:00") {
                     if (each.name == "S2") {
-                        // clr = Number(admissions) / 8;
                         str = `${each.name}: ${admissions} / 8 = ${clr.toFixed(3)}`;
                     } else if (each.name == "S3") {
-                        // clr = Number(admissions) / 6;
                         str = `${each.name}: ${admissions} / 6 = ${clr.toFixed(3)}`;
 
                     } else if (each.name == "S4") {
-                        // clr = Number(admissions) / 5;
                         str = `${each.name}: ${admissions} / 5 = ${clr.toFixed(3)}`;
 
                     } else if (each.name == "N5") {
-                        // clr = Number(admissions) / 2;
                         str = `${each.name}: ${admissions} / 2 = ${clr.toFixed(3)}`;
 
                     }
                     return str;
                 } else if (dropdownSelected == "17:00") {
                     if (each.name == "S1") {
-                        // clr = Number(admissions) / 7;
                         str = `${each.name}: ${admissions} / 7 = ${clr.toFixed(3)}`;
 
                     } else if (each.name == "S2") {
-                        // clr = Number(admissions) / 6;
                         str = `${each.name}: ${admissions} / 6 = ${clr.toFixed(3)}`;
 
                     } else if (each.name == "S3") {
-                        // clr = Number(admissions) / 4;
                         str = `${each.name}: ${admissions} / 4 = ${clr.toFixed(3)}`;
 
                     } else if (each.name == "S4") {
-                        // clr = Number(admissions) / 3;
                         str = `${each.name}: ${admissions} / 3 = ${clr.toFixed(3)}`;
 
                     }
@@ -645,13 +632,13 @@ export function App() {
             const alr_f = dropdownSelected == "17:00" ? config.ALR_5PM : config.ALR_7PM;
             const clr_f = dropdownSelected == "17:00" ? config.CLR_5PM : config.CLR_7PM;
             let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
-            if (dropdown == "17:00") {
+            if (dropdownSelected == "17:00") {
                 if (each.name == "N5") {
                     res = config.CONSTANT_COMPOSITE_5PM_N5;
                     return `${each.name}: ${config.CONSTANT_COMPOSITE_5PM_N5}`;
                 }
             }
-            else if (dropdown == "19:00") {
+            else if (dropdownSelected == "19:00") {
                 if (each.name == "N1") {
                     res = config.CONSTANT_COMPOSITE_7PM_N1;
                     return `${each.name}: ${config.CONSTANT_COMPOSITE_7PM_N1}`;
@@ -671,7 +658,7 @@ export function App() {
                 return `${each.name}: ${res}`;
 
             } else {
-                if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
+                if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
                     return `${each.name}: (${alr_f} * ${normalizedAlr}) + (${clr_f} * ${normalizedClr}) = ${res}`;
 
                 }
@@ -682,11 +669,11 @@ export function App() {
 
 
         const getNormalizedAlrExplanation = (each) => {
-            if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
+            if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
                 let p95_alr = "";
-                if (dropdown == "17:00") {
+                if (dropdownSelected == "17:00") {
                     p95_alr = 1.00;
-                } else if (dropdown == "19:00") {
+                } else if (dropdownSelected == "19:00") {
                     p95_alr = 1.00;
                 }
 
@@ -694,11 +681,11 @@ export function App() {
             }
         }
         const getNormalizedClrExplanation = (each) => {
-            if (SHOW_ROWS_TABLE[dropdown].includes(each.name)) {
+            if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
                 let p95_clr = "";
-                if (dropdown == "17:00") {
+                if (dropdownSelected == "17:00") {
                     p95_clr = 1.00;
-                } else if (dropdown == "19:00") {
+                } else if (dropdownSelected == "19:00") {
                     p95_clr = 1.00;
                 }
 
@@ -708,14 +695,148 @@ export function App() {
 
         explanationArr.push("Step 1: Calculate Acute Load Ratio (ALR) for each Role.");
 
+        const getAlrx = (each, difference) => {
+            let p95 = "";
+            if (dropdownSelected == "19:00") {
+                p95 = config.P95_7PM;
+            } else if (dropdownSelected == "17:00") {
+                p95 = config.P95_5PM;
+            }
+    
+            let fixedDiff = difference;
+            if (difference > p95) {
+                fixedDiff = p95;
+            }
+            let increaseAlr = 0;
+            if (!window.Cypress && dropdownSelected == "19:00") {
+                if (each.name == "N5" && each.numberOfAdmissions > 1) {
+                    increaseAlr = Number(each.numberOfAdmissions) - 1;
+                } else {
+                    lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex) => {
+                        if (each.name == fivePm.name) {
+                            if (fivePm.numberOfAdmissions !== "" && (Number(fivePm.numberOfAdmissions)) + 2 <= Number(each.numberOfAdmissions)) {
+                                increaseAlr = Number(each.numberOfAdmissions) - Number(fivePm.numberOfAdmissions) - 1;
+                            }
+                        }
+                    })
+                }
+    
+            }
+    
+            const originalAlr = Number(1 - (fixedDiff) / p95);
+            const updatedAlr = originalAlr + increaseAlr;
+            return updatedAlr.toFixed(3);
+        }
+        const getClrx = (each) => {
+            const admissions = Number(each.numberOfAdmissions);
+            let clr = 0;
+    
+            if (dropdownSelected == "19:00") {
+                if (each.name == "S2") {
+                    clr = Number(admissions) / 8;
+                } else if (each.name == "S3") {
+                    clr = Number(admissions) / 6;
+                } else if (each.name == "S4") {
+                    clr = Number(admissions) / 5;
+                } else if (each.name == "N5") {
+                    clr = Number(admissions) / 2;
+                }
+                return clr.toFixed(3);
+            } else if (dropdownSelected == "17:00") {
+                if (each.name == "S1") {
+                    clr = Number(admissions) / 7;
+                } else if (each.name == "S2") {
+                    clr = Number(admissions) / 6;
+                } else if (each.name == "S3") {
+                    clr = Number(admissions) / 4;
+                } else if (each.name == "S4") {
+                    clr = Number(admissions) / 3;
+                }
+                return clr.toFixed(3);
+            }
+        }
+        const getCompositex = (each, normalizedAlr, normalizedClr) => {
+            const alr_f = dropdownSelected == "17:00" ? config.ALR_5PM : config.ALR_7PM;
+            const clr_f = dropdownSelected == "17:00" ? config.CLR_5PM : config.CLR_7PM;
+    
+            let res = ((alr_f * Number(normalizedAlr)) + (clr_f * Number(normalizedClr))).toFixed(3);
+            if (dropdownSelected == "17:00") {
+                if (each.name == "N5") {
+                    res = config.CONSTANT_COMPOSITE_5PM_N5;
+                    return config.CONSTANT_COMPOSITE_5PM_N5;
+                }
+            }
+    
+            else if (dropdownSelected == "19:00") {
+                if (each.name == "N1") {
+                    res = config.CONSTANT_COMPOSITE_7PM_N1;
+                    return config.CONSTANT_COMPOSITE_7PM_N1;
+                } else if (each.name == "N2") {
+                    res = config.CONSTANT_COMPOSITE_7PM_N2;
+                    return config.CONSTANT_COMPOSITE_7PM_N2;
+                } else if (each.name == "N3") {
+                    res = config.CONSTANT_COMPOSITE_7PM_N3;
+                    return config.CONSTANT_COMPOSITE_7PM_N3;
+                } else if (each.name == "N4") {
+                    res = config.CONSTANT_COMPOSITE_7PM_N4;
+                    return config.CONSTANT_COMPOSITE_7PM_N4;
+                    }
+            }
+            return Number(res).toFixed(3);
+        }
+    
+        const getNormalizedAlrx = (each, alrx) => {
+            let p95_alr = "";
+            if (dropdownSelected == "17:00") {
+                p95_alr = 1.00;
+            } else if (dropdownSelected == "19:00") {
+                p95_alr = 1.00;
+            }
+    
+            const normalizedAlr = Number(alrx) / p95_alr;
+            return Number(normalizedAlr).toFixed(3);
+        }
+        const getNormalizedClrx = (each, clrx) => {
+            let p95_clr = "";
+            if (dropdownSelected == "17:00") {
+                p95_clr = 1.00;
+            } else if (dropdownSelected == "19:00") {
+                p95_clr = 1.00;
+            }
+    
+            const normalizedAlr = clrx / p95_clr;
+            return Number(normalizedAlr).toFixed(3);
+        }
+        const getTimeDifferencex = (time1) => {
+
+            if (time1) {
+                const time2 = dropdownSelected;
+                // Convert times to minutes
+                const [hours1, minutes1] = time1.split(':').map(Number);
+                const [hours2, minutes2] = time2.split(':').map(Number);
+    
+                const totalMinutes1 = hours1 * 60 + minutes1;
+                const totalMinutes2 = hours2 * 60 + minutes2;
+    
+                // Calculate difference in minutes
+                let diffMinutes = totalMinutes2 - totalMinutes1;
+    
+                return diffMinutes;
+    
+            } else {
+                return 0;
+            }
+    
+        }
+    
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                const difference = getTimeDifference(each.timestamp);
-                const alrx = getAlr(each, difference);
-                const clrx = getClr(each)
-                const normalizedAlr = getNormalizedAlr(each, alrx);
-                const normalizedClr = getNormalizedClr(each, clrx);
-                const composite = getComposite(each, normalizedAlr, normalizedClr);
+                const difference = getTimeDifferencex(each.timestamp);
+                const alrx = getAlrx(each, difference);
+                const clrx = getClrx(each)
+                const normalizedAlr = getNormalizedAlrx(each, alrx);
+                const normalizedClr = getNormalizedClrx(each, clrx);
+                const composite = getCompositex(each, normalizedAlr, normalizedClr);
 
                 each["difference"] = difference;
                 each["alr"] = alrx;
@@ -817,7 +938,7 @@ export function App() {
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                if ((dropdown == "19:00" && !window.Cypress && isXIn2Hours(each)) || (dropdown == "19:00" && (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4))) {
+                if ((dropdownSelected == "19:00" && !window.Cypress && isXIn2Hours(each)) || (dropdownSelected == "19:00" && (each.chronicLoadRatio > CHRONIC_LOAD_RATIO_THRESHOLD_S4))) {
                     greaterThan2Hours.push(each);
                     hasAnyGreaterThan2Hours = true;
                 } else {
@@ -895,13 +1016,13 @@ export function App() {
             });
 
             shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                if (dropdown == "17:00") {
+                if (dropdownSelected == "17:00") {
                     if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6)) {
 
                     } else {
                         array2.push(innerEach);
                     }
-                } else if (dropdown == "19:00") {
+                } else if (dropdownSelected == "19:00") {
                     if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
                         Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
 
@@ -923,7 +1044,7 @@ export function App() {
             }
 
             shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                if (dropdown == "17:00") {
+                if (dropdownSelected == "17:00") {
                     if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
@@ -932,7 +1053,7 @@ export function App() {
                     } else {
                         array1.push(innerEach);
                     }
-                } else if (dropdown == "19:00") {
+                } else if (dropdownSelected == "19:00") {
                     if ((innerEach.name == "S3" && Number(innerEach.numberOfAdmissions) == 6) ||
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
@@ -962,7 +1083,7 @@ export function App() {
             const array2 = [];
             let getS4 = {};
             shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                if (dropdown == "17:00") {
+                if (dropdownSelected == "17:00") {
                     if (innerEach.name == "S4") {
                         // explanationArr.push(getFormattedOutputCompositeScore2(innerEach))
                         getS4 = innerEach;
@@ -974,7 +1095,7 @@ export function App() {
                         array1.push(innerEach);
                         array2.push(innerEach);
                     }
-                } else if (dropdown == "19:00") {
+                } else if (dropdownSelected == "19:00") {
                     if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                     } else if (innerEach.name == "S4") {
                         // explanationArr.push(getFormattedOutputCompositeScore2(innerEach))
@@ -1016,13 +1137,13 @@ export function App() {
             const array1 = [];
             let getS3 = {};
             shiftsCombined.forEach((innerEach, innerEachIndex) => {
-                if (dropdown == "17:00") {
+                if (dropdownSelected == "17:00") {
                     if (innerEach.name == "S3") {
                         getS3 = innerEach;
                     } else {
                         array1.push(innerEach);
                     }
-                } else if (dropdown == "19:00") {
+                } else if (dropdownSelected == "19:00") {
                     if (Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                     } else if (innerEach.name == "S3") {
                         getS3 = innerEach;
@@ -1035,12 +1156,12 @@ export function App() {
             const array2 = [];
             const copyArray2 = [...array1];
             copyArray2.forEach((innerEach, innerEachIndex) => {
-                if (dropdown == "17:00") {
+                if (dropdownSelected == "17:00") {
                     if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6)) {
                     } else {
                         array2.push(innerEach);
                     }
-                } else if (dropdown == "19:00") {
+                } else if (dropdownSelected == "19:00") {
                     if ((innerEach.name == "S2" && Number(innerEach.numberOfAdmissions) == 6) ||
                         Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                     } else {
@@ -1070,14 +1191,14 @@ export function App() {
         }
         shiftsCombined.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
-                if (dropdown == "17:00") {
+                if (dropdownSelected == "17:00") {
                     if (window.location.hostname === 'localhost') {
                         orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`)
                     } else {
                         orderOfAdmissions.push(each.name);
 
                     }
-                } else if (dropdown == "19:00") {
+                } else if (dropdownSelected == "19:00") {
                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
                         if (window.location.hostname === 'localhost') {
                             orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`)
@@ -1168,7 +1289,6 @@ export function App() {
         }
 
     }
-
 
     const getTimeDifference = (time1) => {
 
@@ -1389,17 +1509,16 @@ export function App() {
                                 const order = res.transaction.order;
                                 const allAdmissionsDataShiftsx = res.transaction.admissionsObj.allAdmissionsDataShifts;
                                 const lastSavedTime = res.transaction.localDateTime;
-                                if (allAdmissionsDataShiftsx) {
-                                    setAllAdmissionsDataShifts(allAdmissionsDataShiftsx);
-                                }
+                                // if (allAdmissionsDataShiftsx) {
+                                //     setAllAdmissionsDataShifts(allAdmissionsDataShiftsx);
+                                // }
 
                                 if (order.split(">").length > 10) {
                                     const splitArr = order.split(">");
                                     function splitArrayAtSecondOccurrence(arr, value) {
-                                        let count = 0; // To track occurrences of the value
+                                        let count = 0;
                                         let splitIndex = -1;
 
-                                        // Iterate over the array to find the second occurrence
                                         for (let i = 0; i < arr.length; i++) {
                                             if (arr[i] === value) {
                                                 count++;
@@ -1410,13 +1529,11 @@ export function App() {
                                             }
                                         }
 
-                                        // If the value is found twice, split the array
                                         if (splitIndex !== -1) {
                                             setArray1(arr.slice(0, splitIndex));
                                             setArray2(arr.slice(splitIndex));
                                             return [arr.slice(0, splitIndex), arr.slice(splitIndex)];
                                         } else {
-                                            // If the value is not found twice, return the whole array as the first element
                                             return [arr];
                                         }
                                     }
@@ -1430,7 +1547,8 @@ export function App() {
                                 if (lastSavedTime) {
                                     setLastSaved(lastSavedTime);
                                 }
-                                setSortRoles(allAdmissionsDataShiftsx, startTime, lastSavedTime);
+                                // setSortRoles(allAdmissionsDataShiftsx, startTime, lastSavedTime);
+                                sortMain(allAdmissionsDataShiftsx, startTime)
                             }
                         }
                         getMostRecentTransactionx(startTime);

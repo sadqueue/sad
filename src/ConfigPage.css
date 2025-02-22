@@ -1,0 +1,46 @@
+.config-container {
+    max-width: 600px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+.config-section {
+    border: 2px solid #007bff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.config-section h4 {
+    margin: 0 0 10px;
+    background: #007bff;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.config-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.config-item label {
+    flex: 1;
+    font-weight: bold;
+}
+
+.config-item input {
+    flex: 2;
+    padding: 5px;
+}
+
+.config-item button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
