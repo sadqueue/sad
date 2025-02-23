@@ -13,6 +13,34 @@ import {
 } from "firebase/database";
 import database from "./firebaseConfig";
 
+export const runCypressTests = async () => {
+  try {
+      const response = await fetch("http://localhost:3001/run-cypress", {
+          method: "POST",
+      });
+      const result = await response.json();
+      return result;
+  } catch (error) {
+      console.error("Error running Cypress tests:", error);
+      return { success: false, error: error.message };
+  }
+};
+
+export const saveLog = async (message) => {
+  // const database = getDatabase(db);
+  const logsRef = ref(database, "logs"); // Save logs under "logs" node
+
+  try {
+      await push(logsRef, {
+          message: message,
+          timestamp: new Date().toISOString(),
+      });
+      console.log("Log saved successfully");
+  } catch (error) {
+      console.error("Error saving log:", error);
+  }
+};
+
 // Fetch all config values from Firebase
 export const fetchConfigValues = async () => {
   const db = getDatabase();

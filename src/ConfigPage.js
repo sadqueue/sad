@@ -97,6 +97,7 @@ const ConfigPage = () => {
                         <ConfigItem key={key} label={label} configKey={key} value={config[key]} onChange={handleChange} onSave={handleSave} />
                     ))}
                 </div>
+                <div className="config-section">
                 <h4>ALR & CLR</h4>
                 {[
                     { label: "ALR (5PM)", key: "ALR_5PM" },
@@ -107,6 +108,7 @@ const ConfigPage = () => {
                     <ConfigItem key={key} label={label} configKey={key} value={config[key]} onChange={handleChange} onSave={handleSave} />
                 ))}
             </div>
+            
 
             <div className="config-section">
                 <h4>P95</h4>
@@ -116,6 +118,7 @@ const ConfigPage = () => {
                 ].map(({ label, key }) => (
                     <ConfigItem key={key} label={label} configKey={key} value={config[key]} onChange={handleChange} onSave={handleSave} />
                 ))}
+            </div>
             </div>
         </div>
     );

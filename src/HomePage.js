@@ -380,8 +380,23 @@ export function App() {
                 /* Step 2: Create Array 2 but copying over from Array 1*/
                 shiftsCombined = array1.concat(array2);
 
-                setArray1(array1 && array1.map((each) => { return each.name }));
-                setArray2(array2 && array2.map((each) => { return each.name }));
+                setArray1(array1 && array1.map((each) => { 
+                    if (window.location.hostname === 'localhost'){
+                        return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                    } else {
+                        return each.name
+
+                    }
+                 }));
+                setArray2(array2 && array2.map((each) => { 
+                    if (window.location.hostname === 'localhost'){
+                        return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+
+                    } else {
+                        return each.name 
+
+                    }
+                }));
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr;
             } else if (scenario2) {
@@ -440,8 +455,23 @@ export function App() {
 
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr
-                setArray1(array1 && array1.map((each) => { return each.name }));
-                setArray2(array2 && array2.map((each) => { return each.name }));
+                setArray1(array1 && array1.map((each) => { 
+                    if (window.location.hostname === 'localhost'){
+                        return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                    } else {
+                        return each.name
+
+                    }
+                 }));
+                setArray2(array2 && array2.map((each) => { 
+                    if (window.location.hostname === 'localhost'){
+                        return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+
+                    } else {
+                        return each.name 
+
+                    }
+                }));
             } else if (scenario3) {
                 const array1 = [];
                 let getS3 = {};
@@ -493,8 +523,23 @@ export function App() {
                     // Insert the new element after the found element
                     array2.splice(index + 1, 0, newElement);
                 }
-                setArray1(array1 && array1.map((each) => { return each.name }));
-                setArray2(array2 && array2.map((each) => { return each.name }));
+                setArray1(array1 && array1.map((each) => { 
+                    if (window.location.hostname === 'localhost'){
+                        return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                    } else {
+                        return each.name
+
+                    }
+                 }));
+                setArray2(array2 && array2.map((each) => { 
+                    if (window.location.hostname === 'localhost'){
+                        return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+
+                    } else {
+                        return each.name 
+
+                    }
+                }));
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr;
             }
@@ -891,22 +936,22 @@ export function App() {
             explanationArr.push(each);
         });
 
+        // explanationArr.push("\n")
+        // explanationArr.push(`Step 3: Calculate Normalized ALR.`);
+
+        // normalizedAlrExplanation.map((each, eachIndex) => {
+        //     explanationArr.push(each);
+        // });
+
+        // explanationArr.push("\n")
+        // explanationArr.push(`Step 4: Calculate Normalized CLR.`);
+
+        // normalizedClrExplanation.map((each, eachIndex) => {
+        //     explanationArr.push(each);
+        // });
+
         explanationArr.push("\n")
-        explanationArr.push(`Step 3: Calculate Normalized ALR.`);
-
-        normalizedAlrExplanation.map((each, eachIndex) => {
-            explanationArr.push(each);
-        });
-
-        explanationArr.push("\n")
-        explanationArr.push(`Step 4: Calculate Normalized CLR.`);
-
-        normalizedClrExplanation.map((each, eachIndex) => {
-            explanationArr.push(each);
-        });
-
-        explanationArr.push("\n")
-        explanationArr.push(`Step 5: Calculate composite score: a weighted sum of acute and chronic load scores.`);
+        explanationArr.push(`Step 3: Calculate composite score: a weighted sum of acute and chronic load scores.`);
 
         compositeArrExplanation.forEach((each, eachIndex) => {
             explanationArr.push(each);
@@ -923,7 +968,7 @@ export function App() {
         });
 
         explanationArr.push("\n")
-        explanationArr.push("Step 6: Generate the order based on composite score, with roles having the lowest composite score being prioritized first.");
+        explanationArr.push("Step 4: Generate the order, with roles having the lowest composite score being prioritized first.");
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
@@ -956,13 +1001,13 @@ export function App() {
         });
 
 
-        if (hasAnyGreaterThan2Hours) {
-            explanationArr.push("\n")
-            explanationArr.push("Step 7: Check if any roles have had 2 or more admissions in the last 2 hours. Then sort by composite score.");
-            greaterThan2Hours && greaterThan2Hours.forEach((each) => {
-                explanationArr.push(`${each.name}: had ${getXIn2Hours(each)} admissions in the last 2 hours /  Composite Score: ${each.composite}`);
-            })
-        }
+        // if (hasAnyGreaterThan2Hours) {
+        //     explanationArr.push("\n")
+        //     explanationArr.push("Step 7: Check if any roles have had 2 or more admissions in the last 2 hours. Then sort by composite score.");
+        //     greaterThan2Hours && greaterThan2Hours.forEach((each) => {
+        //         explanationArr.push(`${each.name}: had ${getXIn2Hours(each)} admissions in the last 2 hours /  Composite Score: ${each.composite}`);
+        //     })
+        // }
 
 
         let shiftsCombined = lessThan2Hours.concat(greaterThan2Hours);
@@ -1070,8 +1115,23 @@ export function App() {
             /* Step 2: Create Array 2 but copying over from Array 1*/
             // shiftsCombined = array1.concat(array2);
 
-            setArray1(array1 && array1.map((each) => { return each.name }));
-            setArray2(array2 && array2.map((each) => { return each.name }));
+            setArray1(array1 && array1.map((each) => { 
+                if (window.location.hostname === 'localhost'){
+                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                } else {
+                    return each.name
+
+                }
+             }));
+            setArray2(array2 && array2.map((each) => { 
+                if (window.location.hostname === 'localhost'){
+                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+
+                } else {
+                    return each.name 
+
+                }
+            }));
             const combinedArr = array1.concat(array2);
             shiftsCombined = combinedArr;
         } else if (scenario2) {
@@ -1130,8 +1190,23 @@ export function App() {
 
             const combinedArr = array1.concat(array2);
             shiftsCombined = combinedArr
-            setArray1(array1 && array1.map((each) => { return each.name }));
-            setArray2(array2 && array2.map((each) => { return each.name }));
+            setArray1(array1 && array1.map((each) => { 
+                if (window.location.hostname === 'localhost'){
+                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                } else {
+                    return each.name
+
+                }
+             }));
+            setArray2(array2 && array2.map((each) => { 
+                if (window.location.hostname === 'localhost'){
+                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+
+                } else {
+                    return each.name 
+
+                }
+            }));
         } else if (scenario3) {
             // explanationArr.push("\n");
             const array1 = [];
@@ -1184,8 +1259,23 @@ export function App() {
                 // Insert the new element after the found element
                 array2.splice(index + 1, 0, newElement);
             }
-            setArray1(array1 && array1.map((each) => { return each.name }));
-            setArray2(array2 && array2.map((each) => { return each.name }));
+            setArray1(array1 && array1.map((each) => { 
+                if (window.location.hostname === 'localhost'){
+                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                } else {
+                    return each.name
+
+                }
+             }));
+            setArray2(array2 && array2.map((each) => { 
+                if (window.location.hostname === 'localhost'){
+                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+
+                } else {
+                    return each.name 
+
+                }
+            }));
             const combinedArr = array1.concat(array2);
             shiftsCombined = combinedArr;
         }
@@ -2003,7 +2093,7 @@ export function App() {
                         <button className="explanation" onClick={() => {
                             setShow2(!show2);
                         }
-                        }>{!show2 ? "> Step by Step Details" : "< Step by Step Details"}</button><br></br>
+                        }>{!show2 ? "> Step by Step" : "< Step by Step"}</button><br></br>
 
                         {show2 && <div id="stepbystepdetails">
                             {explanation && explanation.map((line, lineIndex) => {
@@ -2016,19 +2106,19 @@ export function App() {
                         </div>}
                         {/* Part 3: Copy Message */}
 
-                        <button className="explanation"
+                        {/* <button className="explanation"
                             onClick={() => {
                                 setShow3(!show3);
-                            }}>{!show3 ? "> Copy Messages" : "< Copy Messages"}</button><br></br>
+                            }}>{!show3 ? "> Copy Messages" : "< Copy Messages"}</button><br></br> */}
 
-                        {show3 && <CopyMessages />}
+                        {/* {show3 && <CopyMessages />} */}
 
 
                         {/* Part 4: Set Composite Score */}
-                        <button className="explanation" onClick={() => {
+                        {/* <button className="explanation" onClick={() => {
                             setShow4(!show4);
                         }
-                        }>{!show4 ? "> Set Algorithm" : "< Set Algorithm"}</button><br></br>
+                        }>{!show4 ? "> Set Algorithm" : "< Set Algorithm"}</button><br></br> */}
 
                         {show4 &&
                             <div>

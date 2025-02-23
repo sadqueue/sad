@@ -13,7 +13,7 @@ const Navbar = () => {
   <div className="navbar-center">
     <ul className="nav-links">
       <li>
-        <a href="/sad">v2.0</a>
+        <a href="/sad">Main</a>
       </li>
       {/* <li>
         <a href="/sad#/sad_v1.0">v1.0</a>
@@ -27,12 +27,6 @@ const Navbar = () => {
       <li>
         <a href="/sad#/config">Config</a>
       </li>
-      {/* {window.location.href.includes("/config") && <li>
-        <a href="/sad#/charts">Charts</a>
-      </li>}  */}
-      {/* <li>
-        <a href="/contact">Contact</a>
-      </li> */}
     </ul>
   </div>
   {/* <div className="navbar-right">

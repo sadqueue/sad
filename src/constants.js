@@ -18,6 +18,11 @@ export const P95_5PM = 180;
 export const CONSTANT_COMPOSITE_5PM = {
     "N5": 0.49
 };
+export const CONSTANT_COMPOSITE_5PM_N5 = 0.49;
+export const CONSTANT_COMPOSITE_7PM_N1 = 0.49;
+export const CONSTANT_COMPOSITE_7PM_N2 = 0.59;
+export const CONSTANT_COMPOSITE_7PM_N3 = 0.69;
+export const CONSTANT_COMPOSITE_7PM_N4 = 0.79;
 
 export const CONSTANT_COMPOSITE_7PM = {
     "N1": 0.49,
@@ -26,11 +31,7 @@ export const CONSTANT_COMPOSITE_7PM = {
     "N4": 0.79
 };
 
-export const CONSTANT_COMPOSITE_5PM_N5 = 0.49;
-export const CONSTANT_COMPOSITE_7PM_N1 = 0.49;
-export const CONSTANT_COMPOSITE_7PM_N2 = 0.59;
-export const CONSTANT_COMPOSITE_7PM_N3 = 0.69;
-export const CONSTANT_COMPOSITE_7PM_N4 = 0.79;
+
 
 export const TIME_FORMAT = "h:mmA"; //hh:mm for non military
 

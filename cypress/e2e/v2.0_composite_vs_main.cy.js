@@ -4,14 +4,8 @@ import { initializeApp } from "firebase/app";
 import db from "../../src/firebaseConfig"; // Import Firebase config
 
 import { testArr5pm, testArr4pm, testArr7pm } from "/Users/m0l01bz/Desktop/workspace/sq/src/data/data";
+import { saveLog } from "../../src/transactionsApi";
 
-// const app = initializeApp(firebaseConfig);
-// const db = getDatabase(app);
-
-let count = 1;
-// Cypress.Commands.add("logToServer", (message) => {
-//     cy.task("logToServer", message);
-// });
 
 const runTasks = (testArr, time) => {
     let count = 1;
@@ -52,17 +46,30 @@ const runTasks = (testArr, time) => {
                             if (removeParanthesis_main !== removeParanthesis_composite_6and4) {
                                 //cy.task('logToFile', { filename: 'log.txt', message: 'Test log entry' });
 
-                                cy.task('logToFile', {
-                                    filename: `${time}.txt`,
-                                    message: `[ ${count} ] ${time} ${testArr[i][1]} -- !!!! NO MATCH !!!!!
-Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
-Manny:			${output}
-Comp:		    ${removeParanthesis_main}
-No Comp:        ${removeParanthesis_composite_6and4}
-Comp:  	        ${originalMain}
-No Comp: 	    ${composite_6and4}
-----------------------------------\n`
-                                });
+//                                 cy.task('logToFile', {
+//                                     filename: `${time}.txt`,
+//                                     message: `[ ${count} ] ${time} ${testArr[i][1]} -- !!!! NO MATCH !!!!!
+// Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
+// Manny:			${output}
+// Comp:		    ${removeParanthesis_main}
+// No Comp:        ${removeParanthesis_composite_6and4}
+// Comp:  	        ${originalMain}
+// No Comp: 	    ${composite_6and4}
+// ----------------------------------\n`
+//                                 });
+
+cy.then(() => {
+    const logMessage = `[ ${count} ] ${time} ${testArr[i][1]} -- !!!! NO MATCH !!!!\n
+Data: ${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
+Manny: ${output}
+Comp:  ${removeParanthesis_main}
+No Comp: ${removeParanthesis_composite_6and4}
+Comp:   ${originalMain}
+No Comp: ${composite_6and4}
+----------------------------------\n`;
+
+    saveLog(logMessage); // Send log to Firebase
+});
                                 count++;
                             } else {
 
@@ -98,21 +105,8 @@ describe('template spec', () => {
         }
 
         if (testArr7pm) {
-            runTasks(testArr7pm, "7PM")
+            // runTasks(testArr7pm, "7PM")
         }
 
     });
 })
-
-
-// Cypress.on("test:after:run", (test) => {
-//     const testResult = {
-//         title: test.title,
-//         state: test.state, // 'passed' or 'failed'
-//         duration: test.duration,
-//         timestamp: new Date().toISOString(),
-//     };
-
-//     const resultRef = ref(db, "cypressResults/" + test.title.replace(/\s+/g, "_"));
-//     set(resultRef, testResult);
-// });
