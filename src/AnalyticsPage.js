@@ -30,7 +30,7 @@ const data = processData();
 
 export default function AnalysisPage() {
     return (
-        <div className="p-4">
+        <div>
             <div className="header">
                 <h1 className="title">S.A.D.Q.</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
