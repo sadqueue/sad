@@ -31,54 +31,50 @@ const runTasks = (testArr, time) => {
 
             cy.get("#generateQueue").click();
 
-            cy.get('#orderofadmissions_output')
-                .then(($el_main) => {
-                    const originalMain = $el_main.text();
-                    const removeParanthesis_main = $el_main.text().replace(/ *\([^)]*\) */g, "").trim();
-                    cy.get("#originalAlgorithmCheckbox").click();
-                    cy.get("#generateQueue").click();
+            cy.get("#generateQueue").click();
                     cy.get('#orderofadmissions_output')
-                        .then(($el_6and4) => {
-                            const composite_6and4 = $el_6and4.text();
+                        .then(($el_originalAlgo) => {
+                            const composite_originalAlgo = $el_originalAlgo.text();
 
-                            const removeParanthesis_composite_6and4 = $el_6and4.text().replace(/ *\([^)]*\) */g, "").trim();
+                            const removeParanthesis_composite_originalAlgo = $el_originalAlgo.text().replace(/ *\([^)]*\) */g, "").trim();
 
-                            if (removeParanthesis_main !== removeParanthesis_composite_6and4) {
-                                //cy.task('logToFile', { filename: 'log.txt', message: 'Test log entry' });
+                            if (output !== removeParanthesis_composite_originalAlgo) {
+                                cy.task('logToFile', { filename: 'log.txt', message: 'Test log entry' });
 
-//                                 cy.task('logToFile', {
-//                                     filename: `${time}.txt`,
-//                                     message: `[ ${count} ] ${time} ${testArr[i][1]} -- !!!! NO MATCH !!!!!
-// Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
-// Manny:			${output}
-// Comp:		    ${removeParanthesis_main}
-// No Comp:        ${removeParanthesis_composite_6and4}
-// Comp:  	        ${originalMain}
-// No Comp: 	    ${composite_6and4}
-// ----------------------------------\n`
-//                                 });
+                                cy.task('logToFile', {
+                                    filename: `${time}.txt`,
+                                    message: `❌ [ ${count} ] ${time} ${testArr[i][1]}
+Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
+Manny:			${output}
+Comp:           ${removeParanthesis_composite_originalAlgo}
+Comp: 	        ${composite_originalAlgo}
+----------------------------------\n`
+                                });
 
-cy.then(() => {
-    const logMessage = `[ ${count} ] ${time} ${testArr[i][1]} -- !!!! NO MATCH !!!!\n
-Data: ${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
-Manny: ${output}
-Comp:  ${removeParanthesis_main}
-No Comp: ${removeParanthesis_composite_6and4}
-Comp:   ${originalMain}
-No Comp: ${composite_6and4}
-----------------------------------\n`;
+// cy.then(() => {
+//     const logMessage = `[ ${count} ] ${time} ${testArr[i][1]} -- !!!! NO MATCH !!!!\n
+// Data: ${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
+// Manny: ${output}
+// No Comp: ${removeParanthesis_composite_originalAlgo}
+// No Comp: ${composite_originalAlgo}
+// ----------------------------------\n`;
 
-    saveLog(logMessage); // Send log to Firebase
-});
+//     saveLog(logMessage); // Send log to Firebase
+// });
                                 count++;
                             } else {
 
-
+                                cy.task('logToFile', {
+                                    filename: `${time}.txt`,
+                                    message: `✅ ${time} ${testArr[i][1]}
+Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
+Manny:			${output}
+Comp:           ${removeParanthesis_composite_originalAlgo}
+Comp: 	        ${composite_originalAlgo}
+----------------------------------\n`
+                                });
                             }
                         });
-                    cy.get("#originalAlgorithmCheckbox").click();
-                });
-
 
         } else {
         }
@@ -92,11 +88,12 @@ describe('template spec', () => {
         cy.wait(1200);
         cy.visit(url);
         cy.get("#seedetails").click();
-        cy.contains("Set Algorithm").click();
+        // cy.contains("Set Algorithm").click();
 
         var currentdate = new Date();
-        var datetime = "Last Sync: " + currentdate.getDate() + "/"
+        var datetime = "Last Sync: " +
             + (currentdate.getMonth() + 1) + "/"
+            + currentdate.getDate() + "/"
             + currentdate.getFullYear() + " @ "
             + currentdate.getHours() + ":"
             + currentdate.getMinutes();
@@ -105,7 +102,7 @@ describe('template spec', () => {
         }
 
         if (testArr7pm) {
-            // runTasks(testArr7pm, "7PM")
+            runTasks(testArr7pm, "7PM")
         }
 
     });

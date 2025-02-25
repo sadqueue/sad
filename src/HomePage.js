@@ -741,6 +741,9 @@ export function App() {
         explanationArr.push("Step 1: Calculate Acute Load Ratio (ALR) for each Role.");
 
         const getAlrx = (each, difference) => {
+            if (dropdownSelected == "19:00" && each.name == "N5" && Number(each.numberOfAdmissions) == 0){
+                return 0;
+            }
             let p95 = "";
             if (dropdownSelected == "19:00") {
                 p95 = config.P95_7PM;
@@ -773,6 +776,9 @@ export function App() {
             return updatedAlr.toFixed(3);
         }
         const getClrx = (each) => {
+            if (dropdownSelected == "19:00" && each.name == "N5" && Number(each.numberOfAdmissions) == 0){
+                return 0;
+            }
             const admissions = Number(each.numberOfAdmissions);
             let clr = 0;
     
