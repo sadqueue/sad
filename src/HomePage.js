@@ -738,7 +738,7 @@ export function App() {
             }
         }
 
-        explanationArr.push("Step 1: Calculate Acute Load Ratio (ALR) for each Role.");
+        explanationArr.push("Step 1: Calculate Acute Load for each Role.");
 
         const getAlrx = (each, difference) => {
             if (dropdownSelected == "19:00" && each.name == "N5" && Number(each.numberOfAdmissions) == 0){
@@ -934,7 +934,7 @@ export function App() {
         });
 
         explanationArr.push("\n")
-        explanationArr.push(`Step 2: Calculate Chronic Load Ratio (CLR) for each Role.`);
+        explanationArr.push(`Step 2: Calculate Chronic Load for each Role.`);
         explanationArr.push("CLR = Number of Admits / Hours Worked So Far")
 
 
@@ -957,7 +957,7 @@ export function App() {
         // });
 
         explanationArr.push("\n")
-        explanationArr.push(`Step 3: Calculate composite score: a weighted sum of acute and chronic load scores.`);
+        explanationArr.push(`Step 3: Calculate Composite Score.`);
 
         compositeArrExplanation.forEach((each, eachIndex) => {
             explanationArr.push(each);
@@ -974,7 +974,7 @@ export function App() {
         });
 
         explanationArr.push("\n")
-        explanationArr.push("Step 4: Generate the order, with roles having the lowest composite score being prioritized first.");
+        explanationArr.push("Step 4: Generate the Order, with Roles having the Lowest Composite Score Prioritized First.");
 
         timeObj.shifts.forEach((each, eachIndex) => {
             if (SHOW_ROWS_TABLE[dropdownSelected].includes(each.name)) {
