@@ -927,10 +927,10 @@ export function App() {
             return 0;
         });
 
-        explanationArr.push(`ALR = 1 - (Minutes Before The Hour/ P95)`);
+        // explanationArr.push(`ALR = 1 - (Minutes Before The Hour/ P95)`);
 
         alrArr.map((each, eachIndex) => {
-            explanationArr.push(each);
+            // explanationArr.push(each);
         });
 
         explanationArr.push("\n")
@@ -960,7 +960,7 @@ export function App() {
         explanationArr.push(`Step 3: Calculate Composite Score.`);
 
         compositeArrExplanation.forEach((each, eachIndex) => {
-            explanationArr.push(each);
+            // explanationArr.push(each);
         })
 
         timeObj.shifts.sort((a, b) => {
