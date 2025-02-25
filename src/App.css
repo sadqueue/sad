@@ -83,11 +83,11 @@ div[class="header"] {
   font-family: 'Poppins', sans-serif;
   /* width: 92%; */
   width: 96%;
-  max-width: 500px;
+  max-width: 1200px;
   padding: 0 40px;
   margin: 0 auto;
   margin-top: 20px;
-  text-align: center;
+  text-align: left;
 }
 
 
