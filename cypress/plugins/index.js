@@ -16,3 +16,19 @@
 //         }
 //     });
 // };
+
+module.exports = (on, config) => {
+    on('task', {
+        clearFile({ filename }) {
+            const fs = require('fs');
+            const path = require('path');
+            const filePath = path.resolve(__dirname, `../../logs/${filename}`);
+
+            if (fs.existsSync(filePath)) {
+                fs.writeFileSync(filePath, '');  // Clears the content
+            }
+
+            return null;
+        },
+    });
+};

@@ -8,6 +8,7 @@ import ConfigPage from "./ConfigPage";
 import CypressPage from "./CypressPage";
 import HomePage_backup from "./HomePage_backup";
 import Charts from "./Charts";
+import HOT from "./HOT";
 // import AboutPage from "./AboutPage"; // Create an AboutPage component
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/config" element={<ConfigPage />} />
         <Route path="/cypress" element={<CypressPage />} />
         <Route path="/charts" element={<Charts/>} />
+        <Route path="/hot" element={<HOT/>} />
       </Routes>
     </Router>
   );

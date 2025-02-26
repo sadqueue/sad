@@ -627,7 +627,7 @@ export function App() {
                 if (each.difference > p95) {
                     fixedDiff = p95;
                 }
-                return `${each.name}: 1-(${fixedDiff} minutes / ${p95}) = ${alrx}`;
+                return `${each.name}: ${alrx}`;
             }
         }
 
@@ -930,7 +930,7 @@ export function App() {
         // explanationArr.push(`ALR = 1 - (Minutes Before The Hour/ P95)`);
 
         alrArr.map((each, eachIndex) => {
-            // explanationArr.push(each);
+            explanationArr.push(each);
         });
 
         explanationArr.push("\n")
@@ -2065,7 +2065,7 @@ export function App() {
                             </p>
                             : hasTwoOccurrences(orderOfAdmissions, "N1") ?
                                 <div>
-                                    <p className="endoutputcenter" id="orderofadmissions_output">{array1 ? array1.join(">") + ">" : ""}<br></br>{array2 && array2.join(">")}</p>
+                                    <p className="endoutputcenter" id="orderofadmissions_output">{array1 ? `(${array1.join(">")})¹` : ""}<br></br>{array2 && `(${array2.join(">")})ⁿ`}</p>
                                 </div>
                                 : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         }
