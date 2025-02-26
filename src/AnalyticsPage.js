@@ -37,10 +37,10 @@ export default function AnalysisPage() {
             </div>
             <div className="containerconfig">
                 <h3>Average Admissions Per 15-Minute Interval</h3>
-                <ResponsiveContainer width="100%" height={400}>
+                <ResponsiveContainer height={400}>
                     <LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="time" angle={-45} textAnchor="end" interval={3} />
+                        <XAxis dataKey="time" angle={-45} textAnchor="end" interval={15} />
                         <YAxis domain={[0, 'dataMax']} label={{ value: "Admissions", angle: -90, position: "insideLeft" }} />
                         <Tooltip />
                         <Legend />

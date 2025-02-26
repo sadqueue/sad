@@ -54,7 +54,7 @@ body {
 
 div[class="header"] {
   width: 100%;
-  padding: 1px;
+  padding-bottom: 1px;
   text-align: center;
   background: #1a0dab;
   color: white;
@@ -83,7 +83,7 @@ div[class="header"] {
   font-family: 'Poppins', sans-serif;
   /* width: 92%; */
   width: 96%;
-  max-width: 1200px;
+  max-width: 80%;
   padding: 0 40px;
   margin: 0 auto;
   margin-top: 20px;
@@ -1060,6 +1060,17 @@ input::-webkit-inner-spin-button {
     margin-top:17px;
   
   }
+  .containerconfig {
+    font-family: 'Poppins', sans-serif;
+    /* width: 92%; */
+    width: 96%;
+    max-width: 80%;
+    padding: 0 40px;
+    /* margin: 0 auto; */
+    margin-top: 20px;
+    text-align: center;
+  }
+  
 
 }
 
