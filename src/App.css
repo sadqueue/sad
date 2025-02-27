@@ -89,7 +89,17 @@ div[class="header"] {
   margin-top: 20px;
   text-align: left;
 }
+.eachTimestamp{
+  all: unset;
+  width: 100px;
+  border: solid;
+  text-align: left;
+  height: 30px;
+}
 
+.delete-btn {
+  all: unset;
+}
 
 .loading {
   margin-top: 30px;

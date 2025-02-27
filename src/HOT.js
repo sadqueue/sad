@@ -1,17 +1,27 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import { fetchConfigValues, addTransaction, getMostRecentTransaction } from "./transactionsApi";
-import { SHIFT_TYPES } from "./constants";
+import { fetchConfigValues } from "./transactionsApi";
+import { SHIFT_TYPES, TIME_FORMAT } from "./constants";
 
 export function HOT() {
     const [config, setConfig] = useState({});
     const [loading, setLoading] = useState(true);
-    const [currentTime, setCurrentTime] = useState(moment().format("HH:mm"));
-    const [queue, setQueue] = useState("DA > S1 > S2");
+    const [queue, setQueue] = useState("");
     const [workingShifts, setWorkingShifts] = useState([]);
-    const [timestamps, setTimestamps] = useState({ DA: ["", ""] });
-    
+    const [timestamps, setTimestamps] = useState({
+        DA: [],
+        S1: [],
+        S2: [],
+        S3: [],
+        S4: [],
+        N5: [],
+        N1: [],
+        N2: [],
+        N3: [],
+        N4: [],
+     });
+
     useEffect(() => {
         const loadConfig = async () => {
             try {
@@ -28,32 +38,84 @@ export function HOT() {
     }, []);
 
     const updateWorkingShifts = () => {
-        const now = moment().format("HH:mm");
-        const shifts = SHIFT_TYPES.filter(shift => now >= shift.start && now < shift.end);
+        const now = moment(); // Current time
+    
+        const shifts = SHIFT_TYPES.filter(shift => {
+            let shiftStart = moment(shift.start, "HH:mm");
+            let shiftEnd = moment(shift.end, "HH:mm");
+    
+            // If shift ends on the next day, add 1 day to shiftEnd
+            if (shiftEnd.isBefore(shiftStart)) {
+                shiftEnd.add(1, "day");
+            }
+    
+            return now.isBetween(shiftStart, shiftEnd, null, "[)"); // Inclusive start, exclusive end
+        });
+    
         setWorkingShifts(shifts);
     };
+    
+    
 
     const addTimestamp = () => {
-        setTimestamps(prev => ({ ...prev, DA: [...prev.DA, ""] }));
+        let whichRoleIsNext = "";
+    
+        workingShifts.every((shift) => {
+            if (timestamps[shift.name] && timestamps[shift.name].length === 0) {
+                whichRoleIsNext = shift.name;
+                return false;
+            } else {
+                return true;
+            }
+        });
+    
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const militaryTime = `${hours}:${minutes}`;
+    
+        setTimestamps(prev => {
+            const updatedTimestamps = { ...prev, [whichRoleIsNext]: [...prev[whichRoleIsNext], militaryTime] };
+    
+            // Generate the queue string based on the keys that have timestamps
+            const updatedQueue = Object.keys(updatedTimestamps)
+                .filter(role => updatedTimestamps[role].length > 0)
+                .join(" > ");
+    
+            setQueue(updatedQueue);
+            return updatedTimestamps;
+        });
+    };
+    
+
+    const updateTimestamp = (shift, index, value) => {
+        setTimestamps(prev => {
+            const newTimestamps = [...prev[shift.name]];
+            newTimestamps[index] = value;
+            return { ...prev, [shift.name]: newTimestamps };
+        });
     };
 
-    const updateTimestamp = (index, value) => {
+    const removeTimestamp = (shift,index) => {
         setTimestamps(prev => {
-            const newTimestamps = [...prev.DA];
-            newTimestamps[index] = value;
-            return { ...prev, DA: newTimestamps };
+            const newTimestamps = prev[shift.name].filter((_, i) => i !== index);
+            return { ...prev, [shift.name]: newTimestamps };
         });
     };
 
     return (
         <div>
-            <h1>HOT Admissions</h1>
-            <div className="queue-box">
+            <div className="header">
+                <h1 className="title">S.A.D.Q.</h1>
+                <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
+            </div>
+            <div className="container">
+            <fieldset>
                 <p>Queue: {queue}</p>
                 <p>{moment().format("MMMM D, YYYY HH:mm")}</p>
                 <button onClick={addTimestamp}>+</button>
-            </div>
-            <h2>Currently Working Shifts</h2>
+            </fieldset>
+            <h3>Currently Working Shifts</h3>
             <table className="shift-table">
                 <thead>
                     <tr>
@@ -68,39 +130,38 @@ export function HOT() {
                             <td>{shift.name}</td>
                             <td>{shift.displayStartTimeToEndTime}</td>
                             <td>
-                                {/* {shift.name === "DA" && (
-                                    <div style={{ display: "flex", gap: "5px" }}>
-                                        {timestamps.DA.map((timestamp, index) => (
+                                <div className="timestamp-container">
+                                    {timestamps[shift.name] && timestamps[shift.name].map((timestamp, timestampIndex) => (
+                                        <div key={timestampIndex} className="timestamp-box">
                                             <input 
-                                                key={index} 
-                                                type="text" 
+                                                className="eachTimestamp"
+                                                type="time" 
                                                 value={timestamp} 
-                                                onChange={(e) => updateTimestamp(index, e.target.value)} 
-                                                style={{ width: "50px" }}
+                                                onChange={(e) => updateTimestamp(shift, timestampIndex, e.target.value)} 
                                             />
-                                        ))}
-                                    </div>
-                                )} */}
-                                <div style={{ display: "flex", gap: "5px", padding: "10px" }}>
-                                    {timestamps[shift.name] && timestamps[shift.name].map((each, eachIndex) => {
-                                        return (
-                                            <input 
-                                                key={"1"} 
-                                                type="text" 
-                                                value={""} 
-                                                onChange={(e) => updateTimestamp(eachIndex, e.target.value)} 
-                                                style={{ width: "50px", border: "solid" }}
-                                            />
-                                        );
-                                    })} 
-                                    
-                                    </div>
-                                    
+                                            <button className="delete-btn" onClick={() => removeTimestamp(shift,timestampIndex)}>❌</button>
+                                        </div>
+                                    ))}
+                                </div>
                             </td>
                         </tr>
                     ))}
                 </tbody>
+                {/* <button onClick={() => {
+                    // const roles = [];
+                    
+                    // Object.values(timestamps).forEach((timestampsByRole, timestampsByRoleIndex) => {
+                    //     timestampsByRole[0].forEach((timestamps, timestampsIndex) => {
+                    //         if (timestamps.length > 0){
+                    //             roles.push(timestampsByRole[0]);
+                    //         }
+                    //     });
+                    // })
+                    const roles = Object.keys(timestamps);
+                    setQueue(roles.join(">"))
+                }}>Generate</button> */}
             </table>
+        </div>
         </div>
     );
 }

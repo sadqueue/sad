@@ -24,7 +24,7 @@ function App() {
         <Route path="/config" element={<ConfigPage />} />
         <Route path="/cypress" element={<CypressPage />} />
         <Route path="/charts" element={<Charts/>} />
-        <Route path="/hot" element={<HOT/>} />
+        <Route path="/triage" element={<HOT/>} />
       </Routes>
     </Router>
   );
