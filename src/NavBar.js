@@ -25,7 +25,7 @@ const Navbar = () => {
         <a href="/sad#/analytics">Analytics</a>
       </li>} */}
       <li>
-        <a href="/sad#/config">Config</a>
+        <a href="/sad#/login">Login</a>
       </li>
     </ul>
   </div>
