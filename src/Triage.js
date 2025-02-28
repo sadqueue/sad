@@ -106,11 +106,25 @@ export function HOT() {
 
     return (
         <div>
-            <div className="header">
+            {/* <div className="header">
                 <h1 className="title">S.A.D.Q.</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
-            </div>
-            <div className="container">
+            </div> */}
+            <div className="containerconfig">
+            <ul>
+                <li>
+                    <a href="/sad#/login">Config</a>
+                </li>
+                <li>
+                    <a href="/sad#/analytics">Analytics</a>
+                </li>
+                <li>
+                    <a href="/sad#/charts">Charts</a>
+                </li>
+                <li>
+                    <a href="/sad#/triage">Triage</a>
+                </li>
+            </ul>
             <fieldset>
                 <p>Queue: {queue}</p>
                 <p>{moment().format("MMMM D, YYYY HH:mm")}</p>

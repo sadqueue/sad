@@ -42,11 +42,25 @@ const data = processData();
 export default function AnalysisPage() {
     return (
         <div>
-            <div className="header">
+            {/* <div className="header">
                 <h1 className="title">S.A.D.Q.</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
-            </div>
+            </div> */}
             <div className="containerconfig">
+            <ul>
+                <li>
+                    <a href="/sad#/login">Config</a>
+                </li>
+                <li>
+                    <a href="/sad#/analytics">Analytics</a>
+                </li>
+                <li>
+                    <a href="/sad#/charts">Charts</a>
+                </li>
+                <li>
+                    <a href="/sad#/triage">Triage</a>
+                </li>
+            </ul>
                 <h3>Average Admissions Per 15-Minute Interval</h3>
                 <ResponsiveContainer height={400} width="100%">
                     <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>

@@ -58,7 +58,7 @@ const ConfigPage = () => {
     if (!authenticated) {
         return (
             <div className="container">
-                <h3>Configurations</h3>
+                <h3>Login</h3>
                 <input
                     type="password"
                     value={password}
@@ -70,15 +70,13 @@ const ConfigPage = () => {
     }
 
     return (
-        <div className="config-container">
-            <h3>Configuration Settings</h3>
-
+        <div className="containerconfig">
             <ul>
                 <li>
-                    <a href="/sad#/analytics">Analytics</a>
+                    <a href="/sad#/login">Config</a>
                 </li>
                 <li>
-                    <a href="/sad#/sad_v1.0">v1.0</a>
+                    <a href="/sad#/analytics">Analytics</a>
                 </li>
                 <li>
                     <a href="/sad#/charts">Charts</a>

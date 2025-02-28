@@ -56,10 +56,10 @@ const QueueHistoryTable = () => {
   };
   return (
     <div>
-      <div className="header">
+      {/* <div className="header">
         <h1 className="title">S.A.D.Q.</h1>
         <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
-      </div>
+      </div> */}
       {loading ? <div className="loading">
         <div className="spinner">
           {/* Loading... */}
@@ -71,6 +71,20 @@ const QueueHistoryTable = () => {
         </div>
       </div> :
         <div className="containerconfig">
+            <ul>
+                <li>
+                    <a href="/sad#/login">Config</a>
+                </li>
+                <li>
+                    <a href="/sad#/analytics">Analytics</a>
+                </li>
+                <li>
+                    <a href="/sad#/charts">Charts</a>
+                </li>
+                <li>
+                    <a href="/sad#/triage">Triage</a>
+                </li>
+            </ul>
           <select className={"timesdropdownwithoutsnapshot"} value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
             <option value="17:00">5PM</option>
             <option value="19:00">7PM</option>
