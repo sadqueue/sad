@@ -8,8 +8,8 @@ import moment from "moment";
 
 const QueueHistoryTable = () => {
   const [transactions, setTransactions] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [selectedTime, setSelectedTime] = useState("17:00");
+  const [loading, setLoading] = useState(true);
+  const [selectedTime, setSelectedTime] = useState("17:00");
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -65,36 +65,39 @@ const QueueHistoryTable = () => {
               </tr>
             </thead>
             <tbody>
-            {transactions.map((transaction) => (
-            transaction.shifts
-              .filter(shift => SHOW_ROWS_TABLE[selectedTime].includes(shift.name))
-              .filter(() => {
-                const timestamp = moment(transaction.timestamp.split(" ")[1], "HH:mmA");
-                let start = "";
-                let end = "";
+              {transactions
+                .slice() // Create a shallow copy to avoid mutating the original array
+                .reverse() // Reverse the order to make the most recent first
+                .map((transaction) => (
+                  transaction.shifts
+                    .filter(shift => SHOW_ROWS_TABLE[selectedTime].includes(shift.name))
+                    .filter(() => {
+                      const timestamp = moment(transaction.timestamp.split(" ")[1], "HH:mmA");
+                      let start = "";
+                      let end = "";
 
-                if (selectedTime == "17:00"){
-                  start = moment("16:30", "HH:mm");
-                  end = moment("17:30", "HH:mm");
-                } else if (selectedTime == "19:00"){
-                  start = moment("18:30", "HH:mm");
-                  end = moment("19:30", "HH:mm");
-                }
-                return timestamp.isBetween(start, end, null, "[]");
-              })
-              .map((shift, index) => (
-                <tr key={`${transaction.id}-${index}`} style={index % 5 == 0 ? {"background": "lightgray"}: {}}>
-                  <td>{index % 5 == 0 && transaction.timestamp}</td>
-                  <td>{shift.name}</td>
-                  <td>{shift.timestamp}</td>
-                  <td>{shift.numberOfAdmissions}</td>
-                  <td>{shift.alr}</td>
-                  <td>{shift.clr}</td>
-                  <td>{shift.composite}</td>
-                  <td>{index % 5 == 0 && transaction.orderOfAdmissions.join(", ")}</td>
-                </tr>
-              ))
-          ))}
+                      if (selectedTime == "17:00") {
+                        start = moment("16:30", "HH:mm");
+                        end = moment("17:30", "HH:mm");
+                      } else if (selectedTime == "19:00") {
+                        start = moment("18:30", "HH:mm");
+                        end = moment("19:30", "HH:mm");
+                      }
+                      return timestamp.isBetween(start, end, null, "[]");
+                    })
+                    .map((shift, index) => (
+                      <tr key={`${transaction.id}-${index}`} style={index % 5 == 0 ? { background: "lightgray" } : {}}>
+                        <td>{index % 5 == 0 && transaction.timestamp}</td>
+                        <td>{shift.name}</td>
+                        <td>{shift.timestamp}</td>
+                        <td>{shift.numberOfAdmissions}</td>
+                        <td>{shift.alr}</td>
+                        <td>{shift.clr}</td>
+                        <td>{shift.composite}</td>
+                        <td>{index % 5 == 0 && transaction.orderOfAdmissions.join(", ")}</td>
+                      </tr>
+                    ))
+                ))}
             </tbody>
           </table>
         </div>}

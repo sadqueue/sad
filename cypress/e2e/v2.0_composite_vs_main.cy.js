@@ -1,5 +1,14 @@
+const url = "http://localhost:3001/sad";//"https://sadqueue.github.io/sad/";//
+import { getDatabase, ref, set } from "firebase/database";
+import { initializeApp } from "firebase/app";
+import db from "../../src/firebaseConfig"; // Import Firebase config
+
+import { testArr5pm, testArr4pm, testArr7pm } from "/Users/m0l01bz/Desktop/workspace/sq/src/data/data";
+import { saveLog } from "../../src/transactionsApi";
+
+
 const runTasks = (testArr, time) => {
-    cy.task('clearFile', { filename: `${time}.txt` });
+    // cy.task('clearFile', { filename: `${time}.txt` });
 
     let count = 1;
     let selecttime = time == "5PM" ? "17:00" : "19:00";
@@ -83,3 +92,31 @@ Comp: 	        ${composite_originalAlgo}
         }
     }
 };
+
+describe('template spec', () => {
+
+    it(`Fill out all timestamps and number of admissions test loop`, () => {
+        cy.viewport(2000, 2000);
+        cy.wait(1200);
+        cy.visit(url);
+        cy.get("#seedetails").click();
+        // cy.contains("Set Algorithm").click();
+
+        var currentdate = new Date();
+        var datetime = "Last Sync: " +
+            + (currentdate.getMonth() + 1) + "/"
+            + currentdate.getDate() + "/"
+            + currentdate.getFullYear() + " @ "
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes();
+            
+        if (testArr5pm) {
+            runTasks(testArr5pm, "5PM");
+        }
+
+        if (testArr7pm) {
+            runTasks(testArr7pm, "7PM")
+        }
+
+    });
+})

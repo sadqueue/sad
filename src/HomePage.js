@@ -117,6 +117,31 @@ export function App() {
                         localDateTime
                     );
                 }
+                setOrderOfAdmissions(result.transaction.order);
+
+                const splitOrderOfAdmissions = (orderString) => {
+                    const parts = orderString.split(">").map(item => item.split("(")[0]); // Extract only the shift names
+                    const firstN1Index = parts.indexOf("N1");
+                    const secondN1Index = parts.indexOf("N1", firstN1Index + 1);
+                  
+                    if (secondN1Index !== -1) {
+                      return [
+                        parts.slice(0, secondN1Index), // First array from start to second "N1"
+                        parts.slice(secondN1Index)     // Second array from second "N1" to end
+                      ];
+                    } else {
+                      return [parts, []]; // If no second "N1", return everything as first array
+                    }
+                  };
+                  
+                  const orderString = result.transaction.order;
+                  
+                  const [array1x, array2x] = splitOrderOfAdmissions(orderString);
+                  
+    
+
+                setArray1(array1x);
+                setArray2(array2x);
             } else {
                 sortMain(
                     allAdmissionsDataShifts,
@@ -1123,7 +1148,8 @@ export function App() {
 
             setArray1(array1 && array1.map((each) => { 
                 if (window.location.hostname === 'localhost'){
-                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                    return each.name
+                    // return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
                 } else {
                     return each.name
 
@@ -1131,8 +1157,8 @@ export function App() {
              }));
             setArray2(array2 && array2.map((each) => { 
                 if (window.location.hostname === 'localhost'){
-                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
-
+                    // return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                    return each.name
                 } else {
                     return each.name 
 
