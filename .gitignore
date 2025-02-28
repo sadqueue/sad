@@ -31,3 +31,7 @@ configuration.js
 
 7PM.txt
 5PM.txt
+
+/src/config
+/src/data
+/src/constants.js

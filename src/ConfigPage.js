@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { fetchConfigValues, updateConfigValue } from "./transactionsApi";
 import "./ConfigPage.css";
+import { CONFIGPAGE_PW } from "./config/config";
 
-const CORRECT_PASSWORD = "manny"; // Change this to your actual password
+const CORRECT_PASSWORD = CONFIGPAGE_PW; // Change this to your actual password
 
 const ConfigPage = () => {
     const [config, setConfig] = useState({
