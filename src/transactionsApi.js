@@ -176,7 +176,7 @@ export const getMostRecentShiftByStartTime = (data) => {
 
 export const getLast50Transactions = async (admissionsObj) => {
   const transactionsRef = getFirebaseRef(admissionsObj.startTime, "prod");
-  const transactionsQuery = query(transactionsRef, orderByKey(), limitToLast(50));
+  const transactionsQuery = query(transactionsRef, orderByKey(), limitToLast(100));
 
   try {
     const snapshot = await get(transactionsQuery);
