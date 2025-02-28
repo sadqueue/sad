@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getDatabase, ref, query, orderByKey, limitToLast, get } from "firebase/database";
 import { getFirebaseRef, getLast50Transactions } from "./transactionsApi";
 import { SHOW_ROWS_COPY, SHOW_ROWS_TABLE } from "./constants";
+import moment from "moment";
 
 
 
@@ -63,27 +64,35 @@ const QueueHistoryTable = () => {
               </tr>
             </thead>
             <tbody>
-              {transactions.map((transaction) => {
-                return (
-                  transaction.shifts.map((shift, index) => {
-                    if (SHOW_ROWS_TABLE["17:00"].includes(shift.name)){
-                      return ((
-                        <tr key={`${transaction.id}-${index}`}>
-                          <td>{ shift.name == "S1" ? transaction.timestamp : ""}</td>
-                          <td>{shift.name}</td>
-                          <td>{shift.numberOfAdmissions || "N/A"}</td>
-                          <td>{shift.alr}</td>
-                          <td>{shift.clr}</td>
-                          <td>{shift.composite}</td>
-                          <td>{shift.name == "S1" ? transaction.orderOfAdmissions.join(", ") : ""}</td>
-                        </tr>
-                      ));
-                    }
-                    
-                  }
-                  )
-                );
-              } )}
+            {transactions.map((transaction) => (
+            transaction.shifts
+              .filter(shift => SHOW_ROWS_TABLE[selectedTime].includes(shift.name))
+              .filter(() => {
+                const timestamp = moment(transaction.timestamp.split(" ")[1], "HH:mmA");
+                let start = "";
+                let end = "";
+
+                if (selectedTime == "17:00"){
+                  start = moment("16:30", "HH:mm");
+                  end = moment("17:30", "HH:mm");
+                } else if (selectedTime == "19:00"){
+                  start = moment("18:30", "HH:mm");
+                  end = moment("19:30", "HH:mm");
+                }
+                return timestamp.isBetween(start, end, null, "[]");
+              })
+              .map((shift, index) => (
+                <tr key={`${transaction.id}-${index}`}>
+                  <td>{index % 5 == 0 && transaction.timestamp}</td>
+                  <td>{shift.name}</td>
+                  <td>{shift.numberOfAdmissions || "N/A"}</td>
+                  <td>{shift.alr}</td>
+                  <td>{shift.clr}</td>
+                  <td>{shift.composite}</td>
+                  <td>{index % 5 == 0 && transaction.orderOfAdmissions.join(", ")}</td>
+                </tr>
+              ))
+          ))}
             </tbody>
           </table>
         </div>}
