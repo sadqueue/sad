@@ -54,9 +54,10 @@ const QueueHistoryTable = () => {
           <table border="1">
             <thead>
               <tr>
-                <th>Timestamp</th>
+                <th>Time Generated</th>
                 <th>Role</th>
-                <th>Admissions</th>
+                <th>Timestamp</th>
+                <th># of Admissions</th>
                 <th>ALR</th>
                 <th>CLR</th>
                 <th>Composite Score</th>
@@ -82,10 +83,11 @@ const QueueHistoryTable = () => {
                 return timestamp.isBetween(start, end, null, "[]");
               })
               .map((shift, index) => (
-                <tr key={`${transaction.id}-${index}`}>
+                <tr key={`${transaction.id}-${index}`} style={index % 5 == 0 ? {"background": "lightgray"}: {}}>
                   <td>{index % 5 == 0 && transaction.timestamp}</td>
                   <td>{shift.name}</td>
-                  <td>{shift.numberOfAdmissions || "N/A"}</td>
+                  <td>{shift.timestamp}</td>
+                  <td>{shift.numberOfAdmissions}</td>
                   <td>{shift.alr}</td>
                   <td>{shift.clr}</td>
                   <td>{shift.composite}</td>
