@@ -72,7 +72,6 @@ const QueueHistoryTable = () => {
       </div> :
         <div className="containerconfig">
             <ul>
-                
                 <li>
                     <a href="/sad#/data">Data</a>
                 </li>
@@ -84,6 +83,11 @@ const QueueHistoryTable = () => {
                 </li>
                 <li>
                     <a href="/sad#/triage">Triage</a>
+                </li>
+                <li>
+                    <a href="/sad#/login" onClick={()=>{
+                        localStorage.removeItem("loggedin");
+                    }}>Logout</a>
                 </li>
             </ul>
           <select className={"timesdropdownwithoutsnapshot"} value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>

@@ -48,7 +48,6 @@ export default function AnalysisPage() {
             </div> */}
             <div className="containerconfig">
             <ul>
-                
                 <li>
                     <a href="/sad#/data">Data</a>
                 </li>
@@ -60,6 +59,11 @@ export default function AnalysisPage() {
                 </li>
                 <li>
                     <a href="/sad#/triage">Triage</a>
+                </li>
+                <li>
+                    <a href="/sad#/login" onClick={()=>{
+                        localStorage.removeItem("loggedin");
+                    }}>Logout</a>
                 </li>
             </ul>
                 <h3>Average Admissions Per 15-Minute Interval</h3>

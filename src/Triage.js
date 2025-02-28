@@ -112,7 +112,6 @@ export function HOT() {
             </div> */}
             <div className="containerconfig">
             <ul>
-                
                 <li>
                     <a href="/sad#/data">Data</a>
                 </li>
@@ -124,6 +123,11 @@ export function HOT() {
                 </li>
                 <li>
                     <a href="/sad#/triage">Triage</a>
+                </li>
+                <li>
+                    <a href="/sad#/login" onClick={()=>{
+                        localStorage.removeItem("loggedin");
+                    }}>Logout</a>
                 </li>
             </ul>
             <fieldset>
