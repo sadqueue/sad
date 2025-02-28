@@ -18,12 +18,12 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/sad" element={<HomePage />} />
-        <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/statistics" element={<AnalyticsPage />} />
         <Route path="/beta" element={<HomePageBeta />} />
         <Route path="/sad_v1.0" element={<HomePage_backup />} />
         <Route path="/login" element={<ConfigPage />} />
         <Route path="/cypress" element={<CypressPage />} />
-        <Route path="/charts" element={<Charts/>} />
+        <Route path="/data" element={<Charts/>} />
         <Route path="/triage" element={<Triage/>} />
       </Routes>
     </Router>

@@ -10,7 +10,7 @@ const processData = () => {
         "16:00-16:15", "16:15-16:30", "16:30-16:45", "16:45-17:00", 
         "17:00-17:15", "17:15-17:30", "17:30-17:45", "17:45-18:00",
         "18:00-18:15", "18:15-18:30", "18:30-18:45", "18:45-19:00",
-        "19:00-19:15", "19:15-19:30", "19:30-19:45", "19:45-20:00"
+        "19:00-19:15"
     ];
 
     timeSlots.forEach(slot => dataMap.set(slot, []));
@@ -48,14 +48,15 @@ export default function AnalysisPage() {
             </div> */}
             <div className="containerconfig">
             <ul>
+                
+                <li>
+                    <a href="/sad#/data">Data</a>
+                </li>
+                <li>
+                    <a href="/sad#/statistics">Statistics</a>
+                </li>
                 <li>
                     <a href="/sad#/login">Config</a>
-                </li>
-                <li>
-                    <a href="/sad#/analytics">Analytics</a>
-                </li>
-                <li>
-                    <a href="/sad#/charts">Charts</a>
                 </li>
                 <li>
                     <a href="/sad#/triage">Triage</a>

@@ -112,14 +112,15 @@ export function HOT() {
             </div> */}
             <div className="containerconfig">
             <ul>
+                
+                <li>
+                    <a href="/sad#/data">Data</a>
+                </li>
+                <li>
+                    <a href="/sad#/statistics">Statistics</a>
+                </li>
                 <li>
                     <a href="/sad#/login">Config</a>
-                </li>
-                <li>
-                    <a href="/sad#/analytics">Analytics</a>
-                </li>
-                <li>
-                    <a href="/sad#/charts">Charts</a>
                 </li>
                 <li>
                     <a href="/sad#/triage">Triage</a>
