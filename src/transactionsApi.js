@@ -13,34 +13,6 @@ import {
 } from "firebase/database";
 import database from "./firebaseConfig";
 
-export const runCypressTests = async () => {
-  try {
-      const response = await fetch("http://localhost:3001/run-cypress", {
-          method: "POST",
-      });
-      const result = await response.json();
-      return result;
-  } catch (error) {
-      console.error("Error running Cypress tests:", error);
-      return { success: false, error: error.message };
-  }
-};
-
-export const saveLog = async (message) => {
-  // const database = getDatabase(db);
-  const logsRef = ref(database, "logs"); // Save logs under "logs" node
-
-  try {
-      await push(logsRef, {
-          message: message,
-          timestamp: new Date().toISOString(),
-      });
-      console.log("Log saved successfully");
-  } catch (error) {
-      console.error("Error saving log:", error);
-  }
-};
-
 // Fetch all config values from Firebase
 export const fetchConfigValues = async () => {
   const db = getDatabase();
@@ -103,16 +75,21 @@ export const initializeConfigValues = async () => {
   }
 };
 
-export const getFirebaseRef = (startTime) => {
+export const getFirebaseRef = (startTime, manuallySetEnv = "") => {
   let transactionsRef = "";
 
-  if (window.location.href.includes("/beta")){
-    transactionsRef = ref(database, `transactions_beta_${startTime}`);
-  } else if (window.location.hostname === 'localhost') {
-    transactionsRef = ref(database, `transactions_local_${startTime}`);
-  } else {
+  if (manuallySetEnv == "prod"){
     transactionsRef = ref(database, `transactions_${startTime}`);
+  } else {
+    if (window.location.href.includes("/beta")){
+      transactionsRef = ref(database, `transactions_beta_${startTime}`);
+    } else if (window.location.hostname === 'localhost') {
+      transactionsRef = ref(database, `transactions_local_${startTime}`);
+    } else {
+      transactionsRef = ref(database, `transactions_${startTime}`);
+    }
   }
+  
   return transactionsRef
 }
 export const getLast10Transactions = async (admissionsObj) => {
@@ -197,6 +174,28 @@ export const getMostRecentShiftByStartTime = (data) => {
   return sortedShifts.length > 0 ? sortedShifts[0] : null;
 }
 
+export const getLast50Transactions = async (admissionsObj) => {
+  const transactionsRef = getFirebaseRef(admissionsObj.startTime, "prod");
+  const transactionsQuery = query(transactionsRef, orderByKey(), limitToLast(50));
+
+  try {
+    const snapshot = await get(transactionsQuery);
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      return Object.entries(data).map(([key, value]) => ({
+        id: key,
+        timestamp: value.localDateTime || "N/A",
+        orderOfAdmissions: value.order?.split(">") || [],
+        shifts: value.admissionsObj?.allAdmissionsDataShifts?.shifts || [],
+      }));
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    throw error;
+  }
+};
 
 export const deleteAllTransactions = async (startTime) => {
   const transactionsRef = getFirebaseRef(startTime);
@@ -229,3 +228,35 @@ export const getMostRecentTransaction = async (startTime) => {
     return { success: false, error };
   }
 };
+
+export const addTimeStampToTriage = async (role, timestampx, queuex) => {
+
+  const triageDB = ref(database, `triage_${role}`);
+
+  try {
+
+    const timestamp = new Date();
+    const month = timestamp.getMonth() + 1; // Months are zero-based
+    const day = timestamp.getDate();
+    const year = timestamp.getFullYear();
+    let hours = timestamp.getHours();
+    const minutes = String(timestamp.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+
+    const localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
+
+    const newTimestamp = {
+      queue: queuex,
+      localDateTime: localDateTime,
+      timestamp: timestampx,
+    };
+
+    // Push the new transaction to the database
+    const newRef = await push(triageDB, newTimestamp);
+    return { success: true, key: newRef.key }; // Return the unique key
+  } catch (error) {
+    console.error("Error adding timestamp:", error);
+    return { success: false, error };
+  }
+}
