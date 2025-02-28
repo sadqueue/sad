@@ -27,6 +27,33 @@ const QueueHistoryTable = () => {
     fetchTransactions();
   }, [selectedTime]);
 
+  const calculateAverages = (transactions, selectedTime) => {
+    const roleData = {};
+  
+    transactions.forEach(transaction => {
+      transaction.shifts
+        .filter(shift => SHOW_ROWS_TABLE[selectedTime].includes(shift.name))
+        .forEach(shift => {
+          if (!roleData[shift.name]) {
+            roleData[shift.name] = { totalALR: 0, totalCLR: 0, totalComposite: 0, count: 0 };
+          }
+          roleData[shift.name].totalALR += Number(shift.alr) || 0;
+          roleData[shift.name].totalCLR += Number(shift.clr) || 0;
+          roleData[shift.name].totalComposite += Number(shift.composite) || 0;
+          roleData[shift.name].count += 1;
+        });
+    });
+  
+    // Compute averages
+    const averages = Object.entries(roleData).map(([role, data]) => ({
+      role,
+      avgALR: (data.totalALR / data.count).toFixed(3),
+      avgCLR: (data.totalCLR / data.count).toFixed(3),
+      avgComposite: (data.totalComposite / data.count).toFixed(3),
+    }));
+  
+    return averages;
+  };
   return (
     <div>
       <div className="header">
@@ -44,13 +71,19 @@ const QueueHistoryTable = () => {
         </div>
       </div> :
         <div className="containerconfig">
-          {/* <div className="flex-container-just1item">
-            {timesDropdown()}
-          </div> */}
           <select className={"timesdropdownwithoutsnapshot"} value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
             <option value="17:00">5PM</option>
             <option value="19:00">7PM</option>
           </select>
+          <div>
+      <h3>Averages</h3>
+      {calculateAverages(transactions, selectedTime).map(({ role, avgALR, avgCLR, avgComposite }) => (
+        <p key={role}>
+          {role} ALR: {avgALR}, CLR: {avgCLR}, Composite Score: {avgComposite}
+        </p>
+      ))}
+    </div>
+    <h3>Last Generated Order of Admissions</h3>
           <table border="1">
             <thead>
               <tr>
