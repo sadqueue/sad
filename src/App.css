@@ -91,7 +91,7 @@ div[class="header"] {
 }
 .eachTimestamp{
   all: unset;
-  width: 100px;
+  width: 75px;
   border: solid;
   text-align: left;
   height: 30px;

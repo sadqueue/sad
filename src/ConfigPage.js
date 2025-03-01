@@ -89,6 +89,7 @@ const ConfigPage = () => {
                 <li>
                     <a href="/sad#/login" onClick={()=>{
                         localStorage.removeItem("loggedin");
+                        setAuthenticated(false);
                     }}>Logout</a>
                 </li>
             </ul>

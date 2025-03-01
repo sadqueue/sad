@@ -132,7 +132,7 @@ export function HOT() {
             </ul>
             <fieldset>
                 <p>Queue: {queue}</p>
-                <p>{moment().format("MMMM D, YYYY HH:mm")}</p>
+                <p>Current Time: {moment().format("HH:mm")}</p>
                 <button onClick={addTimestamp}>+</button>
             </fieldset>
             <h3>Currently Working Shifts</h3>
