@@ -56,7 +56,7 @@ div[class="header"] {
   width: 100%;
   padding-bottom: 1px;
   text-align: center;
-  background: #800000;
+  background: #1a0dab;
   color: white;
   font-size: 30px;
 }
@@ -215,7 +215,7 @@ input.customtime {
 
 button {
   padding: 0 2.6rem;
-  background-color: #800000;
+  background-color: #1a0dab;
   border-radius: 8px;
   border-style: none;
   box-sizing: border-box;
@@ -515,7 +515,7 @@ fieldset.fieldsettocopy {
 .timesdropdown {
   /* float: right;
   margin-top: -93px; */
-  background-color: #800000;
+  background-color: #1a0dab;
   border-radius: 8px;
   border-style: none;
   box-sizing: border-box;
@@ -537,7 +537,7 @@ fieldset.fieldsettocopy {
 }
 
 .timesdropdownanalytics{
-  background-color: #800000;
+  background-color: #1a0dab;
   border-radius: 8px;
   border-style: none;
   box-sizing: border-box;
@@ -562,7 +562,7 @@ fieldset.fieldsettocopy {
 .timesdropdownwithoutsnapshot {
   /* float: right;
   margin-top: -93px; */
-  background-color: #800000;
+  background-color: #1a0dab;
   border-radius: 8px;
   border-style: none;
   box-sizing: border-box;
@@ -655,7 +655,7 @@ input::-webkit-inner-spin-button {
 }
 
 .endoutputcenter {
-  background-color: #8000001c;
+  background-color: #1a0dab1c;
   text-align: center;
   margin: 0px;
   font-weight: bold;
@@ -790,7 +790,7 @@ input::-webkit-inner-spin-button {
 .progress-bar {
   height: 100%;
   border-radius: 0; /* No rounded corners */
-  background: linear-gradient(to right, #5b56aedd, #800000dd);
+  background: linear-gradient(to right, #5b56aedd, #1a0dabdd);
   transition: width 0.4s ease-in-out;
 }
 
@@ -813,7 +813,7 @@ input::-webkit-inner-spin-button {
 }
 
 .spinner > div {
-  background-color: #800000;;
+  background-color: #1a0dab;;
   height: 100%;
   width: 6px;
   display: inline-block;
@@ -857,7 +857,7 @@ input::-webkit-inner-spin-button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #800000;
+  background: #1a0dab;
   color: #fff;
   padding: 1rem;
 }
