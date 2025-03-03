@@ -21,7 +21,7 @@ export const fetchConfigValues = async () => {
   try {
     const snapshot = await get(configRef);
     if (snapshot.exists()) {
-      console.log("Config data fetched:", snapshot.val()); // Debug log
+      // console.log("Config data fetched:", snapshot.val()); // Debug log
       return snapshot.val();
     } else {
       console.warn("No configuration found in Firebase.");

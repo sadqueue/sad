@@ -9,6 +9,7 @@ import CypressPage from "./CypressPage";
 import HomePage_backup from "./HomePage_backup";
 import Charts from "./Charts";
 import Triage from "./Triage";
+import EpicPatient from "./EpicPatient";
 // import AboutPage from "./AboutPage"; // Create an AboutPage component
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/cypress" element={<CypressPage />} />
         <Route path="/data" element={<Charts/>} />
         <Route path="/triage" element={<Triage/>} />
+        <Route path="/epic" element={<EpicPatient/>} />
       </Routes>
     </Router>
   );
