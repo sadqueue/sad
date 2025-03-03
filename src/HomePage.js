@@ -2018,8 +2018,8 @@ export function App() {
                                                                             style={{
                                                                                 width: `${(admission.normalizedAlr || 0) * 100}%`,
                                                                                 background: (admission.normalizedAlr || 0) > 0.5
-                                                                                    ? "linear-gradient(to right, #1a0dab, #1a0dab)" /* Red gradient */
-                                                                                    : "linear-gradient(to right,  #1a0dab, #1a0dab)" /* Green gradient */
+                                                                                    ? "linear-gradient(to right, #800000, #800000)" /* Red gradient */
+                                                                                    : "linear-gradient(to right, #800000, #800000)" /* Green gradient */
                                                                             }}
                                                                         />
                                                                     </div>

@@ -35,3 +35,5 @@ configuration.js
 /src/config
 /src/data
 /src/constants.js
+
+nodesource_setup.sh

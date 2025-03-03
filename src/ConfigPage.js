@@ -3,35 +3,20 @@ import { fetchConfigValues, updateConfigValue } from "./transactionsApi";
 import "./ConfigPage.css";
 import { CONFIGPAGE_PW } from "./config/config";
 
-const CORRECT_PASSWORD = CONFIGPAGE_PW; // Change this to your actual password
+const CORRECT_PASSWORD = CONFIGPAGE_PW;
 
 const ConfigPage = () => {
-    const [config, setConfig] = useState({
-        ALR_5PM: 0.7,
-        CLR_5PM: 0.3,
-        ALR_7PM: 0.7,
-        CLR_7PM: 0.3,
-        P95_7PM: 180,
-        P95_5PM: 180,
-        CONSTANT_COMPOSITE_5PM_N5: 0.49,
-        CONSTANT_COMPOSITE_7PM_N1: 0.49,
-        CONSTANT_COMPOSITE_7PM_N2: 0.59,
-        CONSTANT_COMPOSITE_7PM_N3: 0.69,
-        CONSTANT_COMPOSITE_7PM_N4: 0.79,
-    });
-
+    const [config, setConfig] = useState({});
     const [password, setPassword] = useState("");
     const [authenticated, setAuthenticated] = useState(false);
 
     useEffect(() => {
-        if (authenticated) {
-            const getConfig = async () => {
-                const configData = await fetchConfigValues();
-                setConfig(configData);
-            };
-            getConfig();
-        }
-    }, [authenticated]);
+        const getConfig = async () => {
+            const configData = await fetchConfigValues();
+            setConfig(configData);
+        };
+        getConfig();
+    }, []);
 
     const handleChange = (key, value) => {
         setConfig((prevConfig) => ({

@@ -33,7 +33,7 @@ export function HOT() {
         const order = [];
         const shifts = SHIFT_TYPES.filter(shift => {
             let shiftStart = moment(shift.start, "HH:mm");
-            let shiftEnd = moment(shift.end, "HH:mm");
+            let shiftEnd = moment(shift.endWithThreshold, "HH:mm");
             if (shiftEnd.isBefore(shiftStart)) {
                 shiftEnd.add(1, "day");
             }
@@ -111,7 +111,7 @@ export function HOT() {
                 </ul>
                 <fieldset>
                     <p>Queue: {queue.join(" > ")}</p>
-                    <p>Current Time: {moment().format("HH:mm")}</p>
+                    {/*<p>Current Time: {moment().format("HH:mm")}</p>*/}
                     <button onClick={addTimestamp}>+</button>
                 </fieldset>
                 <h3>Currently Working Shifts</h3>
