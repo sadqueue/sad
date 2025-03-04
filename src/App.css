@@ -740,7 +740,8 @@ input::-webkit-inner-spin-button {
 
 #compositeScoreCheckbox,
 #compositeScoreCheckboxStatic,
-#originalAlgorithmCheckbox
+#originalAlgorithmCheckbox,
+#doNotStoreInDb
  {
   width: 24px;
   margin-left: 10px;

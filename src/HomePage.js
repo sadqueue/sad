@@ -63,6 +63,7 @@ export function App() {
     const [show4, setShow4] = useState(false);
     const [config, setConfig] = useState({});
     const [lastSaved5Pm, setLastSaved5Pm] = useState({})
+    const [doNotStoreInDb, setDoNotStoreInDb] = useState(false);
 
     useEffect(() => {
         emailjs.init(CONFIG.REACT_APP_EMAILJS_PUBLIC_KEY);
@@ -1796,39 +1797,42 @@ export function App() {
         setClickedGenerateQueue(true);
         const orderOfAdmissions_ = sortMain(allAdmissionsDataShifts, dropdown);
 
-        addTransaction(
-            { allAdmissionsDataShifts, startTime: dropdown },
-            orderOfAdmissions_
-        );
-
-        const fetchRecentTransaction = async () => {
-            const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
-
-            if (result.success) {
-                setLastSaved(result.transaction.localDateTime);
-                setAllAdmissionsDataShifts(allAdmissionsDataShifts);
-                setDropdown(dropdown);
-
-                if (dropdown == "17:00") {
-                    setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts);
+        if (!doNotStoreInDb){
+            addTransaction(
+                { allAdmissionsDataShifts, startTime: dropdown },
+                orderOfAdmissions_
+            );
+    
+            const fetchRecentTransaction = async () => {
+                const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
+    
+                if (result.success) {
+                    setLastSaved(result.transaction.localDateTime);
+                    setAllAdmissionsDataShifts(allAdmissionsDataShifts);
+                    setDropdown(dropdown);
+    
+                    if (dropdown == "17:00") {
+                        setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts);
+                    }
                 }
+            };
+            fetchRecentTransaction();
+    
+            if (navigator.platform == "MacIntel") {//"Win32"){
+                let content = "";
+                explanation && explanation.map((line, lineIndex) => {
+                    if (line == "\n") {
+                        // return <br></br>
+                        content += "\n";
+                    } else {
+                        // return <p>{line}</p>
+                        content += line;
+                    }
+                });
+                // sendEmail(e, content, `SADQ ${lastSaved} ${orderOfAdmissions}`);
             }
-        };
-        fetchRecentTransaction();
-
-        if (navigator.platform == "MacIntel") {//"Win32"){
-            let content = "";
-            explanation && explanation.map((line, lineIndex) => {
-                if (line == "\n") {
-                    // return <br></br>
-                    content += "\n";
-                } else {
-                    // return <p>{line}</p>
-                    content += line;
-                }
-            });
-            // sendEmail(e, content, `SADQ ${lastSaved} ${orderOfAdmissions}`);
         }
+        
     }
     const handleKeyDown = (e, rowIndex) => {
         const data = allAdmissionsDataShifts.shifts;
@@ -2136,6 +2140,19 @@ export function App() {
                                 }
                             })}<br></br>
                         </div>}
+                        
+                        <input
+                                        id="doNotStoreInDb"
+                                        placeholder="Generate Queue without Storing in Database"
+                                        className="input-left"
+                                        label=""
+                                        type="checkbox"
+                                        onChange={(e) => {
+                                            setDoNotStoreInDb(e.target.checked);
+                                        }}
+                                    />
+                                    <label for="originalAlgorithm">Generate Queue without Storing in Database</label>
+
                         {/* Part 3: Copy Message */}
 
                         {/* <button className="explanation"
