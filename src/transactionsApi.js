@@ -176,19 +176,23 @@ export const getMostRecentShiftByStartTime = (data) => {
 }
 
 export const getLast50Transactions = async (admissionsObj) => {
-  const transactionsRef = getFirebaseRef(admissionsObj.startTime, "prod");
+  const transactionsRef = getFirebaseRef(admissionsObj.startTime);
   const transactionsQuery = query(transactionsRef, orderByKey(), limitToLast(100));
 
   try {
     const snapshot = await get(transactionsQuery);
     if (snapshot.exists()) {
       const data = snapshot.val();
-      return Object.entries(data).map(([key, value]) => ({
-        id: key,
-        timestamp: value.localDateTime || "N/A",
-        orderOfAdmissions: value.order?.split(">") || [],
-        shifts: value.admissionsObj?.allAdmissionsDataShifts?.shifts || [],
-      }));
+
+      return Object.entries(data)
+        .map(([key, value]) => ({
+          id: key,
+          timestamp: value.localDateTime || "N/A",
+          orderOfAdmissions: value.order?.split(">") || [],
+          shifts: value.admissionsObj?.allAdmissionsDataShifts?.shifts || [],
+          deleted: value.deleted || false,
+        }))
+        .filter(transaction => !transaction.deleted); // Properly filter deleted transactions
     } else {
       return [];
     }
@@ -197,6 +201,7 @@ export const getLast50Transactions = async (admissionsObj) => {
     throw error;
   }
 };
+
 
 export const deleteAllTransactions = async (startTime) => {
   const transactionsRef = getFirebaseRef(startTime);
@@ -210,16 +215,16 @@ export const deleteAllTransactions = async (startTime) => {
 
 export const deleteTransaction = async (startTime, transactionId) => {
   try {
-    let transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
+    let transactionRef = ""; //ref(database, `transactions_${startTime}/${transactionId}`);
 
-    // if (window.location.hostname === 'localhost') {
-    //   transactionRef = ref(database, `transactions_local_${startTime}/${transactionId}`);
-    // } else {
-    //   transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
-    // }
-     
-    await remove(transactionRef);
-    console.log(`Transaction ${transactionId} deleted successfully!`);
+    if (window.location.hostname === 'localhost') {
+      transactionRef = ref(database, `transactions_local_${startTime}/${transactionId}`);
+    } else {
+      transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
+    }
+
+    await update(transactionRef, { deleted: true });
+    console.log(`Transaction ${transactionId} marked as deleted.`);
   } catch (error) {
     console.error(`Error deleting transaction ${transactionId}:`, error);
   }

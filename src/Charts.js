@@ -88,7 +88,7 @@ const QueueHistoryTable = () => {
                     <a href="/sad#/statistics">Statistics</a>
                 </li>
                 <li>
-                    <a href="/sad#/login">Config</a>
+                    <a href="/sad#/login">Settings</a>
                 </li>
                 <li>
                     <a href="/sad#/triage">Triage</a>
@@ -115,6 +115,7 @@ const QueueHistoryTable = () => {
           <table border="1">
             <thead>
               <tr>
+                <th>Actions</th>
                 <th>Time Generated</th>
                 <th>Role</th>
                 <th>Timestamp</th>
@@ -123,7 +124,6 @@ const QueueHistoryTable = () => {
                 <th>CLR</th>
                 <th>Composite Score</th>
                 <th>Order of Admissions</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -133,22 +133,11 @@ const QueueHistoryTable = () => {
                 .map((transaction) => (
                   transaction.shifts
                     .filter(shift => SHOW_ROWS_TABLE[selectedTime].includes(shift.name))
-                    .filter(() => {
-                      const timestamp = moment(transaction.timestamp.split(" ")[1], "HH:mmA");
-                      let start = "";
-                      let end = "";
-
-                      if (selectedTime == "17:00") {
-                        start = moment("16:30", "HH:mm");
-                        end = moment("17:30", "HH:mm");
-                      } else if (selectedTime == "19:00") {
-                        start = moment("18:30", "HH:mm");
-                        end = moment("19:30", "HH:mm");
-                      }
-                      return timestamp.isBetween(start, end, null, "[]");
-                    })
                     .map((shift, index) => (
                       <tr key={`${transaction.id}-${index}`} style={index % 5 == 0 ? { background: "lightgray" } : {}}>
+                        <td>
+                          {index % 5 == 0 && <button onClick={() => handleDelete(transaction.id)}>X</button>}
+                        </td>
                         <td>{index % 5 == 0 && transaction.timestamp}</td>
                         <td>{shift.name}</td>
                         <td>{shift.timestamp}</td>
@@ -157,9 +146,7 @@ const QueueHistoryTable = () => {
                         <td>{shift.clr}</td>
                         <td>{shift.composite}</td>
                         <td>{index % 5 == 0 && transaction.orderOfAdmissions.join(", ")}</td>
-                        <td>
-                          {index % 5 == 0 && <button onClick={() => handleDelete(transaction.id)}>X</button>}
-                        </td>
+
                       </tr>
                     ))
                 ))}

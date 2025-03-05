@@ -66,7 +66,7 @@ const ConfigPage = () => {
                     <a href="/sad#/statistics">Statistics</a>
                 </li>
                 <li>
-                    <a href="/sad#/login">Config</a>
+                    <a href="/sad#/login">Settings</a>
                 </li>
                 <li>
                     <a href="/sad#/triage">Triage</a>
