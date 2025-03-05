@@ -12,6 +12,7 @@ import {
   update
 } from "firebase/database";
 import database from "./firebaseConfig";
+// import { getDatabase, ref, remove } from "firebase/database";
 
 // Fetch all config values from Firebase
 export const fetchConfigValues = async () => {
@@ -204,6 +205,23 @@ export const deleteAllTransactions = async (startTime) => {
     console.log("All transactions deleted successfully!");
   } catch (error) {
     console.error("Error deleting all transactions:", error);
+  }
+};
+
+export const deleteTransaction = async (startTime, transactionId) => {
+  try {
+    let transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
+
+    // if (window.location.hostname === 'localhost') {
+    //   transactionRef = ref(database, `transactions_local_${startTime}/${transactionId}`);
+    // } else {
+    //   transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
+    // }
+     
+    await remove(transactionRef);
+    console.log(`Transaction ${transactionId} deleted successfully!`);
+  } catch (error) {
+    console.error(`Error deleting transaction ${transactionId}:`, error);
   }
 };
 

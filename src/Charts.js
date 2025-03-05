@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getDatabase, ref, query, orderByKey, limitToLast, get } from "firebase/database";
-import { getFirebaseRef, getLast50Transactions } from "./transactionsApi";
-import { SHOW_ROWS_COPY, SHOW_ROWS_TABLE } from "./constants";
+import { getLast50Transactions, deleteTransaction } from "./transactionsApi";
+import { SHOW_ROWS_TABLE } from "./constants";
 import moment from "moment";
-
-
 
 const QueueHistoryTable = () => {
   const [transactions, setTransactions] = useState([]);
@@ -54,6 +51,18 @@ const QueueHistoryTable = () => {
   
     return averages;
   };
+
+  const handleDelete = async (transactionId) => {
+    if (window.confirm("Are you sure you want to delete this transaction?")) {
+      try {
+        await deleteTransaction(selectedTime, transactionId);
+        setTransactions(transactions.filter(transaction => transaction.id !== transactionId));
+      } catch (error) {
+        console.error("Error deleting transaction:", error);
+      }
+    }
+  };
+
   return (
     <div>
       {/* <div className="header">
@@ -114,6 +123,7 @@ const QueueHistoryTable = () => {
                 <th>CLR</th>
                 <th>Composite Score</th>
                 <th>Order of Admissions</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -147,6 +157,9 @@ const QueueHistoryTable = () => {
                         <td>{shift.clr}</td>
                         <td>{shift.composite}</td>
                         <td>{index % 5 == 0 && transaction.orderOfAdmissions.join(", ")}</td>
+                        <td>
+                          {index % 5 == 0 && <button onClick={() => handleDelete(transaction.id)}>X</button>}
+                        </td>
                       </tr>
                     ))
                 ))}
