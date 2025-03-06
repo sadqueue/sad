@@ -24,6 +24,31 @@
   /* hi-res laptops and desktops */
 }
 
+.save-btn, .cancel-btn {
+  margin: 0 2px;
+  padding: 2px 5px;
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  font-size: 12px;
+}
+.save-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+.cancel-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.edit-input {
+  min-width: 60px;
+  width: 100%;
+  padding: 4px;
+  font-size: 16px;
+}
 
 .cell-with-number {
   position: relative;

@@ -40,6 +40,7 @@
     "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "all": "git add . && git commit -m 'push changes' && git push && npm run build && npm run deploy",
+    "buildd": "npm run build && npm run deploy",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",

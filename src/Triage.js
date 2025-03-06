@@ -12,6 +12,7 @@ export function HOT() {
     const [timestamps, setTimestamps] = useState({});
     const [admissionsCount, setAdmissionsCount] = useState({});
     const [logs, setLogs] = useState([]);
+    const [manualNow, setManualNow] = useState(moment());
 
     useEffect(() => {
         const loadConfig = async () => {
@@ -29,7 +30,8 @@ export function HOT() {
     }, []);
 
     const updateWorkingShifts = () => {
-        const now = moment();
+        // const now = moment();
+        const now = manualNow;
         const order = [];
         const shifts = SHIFT_TYPES.filter(shift => {
             let shiftStart = moment(shift.start, "HH:mm");
@@ -57,7 +59,8 @@ export function HOT() {
     };
 
     const calculateCompositeScores = () => {
-        const now = moment();
+        // const now = moment();
+        const now = manualNow;
         let scores = workingShifts.map(shift => {
             const shiftStart = moment(shift.start, "HH:mm");
             let minutesWorked = now.diff(shiftStart, 'minutes');
@@ -80,7 +83,9 @@ export function HOT() {
         if (scores.length === 0) return;
         const selectedShift = scores[0].shift;
         logMessage(`The selected shift to add is ${selectedShift.name}`);
-        const now = moment().format("HH:mm");
+        // const now = moment().format("HH:mm");
+        const now = manualNow.format("HH:mm");
+        
         setTimestamps(prev => {
             const updatedTimestamps = { ...prev, [selectedShift.name]: [...(prev[selectedShift.name] || []), now] };
             return updatedTimestamps;
@@ -112,6 +117,21 @@ export function HOT() {
                 <fieldset>
                     <p>Queue: {queue.join(" > ")}</p>
                     {/*<p>Current Time: {moment().format("HH:mm")}</p>*/}
+                    <input 
+                        type="time" 
+                        onChange={(e) => {
+                            // if (moment(e.target.value, "HH:mm").isBefore(moment("12:00", "HH:mm"))) {
+                            //     setManualNow(moment(e.target.value, "HH:mm").add(1, "day"))
+                            // } else {
+                            //     setManualNow(moment(e.target.value, "HH:mm"))
+                            // }
+
+                            setManualNow(moment(e.target.value, "HH:mm"))
+                            
+                            updateWorkingShifts();
+                        }} 
+                    />
+                    <button onClick={() => setManualNow(moment())}>Reset to Current Time</button>
                     <button onClick={addTimestamp}>+</button>
                 </fieldset>
                 <h3>Currently Working Shifts</h3>

@@ -252,34 +252,25 @@ export const getMostRecentTransaction = async (startTime) => {
   }
 };
 
-export const addTimeStampToTriage = async (role, timestampx, queuex) => {
-
-  const triageDB = ref(database, `triage_${role}`);
-
+export const updateTransaction = async (startTime, transactionId, updatedTransaction) => {
   try {
+    let transactionRef = "";
 
-    const timestamp = new Date();
-    const month = timestamp.getMonth() + 1; // Months are zero-based
-    const day = timestamp.getDate();
-    const year = timestamp.getFullYear();
-    let hours = timestamp.getHours();
-    const minutes = String(timestamp.getMinutes()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+    if (window.location.hostname === 'localhost') {
+      transactionRef = ref(database, `transactions_local_${startTime}/${transactionId}`);
+    } else {
+      transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
+    }
 
-    const localDateTime = `${month}/${day}/${year} ${hours}:${minutes}${ampm}`;
+    // Remove any properties we don't want to update in Firebase
+    const { deleted, ...dataToUpdate } = updatedTransaction;
 
-    const newTimestamp = {
-      queue: queuex,
-      localDateTime: localDateTime,
-      timestamp: timestampx,
-    };
-
-    // Push the new transaction to the database
-    const newRef = await push(triageDB, newTimestamp);
-    return { success: true, key: newRef.key }; // Return the unique key
+    await update(transactionRef, dataToUpdate);
+    console.log(`Transaction ${transactionId} updated successfully.`);
+    
+    return { success: true };
   } catch (error) {
-    console.error("Error adding timestamp:", error);
-    return { success: false, error };
+    console.error(`Error updating transaction ${transactionId}:`, error);
+    throw error; // Rethrow so the UI can handle it
   }
-}
+};
