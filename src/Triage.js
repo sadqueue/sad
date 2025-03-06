@@ -108,8 +108,8 @@ export function HOT() {
                 <ul>
                     <li><a href="/sad#/data">Data</a></li>
                     <li><a href="/sad#/statistics">Statistics</a></li>
-                    <li><a href="/sad#/login">Settings</a></li>
                     <li><a href="/sad#/triage">Triage</a></li>
+                    <li><a href="/sad#/login">Settings</a></li>
                     <li><a href="/sad#/login" onClick={() => localStorage.removeItem("loggedin")}>
                         Logout
                     </a></li>
@@ -117,7 +117,7 @@ export function HOT() {
                 <fieldset>
                     <p>Queue: {queue.join(" > ")}</p>
                     {/*<p>Current Time: {moment().format("HH:mm")}</p>*/}
-                    <input 
+                    {/* <input 
                         type="time" 
                         onChange={(e) => {
                             // if (moment(e.target.value, "HH:mm").isBefore(moment("12:00", "HH:mm"))) {
@@ -131,7 +131,7 @@ export function HOT() {
                             updateWorkingShifts();
                         }} 
                     />
-                    <button onClick={() => setManualNow(moment())}>Reset to Current Time</button>
+                    <button onClick={() => setManualNow(moment())}>Reset to Current Time</button> */}
                     <button onClick={addTimestamp}>+</button>
                 </fieldset>
                 <h3>Currently Working Shifts</h3>
