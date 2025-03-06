@@ -108,8 +108,7 @@ export function HOT() {
         shiftScores.forEach((each, eachIndex) => {
             order.push(each.shift.name);
         })
-        setQueue(order);
-
+        setQueue(prevQueue => [...order]); 
         return shiftScores;
     };
 
@@ -119,22 +118,22 @@ export function HOT() {
         const selectedShift = shiftScores[0].shift;
         logMessage(`The selected shift to add is ${selectedShift.name}`);
         const now = moment().format("HH:mm");
-        // const now = manualNow.format("HH:mm");
-        
+    
         setTimestamps(prev => {
-            const updatedTimestamps = { ...prev, [selectedShift.name]: [...(prev[selectedShift.name] || []), now] };
+            const updatedTimestamps = { 
+                ...prev, 
+                [selectedShift.name]: [...(prev[selectedShift.name] || []), now] 
+            };
             return updatedTimestamps;
         });
-        setAdmissionsCount(prev => ({ ...prev, [selectedShift.name]: (prev[selectedShift.name] || 0) + 1 }));
-        // updateQueue(selectedShift.name);
-        const order = [];
-        shiftScores.forEach((each, eachIndex) => {
-            order.push(each.shift.name);
-        })
-        setQueue(order);
-
+    
+        setAdmissionsCount(prev => ({ 
+            ...prev, 
+            [selectedShift.name]: (prev[selectedShift.name] || 0) + 1 
+        }));
+    
+        updateScores();
     };
-
     // const updateQueue = (shiftName) => {
 
     //     setQueue(prevQueue => {
@@ -144,13 +143,9 @@ export function HOT() {
     //     });
     // };
 
-    // Function to update scores every minute
     useEffect(() => {
-        const timer = setInterval(() => {
-            updateScores();
-        }, 60000); // Update every minute
-        
-        return () => clearInterval(timer);
+        updateScores();
+        calculateCompositeScores();
     }, [timestamps, workingShifts]);
 
     return (
@@ -168,7 +163,7 @@ export function HOT() {
                 <fieldset>
                     <p>Queue: {queue.join(" > ")}</p>
                     <button onClick={addTimestamp}>+</button>
-                    <button onClick={updateScores}>Update Scores</button>
+                    {/* <button onClick={updateScores}>Update Scores</button> */}
                 </fieldset>
                 <h3>Currently Working Shifts</h3>
                 <table className="shift-table">
@@ -206,8 +201,12 @@ export function HOT() {
                                                         const newTimestamps = prev[shift.name].filter((_, i) => i !== index);
                                                         return { ...prev, [shift.name]: newTimestamps };
                                                     });
-                                                    calculateCompositeScores();
-                                                    // updateWorkingShifts();
+                                                    
+                                                    // Ensure queue updates immediately after timestamps change
+                                                    setTimeout(() => {
+                                                        calculateCompositeScores();
+                                                        updateScores();
+                                                    }, 0);
                                                     
                                                 }}>❌</button>
                                             </div>
