@@ -13,6 +13,7 @@ export function HOT() {
     const [admissionsCount, setAdmissionsCount] = useState({});
     const [logs, setLogs] = useState([]);
     const [manualNow, setManualNow] = useState(moment());
+    const [scores, setScores] = useState({});
 
     useEffect(() => {
         const loadConfig = async () => {
@@ -29,9 +30,14 @@ export function HOT() {
         updateWorkingShifts();
     }, []);
 
+    // Effect to update scores whenever timestamps change
+    useEffect(() => {
+        updateScores();
+    }, [timestamps, workingShifts]);
+
     const updateWorkingShifts = () => {
-        // const now = moment();
-        const now = manualNow;
+        const now = moment();
+        // const now = manualNow;
         const order = [];
         const shifts = SHIFT_TYPES.filter(shift => {
             let shiftStart = moment(shift.start, "HH:mm");
@@ -58,49 +64,94 @@ export function HOT() {
         setLogs([]);
     };
 
-    const calculateCompositeScores = () => {
-        // const now = moment();
-        const now = manualNow;
-        let scores = workingShifts.map(shift => {
-            const shiftStart = moment(shift.start, "HH:mm");
-            let minutesWorked = now.diff(shiftStart, 'minutes');
-            if (minutesWorked < 0) minutesWorked += 1440;
-            const numAdmits = timestamps[shift.name]?.length || 0;
-            const lastAdmitTime = timestamps[shift.name]?.[numAdmits - 1] || shiftStart.format("HH:mm");
-            const minutesSinceLastAdmit = now.diff(moment(lastAdmitTime, "HH:mm"), "minutes");
-            const ALR = numAdmits === 0 ? 0 : 1 - (minutesSinceLastAdmit / 180);
-            const CLR = numAdmits === 0 ? 0 : numAdmits / (minutesWorked / 60);
-            const compositeScore = 0.7 * ALR + 0.3 * CLR;
-            logMessage(`--- ${shift.name} --- \nALR: ${ALR.toFixed(3)}\nCLR: ${CLR.toFixed(3)}\nScore: ${compositeScore.toFixed(3)}`);
-            return { shift, compositeScore };
+    const calculateScoresForShift = (shift) => {
+        const now = moment();
+        // const now = manualNow;
+        const shiftStart = moment(shift.start, "HH:mm");
+        let minutesWorked = now.diff(shiftStart, 'minutes');
+        if (minutesWorked < 0) minutesWorked += 1440;
+        
+        const numAdmits = timestamps[shift.name]?.length || 0;
+        const lastAdmitTime = timestamps[shift.name]?.[numAdmits - 1] || shiftStart.format("HH:mm");
+        const minutesSinceLastAdmit = now.diff(moment(lastAdmitTime, "HH:mm"), "minutes");
+        
+        const ALR = numAdmits === 0 ? 0 : Math.max(0, 1 - (minutesSinceLastAdmit / 180));
+        const CLR = minutesWorked === 0 ? 0 : (numAdmits / (minutesWorked / 60));
+        const compositeScore = 0.7 * ALR + 0.3 * CLR;
+        
+        return {
+            ALR: ALR.toFixed(3),
+            CLR: CLR.toFixed(3),
+            compositeScore: compositeScore.toFixed(3)
+        };
+    };
+
+    const updateScores = () => {
+        const updatedScores = {};
+        workingShifts.forEach(shift => {
+            updatedScores[shift.name] = calculateScoresForShift(shift);
         });
-        scores.sort((a, b) => a.compositeScore - b.compositeScore);
-        return scores;
+        setScores(updatedScores);
+    };
+
+    const calculateCompositeScores = () => {
+        const now = moment();
+        // const now = manualNow;
+        let shiftScores = workingShifts.map(shift => {
+            const { ALR, CLR, compositeScore } = calculateScoresForShift(shift);
+            logMessage(`--- ${shift.name} --- \nALR: ${ALR}\nCLR: ${CLR}\nScore: ${compositeScore}`);
+            return { shift, compositeScore: parseFloat(compositeScore) };
+        });
+        shiftScores.sort((a, b) => a.compositeScore - b.compositeScore);
+
+        const order = [];
+        shiftScores.forEach((each, eachIndex) => {
+            order.push(each.shift.name);
+        })
+        setQueue(order);
+
+        return shiftScores;
     };
 
     const addTimestamp = () => {
-        const scores = calculateCompositeScores();
-        if (scores.length === 0) return;
-        const selectedShift = scores[0].shift;
+        const shiftScores = calculateCompositeScores();
+        if (shiftScores.length === 0) return;
+        const selectedShift = shiftScores[0].shift;
         logMessage(`The selected shift to add is ${selectedShift.name}`);
-        // const now = moment().format("HH:mm");
-        const now = manualNow.format("HH:mm");
+        const now = moment().format("HH:mm");
+        // const now = manualNow.format("HH:mm");
         
         setTimestamps(prev => {
             const updatedTimestamps = { ...prev, [selectedShift.name]: [...(prev[selectedShift.name] || []), now] };
             return updatedTimestamps;
         });
         setAdmissionsCount(prev => ({ ...prev, [selectedShift.name]: (prev[selectedShift.name] || 0) + 1 }));
-        updateQueue(selectedShift.name);
+        // updateQueue(selectedShift.name);
+        const order = [];
+        shiftScores.forEach((each, eachIndex) => {
+            order.push(each.shift.name);
+        })
+        setQueue(order);
+
     };
 
-    const updateQueue = (shiftName) => {
-        setQueue(prevQueue => {
-            const updatedQueue = prevQueue.filter(name => name !== shiftName);
-            updatedQueue.push(shiftName);
-            return updatedQueue;
-        });
-    };
+    // const updateQueue = (shiftName) => {
+
+    //     setQueue(prevQueue => {
+    //         const updatedQueue = prevQueue.filter(name => name !== shiftName);
+    //         updatedQueue.push(shiftName);
+    //         return updatedQueue;
+    //     });
+    // };
+
+    // Function to update scores every minute
+    useEffect(() => {
+        const timer = setInterval(() => {
+            updateScores();
+        }, 60000); // Update every minute
+        
+        return () => clearInterval(timer);
+    }, [timestamps, workingShifts]);
 
     return (
         <div>
@@ -116,23 +167,8 @@ export function HOT() {
                 </ul>
                 <fieldset>
                     <p>Queue: {queue.join(" > ")}</p>
-                    {/*<p>Current Time: {moment().format("HH:mm")}</p>*/}
-                    {/* <input 
-                        type="time" 
-                        onChange={(e) => {
-                            // if (moment(e.target.value, "HH:mm").isBefore(moment("12:00", "HH:mm"))) {
-                            //     setManualNow(moment(e.target.value, "HH:mm").add(1, "day"))
-                            // } else {
-                            //     setManualNow(moment(e.target.value, "HH:mm"))
-                            // }
-
-                            setManualNow(moment(e.target.value, "HH:mm"))
-                            
-                            updateWorkingShifts();
-                        }} 
-                    />
-                    <button onClick={() => setManualNow(moment())}>Reset to Current Time</button> */}
                     <button onClick={addTimestamp}>+</button>
+                    <button onClick={updateScores}>Update Scores</button>
                 </fieldset>
                 <h3>Currently Working Shifts</h3>
                 <table className="shift-table">
@@ -141,6 +177,7 @@ export function HOT() {
                             <th>Shift Name</th>
                             <th>Time Period</th>
                             <th>Timestamps</th>
+                            <th>Scores</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -169,10 +206,33 @@ export function HOT() {
                                                         const newTimestamps = prev[shift.name].filter((_, i) => i !== index);
                                                         return { ...prev, [shift.name]: newTimestamps };
                                                     });
+                                                    calculateCompositeScores();
+                                                    // updateWorkingShifts();
+                                                    
                                                 }}>❌</button>
                                             </div>
                                         ))}
                                     </div>
+                                </td>
+                                <td className="scores-cell">
+                                    {scores[shift.name] ? (
+                                        <div className="scores-container">
+                                            <div className="score-row">
+                                                <span className="score-label">ALR:</span>
+                                                <span className="score-value">{scores[shift.name].ALR}</span>
+                                            </div>
+                                            <div className="score-row">
+                                                <span className="score-label">CLR:</span>
+                                                <span className="score-value">{scores[shift.name].CLR}</span>
+                                            </div>
+                                            <div className="score-row">
+                                                <span className="score-label">Composite:</span>
+                                                <span className="score-value">{scores[shift.name].compositeScore}</span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <span>No data</span>
+                                    )}
                                 </td>
                             </tr>
                         ))}
@@ -190,6 +250,27 @@ export function HOT() {
                     </div>
                 </div>
             </div>
+            <style jsx>{`
+                .scores-cell {
+                    min-width: 200px;
+                }
+                .scores-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+                }
+                .score-row {
+                    display: flex;
+                    justify-content: space-between;
+                }
+                .score-label {
+                    font-weight: bold;
+                    margin-right: 10px;
+                }
+                .score-value {
+                    font-family: monospace;
+                }
+            `}</style>
         </div>
     );
 }
