@@ -148,6 +148,10 @@ export function HOT() {
         calculateCompositeScores();
     }, [timestamps, workingShifts]);
 
+    useEffect(() => {
+        updateScores();
+    }, [timestamps]);
+
     return (
         <div>
             <div className="containerconfig">
@@ -198,16 +202,19 @@ export function HOT() {
                                                 />
                                                 <button className="delete-btn" onClick={() => {
                                                     setTimestamps(prev => {
-                                                        const newTimestamps = prev[shift.name].filter((_, i) => i !== index);
-                                                        return { ...prev, [shift.name]: newTimestamps };
+                                                        const updatedTimestamps = { 
+                                                            ...prev, 
+                                                            [shift.name]: prev[shift.name] ? prev[shift.name].filter((_, i) => i !== index) : [] 
+                                                        };
+                                                        return updatedTimestamps;
                                                     });
-                                                    
-                                                    // Ensure queue updates immediately after timestamps change
-                                                    setTimeout(() => {
-                                                        calculateCompositeScores();
-                                                        updateScores();
-                                                    }, 0);
-                                                    
+
+                                                    setAdmissionsCount(prev => ({
+                                                        ...prev,
+                                                        [shift.name]: Math.max((prev[shift.name] || 0) - 1, 0)
+                                                    }));
+
+                                                    // Use useEffect to trigger updates after timestamps change
                                                 }}>❌</button>
                                             </div>
                                         ))}
