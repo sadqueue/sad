@@ -60,6 +60,9 @@ const ConfigPage = () => {
         <div className="containerconfig">
             <ul>
                 <li>
+                    <a href="/sad#/calculator">ALR & Composite Calculator</a>
+                </li>
+                <li>
                     <a href="/sad#/data">Data</a>
                 </li>
                 <li>
@@ -71,9 +74,9 @@ const ConfigPage = () => {
                 <li>
                     <a href="/sad#/triage">Triage</a>
                 </li>
-                <li>
+                {/* <li>
                     <a href="/sad#/epic">Epic</a>
-                </li>
+                </li> */}
                 <li>
                     <a href="/sad#/login" onClick={()=>{
                         localStorage.removeItem("loggedin");

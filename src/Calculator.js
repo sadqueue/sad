@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { getConfigNavbar } from "./helper";
 
 export function ALRCompositeCalculator() {
     const [minutes, setMinutes] = useState(0);
@@ -13,6 +14,7 @@ export function ALRCompositeCalculator() {
 
     return (
         <div className="containerconfig">
+            {getConfigNavbar()}
             <h3>ALR & Composite Score Calculator</h3>
             
             <fieldset>

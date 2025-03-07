@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getLast50Transactions, deleteTransaction, updateTransaction } from "./transactionsApi";
 import { SHOW_ROWS_TABLE } from "./constants";
 import moment from "moment";
+import { getConfigNavbar } from "./helper";
 
 const QueueHistoryTable = () => {
   const [transactions, setTransactions] = useState([]);
@@ -191,17 +192,7 @@ const QueueHistoryTable = () => {
         </div>
       ) : (
         <div className="containerconfig">
-          <ul>
-            <li><a href="/sad#/data">Data</a></li>
-            <li><a href="/sad#/statistics">Statistics</a></li>
-            <li><a href="/sad#/triage">Triage</a></li>
-            <li><a href="/sad#/login">Settings</a></li>
-            <li>
-              <a href="/sad#/login" onClick={() => {
-                localStorage.removeItem("loggedin");
-              }}>Logout</a>
-            </li>
-          </ul>
+          {getConfigNavbar()}
           
           <select 
             className="timesdropdownwithoutsnapshot" 
@@ -251,7 +242,9 @@ const QueueHistoryTable = () => {
                           style={isRowStart ? { background: "lightgray" } : {}}
                         >
                           <td>
-                            {isRowStart && <button onClick={() => handleDelete(transaction.id)}>X</button>}
+                            {isRowStart && <button
+                            className="deleterow"
+                            onClick={() => handleDelete(transaction.id)}>X</button>}
                           </td>
                           <td>
                             {isRowStart && renderEditableCell(

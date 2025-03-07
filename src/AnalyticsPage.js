@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
 import { testArr5pm, testArr7pm } from "./data/data";
+import { getConfigNavbar } from "./helper";
 const arr = testArr5pm.concat(testArr7pm);
 
 // Process data for chart
@@ -47,25 +48,7 @@ export default function AnalysisPage() {
                 <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
             </div> */}
             <div className="containerconfig">
-            <ul>
-                <li>
-                    <a href="/sad#/data">Data</a>
-                </li>
-                <li>
-                    <a href="/sad#/statistics">Statistics</a>
-                </li>
-                <li>
-                    <a href="/sad#/login">Settings</a>
-                </li>
-                <li>
-                    <a href="/sad#/triage">Triage</a>
-                </li>
-                <li>
-                    <a href="/sad#/login" onClick={()=>{
-                        localStorage.removeItem("loggedin");
-                    }}>Logout</a>
-                </li>
-            </ul>
+            {getConfigNavbar()}
                 <h3>Average Admissions Per 15-Minute Interval</h3>
                 <ResponsiveContainer height={400} width="100%">
                     <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
