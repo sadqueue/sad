@@ -10,6 +10,7 @@ import HomePage_backup from "./HomePage_backup";
 import Charts from "./Charts";
 import Triage from "./Triage";
 import EpicPatient from "./EpicPatient";
+import ALRCompositeCalculator from "./Calculator";
 // import AboutPage from "./AboutPage"; // Create an AboutPage component
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/data" element={<Charts/>} />
         <Route path="/triage" element={<Triage/>} />
         <Route path="/epic" element={<EpicPatient/>} />
+        <Route path="/calculator" element={<ALRCompositeCalculator/>} />
       </Routes>
     </Router>
   );
