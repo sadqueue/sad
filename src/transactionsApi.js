@@ -11,6 +11,7 @@ import {
   getDatabase,
   update
 } from "firebase/database";
+import { ENV_POINT_TO } from "./constants";
 import database from "./firebaseConfig";
 // import { getDatabase, ref, remove } from "firebase/database";
 
@@ -79,11 +80,11 @@ export const initializeConfigValues = async () => {
 export const getFirebaseRef = (startTime, manuallySetEnv = "") => {
   let transactionsRef = "";
 
-  if (manuallySetEnv == "prod"){
+  if (manuallySetEnv == "prod" || ENV_POINT_TO =="prod"){
     transactionsRef = ref(database, `transactions_${startTime}`);
   } else {
-    if (window.location.href.includes("/beta")){
-      transactionsRef = ref(database, `transactions_beta_${startTime}`);
+    if (ENV_POINT_TO == "prod") {
+      transactionsRef = ref(database, `transactions_${startTime}`);
     } else if (window.location.hostname === 'localhost') {
       transactionsRef = ref(database, `transactions_local_${startTime}`);
     } else {
@@ -144,6 +145,7 @@ export const addTransaction = async (admissionsObj, order, copyBox) => {
       userDeviceDetails: getUserDeviceDetails(),
       admissionsObj,
       order: order ? order : "",
+      deleted: false
       // copyBox: copyBox ? copyBox : ""
     };
 
@@ -156,27 +158,8 @@ export const addTransaction = async (admissionsObj, order, copyBox) => {
   }
 };
 
-export const getMostRecentShiftByStartTime = (data) => {
-  const shifts = data.shifts;
-  const targetStartTime = data.startTime;
-
-  // Filter the shifts with the specific startTime
-  const filteredShifts = shifts.filter(shift => shift.startTime === targetStartTime);
-
-  // Sort the filtered shifts by `timestamp` in descending order
-  const sortedShifts = filteredShifts.sort((a, b) => {
-    // Ensure empty timestamps are treated as less recent
-    const timestampA = a.timestamp ? new Date(`1970-01-01T${a.timestamp}`) : new Date(0);
-    const timestampB = b.timestamp ? new Date(`1970-01-01T${b.timestamp}`) : new Date(0);
-    return timestampB - timestampA;
-  });
-
-  // Return the most recent shift (first in the sorted list) or null if none
-  return sortedShifts.length > 0 ? sortedShifts[0] : null;
-}
-
 export const getLast50Transactions = async (admissionsObj) => {
-  const transactionsRef = getFirebaseRef(admissionsObj.startTime);
+  const transactionsRef = getFirebaseRef(admissionsObj.startTime, "prod");
   const transactionsQuery = query(transactionsRef, orderByKey(), limitToLast(100));
 
   try {
@@ -215,9 +198,11 @@ export const deleteAllTransactions = async (startTime) => {
 
 export const deleteTransaction = async (startTime, transactionId) => {
   try {
-    let transactionRef = ""; //ref(database, `transactions_${startTime}/${transactionId}`);
+    let transactionRef = "";
 
-    if (window.location.hostname === 'localhost') {
+    if (ENV_POINT_TO == "prod") {
+      transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
+    } else if (window.location.hostname === 'localhost') {
       transactionRef = ref(database, `transactions_local_${startTime}/${transactionId}`);
     } else {
       transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
@@ -225,6 +210,25 @@ export const deleteTransaction = async (startTime, transactionId) => {
 
     await update(transactionRef, { deleted: true });
     console.log(`Transaction ${transactionId} marked as deleted.`);
+  } catch (error) {
+    console.error(`Error deleting transaction ${transactionId}:`, error);
+  }
+};
+
+export const hardDeleteTransaction = async (startTime, transactionId) => {
+  try {
+    let transactionRef = "";
+
+    if (ENV_POINT_TO == "prod") {
+      transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
+    } else if (window.location.hostname === "localhost") {
+      transactionRef = ref(database, `transactions_local_${startTime}/${transactionId}`);
+    } else {
+      transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
+    }
+
+    await remove(transactionRef); // Completely removes the transaction from the database
+    console.log(`Transaction ${transactionId} has been permanently deleted.`);
   } catch (error) {
     console.error(`Error deleting transaction ${transactionId}:`, error);
   }
@@ -256,7 +260,9 @@ export const updateTransaction = async (startTime, transactionId, updatedTransac
   try {
     let transactionRef = "";
 
-    if (window.location.hostname === 'localhost') {
+    if (ENV_POINT_TO == "prod") {
+      transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);
+    } else if (window.location.hostname === 'localhost') {
       transactionRef = ref(database, `transactions_local_${startTime}/${transactionId}`);
     } else {
       transactionRef = ref(database, `transactions_${startTime}/${transactionId}`);

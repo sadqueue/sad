@@ -11,6 +11,7 @@ import Charts from "./Charts";
 import Triage from "./Triage";
 import EpicPatient from "./EpicPatient";
 import ALRCompositeCalculator from "./Calculator";
+import ReportEntry from "./ReportEntryPage";
 // import AboutPage from "./AboutPage"; // Create an AboutPage component
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/triage" element={<Triage/>} />
         <Route path="/epic" element={<EpicPatient/>} />
         <Route path="/calculator" element={<ALRCompositeCalculator/>} />
+        <Route path="/reportentry" element={<ReportEntry/>} />
       </Routes>
     </Router>
   );

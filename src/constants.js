@@ -1,3 +1,5 @@
+export const ENV_POINT_TO = "prod";
+
 export const THRESHOLD = 90;
 export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.67;
 export const CHRONIC_LOAD_RATIO_THRESHOLD_S4 = 0.67;

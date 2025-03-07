@@ -1793,47 +1793,37 @@ export function App() {
         return timeObjShifts;
     }
 
-    const handleGenerateQueue = (e) => {
+    const handleGenerateQueue = async (e) => {
         setClickedGenerateQueue(true);
         const orderOfAdmissions_ = sortMain(allAdmissionsDataShifts, dropdown);
-
-        if (!doNotStoreInDb){
-            addTransaction(
-                { allAdmissionsDataShifts, startTime: dropdown },
-                orderOfAdmissions_
-            );
     
-            const fetchRecentTransaction = async () => {
-                const result = await getMostRecentTransaction(allAdmissionsDataShifts.startTime);
+        if (!doNotStoreInDb) {
+            try {
+                // Wait for addTransaction to complete before fetching the recent transaction
+                await addTransaction(
+                    { allAdmissionsDataShifts, startTime: dropdown },
+                    orderOfAdmissions_
+                );
     
+                // Now fetch the most recent transaction
+                const result = await getMostRecentTransaction(dropdown);
+                
+                console.log("recent transaction", result);
                 if (result.success) {
                     setLastSaved(result.transaction.localDateTime);
                     setAllAdmissionsDataShifts(allAdmissionsDataShifts);
                     setDropdown(dropdown);
     
-                    if (dropdown == "17:00") {
+                    if (dropdown === "17:00") {
                         setLastSaved5Pm(result.transaction.admissionsObj.allAdmissionsDataShifts);
                     }
                 }
-            };
-            fetchRecentTransaction();
-    
-            if (navigator.platform == "MacIntel") {//"Win32"){
-                let content = "";
-                explanation && explanation.map((line, lineIndex) => {
-                    if (line == "\n") {
-                        // return <br></br>
-                        content += "\n";
-                    } else {
-                        // return <p>{line}</p>
-                        content += line;
-                    }
-                });
-                // sendEmail(e, content, `SADQ ${lastSaved} ${orderOfAdmissions}`);
+            } catch (error) {
+                console.error("Error generating queue:", error);
             }
         }
-        
-    }
+    };
+    
     const handleKeyDown = (e, rowIndex) => {
         const data = allAdmissionsDataShifts.shifts;
         if (e.key === 'ArrowDown') {

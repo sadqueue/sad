@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getLast50Transactions, deleteTransaction, updateTransaction } from "./transactionsApi";
+import { getLast50Transactions, deleteTransaction, updateTransaction, hardDeleteTransaction} from "./transactionsApi";
 import { SHOW_ROWS_TABLE } from "./constants";
 import moment from "moment";
 import { getConfigNavbar } from "./helper";
@@ -59,6 +59,17 @@ const QueueHistoryTable = () => {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
       try {
         await deleteTransaction(selectedTime, transactionId);
+        setTransactions(transactions.filter(transaction => transaction.id !== transactionId));
+      } catch (error) {
+        console.error("Error deleting transaction:", error);
+      }
+    }
+  };
+
+  const handleHardDelete = async (transactionId) => {
+    if (window.confirm("Are you sure you want to delete this transaction?")) {
+      try {
+        await hardDeleteTransaction(selectedTime, transactionId);
         setTransactions(transactions.filter(transaction => transaction.id !== transactionId));
       } catch (error) {
         console.error("Error deleting transaction:", error);
@@ -245,6 +256,10 @@ const QueueHistoryTable = () => {
                             {isRowStart && <button
                             className="deleterow"
                             onClick={() => handleDelete(transaction.id)}>X</button>}
+                            {window.location.href.includes("localhost") && isRowStart && <button
+                            style={{all: "unset"}}
+                            className="deleterow"
+                            onClick={() => handleHardDelete(transaction.id)}>Hard Delete</button>}
                           </td>
                           <td>
                             {isRowStart && renderEditableCell(
