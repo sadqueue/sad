@@ -1,24 +1,3 @@
-/*
-In each element of the array, seperate by semicolon into an array.
-- array[0] = admissions information
-- array[1] = date or comments
-
-- array[0][0] = timestamps. Seperate by comma.
-  - array[0][0][0] = S1 timestamp
-  - array[0][0][1] = S2 timestamp
-  - array[0][0][2] = S3 timestamp
-  - array[0][0][3] = S4 timestamp
-- array[0][1] = number of admissions. Seperate by comma.
-  - array[0][1][0] = S1 number of admissions
-  - array[0][1][1] = S2 number of admissions
-  - array[0][1][2] = S3 number of admissions
-  - array[0][1][3] = S4 number of admissions
-
-- array[0][2] = order of admissions based on algorithm used.
-
-i want an analysis table that i can implement as a page on my react app. For each role, get averages for average number of admission and the Average timestamp. i want a cost analysis table and charts to analyze this data
-
-*/
 export const testArr5pm = [
 
   ["16:45,16:22,16:20,15:58;5,4,3,2;N5>S4>S2>S3>S1", "2/20/2025"],
@@ -151,4 +130,4 @@ export const testArr5pm = [
     ["18:39,18:48,17:29,16:21;6,5,4,2;N1>N2>N3>N4>N5>S4>S2>S3", "12/09/2024"] // 12/09/2024
     ]
     
-    
+

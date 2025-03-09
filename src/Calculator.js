@@ -8,7 +8,14 @@ export function ALRCompositeCalculator() {
     const [weightALR, setWeightALR] = useState(0.7);
     const [weightCLR, setWeightCLR] = useState(0.3);
 
-    const calculateALR = (mins) => (1 - (mins / 180)).toFixed(3);
+    const calculateALR = (mins) => {
+        const res = (1 - (mins / 180)).toFixed(3);
+        if (alr !== res){
+            setAlr(res);
+
+        }
+        return res;
+    }
     const calculateMinutes = (alr) => (-180 * (alr - 1)).toFixed(0);
     const calculateComposite = (alr, clr, wALR, wCLR) => (wALR * alr + wCLR * clr).toFixed(3);
 
@@ -18,7 +25,7 @@ export function ALRCompositeCalculator() {
             <h3>ALR & Composite Score Calculator</h3>
             
             <fieldset>
-                <h3>ALR Tool 1</h3>
+                <h3>ALR Tool 1 ➡️ 1 - (minutes/180) = ALR</h3>
                 <label>Minutes Since Last Admit:</label>
                 <input
                     className="calculator-input"
@@ -27,10 +34,8 @@ export function ALRCompositeCalculator() {
                     onChange={(e) => setMinutes(e.target.value)}
                 />
                 <p>ALR: {calculateALR(minutes)}</p>
-            </fieldset>
-            
-            <fieldset>
-                <h3>ALR Tool 2</h3>
+          
+                <h3>ALR Tool 2 ➡️ -180(ALR - 1) = minutes</h3>
                 <label>ALR Value:</label>
                 <input
                     className="calculator-input"

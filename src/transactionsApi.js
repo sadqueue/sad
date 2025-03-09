@@ -185,6 +185,32 @@ export const getLast50Transactions = async (admissionsObj) => {
   }
 };
 
+export const getAllTransactions = async (startTime) => {
+  // Reference to the "5PM" table in Firebase
+  const transactionsRef = getFirebaseRef(startTime);
+  const transactionsQuery = query(transactionsRef, orderByKey());
+
+  try {
+    const snapshot = await get(transactionsQuery);
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+
+      return Object.entries(data)
+        .map(([key, value]) => ({
+          id: key,
+          timestamp: value.localDateTime || "N/A",
+          orderOfAdmissions: value.order?.split(">") || [],
+          shifts: value.admissionsObj?.allAdmissionsDataShifts?.shifts || [],
+        }))
+        .filter(transaction => !transaction.deleted); // Filter out deleted transactions
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    throw error;
+  }
+};
 
 export const deleteAllTransactions = async (startTime) => {
   const transactionsRef = getFirebaseRef(startTime);
