@@ -1,4 +1,4 @@
-export const ENV_POINT_TO = "prod";
+export const ENV_POINT_TO = "dev";
 
 export const THRESHOLD = 90;
 export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.67;

@@ -13,7 +13,7 @@ import EpicPatient from "./EpicPatient";
 import ALRCompositeCalculator from "./Calculator";
 import ReportEntry from "./ReportEntryPage";
 // import AboutPage from "./AboutPage"; // Create an AboutPage component
-
+import SearchData from "./SearchData";
 function App() {
   return (
     <Router basename="/">
@@ -31,6 +31,8 @@ function App() {
         <Route path="/epic" element={<EpicPatient/>} />
         <Route path="/calculator" element={<ALRCompositeCalculator/>} />
         <Route path="/reportentry" element={<ReportEntry/>} />
+        <Route path="/searchdata" element={<SearchData/>} />
+
       </Routes>
     </Router>
   );

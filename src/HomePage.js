@@ -2098,6 +2098,10 @@ export function App() {
                     <section>
                         <button id="generateQueue" onClick={(e) => {
                             handleGenerateQueue(e);
+
+                            if ("vibrate" in navigator) {
+                                navigator.vibrate(200);
+                              }
                         }}>
                             Generate Queue
                         </button>
