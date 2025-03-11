@@ -53,7 +53,6 @@ const AssessmentsPage = () => {
 
       {/* Input Form */}
       <form className="searchdataform" onSubmit={handleSubmit}>
-        <input className="searchdatainput" type="text" name="patientName" placeholder="Patient Name" value={formData.patientName} onChange={handleChange} required />
         <textarea className="searchdatainput" name="assessment" placeholder="Assessment" value={formData.assessment} onChange={handleChange} required />
         <textarea className="searchdatainput"  name="plan" placeholder="Plan" value={formData.plan} onChange={handleChange} required />
         <button className="searchdatabutton" type="submit">Add Note</button>
@@ -66,7 +65,6 @@ const AssessmentsPage = () => {
       <table className="searchdatatable">
         <thead>
           <tr>
-            <th className="searchdatata">Patient Name</th>
             <th className="searchdatata">Assessment</th>
             <th className="searchdatata">Plan</th>
             <th className="searchdatata">Timestamp</th>
@@ -75,7 +73,6 @@ const AssessmentsPage = () => {
         <tbody>
           {filteredAssessments.map(({ id, patientName, assessment, plan, timestamp }) => (
             <tr key={id}>
-              <td className="searchdatata">{patientName}</td>
               <td className="searchdatata">{assessment}</td>
               <td className="searchdatata">{plan}</td>
               <td className="searchdatata">{new Date(timestamp.seconds * 1000).toLocaleString()}</td>
