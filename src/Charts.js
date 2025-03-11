@@ -214,14 +214,14 @@ const QueueHistoryTable = () => {
             <option value="19:00">7PM</option>
           </select>
           
-          {/* <div>
+          <div>
             <h3>Averages</h3>
             {calculateAverages(transactions, selectedTime).map(({ role, avgALR, avgCLR, avgComposite }) => (
               <p key={role}>
                 {role} ALR: {avgALR}, CLR: {avgCLR}, Composite Score: {avgComposite}
               </p>
             ))}
-          </div> */}
+          </div>
           
           <h3>Last Generated Order of Admissions</h3>
           <table border="1">
