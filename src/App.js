@@ -14,6 +14,9 @@ import ALRCompositeCalculator from "./Calculator";
 import ReportEntry from "./ReportEntryPage";
 // import AboutPage from "./AboutPage"; // Create an AboutPage component
 import SearchData from "./SearchData";
+import GroupMorningEntry from "./GroupMorningEntry";
+import AdmissionTracker from "./AdmissionTracker";
+
 function App() {
   return (
     <Router basename="/">
@@ -32,6 +35,8 @@ function App() {
         <Route path="/calculator" element={<ALRCompositeCalculator/>} />
         <Route path="/reportentry" element={<ReportEntry/>} />
         <Route path="/searchdata" element={<SearchData/>} />
+        <Route path="/GroupMorningEntry" element={<GroupMorningEntry/>} />
+        <Route path="/AdmissionTracker" element={<AdmissionTracker/>} />
 
       </Routes>
     </Router>

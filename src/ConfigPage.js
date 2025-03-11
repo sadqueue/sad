@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchConfigValues, updateConfigValue } from "./transactionsApi";
 import "./ConfigPage.css";
 import { CONFIGPAGE_PW } from "./config/config";
+import { getConfigNavbar } from "./helper";
 
 const CORRECT_PASSWORD = CONFIGPAGE_PW;
 
@@ -59,7 +60,8 @@ const ConfigPage = () => {
     return (
         <div className="containerconfig">
             <ul>
-                <li>
+                { getConfigNavbar() }
+                {/* <li>
                     <a href="/sad#/calculator">ALR & Composite Calculator</a>
                 </li>
                 <li>
@@ -77,13 +79,13 @@ const ConfigPage = () => {
                 </li>
                 {/* <li>
                     <a href="/sad#/epic">Epic</a>
-                </li> */}
+                </li> 
                 <li>
                     <a href="/sad#/login" onClick={()=>{
                         localStorage.removeItem("loggedin");
                         setAuthenticated(false);
                     }}>Logout</a>
-                </li>
+                </li> */}
             </ul>
             <div className="config-section">
                 <div className="config-section">
