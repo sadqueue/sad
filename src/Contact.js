@@ -72,6 +72,7 @@ const ContactPage = () => {
       marginTop: '15px',
       fontWeight: 'bold',
       color: '#28a745',
+      marginLeft: '24px'
     },
     iconInput: {
       display: 'flex',
