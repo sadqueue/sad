@@ -66,6 +66,7 @@ const ContactPage = () => {
       alignItems: 'center',
       justifyContent: 'center',
       gap: '10px',
+      marginLeft: '24px'
     },
     status: {
       marginTop: '15px',
