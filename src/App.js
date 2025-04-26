@@ -12,10 +12,12 @@ import Triage from "./Triage";
 import EpicPatient from "./EpicPatient";
 import ALRCompositeCalculator from "./Calculator";
 import ReportEntry from "./ReportEntryPage";
-// import AboutPage from "./AboutPage"; // Create an AboutPage component
+import Contact from "./Contact";
 import SearchData from "./SearchData";
 import GroupMorningEntry from "./GroupMorningEntry";
 import AdmissionTracker from "./AdmissionTracker";
+import About from "./About";
+
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
         <Route path="/searchdata" element={<SearchData/>} />
         <Route path="/GroupMorningEntry" element={<GroupMorningEntry/>} />
         <Route path="/AdmissionTracker" element={<AdmissionTracker/>} />
+        <Route path="/Contact" element={<Contact/>} />
+        <Route path="/About" element={<About/>} />
 
       </Routes>
     </Router>

@@ -24,8 +24,15 @@ const Navbar = () => {
       {/* {window.location.href.includes("/config") && <li>
         <a href="/sad#/analytics">Analytics</a>
       </li>} */}
+
       <li>
         <a href="/sad#/login">Login</a>
+      </li>
+      <li>
+        <a href="/sad#/about">About</a>
+      </li>
+      <li>
+        <a href="/sad#/contact">Contact</a>
       </li>
     </ul>
   </div>
