@@ -14,35 +14,13 @@
 Purpose of this UI tool is for hospitalists to generate the order of admissions at a certain timestamp. User can click the dropdown and select a timestamp. The options are 4PM, 5PM, 7PM or a custom time the user can select.
 The deployed website link https://sadqueue.github.io/sad/.
 
-<h2>Example Screenshots</h2><a name="examplescreenshots"></a>
-
-<h3>Scenario 1: 4:00PM Scenario</h3>
-<p><img width="759" alt="Screenshot 2024-12-15 at 6 10 00 AM" src="https://github.com/user-attachments/assets/2dc9d399-d591-4aa3-a225-3ff6fcf261fc" /></p>
-
-<h3>Scenario 2: 5:00PM Scenario</h3>
-<p><img width="711" alt="Screenshot 2024-12-15 at 6 10 38 AM" src="https://github.com/user-attachments/assets/cbb8c736-6f86-466a-89b7-af4d5a3a7e7e" /></p>
-
-<h3>Scenario 3: 7:00PM Scenario</h3>
-<p><img width="716" alt="Screenshot 2024-12-15 at 6 10 57 AM" src="https://github.com/user-attachments/assets/fcdfbda3-00d4-4181-b7e3-1a63739d9069" /></p>
-
-<h3>Scenario 4: Custom Time Scenario</h3>
-<p><img width="718" alt="Screenshot 2024-12-15 at 6 11 14 AM" src="https://github.com/user-attachments/assets/4d8829a3-70b5-4955-91d6-4568cb87d44f" />
-</p>
+<img width="1468" alt="Screenshot 2025-04-25 at 1 59 45 PM" src="https://github.com/user-attachments/assets/521d6273-80cf-42cb-9676-60fb6edcd5de" />
 
 <h3>Expand Table</h3>
 The app has an expand table functionality where the user can see more column details. Click the "Expand" button on the bottom right of the table.
-<p><img width="795" alt="Screenshot 2024-12-15 at 6 11 32 AM" src="https://github.com/user-attachments/assets/e65c91bc-c3e0-425f-8fdf-573165448e2b" /></p>
-
-<h2>Formula Used</h2><a name="formulaused"></a>
-sortByTimestampAndCompositeScore is the method used to calculate the order of admissions. 
-
-<h3>Step 1<h3>
-    Sort by timestamp
-<h3>Step 2</h3
-              For each admitter, if chronic load ratio is >0.66, then deprioritize in the order (either putting in back or pushing back by X spots depending on how great the ratio is
+<img width="1466" alt="Screenshot 2025-04-25 at 2 00 28 PM" src="https://github.com/user-attachments/assets/605f78d0-902a-4ea2-aced-23524bc26d1c" />
 
 For more details on the UI, click "Show Explanation" button to see the formula used for each role.            
-<p><img width="752" alt="Screenshot 2024-12-15 at 6 17 27 AM" src="https://github.com/user-attachments/assets/7f7ed3ef-4bb9-40b4-8cac-8fd53361af9a" /></p>
 
 <h2>How to Run</h2><a name="howtorun"></a>
 <h3>Node version</h3>
