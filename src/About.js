@@ -1,6 +1,7 @@
 // AboutPage.js
 import React from 'react';
 import { FaLaptopCode, FaLightbulb, FaUserAlt } from 'react-icons/fa';
+import githublogo from "./images/github-mark.png"
 
 const AboutPage = () => {
   const styles = {
@@ -79,6 +80,16 @@ const AboutPage = () => {
         </p>
       </div>
       <br></br>
+    </div>
+    <div className="footer">
+    <img
+        alt="copy button"
+        className="githubbutton"
+        src={githublogo}
+        onClick={(ev) => {
+            window.open("https://github.com/sadqueue/sad/tree/main", '_blank');
+        }} />
+    <p>&copy; {new Date().getFullYear()} S.A.D.Q. All rights reserved.</p>
     </div>
     </div>
 

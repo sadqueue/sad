@@ -3,6 +3,8 @@ import React, { useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { FaUser, FaEnvelope, FaCommentDots, FaPaperPlane } from 'react-icons/fa';
 import CONFIG from "./config";
+import githublogo from "./images/github-mark.png"
+
 const ContactPage = () => {
   const form = useRef();
   const [status, setStatus] = useState('');
@@ -107,7 +109,18 @@ const ContactPage = () => {
         </button>
       </form>
       {status && <p style={styles.status}>{status}</p>}
-    </div></div>
+    </div>
+    <div className="footer">
+      <img
+          alt="copy button"
+          className="githubbutton"
+          src={githublogo}
+          onClick={(ev) => {
+              window.open("https://github.com/sadqueue/sad/tree/main", '_blank');
+          }} />
+      <p>&copy; {new Date().getFullYear()} S.A.D.Q. All rights reserved.</p>
+  </div>
+    </div>
   );
 };
 
