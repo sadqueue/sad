@@ -1,18 +1,19 @@
-const url = "http://localhost:3001/sad";//"https://sadqueue.github.io/sad/";//
+const url = "https://sadqueue.github.io/sad/" //"http://localhost:3001/sad";//
 import { getDatabase, ref, set } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import db from "../../src/firebaseConfig"; // Import Firebase config
 
-import { testArr5pm, testArr4pm, testArr7pm } from "/Users/m0l01bz/Desktop/workspace/sq/src/data/data";
+import { testArr5pm, testArr4pm, testArr7pm } from "/Users/marikalam/workspace/sad/src/data/data";
 import { saveLog } from "../../src/transactionsApi";
 
 
 const runTasks = (testArr, time) => {
-    // cy.task('clearFile', { filename: `${time}.txt` });
+    // cy.task('clearFile', { filename: `logging.txt` });
 
     let count = 1;
     let selecttime = time == "5PM" ? "17:00" : "19:00";
     
+    // cy.get("#doNotStoreInDb").click();
     cy.get("#timesdropdown").should('be.visible').select(selecttime);
     cy.wait(1200);
 
@@ -35,8 +36,8 @@ const runTasks = (testArr, time) => {
     const datetime = `${dateFormatted} ${timeFormatted}`;
 
     cy.task('logToFile', {
-        filename: `${time}.txt`, 
-        message: `🔎🖖 ${time} ---------- ${datetime}  🔎`
+        filename: `logging.txt`, 
+        message: `🔎🖖 logging ---------- ${datetime}  🔎`
     });
 
     for (let i = 0; i < testArr.length; i++) {
@@ -63,11 +64,11 @@ const runTasks = (testArr, time) => {
                     const removeParanthesis_composite_originalAlgo = $el_originalAlgo.text().replace(/ *\([^)]*\) */g, "").trim();
 
                     if (output !== removeParanthesis_composite_originalAlgo) {
-                        cy.task('logToFile', { filename: 'log.txt', message: 'Test log entry' });
+                        // cy.task('logToFile', { filename: 'log.txt', message: 'Test log entry' });
 
                         cy.task('logToFile', {
-                            filename: `${time}.txt`,
-                            message: `❌ [ ${count} ] ${time} ${testArr[i][1]}
+                            filename: `logging.txt`,
+                            message: `❌ [ ${count} ] logging ${testArr[i][1]}
 Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
 Manny:			${output}
 Comp:           ${removeParanthesis_composite_originalAlgo}
@@ -78,8 +79,8 @@ Comp: 	        ${composite_originalAlgo}
                         count++;
                     } else {
                         cy.task('logToFile', {
-                            filename: `${time}.txt`,
-                            message: `✅ ${time} ${testArr[i][1]}
+                            filename: `logging.txt`,
+                            message: `✅ logging ${testArr[i][1]}
 Data:			${testArr[i][0].split(";").slice(0, testArr[i][0].split(";").length - 1).join(";")}
 Manny:			${output}
 Comp:           ${removeParanthesis_composite_originalAlgo}

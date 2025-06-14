@@ -26,7 +26,8 @@ import {
     ALR_5PM,
     CLR_5PM,
     ALR_7PM,
-    CLR_7PM
+    CLR_7PM,
+    SHOW_ADMISSIONS_WITH_DETAILS
 } from "./constants";
 import snapshotImg from "./images/snapshot.png";
 import githublogo from "./images/github-mark.png"
@@ -172,7 +173,7 @@ export function App() {
             lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex) => {
                 if (each.name == fivePm.name) {
                     if (fivePm.numberOfAdmissions !== "" &&
-                        (Number(fivePm.numberOfAdmissions)) + 2 <= Number(each.numberOfAdmissions)) {
+                        (Number(fivePm.numberOfAdmissions)) + 2 == Number(each.numberOfAdmissions)) {
                         isXIn2Hours = true;
                         return true;
                     }
@@ -180,6 +181,23 @@ export function App() {
             });
         }
         return isXIn2Hours;
+    }
+
+    const is3In2Hours = (each) => {
+        let is3In2Hours = false;
+
+        if (dropdown == "19:00") {
+            lastSaved5Pm && lastSaved5Pm.shifts && lastSaved5Pm.shifts.forEach((fivePm, eachIndex) => {
+                if (each.name == fivePm.name) {
+                    if (fivePm.numberOfAdmissions !== "" &&
+                        (Number(fivePm.numberOfAdmissions)) + 3 <= Number(each.numberOfAdmissions)) {
+                        is3In2Hours = true;
+                        return true;
+                    }
+                }
+            });
+        }
+        return is3In2Hours;
     }
 
     const getXIn2Hours = (each) => {
@@ -407,7 +425,7 @@ export function App() {
                 shiftsCombined = array1.concat(array2);
 
                 setArray1(array1 && array1.map((each) => { 
-                    if (window.location.hostname === 'localhost'){
+                    if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
                         return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
                     } else {
                         return each.name
@@ -415,7 +433,7 @@ export function App() {
                     }
                  }));
                 setArray2(array2 && array2.map((each) => { 
-                    if (window.location.hostname === 'localhost'){
+                    if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
                         return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
 
                     } else {
@@ -482,7 +500,7 @@ export function App() {
                 const combinedArr = array1.concat(array2);
                 shiftsCombined = combinedArr
                 setArray1(array1 && array1.map((each) => { 
-                    if (window.location.hostname === 'localhost'){
+                    if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
                         return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
                     } else {
                         return each.name
@@ -490,7 +508,7 @@ export function App() {
                     }
                  }));
                 setArray2(array2 && array2.map((each) => { 
-                    if (window.location.hostname === 'localhost'){
+                    if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
                         return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
 
                     } else {
@@ -550,7 +568,7 @@ export function App() {
                     array2.splice(index + 1, 0, newElement);
                 }
                 setArray1(array1 && array1.map((each) => { 
-                    if (window.location.hostname === 'localhost'){
+                    if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
                         return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
                     } else {
                         return each.name
@@ -558,7 +576,7 @@ export function App() {
                     }
                  }));
                 setArray2(array2 && array2.map((each) => { 
-                    if (window.location.hostname === 'localhost'){
+                    if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
                         return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
 
                     } else {
@@ -572,14 +590,14 @@ export function App() {
             shiftsCombined.map((each, eachIndex) => {
                 if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                     if (dropdown == "17:00") {
-                        if (window.location.hostname === 'localhost') {
+                        if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS) {
                             orderOfAdmissions.push(`${each.name}(${each.chronicLoadRatio})`)
                         } else {
                             orderOfAdmissions.push(each.name);
                         }
                     } else if (dropdown == "19:00") {
                         if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
-                            if (window.location.hostname === 'localhost') {
+                            if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS) {
                                 orderOfAdmissions.push(`${each.name}(${each.chronicLoadRatio})`)
                             } else {
                                 orderOfAdmissions.push(each.name);
@@ -1135,6 +1153,7 @@ export function App() {
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 6) ||
                         (innerEach.name == "S4" && Number(innerEach.numberOfAdmissions) == 5) ||
                         (innerEach.name == "N5" && Number(innerEach.numberOfAdmissions) >= 3) ||
+                        (is3In2Hours(innerEach)) ||
                         Number(innerEach.numberOfAdmissions) > NUMBER_OF_ADMISSIONS_CAP) {
                         // explanationArr.push(getFormattedOutputCompositeScore2(innerEach));
                     } else {
@@ -1148,7 +1167,7 @@ export function App() {
             // shiftsCombined = array1.concat(array2);
 
             setArray1(array1 && array1.map((each) => { 
-                if (window.location.hostname === 'localhost'){
+                if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
                     return each.name
                     // return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
                 } else {
@@ -1157,7 +1176,7 @@ export function App() {
                 }
              }));
             setArray2(array2 && array2.map((each) => { 
-                if (window.location.hostname === 'localhost'){
+                if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
                     // return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
                     return each.name
                 } else {
@@ -1224,19 +1243,21 @@ export function App() {
             const combinedArr = array1.concat(array2);
             shiftsCombined = combinedArr
             setArray1(array1 && array1.map((each) => { 
-                if (window.location.hostname === 'localhost'){
-                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
+                    return each.name;
+                    // return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
                 } else {
                     return each.name
 
                 }
              }));
             setArray2(array2 && array2.map((each) => { 
-                if (window.location.hostname === 'localhost'){
-                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
+                    return each.name;
+                    // return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
 
                 } else {
-                    return each.name 
+                    return each.name;
 
                 }
             }));
@@ -1293,19 +1314,21 @@ export function App() {
                 array2.splice(index + 1, 0, newElement);
             }
             setArray1(array1 && array1.map((each) => { 
-                if (window.location.hostname === 'localhost'){
-                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
+                    return each.name;
+                    // return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
                 } else {
-                    return each.name
+                    return each.name;
 
                 }
              }));
             setArray2(array2 && array2.map((each) => { 
-                if (window.location.hostname === 'localhost'){
-                    return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
+                if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS){
+                    return each.name 
+                    // return `${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`;
 
                 } else {
-                    return each.name 
+                    return each.name;
 
                 }
             }));
@@ -1315,16 +1338,18 @@ export function App() {
         shiftsCombined.map((each, eachIndex) => {
             if (SHOW_ROWS_COPY[dropdownSelected].includes(each.name)) {
                 if (dropdownSelected == "17:00") {
-                    if (window.location.hostname === 'localhost') {
-                        orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`)
+                    if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS) {
+                        orderOfAdmissions.push(each.name);
+                        // orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`)
                     } else {
                         orderOfAdmissions.push(each.name);
 
                     }
                 } else if (dropdownSelected == "19:00") {
                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
-                        if (window.location.hostname === 'localhost') {
-                            orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`)
+                        if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS) {
+                            orderOfAdmissions.push(each.name);
+                            // orderOfAdmissions.push(`${each.name}(${each.normalizedAlr},${each.normalizedClr},${each.composite})`)
 
                         } else {
                             orderOfAdmissions.push(each.name);
@@ -1777,7 +1802,7 @@ export function App() {
                         }
                     }
                     if (Number(each.numberOfAdmissions) <= NUMBER_OF_ADMISSIONS_CAP) {
-                        if (window.location.hostname === 'localhost') {
+                        if (window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS) {
                             sortRolesNameOnly.push(`${each.name}(${each.chronicLoadRatio})`);
                         } else {
                             sortRolesNameOnly.push(each.name);
@@ -1808,7 +1833,7 @@ export function App() {
                 // Now fetch the most recent transaction
                 const result = await getMostRecentTransaction(dropdown);
                 
-                console.log("recent transaction", result);
+                // console.log("recent transaction", result);
                 if (result.success) {
                     setLastSaved(result.transaction.localDateTime);
                     setAllAdmissionsDataShifts(allAdmissionsDataShifts);
@@ -2079,7 +2104,7 @@ export function App() {
                             </tbody>
                         </table>
                         <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${lastSaved.split(" ")[0] + " " + convertTo12HourFormatSimple(dropdown)}`}</p>
-                        {window.location.hostname === 'localhost' && (originalAlgorithm) ?
+                        {window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS && (originalAlgorithm) ?
                             <p className="endoutputcenter" id="orderofadmissions_output">
                                 {orderOfAdmissions && orderOfAdmissions}
                             </p>

@@ -1,4 +1,5 @@
 export const ENV_POINT_TO = "";
+export const SHOW_ADMISSIONS_WITH_DETAILS = false;
 
 export const THRESHOLD = 90;
 export const CHRONIC_LOAD_RATIO_THRESHOLD = 0.67;
