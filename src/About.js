@@ -1,6 +1,6 @@
 // AboutPage.js
 import React from 'react';
-import { FaLaptopCode, FaLightbulb, FaUserAlt } from 'react-icons/fa';
+import { FaLaptopCode, FaLightbulb, FaUserAlt, FaBriefcaseMedical } from 'react-icons/fa';
 import githublogo from "./images/github-mark.png"
 
 const AboutPage = () => {
@@ -82,7 +82,7 @@ const AboutPage = () => {
       <br></br>
       <div style={styles.section}>
         <div style={styles.iconHeading}>
-          <FaLightbulb /> <span>Disclaimer</span>
+          <FaBriefcaseMedical /> <span>Disclaimer</span>
         </div>
         <p>
         This tool is provided as a workflow aid only. Final clinical decisions remain the responsibility of the provider. The developers assume no liability for outcomes resulting from use. Use is granted “as is” without warranty or support.
