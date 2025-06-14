@@ -55,7 +55,7 @@ const AboutPage = () => {
 
       <div style={styles.section}>
         <div style={styles.iconHeading}>
-          <FaUserAlt /> <span>Hello</span>
+          <FaUserAlt /> <span>About Me</span>
         </div>
         <p>
             SADQ (Standardized Admission Distribution Queue) is a custom-built tool designed to streamline and automate the hospitalist admission process. It intelligently organizes and assigns patient admissions based on timestamp data and team-specific rules, ensuring a fair, transparent, and efficient workflow. Built with React and backed by real-time data handling via Firebase, SADQ helps hospitalist teams manage workloads, reduce confusion, and improve collaboration. It’s an evolving tool created with direct feedback from physicians, tailored to meet the unique needs of hospital environments.
@@ -77,6 +77,15 @@ const AboutPage = () => {
         </div>
         <p>
             Our mission is to support hospitalist teams by bringing clarity, fairness, and efficiency to the admission workflow. We strive to build intuitive tools that are shaped by real-world clinical needs and provider feedback. Through thoughtful design and continuous innovation, we aim to improve the daily experience of hospitalists and ultimately enhance patient care delivery.
+        </p>
+      </div>
+      <br></br>
+      <div style={styles.section}>
+        <div style={styles.iconHeading}>
+          <FaLightbulb /> <span>Disclaimer</span>
+        </div>
+        <p>
+        This tool is provided as a workflow aid only. Final clinical decisions remain the responsibility of the provider. The developers assume no liability for outcomes resulting from use. Use is granted “as is” without warranty or support.
         </p>
       </div>
       <br></br>
