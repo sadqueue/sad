@@ -37,3 +37,8 @@ configuration.js
 /src/constants.js
 
 nodesource_setup.sh
+
+log.txt
+logging.txt
+firebase-debug.log
+package-lock.json
