@@ -2115,8 +2115,7 @@ export function App() {
                                 : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         }
                         <div className="lastsaved-yellowmessage">
-                            {"Generated " + lastSaved + " @ https://sadqueue.github.io/sad"}
-
+                            {"Generated " + lastSaved}
                         </div>
                     </table>
 
@@ -2212,13 +2211,13 @@ export function App() {
 
                     </fieldset>}
                     <div className="footer">
-                        <img
+                        {/* <img
                             alt="copy button"
                             className="githubbutton"
                             src={githublogo}
                             onClick={(ev) => {
                                 window.open("https://github.com/sadqueue/sad/tree/main", '_blank');
-                            }} />
+                            }} /> */}
                         <p>&copy; {new Date().getFullYear()} S.A.D.Q. All rights reserved.</p>
                     </div>
                 </div>}
