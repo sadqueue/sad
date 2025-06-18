@@ -2131,14 +2131,14 @@ export function App() {
                         </button>
                     </section>
 
-                    <button className="seedetails" id="seedetails" onClick={() => {
+                    {/* <button className="seedetails" id="seedetails" onClick={() => {
                         setSeeDetails(!seeDetails);
                         // setShow1( false);
                         setShow2(false);
                         setShow3(false);
                         setShow4(false);
                     }
-                    }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button>
+                    }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button> */}
 
                     {seeDetails && <fieldset className="notes">
                         <p className="bold">Explanation</p>
