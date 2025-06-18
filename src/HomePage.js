@@ -2115,7 +2115,8 @@ export function App() {
                                 : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         }
                         <div className="lastsaved-yellowmessage">
-                            {"Generated " + lastSaved}
+                            {"Generated " + lastSaved }
+
                         </div>
                     </table>
 
