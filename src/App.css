@@ -678,7 +678,7 @@ input::-webkit-inner-spin-button {
 .lastsaved-yellowmessage {
   text-align: center;
   /* background-color: yellow; */
-  font-size: 24px;
+  font-size: 14px;
 }
 
 #endoutput {

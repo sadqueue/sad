@@ -85,8 +85,7 @@ const AboutPage = () => {
           <FaBriefcaseMedical /> <span>Disclaimer</span>
         </div>
         <p>
-        This tool is provided as a workflow aid only. Final clinical decisions remain the responsibility of the provider. The developers assume no liability for outcomes resulting from use. Use is granted “as is” without warranty or support.
-        </p>
+        This tool is provided for workflow support only. It does not replace clinical judgment. Final decisions remain the responsibility of the provider. No patient data is stored, and no PHI is processed. Use is granted “as is” with no implied warranties or support. The developers assume no liability for outcomes resulting from use.        </p>
       </div>
       <br></br>
     </div>

@@ -2103,7 +2103,7 @@ export function App() {
                                     })}
                             </tbody>
                         </table>
-                        <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${lastSaved.split(" ")[0] + " " + convertTo12HourFormatSimple(dropdown)}`}</p>
+                        <p className="endoutputcenter" id="orderofadmissions_title">{`Order of Admits ${lastSaved}`}</p>
                         {window.location.hostname === 'localhost' && SHOW_ADMISSIONS_WITH_DETAILS && (originalAlgorithm) ?
                             <p className="endoutputcenter" id="orderofadmissions_output">
                                 {orderOfAdmissions && orderOfAdmissions}
@@ -2115,7 +2115,8 @@ export function App() {
                                 : <p className="endoutputcenter" id="orderofadmissions_output">{orderOfAdmissions}</p>
                         }
                         <div className="lastsaved-yellowmessage">
-                            {"Generated " + lastSaved }
+                            {/* {"Generated " + lastSaved } */}
+                            {"This tool is for workflow support only. Use clinical judgment when applying results."}
 
                         </div>
                     </table>
