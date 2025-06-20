@@ -2116,7 +2116,7 @@ export function App() {
                         }
                         <div className="lastsaved-yellowmessage">
                             {/* {"Generated " + lastSaved } */}
-                            {"This tool is for workflow support only. Use clinical judgment when applying results."}
+                            {"This tool is for workflow support only. Providers remain responsible for admissions and patient care decisions."}
 
                         </div>
                     </table>
