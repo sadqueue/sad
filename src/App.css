@@ -104,6 +104,7 @@ div[class="header"] {
 }
 .footer-text {
   font-size: 11px;
+  margin-top: -5px;
 }
 
 .container {

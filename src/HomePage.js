@@ -2221,7 +2221,8 @@ export function App() {
                                 window.open("https://github.com/sadqueue/sad/tree/main", '_blank');
                             }} /> */}
                         <p className="footer-text">&copy; {new Date().getFullYear()} Manuel Lam</p>
-                        <p className="footer-text">All rights reserved. Licensed use only. This tool is for workflow support only. Providers are responsible for final admission and care decisions.</p>
+                        <p className="footer-text">All rights reserved. Licensed use only.</p>
+                        <p className="footer-text">This tool is for workflow support only. Providers are responsible for final admission and care decisions.</p>
                     </div>
                 </div>}
         </div>
