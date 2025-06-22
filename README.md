@@ -1,4 +1,3 @@
-<!-- 
 <p align="center"><img width="244" alt="Screenshot 2024-12-10 at 1 09 14 PM" src="https://github.com/user-attachments/assets/1ea87648-9a46-48fe-a720-338a2c429fd0"></p>
 
 <h1 align="center">S.A.D.Q. (Standardized Admissions Distribution)</h1>
@@ -63,5 +62,3 @@ If you are currently running another app on port 3000, the console will ask you 
     <li>EmailJS</li>
     <li>Firebase DB</li>
 </ul>
-</ul>
- -->
