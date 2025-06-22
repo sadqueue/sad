@@ -2116,7 +2116,7 @@ export function App() {
                         }
                         <div className="lastsaved-yellowmessage">
                             {/* {"Generated " + lastSaved } */}
-                            {"This tool is for workflow support only. Providers remain responsible for admissions and patient care decisions."}
+                            {"© 2025 Manuel Lam. All rights reserved. Licensed use only. This tool is for workflow support only. Providers are responsible for final admission and care decisions."}
 
                         </div>
                     </table>
