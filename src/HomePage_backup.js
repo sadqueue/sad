@@ -1941,7 +1941,18 @@ export function App() {
                             onClick={(ev) => {
                                 window.open("https://github.com/sadqueue/sad/tree/main", '_blank');
                             }} />
-                        <p>&copy; {new Date().getFullYear()} S.A.D.Q. All rights reserved.</p>
+                         <div className="footer">
+                        {/* <img
+                            alt="copy button"
+                            className="githubbutton"
+                            src={githublogo}
+                            onClick={(ev) => {
+                                window.open("https://github.com/sadqueue/sad/tree/main", '_blank');
+                            }} /> */}
+                        <p className="footer-text">&copy; {new Date().getFullYear()} Manuel Lam</p>
+                        <p className="footer-text">All rights reserved. Licensed use only.</p>
+                        <p className="footer-text">This tool is for workflow support only. Providers are responsible for final admission and care decisions.</p>
+                    </div>
                     </div>
                 </div>}
         </div>
