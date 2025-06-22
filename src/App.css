@@ -93,11 +93,17 @@ div[class="header"] {
 }
 
 .footer {
-  display: table;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 60px;
+  display: flex; /* Use flexbox for centering */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  margin: 20px auto; /* Center the footer horizontally */
+  padding: 10px; /* Reduce padding */
+  width: 100%; /* Ensure it spans the width */
+  font-size: 12px;
+}
+.footer-text {
+  font-size: 11px;
 }
 
 .container {

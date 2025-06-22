@@ -2116,7 +2116,7 @@ export function App() {
                         }
                         <div className="lastsaved-yellowmessage">
                             {/* {"Generated " + lastSaved } */}
-                            {"© 2025 Manuel Lam. All rights reserved. Licensed use only. This tool is for workflow support only. Providers are responsible for final admission and care decisions."}
+                            {/* {"This tool is for workflow support only. Providers remain responsible for admissions and patient care decisions."} */}
 
                         </div>
                     </table>
@@ -2211,7 +2211,7 @@ export function App() {
 
 
 
-                    </fieldset>}
+                    </fieldset>}<br></br>
                     <div className="footer">
                         {/* <img
                             alt="copy button"
@@ -2220,7 +2220,8 @@ export function App() {
                             onClick={(ev) => {
                                 window.open("https://github.com/sadqueue/sad/tree/main", '_blank');
                             }} /> */}
-                        <p>&copy; {new Date().getFullYear()} S.A.D.Q. All rights reserved.</p>
+                        <p className="footer-text">&copy; {new Date().getFullYear()} Manuel Lam</p>
+                        <p className="footer-text">All rights reserved. Licensed use only. This tool is for workflow support only. Providers are responsible for final admission and care decisions.</p>
                     </div>
                 </div>}
         </div>
