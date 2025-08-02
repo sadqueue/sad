@@ -148,6 +148,19 @@ div[class="header"] {
   margin-bottom: 20px;
 }
 
+.notice-banner {
+  background-color: #e53935; /* red */
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.content {
+  padding: 20px;
+}
+
 /* Small screens (phones) */
 @media (max-width: 600px) {
   .container {

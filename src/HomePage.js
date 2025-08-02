@@ -1897,6 +1897,7 @@ export function App() {
                 <h1 className="title">S.A.D.Q.</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
             </div>
+           
 
             {loading ? <div className="loading">
                 <div className="spinner">
@@ -1928,7 +1929,12 @@ export function App() {
                         {openTable ? "Minimize Table ⬆️" : "Expand Table ⬇️"}
                     </button>
                     <table id="screenshotimg">
-
+                    <div>
+      {/* Red notice banner */}
+      <div className="notice-banner">
+      ⚠️ This app is migrating to a secure login access portal soon. Stay tuned.
+      </div>
+    </div>
                         <table id="reacttable">
                             <thead>
                                 {openTable ? (
