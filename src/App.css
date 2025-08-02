@@ -978,6 +978,10 @@ input::-webkit-inner-spin-button {
 }
 
 @media (max-width: 1000px) {
+  .footer-text {
+    text-align: center;
+    width: 100%;
+  }
   h1 {
     font-size: 42px;
     margin-top: -7px;
