@@ -63,8 +63,8 @@ If you are currently running another app on port 3000, the console will ask you 
     <li>Firebase DB</li>
 </ul>
 
-© 2025 Manuel Lam. All rights reserved.
+© 2025 Genki MD LLC. All rights reserved.
 
-This software (SADQ – Swing Admission Distribution & Quality) is the intellectual property of Dr. Manuel Lam. It was developed independently and is provided for workflow support only. Admission and care decisions remain the responsibility of the provider. Unauthorized use, reproduction, or redistribution of the code or logic is prohibited without written permission.
+This software (SADQ – Swing Admission Distribution & Quality) is the intellectual property of Dr. Genki MD LLC. It was developed independently and is provided for workflow support only. Admission and care decisions remain the responsibility of the provider. Unauthorized use, reproduction, or redistribution of the code or logic is prohibited without written permission.
 
 For licensing inquiries or institutional use, please contact: manuel.lam@gmail.com
