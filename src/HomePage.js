@@ -1932,7 +1932,9 @@ export function App() {
                     <div>
       {/* Red notice banner */}
       <div className="notice-banner">
-      ⚠️ This app is migrating to a secure login access portal soon. Stay tuned.
+      ⚠️ SADQ is migrating to a secure login portal on 8/6.
+Accounts will be activated once leadership finalizes licensing to ensure fairness, security, and compliance.
+support@genkimd.com
       </div>
     </div>
                         <table id="reacttable">
