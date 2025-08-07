@@ -46,7 +46,7 @@ export function App() {
     const [hasEditAccess, setHasEditAccess] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [passwordInput, setPasswordInput] = useState("");
-    const SHARED_PASSWORD = "genkimd2025";
+    const SHARED_PASSWORD = "qumg2025";
     // deleteAllTransactions("17:00")
     // deleteAllTransactions("16:00")
     // deleteAllTransactions("19:00")
@@ -2167,6 +2167,18 @@ support@genkimd.com
       🔒 <span className="blue-link">Log in to generate queue</span>
     </p>
   )}
+  {hasEditAccess && (
+  <p
+    className="login-link"
+    onClick={() => {
+      localStorage.removeItem("sadq_edit_access");
+      localStorage.removeItem("sadq_edit_timestamp");
+      setHasEditAccess(false);
+    }}
+  >
+    🚪 <span className="blue-link">Log out</span>
+  </p>
+)}
 </section>
 {showLoginModal && (
   <div className="modal-overlay">
@@ -2187,7 +2199,7 @@ support@genkimd.com
         <button
           className="login-button"
           onClick={() => {
-            if (passwordInput === SHARED_PASSWORD) {
+            if (passwordInput.toLowerCase() === SHARED_PASSWORD) {
               setHasEditAccess(true);
               setShowLoginModal(false);
               setPasswordInput(""); // Clear input

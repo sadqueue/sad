@@ -1047,6 +1047,21 @@ input::-webkit-inner-spin-button {
   text-decoration: underline;
 }
 
+.logout-button {
+  margin-top: 12px;
+  padding: 10px 20px;
+  background-color: #ef4444; /* red */
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #dc2626;
+}
+
 
 @-webkit-keyframes sk-stretchdelay {
   0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
