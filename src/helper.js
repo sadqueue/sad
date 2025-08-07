@@ -1,5 +1,6 @@
 export const getConfigNavbar = () => {
     return (<ul>
+        <li><a href="/sad#/HomePageWithLogin">Home Page With Login</a></li>
         <li><a href="/sad#/calculator">ALR & Composite Calculator</a></li>
         <li><a href="/sad#/data">Data</a></li>
         <li><a href="/sad#/statistics">Statistics</a></li>
