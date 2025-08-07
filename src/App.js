@@ -17,7 +17,7 @@ import SearchData from "./SearchData";
 import GroupMorningEntry from "./GroupMorningEntry";
 import AdmissionTracker from "./AdmissionTracker";
 import About from "./About";
-
+import HomePageWithLogin from "./HomePageWithLogin";
 
 function App() {
   return (
@@ -41,7 +41,7 @@ function App() {
         <Route path="/AdmissionTracker" element={<AdmissionTracker/>} />
         <Route path="/Contact" element={<Contact/>} />
         <Route path="/About" element={<About/>} />
-
+        <Route path="/HomePageWithLogin" element={<HomePageWithLogin/>} />
       </Routes>
     </Router>
   );
