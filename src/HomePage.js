@@ -1937,6 +1937,7 @@ export function App() {
 
                         }} />}
                     <button
+                        disabled
                         onClick={() => setOpenTable(!openTable)}
                         className="expand"
                     >
@@ -1946,9 +1947,8 @@ export function App() {
                     <div>
       {/* Red notice banner */}
       <div className="notice-banner">
-      ⚠️ SADQ is migrating to a secure login portal on 8/6.
-Accounts will be activated once leadership finalizes licensing to ensure fairness, security, and compliance.
-support@genkimd.com
+      🔔 SADQ access extended through 8/15/2025.
+Please plan accordingly and transition to alternative workflows. Thank you for the opportunity to support the hospitalist team.
       </div>
     </div>
                         <table id="reacttable">
