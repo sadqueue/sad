@@ -43,10 +43,6 @@ import html2canvas from "html2canvas";
 const CONFIG = CONFIG1;
 
 export function App() {
-    const [hasEditAccess, setHasEditAccess] = useState(false);
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [passwordInput, setPasswordInput] = useState("");
-    const SHARED_PASSWORD = "qumg2025";
     // deleteAllTransactions("17:00")
     // deleteAllTransactions("16:00")
     // deleteAllTransactions("19:00")
@@ -1901,16 +1897,6 @@ export function App() {
                 <h1 className="title">S.A.D.Q.</h1>
                 <h2 className="subtitle">Standardized Admissions Distribution Queue</h2>
             </div>
-            <p
-  style={{
-    marginTop: "0.5rem",
-    fontWeight: "bold",
-    color: hasEditAccess ? "green" : "gray",
-    textAlign: "center"
-  }}
->
-  {hasEditAccess ? "🟢 Edit Access Enabled" : "🔒 View Only Access"}
-</p>
            
 
             {loading ? <div className="loading">
@@ -2031,7 +2017,7 @@ support@genkimd.com
                                                                 value={admission.timestamp || ""}
                                                                 type="time"
                                                                 onChange={(e) => onChange(e, admission.admissionsId)}
-                                                                disabled={admission.isStatic || !hasEditAccess}
+                                                                disabled={admission.isStatic}
                                                             />
                                                         </td>
                                                         <td className="usercanedit cell-with-number" tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, index)}>
@@ -2045,7 +2031,7 @@ support@genkimd.com
                                                                 type="number"
                                                                 placeholder="---"
                                                                 onChange={(e) => onChange(e, admission.admissionsId)}
-                                                                disabled={admission.isStatic || !hasEditAccess}
+                                                                disabled={admission.isStatic}
                                                                 inputMode="numeric"
                                                                 pattern="[0-9]*"
                                                             />
@@ -2144,85 +2130,25 @@ support@genkimd.com
                     </table>
 
                     <section>
-  <button
-    id="generateQueue"
-    disabled={!hasEditAccess}
-    style={{
-      opacity: hasEditAccess ? 1 : 0.5,
-      cursor: hasEditAccess ? "pointer" : "not-allowed"
-    }}
-    onClick={(e) => {
-      handleGenerateQueue(e);
-      if ("vibrate" in navigator) navigator.vibrate(200);
-    }}
-  >
-    Generate Queue
-  </button>
+                        <button id="generateQueue" onClick={(e) => {
+                            handleGenerateQueue(e);
 
-  {!hasEditAccess && (
-    <p
-      className="login-link"
-      onClick={() => setShowLoginModal(true)}
-    >
-      🔒 <span className="blue-link">Log in to generate queue</span>
-    </p>
-  )}
-  {hasEditAccess && (
-  <p
-    className="login-link"
-    onClick={() => {
-      localStorage.removeItem("sadq_edit_access");
-      localStorage.removeItem("sadq_edit_timestamp");
-      setHasEditAccess(false);
-    }}
-  >
-    🚪 <span className="blue-link">Log out</span>
-  </p>
-)}
-</section>
-{showLoginModal && (
-  <div className="modal-overlay">
-    <div className="modal-content">
-      <h3 className="login-title">Welcome to SADQ</h3>
-      <p className="login-subtitle">Secure Access Portal</p>
-      <p className="login-description">Enter the shared password to unlock edit mode.</p>
+                            if ("vibrate" in navigator) {
+                                navigator.vibrate(200);
+                              }
+                        }}>
+                            Generate Queue
+                        </button>
+                    </section>
 
-      <input
-        type="password"
-        className="login-input"
-        placeholder="Enter password"
-        value={passwordInput}
-        onChange={(e) => setPasswordInput(e.target.value)}
-      />
-
-      <div className="modal-actions">
-        <button
-          className="login-button"
-          onClick={() => {
-            if (passwordInput.toLowerCase() === SHARED_PASSWORD) {
-              setHasEditAccess(true);
-              setShowLoginModal(false);
-              setPasswordInput(""); // Clear input
-            } else {
-              alert("❌ Incorrect password");
-            }
-          }}
-        >
-          Log In
-        </button>
-        <button
-          className="cancel-button"
-          onClick={() => {
-            setShowLoginModal(false);
-            setPasswordInput(""); // Reset on cancel
-          }}
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+                    {/* <button className="seedetails" id="seedetails" onClick={() => {
+                        setSeeDetails(!seeDetails);
+                        // setShow1( false);
+                        setShow2(false);
+                        setShow3(false);
+                        setShow4(false);
+                    }
+                    }>{seeDetails ? "Hide Explanation" : "Show Explanation"}</button> */}
 
                     {seeDetails && <fieldset className="notes">
                         <p className="bold">Explanation</p>
@@ -2290,7 +2216,7 @@ support@genkimd.com
 
                             </div>
                         }
-                        
+
 
 
                     </fieldset>}
@@ -2308,7 +2234,6 @@ support@genkimd.com
                     </div>
                 </div>}
         </div>
-        
     )
 
 }
