@@ -46,7 +46,7 @@ export function App() {
     const [hasEditAccess, setHasEditAccess] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [passwordInput, setPasswordInput] = useState("");
-    const SHARED_PASSWORD = "qumg2025";
+    const SHARED_PASSWORD = "manny2025";
     // deleteAllTransactions("17:00")
     // deleteAllTransactions("16:00")
     // deleteAllTransactions("19:00")

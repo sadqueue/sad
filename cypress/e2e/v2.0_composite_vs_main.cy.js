@@ -1,4 +1,4 @@
-const url = "https://sadqueue.github.io/sad/" //"http://localhost:3001/sad";//
+const url = "http://localhost:3001/sad";//"https://sadqueue.github.io/sad/" //
 import { getDatabase, ref, set } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import db from "../../src/firebaseConfig"; // Import Firebase config
